@@ -3,6 +3,10 @@ plugins {
     kotlin("android")
 }
 
+if (property("openSource.signing.file") != null) {
+    apply(from = property("openSource.signing.file"))
+}
+
 android {
     compileSdk = Versions.androidCompileSdk
 
@@ -25,7 +29,13 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            signingConfig = signingConfigs.findByName("debug")
+        }
+
         getByName("release") {
+            signingConfig = signingConfigs.findByName("release")
+
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
