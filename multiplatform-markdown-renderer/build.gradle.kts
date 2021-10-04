@@ -42,7 +42,7 @@ kotlin {
     //}
 
     android {
-        publishAllLibraryVariants()
+        publishLibraryVariants("release")
     }
 }
 
