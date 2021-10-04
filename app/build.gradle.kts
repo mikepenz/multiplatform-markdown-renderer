@@ -88,8 +88,11 @@ dependencies {
 }
 
 private val openSourcSigningFile: String?
-    get() = Properties().also {
-        if (rootProject.file("local.properties").exists()) {
-            it.load(rootProject.file("local.properties").inputStream())
-        }
-    }.getProperty("openSource.signing.file", null) ?: project.property("openSource.signing.file")?.toString()
+    get() {
+        val k = "openSource.signing.file"
+        return Properties().also { prop ->
+            rootProject.file("local.properties").takeIf { it.exists() }?.let {
+                prop.load(it.inputStream())
+            }
+        }.getProperty(k, null) ?: if (project.hasProperty(k)) project.property(k)?.toString() else null
+    }
