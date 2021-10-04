@@ -1,15 +1,11 @@
 import org.jetbrains.compose.compose
 
 plugins {
+    kotlin("multiplatform")
     id("com.android.library")
-    id("kotlin-multiplatform")
     id("org.jetbrains.compose")
     id("org.jetbrains.dokka")
     id("com.vanniktech.maven.publish")
-}
-
-base {
-    archivesBaseName = "multiplatform-markdown-renderer"
 }
 
 android {
@@ -22,7 +18,7 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
@@ -33,17 +29,17 @@ android {
 kotlin {
     jvm()
 
-    // js {
-    //     nodejs {}
-    //     browser {}
-    //     compilations.all {
-    //         kotlinOptions {
-    //             moduleKind = "umd"
-    //             sourceMap = true
-    //             sourceMapEmbedSources = null
-    //         }
-    //     }
-    // }
+    //js {
+    //    nodejs {}
+    //    browser {}
+    //    compilations.all {
+    //        kotlinOptions {
+    //            moduleKind = "umd"
+    //            sourceMap = true
+    //            sourceMapEmbedSources = null
+    //        }
+    //    }
+    //}
 
     android {
         publishAllLibraryVariants()
@@ -57,7 +53,7 @@ dependencies {
     commonMainCompileOnly(compose.foundation)
     commonMainCompileOnly(compose.material)
 
-    add("androidMainImplementation", Deps.Compose.coilCompose)
+    "androidMainImplementation"(Deps.Compose.coilCompose)
 }
 
 tasks.dokkaHtml.configure {
