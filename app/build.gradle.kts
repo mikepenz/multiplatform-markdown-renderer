@@ -3,7 +3,7 @@ plugins {
     kotlin("android")
 }
 
-if (property("openSource.signing.file") != null) {
+if (hasProperty("openSource.signing.file") && property("openSource.signing.file") != null) {
     apply(from = property("openSource.signing.file"))
 }
 
