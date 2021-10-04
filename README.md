@@ -108,7 +108,8 @@ This free, open source software was also made possible by a group of volunteers 
 
 ## Credits
 
-Big thanks to [Erik Hellman](https://twitter.com/ErikHellman) and his awesome article on [Rendering Markdown with Jetpack Compose](https://www.hellsoft.se/rendering-markdown-with-jetpack-compose/)
+Big thanks to [Erik Hellman](https://twitter.com/ErikHellman) and his awesome article on [Rendering Markdown with Jetpack Compose](https://www.hellsoft.se/rendering-markdown-with-jetpack-compose/).
+Parts of the composable functions are based on this work, and are licensed under the MIT License. See [LICENSE](LICENSE)
 
 ## License
 
