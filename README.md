@@ -92,6 +92,10 @@ val markdown = """
 Markdown(markdown, Modifier.fillMaxSize())
 ```
 
+## Dependency
+
+This project uses JetBrains [markdown](https://github.com/JetBrains/markdown/) Multiplatform Markdown processor as dependency to parse the markdown content.
+
 ## Developed By
 
 * Mike Penz
