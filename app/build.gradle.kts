@@ -1,10 +1,12 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     id("com.android.application")
     kotlin("android")
 }
 
-if (hasProperty("openSource.signing.file") && property("openSource.signing.file") != null) {
-    apply(from = property("openSource.signing.file"))
+if (openSourcSigningFile != null) {
+    apply(from = openSourcSigningFile)
 }
 
 android {
@@ -84,3 +86,10 @@ dependencies {
         implementation(uiTooling)
     }
 }
+
+private val openSourcSigningFile: String?
+    get() = Properties().also {
+        if (rootProject.file("local.properties").exists()) {
+            it.load(rootProject.file("local.properties").inputStream())
+        }
+    }.getProperty("openSource.signing.file", null) ?: project.property("openSource.signing.file")?.toString()
