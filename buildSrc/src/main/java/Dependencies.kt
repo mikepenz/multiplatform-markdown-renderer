@@ -7,7 +7,8 @@ object Versions {
 
     const val markdown = "0.2.4"
 
-    const val compose = "1.1.0-alpha05"
+    const val coil = "1.4.0"
+    const val compose = "1.0.4"
     const val accompanist = "0.19.0"
 
     const val material = "1.4.0"
@@ -39,7 +40,7 @@ object Deps {
         const val foundationLayout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
         const val material = "androidx.compose.material:material:${Versions.compose}"
 
-        const val coilCompose = "io.coil-kt:coil-compose:1.3.1"
+        const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil}"
         const val accompanistInsets = "com.google.accompanist:accompanist-insets:${Versions.accompanist}"
         const val accompanistInsetsUi = "com.google.accompanist:accompanist-insets-ui:${Versions.accompanist}"
     }
