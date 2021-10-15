@@ -1,5 +1,7 @@
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -10,7 +12,7 @@ import androidx.compose.ui.window.application
 import com.mikepenz.markdown.Markdown
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication) {
+    Window(onCloseRequest = ::exitApplication, title = "Markdown Sample") {
         SampleTheme {
             Scaffold(
                 topBar = {
@@ -19,6 +21,8 @@ fun main() = application {
                     )
                 }
             ) {
+                val scrollState = rememberScrollState()
+
                 val content = """
                 ### Getting Started
                 
@@ -36,7 +40,7 @@ fun main() = application {
                 Click on `New` and you will be offered to enter your name, e-mail and password. Ensure to pick a secure password to protect your key. 
                 """.trimIndent()
 
-                Markdown(content, Modifier.fillMaxSize().padding(16.dp))
+                Markdown(content, Modifier.fillMaxSize().padding(16.dp).verticalScroll(scrollState))
             }
         }
     }
