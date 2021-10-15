@@ -17,9 +17,11 @@ android {
         minSdk = Versions.androidMinSdk
         targetSdk = Versions.androidTargetSdk
 
-        versionCode = 100
-        versionName = "1.0.0"
+        versionCode = property("VERSION_CODE").toString().toInt()
+        versionName = property("VERSION_NAME").toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        setProperty("archivesBaseName", "markdown-renderer-sample-v$versionName-c$versionCode")
     }
 
     buildFeatures {
