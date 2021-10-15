@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
@@ -153,7 +154,9 @@ private fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String
     node.children.forEach { child ->
         when (child.type) {
             MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content, child, colors)
-            MarkdownElementTypes.IMAGE -> appendInlineContent(TAG_IMAGE_URL, child.getTextInNode(content).toString())
+            MarkdownElementTypes.IMAGE -> child.findChildOfType(MarkdownElementTypes.INLINE_LINK)?.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.let {
+                appendInlineContent(TAG_IMAGE_URL, it.getTextInNode(content).toString())
+            }
             MarkdownElementTypes.EMPH -> {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
                 buildMarkdownAnnotatedString(content, child, colors)
@@ -196,16 +199,18 @@ private fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Modi
         style = style,
         inlineContent = mapOf(
             TAG_IMAGE_URL to InlineTextContent(
-                Placeholder(style.fontSize, style.fontSize, PlaceholderVerticalAlign.Bottom)
+                Placeholder(180.sp, 180.sp, PlaceholderVerticalAlign.Bottom) // TODO, identify flexible scaling!
             ) {
                 Spacer(Modifier.padding(4.dp))
 
-                Image(
-                    painter = imagePainter(it),
-                    contentDescription = "Image", // TODO
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                imagePainter(it)?.let { painter ->
+                    Image(
+                        painter = painter,
+                        contentDescription = "Image", // TODO
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
                 Spacer(Modifier.padding(4.dp))
             }
         ),
@@ -214,7 +219,7 @@ private fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Modi
 }
 
 @Composable
-internal expect fun imagePainter(url: String): Painter
+internal expect fun imagePainter(url: String): Painter?
 
 @Composable
 private fun MarkdownBulletList(content: String, node: ASTNode, modifier: Modifier = Modifier, level: Int = 0) {
