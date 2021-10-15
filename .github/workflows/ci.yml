@@ -145,8 +145,8 @@ jobs:
         run: |
           COLLECT_PWD=${PWD}
           mkdir -p "artifacts"
-          find . -name "*.apk" -type f -exec cp {} "artifacts" \;
-          find . -name "*.aab" -type f -exec cp {} "artifacts" \;
+          find . -name "*release.apk" -type f -exec cp {} "artifacts" \;
+          find . -name "*release.aab" -type f -exec cp {} "artifacts" \;
 
       - name: Archive Artifacts
         uses: actions/upload-artifact@v2

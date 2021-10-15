@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
@@ -62,7 +63,7 @@ fun Markdown(
 
 
 @Composable
-internal fun ASTNode.handleElement(content: String): Boolean {
+private fun ASTNode.handleElement(content: String): Boolean {
     var handled = true
     when (type) {
         MarkdownTokenTypes.TEXT -> Text(getTextInNode(content).toString())
@@ -78,15 +79,14 @@ internal fun ASTNode.handleElement(content: String): Boolean {
         MarkdownElementTypes.PARAGRAPH -> MarkdownParagraph(content, this)
         MarkdownElementTypes.ORDERED_LIST -> MarkdownOrderedList(content, this)
         MarkdownElementTypes.UNORDERED_LIST -> MarkdownBulletList(content, this)
-        MarkdownElementTypes.IMAGE -> {
-        } // skip inline image
+        MarkdownElementTypes.IMAGE -> MarkdownImage(content, this)
         else -> handled = false
     }
     return handled
 }
 
 @Composable
-internal fun MarkdownCodeFence(content: String, node: ASTNode, modifier: Modifier = Modifier) {
+private fun MarkdownCodeFence(content: String, node: ASTNode, modifier: Modifier = Modifier) {
     // CODE_FENCE_START, FENCE_LANG, {content}, CODE_FENCE_END
     // val lang = node.findChildOfType(MarkdownTokenTypes.FENCE_LANG) // unused for now
     val start = node.children[2].startOffset
@@ -95,7 +95,7 @@ internal fun MarkdownCodeFence(content: String, node: ASTNode, modifier: Modifie
 }
 
 @Composable
-internal fun MarkdownHeader(content: String, node: ASTNode, style: TextStyle = LocalTextStyle.current) {
+private fun MarkdownHeader(content: String, node: ASTNode, style: TextStyle = LocalTextStyle.current) {
     node.findChildOfType(MarkdownTokenTypes.ATX_CONTENT)?.let {
         Text(
             it.getTextInNode(content).trim().toString(),
@@ -108,7 +108,7 @@ internal fun MarkdownHeader(content: String, node: ASTNode, style: TextStyle = L
 }
 
 @Composable
-internal fun MarkdownBlockQuote(content: String, node: ASTNode, modifier: Modifier = Modifier) {
+private fun MarkdownBlockQuote(content: String, node: ASTNode, modifier: Modifier = Modifier) {
     val color = MaterialTheme.colors.onBackground
     Box(modifier = modifier
         .drawBehind {
@@ -130,56 +130,92 @@ internal fun MarkdownBlockQuote(content: String, node: ASTNode, modifier: Modifi
 }
 
 @Composable
-internal fun MarkdownParagraph(content: String, node: ASTNode) {
+private fun MarkdownParagraph(content: String, node: ASTNode) {
     val styledText = buildAnnotatedString {
         pushStyle(MaterialTheme.typography.body1.toSpanStyle())
-        appendMarkdownChildren(content, node, MaterialTheme.colors)
+        buildMarkdownAnnotatedString(content, node, MaterialTheme.colors)
         pop()
     }
 
     MarkdownText(styledText, style = MaterialTheme.typography.body1)
 }
 
-internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: ASTNode, colors: Colors) {
-    val linkText = node.findChildOfType(MarkdownElementTypes.LINK_TEXT) ?: return
+private fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: ASTNode, colors: Colors) {
+    val linkText = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.children?.innerList() ?: return
     val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
     destination?.let { pushStringAnnotation(TAG_URL, destination) }
     pushStyle(SpanStyle(textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
-    appendMarkdownChildren(content, linkText, colors)
+    buildMarkdownAnnotatedString(content, linkText, colors)
     pop()
 }
 
-fun AnnotatedString.Builder.appendMarkdownChildren(content: String, node: ASTNode, colors: Colors) {
-    node.children.forEach { child ->
+private fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, node: ASTNode, colors: Colors) {
+    buildMarkdownAnnotatedString(content, node.children, colors)
+}
+
+private fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, children: List<ASTNode>, colors: Colors) {
+    children.forEach { child ->
         when (child.type) {
-            MarkdownElementTypes.PARAGRAPH -> appendMarkdownChildren(content, child, colors)
-            MarkdownElementTypes.IMAGE -> appendInlineContent(TAG_IMAGE_URL, child.getTextInNode(content).toString())
+            MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content, child, colors)
+            MarkdownElementTypes.IMAGE -> child.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.let {
+                appendInlineContent(TAG_IMAGE_URL, it.getTextInNode(content).toString())
+            }
             MarkdownElementTypes.EMPH -> {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
-                appendMarkdownChildren(content, child, colors)
+                buildMarkdownAnnotatedString(content, child, colors)
                 pop()
             }
             MarkdownElementTypes.STRONG -> {
                 pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
-                appendMarkdownChildren(content, child, colors)
+                buildMarkdownAnnotatedString(content, child, colors)
                 pop()
             }
             MarkdownElementTypes.CODE_SPAN -> {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace, background = colors.onBackground.copy(alpha = 0.1f)))
-                append(child.getTextInNode(content).toString())
+                append(' ')
+                buildMarkdownAnnotatedString(content, child.children.innerList(), colors)
+                append(' ')
                 pop()
             }
             MarkdownElementTypes.INLINE_LINK -> appendMarkdownLink(content, child, colors)
             MarkdownTokenTypes.TEXT -> append(child.getTextInNode(content).toString())
-            MarkdownTokenTypes.WHITE_SPACE -> append(" ")
-            MarkdownTokenTypes.EOL -> append("\n")
+            MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')
+            MarkdownTokenTypes.DOUBLE_QUOTE -> append('\"')
+            MarkdownTokenTypes.LPAREN -> append('(')
+            MarkdownTokenTypes.RPAREN -> append(')')
+            MarkdownTokenTypes.LBRACKET -> append('[')
+            MarkdownTokenTypes.RBRACKET -> append(']')
+            MarkdownTokenTypes.LT -> append('<')
+            MarkdownTokenTypes.GT -> append('>')
+            MarkdownTokenTypes.COLON -> append(':')
+            MarkdownTokenTypes.EXCLAMATION_MARK -> append('!')
+            MarkdownTokenTypes.BACKTICK -> append('`')
+            MarkdownTokenTypes.HARD_LINE_BREAK -> append("\n\n")
+            MarkdownTokenTypes.EOL -> append('\n')
+            MarkdownTokenTypes.WHITE_SPACE -> append(' ')
         }
     }
 }
 
-// @OptIn(ExperimentalCoilApi::class)
 @Composable
-internal fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Modifier = Modifier) {
+private fun MarkdownImage(content: String, node: ASTNode) {
+    val link = node.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString() ?: return
+
+    Spacer(Modifier.padding(4.dp))
+
+    imagePainter(link)?.let { painter ->
+        Image(
+            painter = painter,
+            contentDescription = "Image", // TODO
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+    Spacer(Modifier.padding(4.dp))
+}
+
+@Composable
+private fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
     val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
 
@@ -197,16 +233,18 @@ internal fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Mod
         style = style,
         inlineContent = mapOf(
             TAG_IMAGE_URL to InlineTextContent(
-                Placeholder(style.fontSize, style.fontSize, PlaceholderVerticalAlign.Bottom)
+                Placeholder(180.sp, 180.sp, PlaceholderVerticalAlign.Bottom) // TODO, identify flexible scaling!
             ) {
                 Spacer(Modifier.padding(4.dp))
 
-                Image(
-                    painter = imagePainter(it),
-                    contentDescription = "Image", // TODO
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                imagePainter(it)?.let { painter ->
+                    Image(
+                        painter = painter,
+                        contentDescription = "Image", // TODO
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
                 Spacer(Modifier.padding(4.dp))
             }
         ),
@@ -215,16 +253,16 @@ internal fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Mod
 }
 
 @Composable
-internal expect fun imagePainter(url: String): Painter
+internal expect fun imagePainter(url: String): Painter?
 
 @Composable
-internal fun MarkdownBulletList(content: String, node: ASTNode, modifier: Modifier = Modifier, level: Int = 0) {
+private fun MarkdownBulletList(content: String, node: ASTNode, modifier: Modifier = Modifier, level: Int = 0) {
     MarkdownListItems(content, node, modifier, level) { child ->
         Row(Modifier.fillMaxWidth()) {
             Text("${child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)} ")
             val text = buildAnnotatedString {
                 pushStyle(MaterialTheme.typography.body1.toSpanStyle())
-                appendMarkdownChildren(content, child, MaterialTheme.colors)
+                buildMarkdownAnnotatedString(content, child, MaterialTheme.colors)
                 pop()
             }
             MarkdownText(text, MaterialTheme.typography.body1, modifier.padding(bottom = 4.dp))
@@ -233,13 +271,13 @@ internal fun MarkdownBulletList(content: String, node: ASTNode, modifier: Modifi
 }
 
 @Composable
-internal fun MarkdownOrderedList(content: String, node: ASTNode, modifier: Modifier = Modifier, level: Int = 0) {
+private fun MarkdownOrderedList(content: String, node: ASTNode, modifier: Modifier = Modifier, level: Int = 0) {
     MarkdownListItems(content, node, modifier, level) { child ->
         Row(Modifier.fillMaxWidth()) {
             Text("${child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)} ")
             val text = buildAnnotatedString {
                 pushStyle(MaterialTheme.typography.body1.toSpanStyle())
-                appendMarkdownChildren(content, child, MaterialTheme.colors)
+                buildMarkdownAnnotatedString(content, child, MaterialTheme.colors)
                 pop()
             }
             MarkdownText(text, MaterialTheme.typography.body1, modifier.padding(bottom = 4.dp))
@@ -248,7 +286,7 @@ internal fun MarkdownOrderedList(content: String, node: ASTNode, modifier: Modif
 }
 
 @Composable
-internal fun MarkdownListItems(
+private fun MarkdownListItems(
     content: String,
     node: ASTNode,
     modifier: Modifier = Modifier,

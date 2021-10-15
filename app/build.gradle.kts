@@ -17,9 +17,11 @@ android {
         minSdk = Versions.androidMinSdk
         targetSdk = Versions.androidTargetSdk
 
-        versionCode = 100
-        versionName = "1.0.0"
+        versionCode = property("VERSION_CODE").toString().toInt()
+        versionName = property("VERSION_NAME").toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        setProperty("archivesBaseName", "markdown-renderer-sample-v$versionName-c$versionCode")
     }
 
     buildFeatures {
@@ -70,20 +72,18 @@ dependencies {
     }
 
     with(Deps.AndroidX) {
-        implementation(lifecycleRuntimeKtx)
-        implementation(lifecycleViewmodelKtx)
         implementation(activityCompose)
     }
 
+
     with(Deps.Compose) {
-        implementation(ui)
-        implementation(uiGraphics)
+        implementation(coilCompose)
+
         implementation(foundationLayout)
         implementation(material)
-        implementation(coilCompose)
-        implementation(accompanistInsets)
-        implementation(accompanistInsetsUi)
+        implementation(ui)
         implementation(uiTooling)
+        implementation(uiGraphics)
     }
 }
 

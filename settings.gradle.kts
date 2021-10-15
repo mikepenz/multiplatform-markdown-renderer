@@ -6,7 +6,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "multiplatform-markdown-renderer"
+rootProject.name = "multiplatform-markdown-renderer-root"
 
 include(":multiplatform-markdown-renderer")
 include(":app")

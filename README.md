@@ -108,7 +108,11 @@ This free, open source software was also made possible by a group of volunteers 
 
 ## Credits
 
-Big thanks to [Erik Hellman](https://twitter.com/ErikHellman) and his awesome article on [Rendering Markdown with Jetpack Compose](https://www.hellsoft.se/rendering-markdown-with-jetpack-compose/)
+Big thanks to [Erik Hellman](https://twitter.com/ErikHellman) and his awesome article on [Rendering Markdown with Jetpack Compose](https://www.hellsoft.se/rendering-markdown-with-jetpack-compose/), and the related source [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer).
+
+## Fork License
+
+Copyright for portions of the code are held by [Erik Hellman, 2020] as part of project [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer) under the MIT license. All other copyright for project multiplatform-markdown-renderer are held by [Mike Penz, 2021] under the Apache License, Version 2.0.
 
 ## License
 
