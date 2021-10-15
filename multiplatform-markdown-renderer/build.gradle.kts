@@ -48,6 +48,7 @@ kotlin {
 
 dependencies {
     commonMainApi(Deps.Markdown.core)
+
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.ui)
     commonMainCompileOnly(compose.foundation)

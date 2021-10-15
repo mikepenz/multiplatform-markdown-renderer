@@ -70,20 +70,18 @@ dependencies {
     }
 
     with(Deps.AndroidX) {
-        implementation(lifecycleRuntimeKtx)
-        implementation(lifecycleViewmodelKtx)
         implementation(activityCompose)
     }
 
+
     with(Deps.Compose) {
-        implementation(ui)
-        implementation(uiGraphics)
+        implementation(coilCompose)
+
         implementation(foundationLayout)
         implementation(material)
-        implementation(coilCompose)
-        implementation(accompanistInsets)
-        implementation(accompanistInsetsUi)
+        implementation(ui)
         implementation(uiTooling)
+        implementation(uiGraphics)
     }
 }
 
