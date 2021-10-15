@@ -79,8 +79,7 @@ private fun ASTNode.handleElement(content: String): Boolean {
         MarkdownElementTypes.PARAGRAPH -> MarkdownParagraph(content, this)
         MarkdownElementTypes.ORDERED_LIST -> MarkdownOrderedList(content, this)
         MarkdownElementTypes.UNORDERED_LIST -> MarkdownBulletList(content, this)
-        MarkdownElementTypes.IMAGE -> {
-        } // skip inline image
+        MarkdownElementTypes.IMAGE -> MarkdownImage(content, this)
         else -> handled = false
     }
     return handled
@@ -142,7 +141,7 @@ private fun MarkdownParagraph(content: String, node: ASTNode) {
 }
 
 private fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: ASTNode, colors: Colors) {
-    val linkText = node.findChildOfType(MarkdownElementTypes.LINK_TEXT) ?: return
+    val linkText = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.children?.innerList() ?: return
     val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
     destination?.let { pushStringAnnotation(TAG_URL, destination) }
     pushStyle(SpanStyle(textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
@@ -151,10 +150,14 @@ private fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: AS
 }
 
 private fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, node: ASTNode, colors: Colors) {
-    node.children.forEach { child ->
+    buildMarkdownAnnotatedString(content, node.children, colors)
+}
+
+private fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, children: List<ASTNode>, colors: Colors) {
+    children.forEach { child ->
         when (child.type) {
             MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content, child, colors)
-            MarkdownElementTypes.IMAGE -> child.findChildOfType(MarkdownElementTypes.INLINE_LINK)?.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.let {
+            MarkdownElementTypes.IMAGE -> child.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.let {
                 appendInlineContent(TAG_IMAGE_URL, it.getTextInNode(content).toString())
             }
             MarkdownElementTypes.EMPH -> {
@@ -169,15 +172,46 @@ private fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String
             }
             MarkdownElementTypes.CODE_SPAN -> {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace, background = colors.onBackground.copy(alpha = 0.1f)))
-                append(child.getTextInNode(content).toString())
+                append(' ')
+                buildMarkdownAnnotatedString(content, child.children.innerList(), colors)
+                append(' ')
                 pop()
             }
             MarkdownElementTypes.INLINE_LINK -> appendMarkdownLink(content, child, colors)
             MarkdownTokenTypes.TEXT -> append(child.getTextInNode(content).toString())
-            MarkdownTokenTypes.WHITE_SPACE -> append(" ")
-            MarkdownTokenTypes.EOL -> append("\n")
+            MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')
+            MarkdownTokenTypes.DOUBLE_QUOTE -> append('\"')
+            MarkdownTokenTypes.LPAREN -> append('(')
+            MarkdownTokenTypes.RPAREN -> append(')')
+            MarkdownTokenTypes.LBRACKET -> append('[')
+            MarkdownTokenTypes.RBRACKET -> append(']')
+            MarkdownTokenTypes.LT -> append('<')
+            MarkdownTokenTypes.GT -> append('>')
+            MarkdownTokenTypes.COLON -> append(':')
+            MarkdownTokenTypes.EXCLAMATION_MARK -> append('!')
+            MarkdownTokenTypes.BACKTICK -> append('`')
+            MarkdownTokenTypes.HARD_LINE_BREAK -> append("\n\n")
+            MarkdownTokenTypes.EOL -> append('\n')
+            MarkdownTokenTypes.WHITE_SPACE -> append(' ')
         }
     }
+}
+
+@Composable
+private fun MarkdownImage(content: String, node: ASTNode) {
+    val link = node.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString() ?: return
+
+    Spacer(Modifier.padding(4.dp))
+
+    imagePainter(link)?.let { painter ->
+        Image(
+            painter = painter,
+            contentDescription = "Image", // TODO
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+    Spacer(Modifier.padding(4.dp))
 }
 
 @Composable
