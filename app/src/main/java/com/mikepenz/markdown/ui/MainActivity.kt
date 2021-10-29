@@ -52,7 +52,7 @@ fun MainLayout() {
                 .verticalScroll(scrollState)
                 .fillMaxSize()
                 .padding(16.dp)
-                .padding(bottom = 48.dp)
+                .padding(bottom = 48.dp, top = 56.dp)
         )
     }
 }
