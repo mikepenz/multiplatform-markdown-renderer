@@ -28,20 +28,35 @@ class MainActivity : ComponentActivity() {
 fun MainLayout() {
     SampleTheme {
         val markdown = """
-            ### Getting Started
+            # Title 1
         
-            To get started you will need GPG on your computer to create a new key pair. 
-            
-            Usually I go with the [GPG Suite](https://gpgtools.org/), which offers a nice UI to manage your keys. (You may want to use advanced installation to only install the parts you need)
-            But you can also use any other solution to create your key pair.
+            To get started with this library, just provide some Markdown.
+           
+            Usually Markdown will contain different characters *or different styles*, which can **change** just as you ~write~ different text. 
+           
+            Sometimes it will even contain images within the text
             
             ![Image](https://avatars.githubusercontent.com/u/1476232?v=4)
                 
-            After installing GPG Suite (or your prefered solution) first create a new key.
+            After installing GPG Suite (or your preferred solution) first create a new key.
+            
+            Supports reference links:
+            [Reference Link Test][1] 
+            
+            But can also be a auto link: https://mikepenz.dev
+            
+            Links with links as label are also handled:
+            [https://mikepenz.dev](https://mikepenz.dev)
             
             Using GPG Suite, start the GPG Keychain, which shows all current known GPG keys on your system.
             
-            Click on `New` and you will be offered to enter your name, e-mail and password. Ensure to pick a secure password to protect your key. 
+            Some `inline` code is also supported!
+            
+            ## Title 2
+            
+            ### Title 3
+            
+            [1]: https://mikepenz.dev/
         """.trimIndent()
 
         val scrollState = rememberScrollState()

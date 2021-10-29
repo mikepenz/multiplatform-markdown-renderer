@@ -36,6 +36,7 @@ import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
+import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 import org.intellij.markdown.parser.MarkdownParser
 
 
@@ -163,6 +164,14 @@ private fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: AS
     pop()
 }
 
+private fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNode, colors: Colors) {
+    val destination = node.getTextInNode(content).toString()
+    pushStringAnnotation(TAG_URL, (destination))
+    pushStyle(SpanStyle(textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
+    append(destination)
+    pop()
+}
+
 private fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, node: ASTNode, colors: Colors) {
     buildMarkdownAnnotatedString(content, node.children, colors)
 }
@@ -191,10 +200,14 @@ private fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String
                 append(' ')
                 pop()
             }
+            MarkdownElementTypes.AUTOLINK -> appendAutoLink(content, child, colors)
             MarkdownElementTypes.INLINE_LINK -> appendMarkdownLink(content, child, colors)
             MarkdownElementTypes.SHORT_REFERENCE_LINK -> appendMarkdownLink(content, child, colors)
             MarkdownElementTypes.FULL_REFERENCE_LINK -> appendMarkdownLink(content, child, colors)
             MarkdownTokenTypes.TEXT -> append(child.getTextInNode(content).toString())
+            GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
+                append(child.getTextInNode(content).toString())
+            } else appendAutoLink(content, child, colors)
             MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')
             MarkdownTokenTypes.DOUBLE_QUOTE -> append('\"')
             MarkdownTokenTypes.LPAREN -> append('(')
