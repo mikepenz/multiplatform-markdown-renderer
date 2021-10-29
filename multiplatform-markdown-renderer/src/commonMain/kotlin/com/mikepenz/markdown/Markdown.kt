@@ -10,6 +10,7 @@ import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -26,6 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mikepenz.markdown.utils.LocalReferenceLinkHandler
+import com.mikepenz.markdown.utils.ReferenceLinkHandlerImpl
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
@@ -33,6 +36,7 @@ import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
+import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 import org.intellij.markdown.parser.MarkdownParser
 
 
@@ -51,10 +55,13 @@ fun Markdown(
 ) {
     Column(modifier) {
         val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
-        parsedTree.children.forEach { node ->
-            if (!node.handleElement(content)) {
-                node.children.forEach { child ->
-                    child.handleElement(content)
+
+        CompositionLocalProvider(LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl()) {
+            parsedTree.children.forEach { node ->
+                if (!node.handleElement(content)) {
+                    node.children.forEach { child ->
+                        child.handleElement(content)
+                    }
                 }
             }
         }
@@ -80,6 +87,13 @@ private fun ASTNode.handleElement(content: String): Boolean {
         MarkdownElementTypes.ORDERED_LIST -> MarkdownOrderedList(content, this)
         MarkdownElementTypes.UNORDERED_LIST -> MarkdownBulletList(content, this)
         MarkdownElementTypes.IMAGE -> MarkdownImage(content, this)
+        MarkdownElementTypes.LINK_DEFINITION -> {
+            val linkLabel = findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
+            if (linkLabel != null) {
+                val destination = findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
+                LocalReferenceLinkHandler.current.store(linkLabel, destination)
+            }
+        }
         else -> handled = false
     }
     return handled
@@ -143,9 +157,18 @@ private fun MarkdownParagraph(content: String, node: ASTNode) {
 private fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: ASTNode, colors: Colors) {
     val linkText = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.children?.innerList() ?: return
     val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
-    destination?.let { pushStringAnnotation(TAG_URL, destination) }
+    val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
+    (destination ?: linkLabel)?.let { pushStringAnnotation(TAG_URL, it) }
     pushStyle(SpanStyle(textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
     buildMarkdownAnnotatedString(content, linkText, colors)
+    pop()
+}
+
+private fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNode, colors: Colors) {
+    val destination = node.getTextInNode(content).toString()
+    pushStringAnnotation(TAG_URL, (destination))
+    pushStyle(SpanStyle(textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
+    append(destination)
     pop()
 }
 
@@ -177,8 +200,14 @@ private fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String
                 append(' ')
                 pop()
             }
+            MarkdownElementTypes.AUTOLINK -> appendAutoLink(content, child, colors)
             MarkdownElementTypes.INLINE_LINK -> appendMarkdownLink(content, child, colors)
+            MarkdownElementTypes.SHORT_REFERENCE_LINK -> appendMarkdownLink(content, child, colors)
+            MarkdownElementTypes.FULL_REFERENCE_LINK -> appendMarkdownLink(content, child, colors)
             MarkdownTokenTypes.TEXT -> append(child.getTextInNode(content).toString())
+            GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
+                append(child.getTextInNode(content).toString())
+            } else appendAutoLink(content, child, colors)
             MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')
             MarkdownTokenTypes.DOUBLE_QUOTE -> append('\"')
             MarkdownTokenTypes.LPAREN -> append('(')
@@ -217,6 +246,7 @@ private fun MarkdownImage(content: String, node: ASTNode) {
 @Composable
 private fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Modifier = Modifier) {
     val uriHandler = LocalUriHandler.current
+    val referenceLinkHandler = LocalReferenceLinkHandler.current
     val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
 
     Text(text = text,
@@ -226,7 +256,9 @@ private fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Modi
                     val position = layoutResult.getOffsetForPosition(pos)
                     text.getStringAnnotations(position, position)
                         .firstOrNull { a -> a.tag == TAG_URL }
-                        ?.let { a -> uriHandler.openUri(a.item) }
+                        ?.let { a ->
+                            uriHandler.openUri(referenceLinkHandler.find(a.item))
+                        }
                 }
             }
         },
