@@ -14,8 +14,8 @@ buildscript {
         classpath("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.18.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.5.31")
-        classpath("com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:8.9.4")
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.0.0-beta5")
+        classpath("com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:10.0.0-a01")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.0.0-beta6-dev446")
     }
 }
 
