@@ -8,9 +8,9 @@ object Versions {
     const val markdown = "0.2.4"
 
     const val coil = "1.4.0"
-    const val compose = "1.1.0-beta02"
+    const val compose = "1.1.0-beta03"
 
-    const val material = "1.4.0"
+    const val material = "1.5.0-beta01"
     const val activityCompose = "1.4.0"
     const val lifecycleKtx = "2.3.1"
 }
