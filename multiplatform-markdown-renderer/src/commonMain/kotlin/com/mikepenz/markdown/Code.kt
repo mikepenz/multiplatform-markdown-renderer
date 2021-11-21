@@ -10,6 +10,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 
@@ -20,7 +21,11 @@ import androidx.compose.ui.unit.dp
  * @param modifier The modifier to be applied to the Markdown.
  */
 @Composable
-fun Code(code: String, modifier: Modifier = Modifier) {
+fun Code(
+    code: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified
+) {
     val scroll = rememberScrollState(0)
 
     Surface(
@@ -35,7 +40,7 @@ fun Code(code: String, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .horizontalScroll(scroll)
                 .padding(8.dp),
-            style = MaterialTheme.typography.body2.copy(fontFamily = FontFamily.Monospace, color = MaterialTheme.colors.onSurface)
+            style = MaterialTheme.typography.body2.copy(fontFamily = FontFamily.Monospace, color = color)
         )
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -58,9 +59,9 @@ fun Markdown(
 
         CompositionLocalProvider(LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl()) {
             parsedTree.children.forEach { node ->
-                if (!node.handleElement(content)) {
+                if (!node.handleElement(content, MaterialTheme.colors.onBackground)) {
                     node.children.forEach { child ->
-                        child.handleElement(content)
+                        child.handleElement(content, MaterialTheme.colors.onBackground)
                     }
                 }
             }
@@ -70,22 +71,22 @@ fun Markdown(
 
 
 @Composable
-private fun ASTNode.handleElement(content: String): Boolean {
+private fun ASTNode.handleElement(content: String, color: Color = Color.Unspecified): Boolean {
     var handled = true
     when (type) {
-        MarkdownTokenTypes.TEXT -> Text(getTextInNode(content).toString())
+        MarkdownTokenTypes.TEXT -> Text(getTextInNode(content).toString(), color = color)
         MarkdownTokenTypes.EOL -> Spacer(Modifier.padding(4.dp))
-        MarkdownElementTypes.CODE_FENCE -> MarkdownCodeFence(content, this)
-        MarkdownElementTypes.ATX_1 -> MarkdownHeader(content, this, MaterialTheme.typography.h2)
-        MarkdownElementTypes.ATX_2 -> MarkdownHeader(content, this, MaterialTheme.typography.h3)
-        MarkdownElementTypes.ATX_3 -> MarkdownHeader(content, this, MaterialTheme.typography.h4)
-        MarkdownElementTypes.ATX_4 -> MarkdownHeader(content, this, MaterialTheme.typography.h5)
-        MarkdownElementTypes.ATX_5 -> MarkdownHeader(content, this, MaterialTheme.typography.h6)
-        MarkdownElementTypes.ATX_6 -> MarkdownHeader(content, this, MaterialTheme.typography.h6)
-        MarkdownElementTypes.BLOCK_QUOTE -> MarkdownBlockQuote(content, this)
-        MarkdownElementTypes.PARAGRAPH -> MarkdownParagraph(content, this)
-        MarkdownElementTypes.ORDERED_LIST -> MarkdownOrderedList(content, this)
-        MarkdownElementTypes.UNORDERED_LIST -> MarkdownBulletList(content, this)
+        MarkdownElementTypes.CODE_FENCE -> MarkdownCodeFence(content, this, color = color)
+        MarkdownElementTypes.ATX_1 -> MarkdownHeader(content, this, MaterialTheme.typography.h2, color)
+        MarkdownElementTypes.ATX_2 -> MarkdownHeader(content, this, MaterialTheme.typography.h3, color)
+        MarkdownElementTypes.ATX_3 -> MarkdownHeader(content, this, MaterialTheme.typography.h4, color)
+        MarkdownElementTypes.ATX_4 -> MarkdownHeader(content, this, MaterialTheme.typography.h5, color)
+        MarkdownElementTypes.ATX_5 -> MarkdownHeader(content, this, MaterialTheme.typography.h6, color)
+        MarkdownElementTypes.ATX_6 -> MarkdownHeader(content, this, MaterialTheme.typography.h6, color)
+        MarkdownElementTypes.BLOCK_QUOTE -> MarkdownBlockQuote(content, this, color = color)
+        MarkdownElementTypes.PARAGRAPH -> MarkdownParagraph(content, this, color)
+        MarkdownElementTypes.ORDERED_LIST -> MarkdownOrderedList(content, this, color = color)
+        MarkdownElementTypes.UNORDERED_LIST -> MarkdownBulletList(content, this, color = color)
         MarkdownElementTypes.IMAGE -> MarkdownImage(content, this)
         MarkdownElementTypes.LINK_DEFINITION -> {
             val linkLabel = findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
@@ -100,30 +101,45 @@ private fun ASTNode.handleElement(content: String): Boolean {
 }
 
 @Composable
-private fun MarkdownCodeFence(content: String, node: ASTNode, modifier: Modifier = Modifier) {
+private fun MarkdownCodeFence(
+    content: String,
+    node: ASTNode,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified
+) {
     // CODE_FENCE_START, FENCE_LANG, {content}, CODE_FENCE_END
     // val lang = node.findChildOfType(MarkdownTokenTypes.FENCE_LANG) // unused for now
     val start = node.children[2].startOffset
     val end = node.children[node.children.size - 2].endOffset
-    Code(content.subSequence(start, end).trim().toString(), modifier)
+    Code(content.subSequence(start, end).trim().toString(), modifier, color)
 }
 
 @Composable
-private fun MarkdownHeader(content: String, node: ASTNode, style: TextStyle = LocalTextStyle.current) {
+private fun MarkdownHeader(
+    content: String,
+    node: ASTNode,
+    style: TextStyle = LocalTextStyle.current,
+    color: Color = Color.Unspecified
+) {
     node.findChildOfType(MarkdownTokenTypes.ATX_CONTENT)?.let {
         Text(
             it.getTextInNode(content).trim().toString(),
-            style = style,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 16.dp),
+            style = style,
+            color = color
         )
     }
 }
 
 @Composable
-private fun MarkdownBlockQuote(content: String, node: ASTNode, modifier: Modifier = Modifier) {
-    val color = MaterialTheme.colors.onBackground
+private fun MarkdownBlockQuote(
+    content: String,
+    node: ASTNode,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified
+) {
     Box(modifier = modifier
         .drawBehind {
             drawLine(
@@ -139,19 +155,23 @@ private fun MarkdownBlockQuote(content: String, node: ASTNode, modifier: Modifie
             append(node.getTextInNode(content).toString())
             pop()
         }
-        Text(text, modifier)
+        Text(text, modifier, color = color)
     }
 }
 
 @Composable
-private fun MarkdownParagraph(content: String, node: ASTNode) {
+private fun MarkdownParagraph(
+    content: String,
+    node: ASTNode,
+    color: Color = Color.Unspecified
+) {
     val styledText = buildAnnotatedString {
         pushStyle(MaterialTheme.typography.body1.toSpanStyle())
         buildMarkdownAnnotatedString(content, node, MaterialTheme.colors)
         pop()
     }
 
-    MarkdownText(styledText, style = MaterialTheme.typography.body1)
+    MarkdownText(styledText, style = MaterialTheme.typography.body1, color = color)
 }
 
 private fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: ASTNode, colors: Colors) {
@@ -244,7 +264,12 @@ private fun MarkdownImage(content: String, node: ASTNode) {
 }
 
 @Composable
-private fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Modifier = Modifier) {
+private fun MarkdownText(
+    text: AnnotatedString,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    style: TextStyle = LocalTextStyle.current
+) {
     val uriHandler = LocalUriHandler.current
     val referenceLinkHandler = LocalReferenceLinkHandler.current
     val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
@@ -263,6 +288,7 @@ private fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Modi
             }
         },
         style = style,
+        color = color,
         inlineContent = mapOf(
             TAG_IMAGE_URL to InlineTextContent(
                 Placeholder(180.sp, 180.sp, PlaceholderVerticalAlign.Bottom) // TODO, identify flexible scaling!
@@ -288,8 +314,14 @@ private fun MarkdownText(text: AnnotatedString, style: TextStyle, modifier: Modi
 internal expect fun imagePainter(url: String): Painter?
 
 @Composable
-private fun MarkdownBulletList(content: String, node: ASTNode, modifier: Modifier = Modifier, level: Int = 0) {
-    MarkdownListItems(content, node, modifier, level) { child ->
+private fun MarkdownBulletList(
+    content: String,
+    node: ASTNode,
+    modifier: Modifier = Modifier,
+    level: Int = 0,
+    color: Color = Color.Unspecified
+) {
+    MarkdownListItems(content, node, modifier, level, color) { child ->
         Row(Modifier.fillMaxWidth()) {
             Text("${child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)} ")
             val text = buildAnnotatedString {
@@ -297,14 +329,20 @@ private fun MarkdownBulletList(content: String, node: ASTNode, modifier: Modifie
                 buildMarkdownAnnotatedString(content, child, MaterialTheme.colors)
                 pop()
             }
-            MarkdownText(text, MaterialTheme.typography.body1, modifier.padding(bottom = 4.dp))
+            MarkdownText(text, modifier.padding(bottom = 4.dp), style = MaterialTheme.typography.body1, color = color)
         }
     }
 }
 
 @Composable
-private fun MarkdownOrderedList(content: String, node: ASTNode, modifier: Modifier = Modifier, level: Int = 0) {
-    MarkdownListItems(content, node, modifier, level) { child ->
+private fun MarkdownOrderedList(
+    content: String,
+    node: ASTNode,
+    modifier: Modifier = Modifier,
+    level: Int = 0,
+    color: Color = Color.Unspecified
+) {
+    MarkdownListItems(content, node, modifier, level, color) { child ->
         Row(Modifier.fillMaxWidth()) {
             Text("${child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)} ")
             val text = buildAnnotatedString {
@@ -312,7 +350,7 @@ private fun MarkdownOrderedList(content: String, node: ASTNode, modifier: Modifi
                 buildMarkdownAnnotatedString(content, child, MaterialTheme.colors)
                 pop()
             }
-            MarkdownText(text, MaterialTheme.typography.body1, modifier.padding(bottom = 4.dp))
+            MarkdownText(text, modifier.padding(bottom = 4.dp), style = MaterialTheme.typography.body1, color = color)
         }
     }
 }
@@ -323,14 +361,15 @@ private fun MarkdownListItems(
     node: ASTNode,
     modifier: Modifier = Modifier,
     level: Int = 0,
+    color: Color = Color.Unspecified,
     item: @Composable (child: ASTNode) -> Unit
 ) {
     Column(modifier = modifier.padding(top = 8.dp, bottom = 8.dp, start = (8.dp) * level)) {
         node.children.forEach { child ->
             when (child.type) {
                 MarkdownElementTypes.LIST_ITEM -> item(child)
-                MarkdownElementTypes.ORDERED_LIST -> MarkdownOrderedList(content, child, modifier, level + 1)
-                MarkdownElementTypes.UNORDERED_LIST -> MarkdownBulletList(content, child, modifier, level + 1)
+                MarkdownElementTypes.ORDERED_LIST -> MarkdownOrderedList(content, child, modifier, level + 1, color)
+                MarkdownElementTypes.UNORDERED_LIST -> MarkdownBulletList(content, child, modifier, level + 1, color)
             }
         }
     }
