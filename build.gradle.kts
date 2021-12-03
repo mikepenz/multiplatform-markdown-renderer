@@ -11,11 +11,11 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.3")
         classpath("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
-        classpath("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.18.1")
+        classpath("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.5.31")
-        classpath("com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:10.0.0-b01")
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.0.0-beta6-dev474")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.6.0")
+        classpath("com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:10.0.0-b02")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.0.0")
     }
 }
 
@@ -36,6 +36,6 @@ subprojects {
     apply(from = "../detekt.gradle")
 
     dependencies {
-        "detektPlugins"("io.gitlab.arturbosch.detekt:detekt-formatting:1.18.1")
+        "detektPlugins"("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
     }
 }

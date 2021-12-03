@@ -89,7 +89,7 @@ val markdown = """
 """.trimIndent()
 
 //
-Markdown(markdown, Modifier.fillMaxSize())
+Markdown(markdown)
 ```
 
 ## Dependency
