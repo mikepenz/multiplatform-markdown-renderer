@@ -51,7 +51,7 @@ import org.intellij.markdown.parser.MarkdownParser
 @Composable
 fun Markdown(
     content: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.fillMaxSize(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor()
 ) {
     Column(modifier) {
