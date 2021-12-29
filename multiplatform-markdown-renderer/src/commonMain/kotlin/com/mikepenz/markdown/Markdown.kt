@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mikepenz.markdown.utils.LocalReferenceLinkHandler
 import com.mikepenz.markdown.utils.ReferenceLinkHandlerImpl
+import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
@@ -53,16 +54,19 @@ fun Markdown(
     content: String,
     modifier: Modifier = Modifier.fillMaxSize(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    textColor: Color = MaterialTheme.colors.onBackground
+    textColor: Color = MaterialTheme.colors.onBackground,
+    textColors: Map<IElementType, Color> = mapOf()
 ) {
+    fun ASTNode.getColor(): Color = textColors.getOrDefaultValue(type, textColor)
+
     Column(modifier) {
         val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
 
         CompositionLocalProvider(LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl()) {
             parsedTree.children.forEach { node ->
-                if (!node.handleElement(content, textColor)) {
+                if (!node.handleElement(content, node.getColor())) {
                     node.children.forEach { child ->
-                        child.handleElement(content, textColor)
+                        child.handleElement(content, node.getColor())
                     }
                 }
             }
@@ -70,6 +74,13 @@ fun Markdown(
     }
 }
 
+private fun <K,V> Map<K,V>.getOrDefaultValue(key: K, default: V): V {
+    return if (this.containsKey(key)) {
+        this[key]!!
+    } else {
+        default
+    }
+}
 
 @Composable
 private fun ASTNode.handleElement(content: String, color: Color = Color.Unspecified): Boolean {
