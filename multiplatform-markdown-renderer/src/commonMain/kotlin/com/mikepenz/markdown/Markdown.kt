@@ -52,16 +52,17 @@ import org.intellij.markdown.parser.MarkdownParser
 fun Markdown(
     content: String,
     modifier: Modifier = Modifier.fillMaxSize(),
-    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor()
+    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    textColor: Color = MaterialTheme.colors.onBackground
 ) {
     Column(modifier) {
         val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
 
         CompositionLocalProvider(LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl()) {
             parsedTree.children.forEach { node ->
-                if (!node.handleElement(content, MaterialTheme.colors.onBackground)) {
+                if (!node.handleElement(content, textColor)) {
                     node.children.forEach { child ->
-                        child.handleElement(content, MaterialTheme.colors.onBackground)
+                        child.handleElement(content, textColor)
                     }
                 }
             }
