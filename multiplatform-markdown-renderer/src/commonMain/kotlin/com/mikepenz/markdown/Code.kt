@@ -10,7 +10,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 
@@ -24,7 +23,7 @@ import androidx.compose.ui.unit.dp
 fun Code(
     code: String,
     modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified
+    colors: MarkdownColors,
 ) {
     val scroll = rememberScrollState(0)
 
@@ -40,7 +39,7 @@ fun Code(
             modifier = Modifier
                 .horizontalScroll(scroll)
                 .padding(8.dp),
-            style = MaterialTheme.typography.body2.copy(fontFamily = FontFamily.Monospace, color = color)
+            style = MaterialTheme.typography.body2.copy(fontFamily = FontFamily.Monospace, color = colors.textColor)
         )
     }
 }
