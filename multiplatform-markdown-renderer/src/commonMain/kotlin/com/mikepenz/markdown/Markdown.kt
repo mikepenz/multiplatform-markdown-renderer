@@ -77,6 +77,7 @@ private fun ASTNode.handleElement(content: String, color: Color = Color.Unspecif
         MarkdownTokenTypes.TEXT -> Text(getTextInNode(content).toString(), color = color)
         MarkdownTokenTypes.EOL -> Spacer(Modifier.padding(4.dp))
         MarkdownElementTypes.CODE_FENCE -> MarkdownCodeFence(content, this, color = color)
+        MarkdownElementTypes.CODE_BLOCK -> MarkdownCodeBlock(content, this, color = color)
         MarkdownElementTypes.ATX_1 -> MarkdownHeader(content, this, MaterialTheme.typography.h2, color)
         MarkdownElementTypes.ATX_2 -> MarkdownHeader(content, this, MaterialTheme.typography.h3, color)
         MarkdownElementTypes.ATX_3 -> MarkdownHeader(content, this, MaterialTheme.typography.h4, color)
@@ -111,7 +112,19 @@ private fun MarkdownCodeFence(
     // val lang = node.findChildOfType(MarkdownTokenTypes.FENCE_LANG) // unused for now
     val start = node.children[2].startOffset
     val end = node.children[node.children.size - 2].endOffset
-    Code(content.subSequence(start, end).trim().toString(), modifier, color)
+    Code(content.subSequence(start, end).toString().replaceIndent(), modifier, color)
+}
+
+@Composable
+private fun MarkdownCodeBlock(
+    content: String,
+    node: ASTNode,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified
+) {
+    val start = node.children[0].startOffset
+    val end = node.children[node.children.size - 1].endOffset
+    Code(content.subSequence(start, end).toString().replaceIndent(), modifier, color)
 }
 
 @Composable
