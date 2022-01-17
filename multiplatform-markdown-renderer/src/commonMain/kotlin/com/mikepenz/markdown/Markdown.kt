@@ -86,8 +86,12 @@ private fun ASTNode.handleElement(content: String, color: Color = Color.Unspecif
         MarkdownElementTypes.ATX_6 -> MarkdownHeader(content, this, MaterialTheme.typography.h6, color)
         MarkdownElementTypes.BLOCK_QUOTE -> MarkdownBlockQuote(content, this, color = color)
         MarkdownElementTypes.PARAGRAPH -> MarkdownParagraph(content, this, color)
-        MarkdownElementTypes.ORDERED_LIST -> MarkdownOrderedList(content, this, color = color)
-        MarkdownElementTypes.UNORDERED_LIST -> MarkdownBulletList(content, this, color = color)
+        MarkdownElementTypes.ORDERED_LIST -> Column(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
+            MarkdownOrderedList(content, this@handleElement, color = color)
+        }
+        MarkdownElementTypes.UNORDERED_LIST -> Column(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
+            MarkdownBulletList(content, this@handleElement, color = color)
+        }
         MarkdownElementTypes.IMAGE -> MarkdownImage(content, this)
         MarkdownElementTypes.LINK_DEFINITION -> {
             val linkLabel = findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
@@ -339,7 +343,7 @@ private fun MarkdownBulletList(
             Text("${child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)} ")
             val text = buildAnnotatedString {
                 pushStyle(MaterialTheme.typography.body1.toSpanStyle())
-                buildMarkdownAnnotatedString(content, child, MaterialTheme.colors)
+                buildMarkdownAnnotatedString(content, child.children.filterNonListTypes(), MaterialTheme.colors)
                 pop()
             }
             MarkdownText(text, modifier.padding(bottom = 4.dp), style = MaterialTheme.typography.body1, color = color)
@@ -360,7 +364,7 @@ private fun MarkdownOrderedList(
             Text("${child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)} ")
             val text = buildAnnotatedString {
                 pushStyle(MaterialTheme.typography.body1.toSpanStyle())
-                buildMarkdownAnnotatedString(content, child, MaterialTheme.colors)
+                buildMarkdownAnnotatedString(content, child.children.filterNonListTypes(), MaterialTheme.colors)
                 pop()
             }
             MarkdownText(text, modifier.padding(bottom = 4.dp), style = MaterialTheme.typography.body1, color = color)
@@ -377,10 +381,16 @@ private fun MarkdownListItems(
     color: Color = Color.Unspecified,
     item: @Composable (child: ASTNode) -> Unit
 ) {
-    Column(modifier = modifier.padding(top = 8.dp, bottom = 8.dp, start = (8.dp) * level)) {
+    Column(modifier = modifier.padding(start = (8.dp) * level)) {
         node.children.forEach { child ->
             when (child.type) {
-                MarkdownElementTypes.LIST_ITEM -> item(child)
+                MarkdownElementTypes.LIST_ITEM -> {
+                    item(child)
+                    when (child.children.last().type) {
+                        MarkdownElementTypes.ORDERED_LIST -> MarkdownOrderedList(content, child, modifier, level + 1, color)
+                        MarkdownElementTypes.UNORDERED_LIST -> MarkdownBulletList(content, child, modifier, level + 1, color)
+                    }
+                }
                 MarkdownElementTypes.ORDERED_LIST -> MarkdownOrderedList(content, child, modifier, level + 1, color)
                 MarkdownElementTypes.UNORDERED_LIST -> MarkdownBulletList(content, child, modifier, level + 1, color)
             }
