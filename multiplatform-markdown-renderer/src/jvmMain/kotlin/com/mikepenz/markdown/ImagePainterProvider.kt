@@ -28,8 +28,7 @@ fun fetchImage(url: String): ImageBitmap? {
 
 suspend fun loadPicture(url: String): ImageBitmap? = withContext(Dispatchers.IO) {
     return@withContext runCatching {
-        val url = URL(url)
-        val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+        val connection: HttpURLConnection = URL(url).openConnection() as HttpURLConnection
         connection.connectTimeout = 5000
         connection.connect()
 
