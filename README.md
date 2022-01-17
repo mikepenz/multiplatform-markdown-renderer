@@ -112,11 +112,11 @@ Big thanks to [Erik Hellman](https://twitter.com/ErikHellman) and his awesome ar
 
 ## Fork License
 
-Copyright for portions of the code are held by [Erik Hellman, 2020] as part of project [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer) under the MIT license. All other copyright for project multiplatform-markdown-renderer are held by [Mike Penz, 2021] under the Apache License, Version 2.0.
+Copyright for portions of the code are held by [Erik Hellman, 2020] as part of project [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer) under the MIT license. All other copyright for project multiplatform-markdown-renderer are held by [Mike Penz, 2022] under the Apache License, Version 2.0.
 
 ## License
 
-    Copyright 2021 Mike Penz
+    Copyright 2022 Mike Penz
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
