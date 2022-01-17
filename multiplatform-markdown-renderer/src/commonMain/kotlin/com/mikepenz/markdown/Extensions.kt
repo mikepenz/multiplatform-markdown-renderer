@@ -1,6 +1,8 @@
 package com.mikepenz.markdown
 
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 
 /**
@@ -35,3 +37,10 @@ fun ASTNode.findChildOfTypeRecursive(type: IElementType): ASTNode? {
  * E.g. we don't want to render the brackets of a link
  */
 internal fun List<ASTNode>.innerList(): List<ASTNode> = this.subList(1, this.size - 1)
+
+/**
+ * Helper function to filter out items within a list of nodes, not of interest for the bullet list.
+ */
+internal fun List<ASTNode>.filterNonListTypes(): List<ASTNode> = this.filter { n ->
+    n.type != MarkdownElementTypes.ORDERED_LIST && n.type != MarkdownElementTypes.UNORDERED_LIST && n.type != MarkdownTokenTypes.EOL
+}
