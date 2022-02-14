@@ -3,7 +3,7 @@ object Versions {
     const val androidCompileSdk = 31
     const val androidTargetSdk = androidCompileSdk
 
-    const val kotlin = "1.5.31"
+    const val kotlin = "1.6.10"
 
     const val markdown = "0.2.4"
 
