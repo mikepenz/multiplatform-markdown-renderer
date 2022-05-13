@@ -2,12 +2,17 @@ package com.mikepenz.markdown
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
-import coil.size.OriginalSize
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import coil.size.Size
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 internal actual fun imagePainter(url: String): Painter? {
-    return rememberImagePainter(url, builder = { size(OriginalSize) })
+    return rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(url)
+            .size(Size.ORIGINAL) // Set the target size to load the image at.
+            .build()
+    )
 }
