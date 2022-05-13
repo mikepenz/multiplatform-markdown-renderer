@@ -5,11 +5,11 @@ object Versions {
 
     const val kotlin = "1.6.10"
 
-    const val markdown = "0.2.4"
+    const val markdown = "0.3.1"
 
-    const val coil = "1.4.0"
-    const val compose = "1.1.0-rc01"
-    const val composeCompiler = "1.1.0-rc02"
+    const val coil = "2.0.0"
+    const val compose = "1.1.1"
+    const val composeCompiler = "1.1.1"
 
     const val material = "1.5.0"
     const val activityCompose = "1.4.0"
