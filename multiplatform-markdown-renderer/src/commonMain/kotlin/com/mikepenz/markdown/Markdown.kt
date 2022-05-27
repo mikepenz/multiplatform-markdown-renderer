@@ -354,7 +354,7 @@ private fun MarkdownBulletList(
 ) {
     MarkdownListItems(content, node, modifier, colors, style, level) { child ->
         Row(Modifier.fillMaxWidth()) {
-            Text("${child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)} ")
+            Text("${child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)} ", style = style, color = colors.textColorByType(MarkdownTokenTypes.LIST_BULLET))
             val text = buildAnnotatedString {
                 pushStyle(style.toSpanStyle())
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes(), colors)
@@ -376,7 +376,7 @@ private fun MarkdownOrderedList(
 ) {
     MarkdownListItems(content, node, modifier, colors, style, level) { child ->
         Row(Modifier.fillMaxWidth()) {
-            Text("${child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)} ")
+            Text("${child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)} ", style = style, color = colors.textColorByType(MarkdownTokenTypes.LIST_NUMBER))
             val text = buildAnnotatedString {
                 pushStyle(style.toSpanStyle())
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes(), colors)
