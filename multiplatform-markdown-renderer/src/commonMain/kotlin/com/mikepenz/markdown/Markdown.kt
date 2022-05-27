@@ -375,10 +375,10 @@ private fun MarkdownOrderedList(
     style: TextStyle = LocalTextStyle.current,
     level: Int = 0,
 ) {
-    val bulletHandler = LocalOrderedListHandler.current
+    val orderedListHandler = LocalOrderedListHandler.current
     MarkdownListItems(content, node, modifier, colors, style, level) { child ->
         Row(Modifier.fillMaxWidth()) {
-            Text(bulletHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)), style = style, color = colors.textColorByType(MarkdownTokenTypes.LIST_NUMBER))
+            Text(orderedListHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)), style = style, color = colors.textColorByType(MarkdownTokenTypes.LIST_NUMBER))
             val text = buildAnnotatedString {
                 pushStyle(style.toSpanStyle())
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes(), colors)

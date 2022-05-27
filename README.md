@@ -99,11 +99,13 @@ The library offers the ability to modify different behaviour when rendering the 
 
 ### Provided custom style
 
+```kotlin
 Markdown(
     content,
     colors = MarkdownDefaults.markdownColors(textColor = Color.Red),
     typography = MarkdownDefaults.markdownTypography(h1 = MaterialTheme.typography.body1)
 )
+```
 
 ### Adjust List Ordering
 
