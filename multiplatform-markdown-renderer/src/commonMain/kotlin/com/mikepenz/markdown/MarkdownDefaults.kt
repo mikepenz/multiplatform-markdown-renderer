@@ -80,7 +80,6 @@ private class DefaultMarkdownColors(
     }
 }
 
-
 /**
  * Represents the type scale for the [Markdown].
  *
@@ -97,7 +96,6 @@ interface MarkdownTypography {
     val body1: TextStyle
     val body2: TextStyle
 }
-
 
 @Immutable
 private class DefaultMarkdownTypography(
