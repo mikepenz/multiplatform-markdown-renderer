@@ -7,11 +7,11 @@ object Versions {
 
     const val markdown = "0.3.1"
 
-    const val coil = "2.0.0"
+    const val coil = "2.1.0"
     const val compose = "1.1.1"
     const val composeCompiler = "1.1.1"
 
-    const val material = "1.5.0"
+    const val material = "1.6.0"
     const val activityCompose = "1.4.0"
     const val lifecycleKtx = "2.3.1"
 }
