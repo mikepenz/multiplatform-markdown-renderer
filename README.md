@@ -92,6 +92,36 @@ val markdown = """
 Markdown(markdown)
 ```
 
+<details><summary><b>Advanced Usage</b></summary>
+<p>
+
+The library offers the ability to modify different behaviour when rendering the markdown.
+
+### Provided custom style
+
+Markdown(
+    content,
+    colors = MarkdownDefaults.markdownColors(textColor = Color.Red),
+    typography = MarkdownDefaults.markdownTypography(h1 = MaterialTheme.typography.body1)
+)
+
+### Adjust List Ordering
+
+```kotlin
+// Use the bullet list symbol from the original markdown
+CompositionLocalProvider(LocalBulletListHandler provides { "$it " }) {
+    Markdown(content)
+}
+
+// Replace the ordered list symbol with `A.)` instead.
+CompositionLocalProvider(LocalOrderedListHandler provides { "A.) " }) {
+    Markdown(content, Modifier.fillMaxSize().padding(16.dp).verticalScroll(scrollState))
+}
+```
+
+</p>
+</details>
+
 ## Dependency
 
 This project uses JetBrains [markdown](https://github.com/JetBrains/markdown/) Multiplatform Markdown processor as dependency to parse the markdown content.
