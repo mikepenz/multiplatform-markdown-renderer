@@ -63,16 +63,18 @@ fun Markdown(
     modifier: Modifier = Modifier.fillMaxSize(),
     colors: MarkdownColors = MarkdownDefaults.markdownColors(),
     typography: MarkdownTypography = MarkdownDefaults.markdownTypography(),
-    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor()
+    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    onClick: (() -> Unit)? = null,
+
 ) {
     Column(modifier) {
         val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
 
         CompositionLocalProvider(LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl()) {
             parsedTree.children.forEach { node ->
-                if (!node.handleElement(content, colors, typography)) {
+                if (!node.handleElement(content, colors, typography, onClick)) {
                     node.children.forEach { child ->
-                        child.handleElement(content, colors, typography)
+                        child.handleElement(content, colors, typography, onClick)
                     }
                 }
             }
@@ -82,7 +84,7 @@ fun Markdown(
 
 
 @Composable
-private fun ASTNode.handleElement(content: String, colors: MarkdownColors, typography: MarkdownTypography): Boolean {
+private fun ASTNode.handleElement(content: String, colors: MarkdownColors, typography: MarkdownTypography, onClick: (() -> Unit)?): Boolean {
     var handled = true
     when (type) {
         TEXT -> Text(getTextInNode(content).toString(), color = colors.textColorByType(TEXT))
@@ -96,12 +98,12 @@ private fun ASTNode.handleElement(content: String, colors: MarkdownColors, typog
         ATX_5 -> MarkdownHeader(content, this, typography.h6, colors.textColorByType(ATX_5))
         ATX_6 -> MarkdownHeader(content, this, typography.h6, colors.textColorByType(ATX_6))
         BLOCK_QUOTE -> MarkdownBlockQuote(content, this, style = typography.body1, color = colors.textColorByType(BLOCK_QUOTE))
-        PARAGRAPH -> MarkdownParagraph(content, this, colors, style = typography.body1)
+        PARAGRAPH -> MarkdownParagraph(content, this, colors, style = typography.body1, onClick = onClick)
         ORDERED_LIST -> Column(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
-            MarkdownOrderedList(content, this@handleElement, style = typography.body1, colors = colors)
+            MarkdownOrderedList(content, this@handleElement, style = typography.body1, colors = colors, onClick = onClick)
         }
         UNORDERED_LIST -> Column(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)) {
-            MarkdownBulletList(content, this@handleElement, style = typography.body1, colors = colors)
+            MarkdownBulletList(content, this@handleElement, style = typography.body1, colors = colors, onClick = onClick)
         }
         MarkdownElementTypes.IMAGE -> MarkdownImage(content, this)
         MarkdownElementTypes.LINK_DEFINITION -> {
@@ -193,7 +195,8 @@ private fun MarkdownParagraph(
     content: String,
     node: ASTNode,
     colors: MarkdownColors,
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    onClick: (() -> Unit)?,
 ) {
     val styledText = buildAnnotatedString {
         pushStyle(style.toSpanStyle())
@@ -201,7 +204,7 @@ private fun MarkdownParagraph(
         pop()
     }
 
-    MarkdownText(styledText, style = style, color = colors.textColorByType(PARAGRAPH))
+    MarkdownText(styledText, style = style, color = colors.textColorByType(PARAGRAPH), onClick= onClick)
 }
 
 private fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: ASTNode, colors: MarkdownColors) {
@@ -298,7 +301,8 @@ private fun MarkdownText(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
+    onClick: (() -> Unit)? = null
 ) {
     val uriHandler = LocalUriHandler.current
     val referenceLinkHandler = LocalReferenceLinkHandler.current
@@ -309,11 +313,13 @@ private fun MarkdownText(
             detectTapGestures { pos ->
                 layoutResult.value?.let { layoutResult ->
                     val position = layoutResult.getOffsetForPosition(pos)
-                    text.getStringAnnotations(position, position)
+                    val touchedUrl  = text.getStringAnnotations(position, position)
                         .firstOrNull { a -> a.tag == TAG_URL }
-                        ?.let { a ->
-                            uriHandler.openUri(referenceLinkHandler.find(a.item))
-                        }
+                    when(touchedUrl != null){
+                        true -> uriHandler.openUri(referenceLinkHandler.find(touchedUrl.item))
+                        false -> onClick?.invoke()
+                    }
+
                 }
             }
         },
@@ -349,11 +355,12 @@ private fun MarkdownBulletList(
     node: ASTNode,
     modifier: Modifier = Modifier,
     colors: MarkdownColors,
+    onClick: (() -> Unit)?,
     style: TextStyle = LocalTextStyle.current,
-    level: Int = 0
+    level: Int = 0,
 ) {
     val bulletHandler = LocalBulletListHandler.current
-    MarkdownListItems(content, node, modifier, colors, style, level) { child ->
+    MarkdownListItems(content, node, modifier, colors, style, level, onClick) { child ->
         Row(Modifier.fillMaxWidth()) {
             Text(bulletHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)), style = style, color = colors.textColorByType(MarkdownTokenTypes.LIST_BULLET))
             val text = buildAnnotatedString {
@@ -361,7 +368,7 @@ private fun MarkdownBulletList(
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes(), colors)
                 pop()
             }
-            MarkdownText(text, modifier.padding(bottom = 4.dp), style = style, color = colors.textColorByType(UNORDERED_LIST))
+            MarkdownText(text, modifier.padding(bottom = 4.dp), style = style, color = colors.textColorByType(UNORDERED_LIST), onClick = onClick)
         }
     }
 }
@@ -374,9 +381,10 @@ private fun MarkdownOrderedList(
     colors: MarkdownColors,
     style: TextStyle = LocalTextStyle.current,
     level: Int = 0,
+    onClick: (() -> Unit)?
 ) {
     val orderedListHandler = LocalOrderedListHandler.current
-    MarkdownListItems(content, node, modifier, colors, style, level) { child ->
+    MarkdownListItems(content, node, modifier, colors, style, level, onClick) { child ->
         Row(Modifier.fillMaxWidth()) {
             Text(orderedListHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)), style = style, color = colors.textColorByType(MarkdownTokenTypes.LIST_NUMBER))
             val text = buildAnnotatedString {
@@ -384,7 +392,7 @@ private fun MarkdownOrderedList(
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes(), colors)
                 pop()
             }
-            MarkdownText(text, modifier.padding(bottom = 4.dp), style = style, color = colors.textColorByType(ORDERED_LIST))
+            MarkdownText(text, modifier.padding(bottom = 4.dp), style = style, color = colors.textColorByType(ORDERED_LIST), onClick = onClick)
         }
     }
 }
@@ -397,6 +405,7 @@ private fun MarkdownListItems(
     colors: MarkdownColors,
     style: TextStyle = LocalTextStyle.current,
     level: Int = 0,
+    onClick: (() -> Unit)?,
     item: @Composable (child: ASTNode) -> Unit
 ) {
     Column(modifier = modifier.padding(start = (8.dp) * level)) {
@@ -405,12 +414,12 @@ private fun MarkdownListItems(
                 MarkdownElementTypes.LIST_ITEM -> {
                     item(child)
                     when (child.children.last().type) {
-                        ORDERED_LIST -> MarkdownOrderedList(content, child, modifier, colors, style, level + 1)
-                        UNORDERED_LIST -> MarkdownBulletList(content, child, modifier, colors, style, level + 1)
+                        ORDERED_LIST -> MarkdownOrderedList(content, child, modifier, colors, style, level + 1, onClick)
+                        UNORDERED_LIST -> MarkdownBulletList(content, child, modifier, colors, onClick, style, level + 1)
                     }
                 }
-                ORDERED_LIST -> MarkdownOrderedList(content, child, modifier, colors, style, level + 1)
-                UNORDERED_LIST -> MarkdownBulletList(content, child, modifier, colors, style, level + 1)
+                ORDERED_LIST -> MarkdownOrderedList(content, child, modifier, colors, style, level + 1, onClick)
+                UNORDERED_LIST -> MarkdownBulletList(content, child, modifier, colors, onClick, style,level + 1)
             }
         }
     }

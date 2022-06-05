@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -10,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.Markdown
 
@@ -60,6 +62,7 @@ fun MainLayout() {
         """.trimIndent()
 
         val scrollState = rememberScrollState()
+        val context = LocalContext.current
 
         Markdown(
             markdown,
@@ -67,7 +70,12 @@ fun MainLayout() {
                 .verticalScroll(scrollState)
                 .fillMaxSize()
                 .padding(16.dp)
-                .padding(bottom = 48.dp, top = 56.dp)
+                .padding(bottom = 48.dp, top = 56.dp),
+            onClick = {
+                Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show()
+            }
         )
     }
+
+
 }
