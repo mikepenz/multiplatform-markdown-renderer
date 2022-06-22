@@ -304,19 +304,23 @@ private fun MarkdownText(
     val referenceLinkHandler = LocalReferenceLinkHandler.current
     val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
 
-    Text(text = text,
-        modifier = modifier.pointerInput(Unit) {
-            detectTapGestures { pos ->
-                layoutResult.value?.let { layoutResult ->
-                    val position = layoutResult.getOffsetForPosition(pos)
-                    text.getStringAnnotations(position, position)
-                        .firstOrNull { a -> a.tag == TAG_URL }
-                        ?.let { a ->
-                            uriHandler.openUri(referenceLinkHandler.find(a.item))
-                        }
-                }
+    val hasUrl = text.getStringAnnotations(TAG_URL, 0, text.length).any()
+    val textModifier = if (hasUrl) modifier.pointerInput(Unit) {
+        detectTapGestures { pos ->
+            layoutResult.value?.let { layoutResult ->
+                val position = layoutResult.getOffsetForPosition(pos)
+                text.getStringAnnotations(TAG_URL, position, position)
+                    .firstOrNull()
+                    ?.let { a ->
+                        uriHandler.openUri(referenceLinkHandler.find(a.item))
+                    }
             }
-        },
+        }
+    } else modifier
+
+    Text(
+        text = text,
+        modifier = textModifier,
         style = style,
         color = color,
         inlineContent = mapOf(
@@ -355,7 +359,11 @@ private fun MarkdownBulletList(
     val bulletHandler = LocalBulletListHandler.current
     MarkdownListItems(content, node, modifier, colors, style, level) { child ->
         Row(Modifier.fillMaxWidth()) {
-            Text(bulletHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)), style = style, color = colors.textColorByType(MarkdownTokenTypes.LIST_BULLET))
+            Text(
+                bulletHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)),
+                style = style,
+                color = colors.textColorByType(MarkdownTokenTypes.LIST_BULLET)
+            )
             val text = buildAnnotatedString {
                 pushStyle(style.toSpanStyle())
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes(), colors)
@@ -378,7 +386,11 @@ private fun MarkdownOrderedList(
     val orderedListHandler = LocalOrderedListHandler.current
     MarkdownListItems(content, node, modifier, colors, style, level) { child ->
         Row(Modifier.fillMaxWidth()) {
-            Text(orderedListHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)), style = style, color = colors.textColorByType(MarkdownTokenTypes.LIST_NUMBER))
+            Text(
+                orderedListHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)),
+                style = style,
+                color = colors.textColorByType(MarkdownTokenTypes.LIST_NUMBER)
+            )
             val text = buildAnnotatedString {
                 pushStyle(style.toSpanStyle())
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes(), colors)
