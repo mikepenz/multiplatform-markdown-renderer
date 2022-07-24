@@ -1,4 +1,4 @@
-package com.mikepenz.markdown
+package com.mikepenz.markdown.utils
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
@@ -8,17 +8,17 @@ import org.intellij.markdown.ast.ASTNode
 /**
  * Tag used to indicate an url for inline content. Required for click handling.
  */
-const val TAG_URL = "MARKDOWN_URL"
+internal const val TAG_URL = "MARKDOWN_URL"
 
 /**
  * Tag used to indicate an image url for inline content. Required for rendering.
  */
-const val TAG_IMAGE_URL = "MARKDOWN_IMAGE_URL"
+internal const val TAG_IMAGE_URL = "MARKDOWN_IMAGE_URL"
 
 /**
  * Find a child node recursive
  */
-fun ASTNode.findChildOfTypeRecursive(type: IElementType): ASTNode? {
+internal fun ASTNode.findChildOfTypeRecursive(type: IElementType): ASTNode? {
     children.forEach {
         if (it.type == type) {
             return it
