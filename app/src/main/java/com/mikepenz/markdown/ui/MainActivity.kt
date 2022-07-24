@@ -3,15 +3,23 @@ package com.mikepenz.markdown.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mikepenz.markdown.Markdown
+import androidx.compose.ui.unit.sp
+import com.mikepenz.markdown.compose.Markdown
+import com.mikepenz.markdown.model.MarkdownColors
+import com.mikepenz.markdown.model.MarkdownPadding
+import com.mikepenz.markdown.model.MarkdownTypography
 
 class MainActivity : ComponentActivity() {
 
@@ -23,7 +31,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainLayout() {
     SampleTheme {
@@ -63,7 +70,49 @@ fun MainLayout() {
 
         Markdown(
             markdown,
-            Modifier
+            typography = object : MarkdownTypography {
+                override val text: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 12.sp, fontWeight = FontWeight.W500)
+                override val code: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 12.sp, fontWeight = FontWeight.W500, fontStyle = FontStyle.Normal)
+                override val h1: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.W600)
+                override val h2: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.W600)
+                override val h3: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.W600)
+                override val h4: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.W600)
+                override val h5: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 16.sp, fontWeight = FontWeight.W600)
+                override val h6: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 17.sp, fontWeight = FontWeight.W600)
+                override val quote: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 11.sp, fontWeight = FontWeight.W500, fontStyle = FontStyle.Normal)
+                override val paragraph: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 13.sp, fontWeight = FontWeight.W600)
+                override val ordered: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 12.sp, fontWeight = FontWeight.W500)
+                override val bullet: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 12.sp, fontWeight = FontWeight.W500)
+                override val list: TextStyle
+                    get() = TextStyle(color = Color.Black, fontSize = 12.sp, fontWeight = FontWeight.W500)
+            },
+            colors = object : MarkdownColors {
+                override val text: Color
+                    get() = Color.Black
+                override val backgroundCode: Color
+                    get() = Color.Black
+            },
+            padding = object : MarkdownPadding {
+                override val block: Dp
+                    get() = 2.dp
+                override val list: Dp
+                    get() = 1.dp
+                override val indentList: Dp
+                    get() = 4.dp
+            },
+            modifier = Modifier
                 .verticalScroll(scrollState)
                 .fillMaxSize()
                 .padding(16.dp)
