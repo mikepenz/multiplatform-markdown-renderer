@@ -2,7 +2,6 @@ package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material.Text
@@ -15,10 +14,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.sp
-import com.mikepenz.markdown.utils.TAG_IMAGE_URL
-import com.mikepenz.markdown.utils.TAG_URL
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
+import com.mikepenz.markdown.utils.TAG_IMAGE_URL
+import com.mikepenz.markdown.utils.TAG_URL
 import com.mikepenz.markdown.utils.imagePainter
 
 @Composable
@@ -60,15 +59,14 @@ internal fun MarkdownText(
             TAG_IMAGE_URL to InlineTextContent(
                 Placeholder(180.sp, 180.sp, PlaceholderVerticalAlign.Bottom)
             ) {
-                Spacer(Modifier)
-
-                Image(
-                    painter = imagePainter(it),
-                    contentDescription = "Image",
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(Modifier)
+                imagePainter(it)?.let { it1 ->
+                    Image(
+                        painter = it1,
+                        contentDescription = "Image",
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         ),
         onTextLayout = { layoutResult.value = it }
