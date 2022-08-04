@@ -1,4 +1,4 @@
-package com.programistich.markdown.compose.elements
+package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.*
