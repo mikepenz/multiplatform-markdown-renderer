@@ -16,7 +16,11 @@ import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 
 internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: ASTNode) {
-    val linkText = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.children?.innerList() ?: return
+    val linkText = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.children?.innerList()
+    if (linkText == null) {
+        append(node.getTextInNode(content).toString())
+        return
+    }
     val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
     val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
     (destination ?: linkLabel)?.let { pushStringAnnotation(TAG_URL, it) }

@@ -64,6 +64,8 @@ fun MainLayout() {
             ### Title 3
             
             [1]: https://mikepenz.dev/
+            
+            - [Text] Some text
         """.trimIndent()
 
         val scrollState = rememberScrollState()
