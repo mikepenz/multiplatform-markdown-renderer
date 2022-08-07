@@ -26,32 +26,14 @@ import org.intellij.markdown.parser.MarkdownParser
 @Composable
 fun Markdown(
     content: String,
-    colors: MarkdownColors,
-    typography: MarkdownTypography,
-    padding: MarkdownPadding,
+    colors: MarkdownColors = markdownColor(),
+    typography: MarkdownTypography = markdownTypography(),
+    padding: MarkdownPadding = markdownPadding(),
     modifier: Modifier = Modifier.fillMaxSize(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor()
 ) {
     CompositionLocalProvider(
-        LocalReferenceLinkHandler provides object : ReferenceLinkHandler {
-            private val stored = mutableMapOf<String, String?>()
-            override fun store(label: String, destination: String?) {
-                stored[label] = destination
-            }
-            override fun find(label: String): String {
-                return stored[label] ?: label
-            }
-        },
-        LocalBulletListHandler provides object : BulletHandler {
-            override fun transform(bullet: CharSequence?): String {
-                return "• "
-            }
-        },
-        LocalOrderedListHandler provides object : BulletHandler {
-            override fun transform(bullet: CharSequence?): String {
-                return "$bullet "
-            }
-        },
+        LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl(),
         LocalMarkdownPadding provides padding,
         LocalMarkdownColors provides colors,
         LocalMarkdownTypography provides typography,

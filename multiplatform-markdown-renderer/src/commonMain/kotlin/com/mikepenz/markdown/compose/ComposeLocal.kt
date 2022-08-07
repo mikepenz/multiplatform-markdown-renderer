@@ -2,14 +2,31 @@ package com.mikepenz.markdown.compose
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.mikepenz.markdown.model.*
+import com.mikepenz.markdown.model.BulletHandler
+import com.mikepenz.markdown.model.MarkdownColors
+import com.mikepenz.markdown.model.MarkdownPadding
+import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.model.ReferenceLinkHandler
 
-val LocalBulletListHandler = compositionLocalOf<BulletHandler> {
-    error("No local BulletListHandler")
+/**
+ * The CompositionLocal to provide functionality related to transforming the bullet of an ordered list
+ */
+val LocalBulletListHandler = staticCompositionLocalOf {
+    return@staticCompositionLocalOf BulletHandler { "• " }
 }
 
-val LocalOrderedListHandler = compositionLocalOf<BulletHandler> {
-    error("No local OrderedListHandler")
+/**
+ * The CompositionLocal to provide functionality related to transforming the bullet of an ordered list
+ */
+val LocalOrderedListHandler = staticCompositionLocalOf {
+    return@staticCompositionLocalOf BulletHandler { "$it " }
+}
+
+/**
+ * Local [ReferenceLinkHandler] provider
+ */
+val LocalReferenceLinkHandler = staticCompositionLocalOf<ReferenceLinkHandler> {
+    error("CompositionLocal ReferenceLinkHandler not present")
 }
 
 val LocalMarkdownColors = compositionLocalOf<MarkdownColors> {
@@ -18,10 +35,6 @@ val LocalMarkdownColors = compositionLocalOf<MarkdownColors> {
 
 val LocalMarkdownTypography = compositionLocalOf<MarkdownTypography> {
     error("No local MarkdownTypography")
-}
-
-val LocalReferenceLinkHandler = staticCompositionLocalOf<ReferenceLinkHandler> {
-    error("No local ReferenceLinkHandler")
 }
 
 val LocalMarkdownPadding = staticCompositionLocalOf<MarkdownPadding> {
