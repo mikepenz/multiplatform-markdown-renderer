@@ -3,7 +3,6 @@ package com.mikepenz.markdown.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -11,7 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mikepenz.markdown.Markdown
+import com.mikepenz.markdown.compose.Markdown
 
 class MainActivity : ComponentActivity() {
 
@@ -23,7 +22,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainLayout() {
     SampleTheme {
@@ -48,8 +46,6 @@ fun MainLayout() {
             Links with links as label are also handled:
             [https://mikepenz.dev](https://mikepenz.dev)
             
-            Using GPG Suite, start the GPG Keychain, which shows all current known GPG keys on your system.
-            
             Some `inline` code is also supported!
             
             ## Title 2
@@ -57,13 +53,15 @@ fun MainLayout() {
             ### Title 3
             
             [1]: https://mikepenz.dev/
+            
+            - [Text] Some text
         """.trimIndent()
 
         val scrollState = rememberScrollState()
 
         Markdown(
             markdown,
-            Modifier
+            modifier = Modifier
                 .verticalScroll(scrollState)
                 .fillMaxSize()
                 .padding(16.dp)

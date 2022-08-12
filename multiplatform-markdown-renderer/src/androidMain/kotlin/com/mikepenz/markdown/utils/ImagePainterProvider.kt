@@ -1,4 +1,4 @@
-package com.mikepenz.markdown
+package com.mikepenz.markdown.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
@@ -12,7 +12,7 @@ internal actual fun imagePainter(url: String): Painter? {
     return rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(url)
-            .size(Size.ORIGINAL) // Set the target size to load the image at.
+            .size(Size.ORIGINAL)
             .build()
     )
 }

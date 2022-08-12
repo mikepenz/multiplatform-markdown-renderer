@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.mikepenz.markdown.Markdown
+import com.mikepenz.markdown.compose.Markdown
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "Markdown Sample") {
@@ -17,7 +17,7 @@ fun main() = application {
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = { Text("Markdown Sample") },
+                        title = { Text("Markdown Sample") }
                     )
                 }
             ) {
@@ -26,21 +26,24 @@ fun main() = application {
                 val content = """
                 ### Getting Started
                 
-                To get started you will need GPG on your computer to create a new key pair. 
+                For multiplatform projects specify this single dependency:
                 
-                Usually I go with the [GPG Suite](https://gpgtools.org/), which offers a nice UI to manage your keys. (You may want to use advanced installation to only install the parts you need)
-                But you can also use any other solution to create your key pair.
+                ```
+                dependencies {
+                    implementation("com.mikepenz:multiplatform-markdown-renderer:{version}")
+                }
+                ```
+                
+                You can find more information on [GitHub](https://github.com/mikepenz/multiplatform-markdown-renderer).
                 
                 ![Image](https://avatars.githubusercontent.com/u/1476232?v=4)
                 
-                After installing GPG Suite (or your prefered solution) first create a new key.
-                
-                Using GPG Suite, start the GPG Keychain, which shows all current known GPG keys on your system.
-                
-                Click on `New` and you will be offered to enter your name, e-mail and password. Ensure to pick a secure password to protect your key. 
+                There are many more things which can be experimented with like, inline `code`. 
                 """.trimIndent()
-
-                Markdown(content, Modifier.fillMaxSize().padding(16.dp).verticalScroll(scrollState))
+                Markdown(
+                    content,
+                    modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(scrollState)
+                )
             }
         }
     }
