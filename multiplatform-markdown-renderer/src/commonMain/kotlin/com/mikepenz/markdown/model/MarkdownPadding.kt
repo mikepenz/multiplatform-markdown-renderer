@@ -21,8 +21,8 @@ private class DefaultMarkdownPadding(
 @Composable
 fun markdownPadding(
     block: Dp = 2.dp,
-    list: Dp = 1.dp,
-    indentList: Dp = 4.dp
+    list: Dp = 8.dp,
+    indentList: Dp = 8.dp
 ): MarkdownPadding = DefaultMarkdownPadding(
     block = block,
     list = list,

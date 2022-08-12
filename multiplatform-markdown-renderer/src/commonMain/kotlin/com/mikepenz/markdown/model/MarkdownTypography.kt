@@ -3,7 +3,10 @@ package com.mikepenz.markdown.model
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 
 interface MarkdownTypography {
     val text: TextStyle
@@ -47,8 +50,8 @@ fun markdownTypography(
     h5: TextStyle = MaterialTheme.typography.h5,
     h6: TextStyle = MaterialTheme.typography.h6,
     text: TextStyle = MaterialTheme.typography.body1,
-    code: TextStyle = MaterialTheme.typography.body2,
-    quote: TextStyle = MaterialTheme.typography.body2,
+    code: TextStyle = MaterialTheme.typography.body2.copy(fontFamily = FontFamily.Monospace),
+    quote: TextStyle = MaterialTheme.typography.body2.plus(SpanStyle(fontStyle = FontStyle.Italic)),
     paragraph: TextStyle = MaterialTheme.typography.body1,
     ordered: TextStyle = MaterialTheme.typography.body1,
     bullet: TextStyle = MaterialTheme.typography.body1,

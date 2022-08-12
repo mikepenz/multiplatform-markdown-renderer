@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,10 +26,11 @@ internal fun MarkdownBlockQuote(
                 drawLine(
                     color = style.color,
                     strokeWidth = 2f,
-                    start = Offset(6.dp.value, 0f),
-                    end = Offset(6.dp.value, size.height)
+                    start = Offset(12.dp.value, 0f),
+                    end = Offset(12.dp.value, size.height)
                 )
             }
+            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
     ) {
         val text = buildAnnotatedString {
             pushStyle(style.toSpanStyle())

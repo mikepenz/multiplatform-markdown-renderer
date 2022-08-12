@@ -1,9 +1,9 @@
 package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
-import com.mikepenz.markdown.compose.elements.MarkdownText
 import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
 import org.intellij.markdown.ast.ASTNode
 

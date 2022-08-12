@@ -1,13 +1,21 @@
 package com.mikepenz.markdown.compose.elements
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.*
-import com.mikepenz.markdown.compose.*
-import com.mikepenz.markdown.utils.filterNonListTypes
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.unit.dp
+import com.mikepenz.markdown.compose.LocalBulletListHandler
+import com.mikepenz.markdown.compose.LocalMarkdownPadding
+import com.mikepenz.markdown.compose.LocalMarkdownTypography
+import com.mikepenz.markdown.compose.LocalOrderedListHandler
 import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
+import com.mikepenz.markdown.utils.filterNonListTypes
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownElementTypes.ORDERED_LIST
 import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
@@ -55,15 +63,14 @@ internal fun MarkdownOrderedList(
         Row(Modifier.fillMaxWidth()) {
             Text(
                 text = orderedListHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)),
-                style = style,
-                color = LocalMarkdownColors.current.text
+                style = style
             )
             val text = buildAnnotatedString {
                 pushStyle(style.toSpanStyle())
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes())
                 pop()
             }
-            MarkdownText(text, style = style)
+            MarkdownText(text, Modifier.padding(bottom = 4.dp), style = style)
         }
     }
 }
@@ -80,15 +87,14 @@ internal fun MarkdownBulletList(
         Row(Modifier.fillMaxWidth()) {
             Text(
                 bulletHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)),
-                style = style,
-                color = LocalMarkdownColors.current.text
+                style = style
             )
             val text = buildAnnotatedString {
                 pushStyle(style.toSpanStyle())
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes())
                 pop()
             }
-            MarkdownText(text, style = style)
+            MarkdownText(text, Modifier.padding(bottom = 4.dp), style = style)
         }
     }
 }
