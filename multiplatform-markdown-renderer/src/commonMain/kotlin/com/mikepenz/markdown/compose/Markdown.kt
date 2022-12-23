@@ -40,7 +40,8 @@ fun Markdown(
     typography: MarkdownTypography = markdownTypography(),
     padding: MarkdownPadding = markdownPadding(),
     modifier: Modifier = Modifier.fillMaxSize(),
-    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor()
+    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    components: MarkdownComponents = markdownComponents()
 ) {
     CompositionLocalProvider(
         LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl(),
@@ -51,9 +52,9 @@ fun Markdown(
         Column(modifier) {
             val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
             parsedTree.children.forEach { node ->
-                if (!node.handleElement(content)) {
+                if (!node.handleElement(components, content)) {
                     node.children.forEach { child ->
-                        child.handleElement(content)
+                        child.handleElement(components, content)
                     }
                 }
             }
@@ -91,12 +92,46 @@ private fun ASTNode.handleElement(content: String): Boolean {
         LINK_DEFINITION -> {
             val linkLabel = findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
             if (linkLabel != null) {
-                val destination = findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
+                val destination =
+                    findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
                 LocalReferenceLinkHandler.current.store(linkLabel, destination)
             }
         }
 
         else -> handled = false
     }
+    return handled
+}
+
+
+@Composable
+private fun ASTNode.handleElement(components: MarkdownComponents, content: String): Boolean {
+    val model = MarkdownComponentModel(
+        content = content,
+        node = this,
+        typography = LocalMarkdownTypography.current
+    )
+    var handled = true
+    Spacer(Modifier.height(LocalMarkdownPadding.current.block))
+    when (type) {
+        TEXT -> components.text(model)
+        EOL -> components.eol(model)
+        CODE_FENCE -> components.codeFence(model)
+        CODE_BLOCK -> components.codeBlock(model)
+        ATX_1 -> components.heading1(model)
+        ATX_2 -> components.heading2(model)
+        ATX_3 -> components.heading3(model)
+        ATX_4 -> components.heading4(model)
+        ATX_5 -> components.heading5(model)
+        ATX_6 -> components.heading6(model)
+        BLOCK_QUOTE -> components.blockQuote(model)
+        PARAGRAPH -> components.paragraph(model)
+        ORDERED_LIST -> components.orderedList(model)
+        UNORDERED_LIST -> components.unorderedList(model)
+        IMAGE -> components.image(model)
+        LINK_DEFINITION -> components.linkDefinition(model)
+        else -> handled = false
+    }
+
     return handled
 }
