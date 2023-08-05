@@ -1,4 +1,4 @@
-package com.mikepenz.markdown
+package com.mikepenz.markdown.utils
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap

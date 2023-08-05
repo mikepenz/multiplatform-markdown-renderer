@@ -1,6 +1,4 @@
-package com.mikepenz.markdown.utils
-
-import androidx.compose.runtime.staticCompositionLocalOf
+package com.mikepenz.markdown.model
 
 /**
  * Interface to describe the [ReferenceLinkHandler]
@@ -14,16 +12,9 @@ interface ReferenceLinkHandler {
 }
 
 /**
- * Local [ReferenceLinkHandler] provider
- */
-val LocalReferenceLinkHandler = staticCompositionLocalOf<ReferenceLinkHandler> {
-    error("CompositionLocal ReferenceLinkHandler not present")
-}
-
-/**
  * Implementation for [ReferenceLinkHandler] to resolve referenced link within the Markdown
  */
-class ReferenceLinkHandlerImpl() : ReferenceLinkHandler {
+class ReferenceLinkHandlerImpl : ReferenceLinkHandler {
     private val stored = mutableMapOf<String, String?>()
     override fun store(label: String, destination: String?) {
         stored[label] = destination
