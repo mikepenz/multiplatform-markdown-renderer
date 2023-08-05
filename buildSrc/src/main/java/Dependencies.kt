@@ -11,8 +11,8 @@ object Versions {
     const val compose = "1.4.3"
     const val composeCompiler = "1.4.8"
 
-    const val material = "1.6.1"
-    const val activityCompose = "1.5.1"
+    const val material = "1.9.0"
+    const val activityCompose = "1.7.2"
     const val lifecycleKtx = "2.3.1"
 }
 
