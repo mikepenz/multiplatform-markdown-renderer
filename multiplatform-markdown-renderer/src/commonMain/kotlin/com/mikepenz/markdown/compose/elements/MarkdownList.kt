@@ -11,6 +11,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.LocalBulletListHandler
+import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalOrderedListHandler
@@ -87,7 +88,8 @@ internal fun MarkdownBulletList(
         Row(Modifier.fillMaxWidth()) {
             Text(
                 bulletHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(content)),
-                style = style
+                style = style,
+                color = LocalMarkdownColors.current.text
             )
             val text = buildAnnotatedString {
                 pushStyle(style.toSpanStyle())

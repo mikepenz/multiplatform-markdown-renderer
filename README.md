@@ -102,8 +102,8 @@ The library offers the ability to modify different behaviour when rendering the 
 ```kotlin
 Markdown(
     content,
-    colors = MarkdownDefaults.markdownColors(textColor = Color.Red),
-    typography = MarkdownDefaults.markdownTypography(h1 = MaterialTheme.typography.body1)
+    colors = markdownColors(text = Color.Red),
+    typography = markdownTypography(h1 = MaterialTheme.typography.body1)
 )
 ```
 

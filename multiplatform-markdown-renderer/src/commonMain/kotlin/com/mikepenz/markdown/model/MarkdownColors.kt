@@ -11,21 +11,27 @@ interface MarkdownColors {
     /** Represents the color used for the text of this [Markdown] component. */
     val text: Color
 
-    /** Represents the background color for this [Markdown] component. */
-    val backgroundCode: Color
+    /** Represents the color used for the text of code. */
+    val codeText: Color
+    /** Represents the color used for the background of code. */
+    val codeBackground: Color
+
 }
 
 @Immutable
 private class DefaultMarkdownColors(
     override val text: Color,
-    override val backgroundCode: Color
+    override val codeText: Color,
+    override val codeBackground: Color,
 ) : MarkdownColors
 
 @Composable
 fun markdownColor(
     text: Color = MaterialTheme.colors.onBackground,
-    backgroundCode: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.1f)
+    codeText: Color = MaterialTheme.colors.onBackground,
+    codeBackground: Color =MaterialTheme.colors.onBackground.copy(alpha = 0.1f)
 ): MarkdownColors = DefaultMarkdownColors(
     text = text,
-    backgroundCode = backgroundCode
+    codeText = codeText,
+    codeBackground = codeBackground
 )
