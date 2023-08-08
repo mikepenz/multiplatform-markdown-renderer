@@ -20,7 +20,7 @@ private fun MarkdownCode(
     code: String,
     style: TextStyle = LocalMarkdownTypography.current.code
 ) {
-    val backgroundCodeColor = LocalMarkdownColors.current.backgroundCode
+    val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
     Surface(
         color = backgroundCodeColor,
         shape = RoundedCornerShape(8.dp),
@@ -28,6 +28,7 @@ private fun MarkdownCode(
     ) {
         Text(
             code,
+            color = LocalMarkdownColors.current.codeText,
             modifier = Modifier.horizontalScroll(rememberScrollState()).padding(8.dp),
             style = style
         )
