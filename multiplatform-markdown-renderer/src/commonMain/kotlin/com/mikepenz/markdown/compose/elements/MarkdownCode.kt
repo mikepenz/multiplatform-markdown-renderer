@@ -20,7 +20,7 @@ private fun MarkdownCode(
     code: String,
     style: TextStyle = LocalMarkdownTypography.current.code
 ) {
-    val backgroundCodeColor = LocalMarkdownColors.current.backgroundCode
+    val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
     Surface(
         color = backgroundCodeColor,
         shape = RoundedCornerShape(8.dp),
@@ -28,6 +28,7 @@ private fun MarkdownCode(
     ) {
         Text(
             code,
+            color = LocalMarkdownColors.current.codeText,
             modifier = Modifier.horizontalScroll(rememberScrollState()).padding(8.dp),
             style = style
         )
@@ -40,9 +41,13 @@ internal fun MarkdownCodeFence(
     node: ASTNode
 ) {
     // CODE_FENCE_START, FENCE_LANG, {content}, CODE_FENCE_END
-    val start = node.children[2].startOffset
-    val end = node.children[node.children.size - 2].endOffset
-    MarkdownCode(content.subSequence(start, end).toString().replaceIndent())
+    if(node.children.size >= 3) {
+        val start = node.children[2].startOffset
+        val end = node.children[node.children.size - 2].endOffset
+        MarkdownCode(content.subSequence(start, end).toString().replaceIndent())
+    } else {
+        // invalid code block, skipping
+    }
 }
 
 @Composable

@@ -14,6 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.sp
+import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.utils.TAG_IMAGE_URL
@@ -55,6 +56,7 @@ internal fun MarkdownText(
         text = content,
         modifier = textModifier,
         style = style,
+        color = LocalMarkdownColors.current.text,
         inlineContent = mapOf(
             TAG_IMAGE_URL to InlineTextContent(
                 Placeholder(180.sp, 180.sp, PlaceholderVerticalAlign.Bottom) // TODO, identify flexible scaling!
