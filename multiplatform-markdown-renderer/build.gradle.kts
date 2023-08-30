@@ -84,6 +84,7 @@ kotlin {
     macosX64()
     macosArm64()
     ios()
+    iosSimulatorArm64()
 
     sourceSets {
         val commonMain by getting
@@ -110,7 +111,8 @@ kotlin {
         val nativeSourceSets = listOf(
             "macosX64",
             "macosArm64",
-            "ios"
+            "ios",
+            "iosSimulatorArm64"
         ).map { "${it}Main" }
         for (set in nativeSourceSets) {
             getByName(set).dependsOn(nativeMain)
