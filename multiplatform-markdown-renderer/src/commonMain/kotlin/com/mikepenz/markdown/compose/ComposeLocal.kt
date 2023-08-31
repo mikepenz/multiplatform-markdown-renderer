@@ -45,3 +45,10 @@ val LocalMarkdownTypography = compositionLocalOf<MarkdownTypography> {
 val LocalMarkdownPadding = staticCompositionLocalOf<MarkdownPadding> {
     error("No local Padding")
 }
+
+/**
+ * Local [ImageTransformer] provider
+ */
+val LocalImageTransformer = staticCompositionLocalOf<ImageTransformer> {
+    error("No local ImageLinkTransformer")
+}

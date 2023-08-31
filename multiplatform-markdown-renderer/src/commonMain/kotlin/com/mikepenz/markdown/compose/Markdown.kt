@@ -40,13 +40,15 @@ fun Markdown(
     typography: MarkdownTypography = markdownTypography(),
     padding: MarkdownPadding = markdownPadding(),
     modifier: Modifier = Modifier.fillMaxSize(),
-    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor()
+    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    imageTransformer: ImageTransformer = ImageTransformerImpl
 ) {
     CompositionLocalProvider(
         LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl(),
         LocalMarkdownPadding provides padding,
         LocalMarkdownColors provides colors,
         LocalMarkdownTypography provides typography,
+        LocalImageTransformer provides imageTransformer
     ) {
         Column(modifier) {
             val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
