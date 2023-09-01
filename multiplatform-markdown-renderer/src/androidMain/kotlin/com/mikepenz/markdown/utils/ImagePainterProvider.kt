@@ -25,7 +25,6 @@ internal actual fun imagePainter(url: String): Painter? {
 
 @Composable
 internal actual fun painterIntrinsicSize(painter: Painter): androidx.compose.ui.geometry.Size {
-
     var size by remember(painter) { mutableStateOf(painter.intrinsicSize) }
 
     if (painter is AsyncImagePainter) {

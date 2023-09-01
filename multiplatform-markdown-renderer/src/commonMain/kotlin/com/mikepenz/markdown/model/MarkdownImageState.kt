@@ -11,7 +11,6 @@ import androidx.compose.ui.geometry.isUnspecified
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 
 internal interface MarkdownImageState {
@@ -29,9 +28,9 @@ internal class MarkdownImageStateImpl(private val density: Density) : MarkdownIm
     override val imageSize by derivedStateOf {
         with(density) {
             if (parentSize.isUnspecified) {
-                Size(180f,180f)
+                Size(180f, 180f)
             } else if (intrinsicImageSize.isUnspecified) {
-                Size(parentSize.width.toSp().value,180f)
+                Size(parentSize.width.toSp().value, 180f)
             } else {
                 val width = minOf(intrinsicImageSize.width, parentSize.width)
 
@@ -40,7 +39,7 @@ internal class MarkdownImageStateImpl(private val density: Density) : MarkdownIm
                 } else {
                     (intrinsicImageSize.height * parentSize.width) / intrinsicImageSize.width
                 }
-                Size(width.toSp().value,height.toSp().value)
+                Size(width.toSp().value, height.toSp().value)
             }
         }
     }

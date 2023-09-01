@@ -2,7 +2,12 @@ package com.mikepenz.markdown.compose
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.mikepenz.markdown.model.*
+import com.mikepenz.markdown.model.BulletHandler
+import com.mikepenz.markdown.model.ImageTransformer
+import com.mikepenz.markdown.model.MarkdownColors
+import com.mikepenz.markdown.model.MarkdownPadding
+import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.model.ReferenceLinkHandler
 
 /**
  * The CompositionLocal to provide functionality related to transforming the bullet of an ordered list
