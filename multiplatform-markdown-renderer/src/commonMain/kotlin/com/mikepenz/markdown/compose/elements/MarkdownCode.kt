@@ -41,7 +41,7 @@ internal fun MarkdownCodeFence(
     node: ASTNode
 ) {
     // CODE_FENCE_START, FENCE_LANG, {content}, CODE_FENCE_END
-    if(node.children.size >= 3) {
+    if (node.children.size >= 3) {
         val start = node.children[2].startOffset
         val end = node.children[node.children.size - 2].endOffset
         MarkdownCode(content.subSequence(start, end).toString().replaceIndent())

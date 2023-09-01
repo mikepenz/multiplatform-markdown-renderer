@@ -13,6 +13,7 @@ interface MarkdownColors {
 
     /** Represents the color used for the text of code. */
     val codeText: Color
+
     /** Represents the color used for the background of code. */
     val codeBackground: Color
 
@@ -29,7 +30,7 @@ private class DefaultMarkdownColors(
 fun markdownColor(
     text: Color = MaterialTheme.colors.onBackground,
     codeText: Color = MaterialTheme.colors.onBackground,
-    codeBackground: Color =MaterialTheme.colors.onBackground.copy(alpha = 0.1f)
+    codeBackground: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.1f)
 ): MarkdownColors = DefaultMarkdownColors(
     text = text,
     codeText = codeText,

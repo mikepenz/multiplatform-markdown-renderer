@@ -7,8 +7,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import com.mikepenz.markdown.compose.elements.*
-import com.mikepenz.markdown.model.*
+import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
+import com.mikepenz.markdown.compose.elements.MarkdownBulletList
+import com.mikepenz.markdown.compose.elements.MarkdownCodeBlock
+import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
+import com.mikepenz.markdown.compose.elements.MarkdownHeader
+import com.mikepenz.markdown.compose.elements.MarkdownImage
+import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
+import com.mikepenz.markdown.compose.elements.MarkdownParagraph
+import com.mikepenz.markdown.compose.elements.MarkdownText
+import com.mikepenz.markdown.model.ImageTransformer
+import com.mikepenz.markdown.model.ImageTransformerImpl
+import com.mikepenz.markdown.model.MarkdownColors
+import com.mikepenz.markdown.model.MarkdownPadding
+import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.model.ReferenceLinkHandlerImpl
+import com.mikepenz.markdown.model.markdownColor
+import com.mikepenz.markdown.model.markdownPadding
+import com.mikepenz.markdown.model.markdownTypography
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownElementTypes.ATX_1
 import org.intellij.markdown.MarkdownElementTypes.ATX_2
@@ -40,13 +56,15 @@ fun Markdown(
     typography: MarkdownTypography = markdownTypography(),
     padding: MarkdownPadding = markdownPadding(),
     modifier: Modifier = Modifier.fillMaxSize(),
-    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor()
+    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    imageTransformer: ImageTransformer = ImageTransformerImpl()
 ) {
     CompositionLocalProvider(
         LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl(),
         LocalMarkdownPadding provides padding,
         LocalMarkdownColors provides colors,
         LocalMarkdownTypography provides typography,
+        LocalImageTransformer provides imageTransformer
     ) {
         Column(modifier) {
             val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
