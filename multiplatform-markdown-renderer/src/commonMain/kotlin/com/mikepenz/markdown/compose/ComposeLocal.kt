@@ -50,5 +50,5 @@ val LocalMarkdownPadding = staticCompositionLocalOf<MarkdownPadding> {
  * Local [ImageTransformer] provider
  */
 val LocalImageTransformer = staticCompositionLocalOf<ImageTransformer> {
-    error("No local ImageLinkTransformer")
+    error("No local ImageTransformer")
 }
