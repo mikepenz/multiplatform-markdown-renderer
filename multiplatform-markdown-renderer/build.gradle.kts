@@ -84,8 +84,6 @@ kotlin {
     macosX64()
     macosArm64()
     iosSimulatorArm64()
-    watchosSimulatorArm64()
-    tvosSimulatorArm64()
     ios()
 
     sourceSets {
@@ -114,9 +112,7 @@ kotlin {
             "macosX64",
             "macosArm64",
             "ios",
-            "iosSimulatorArm64",
-            "watchosSimulatorArm64",
-            "tvosSimulatorArm64"
+            "iosSimulatorArm64"
         ).map { "${it}Main" }
         for (set in nativeSourceSets) {
             getByName(set).dependsOn(nativeMain)
