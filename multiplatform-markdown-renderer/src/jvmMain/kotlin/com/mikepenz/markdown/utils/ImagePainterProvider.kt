@@ -1,6 +1,11 @@
 package com.mikepenz.markdown.utils
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
@@ -20,7 +25,7 @@ internal actual fun imagePainter(url: String): Painter? {
 
 
 @Composable
-internal actual fun painterIntrinsicSize(painter: Painter): Size{
+internal actual fun painterIntrinsicSize(painter: Painter): Size {
     return painter.intrinsicSize
 }
 

@@ -3,19 +3,21 @@ package com.mikepenz.markdown.compose.elements
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import com.mikepenz.markdown.compose.LocalImageTransformer
 import com.mikepenz.markdown.compose.LocalMarkdownColors
@@ -63,7 +65,9 @@ internal fun MarkdownText(
         text = content,
         modifier = textModifier
             .onPlaced {
-                imageState.setContainerSize(it.parentLayoutCoordinates!!.size)
+                it.parentLayoutCoordinates?.also { coordinates ->
+                    imageState.setContainerSize(coordinates.size)
+                }
             }
             .animateContentSize(),
         style = style,
@@ -75,22 +79,20 @@ internal fun MarkdownText(
                 placeholderVerticalAlign = PlaceholderVerticalAlign.Bottom
             )
         ) { link ->
-
             val transformer = LocalImageTransformer.current
 
-            transformer.transform(link)?.let {
-
-                val intrinsicSize = transformer.intrinsicSize(it)
+            transformer.transform(link)?.let { imageData ->
+                val intrinsicSize = transformer.intrinsicSize(imageData.painter)
 
                 LaunchedEffect(intrinsicSize) {
                     imageState.setImageSize(intrinsicSize)
                 }
 
                 Image(
-                    painter = it,
-                    contentDescription = "Image",
-                    alignment = Alignment.CenterStart,
-                    modifier = Modifier.fillMaxWidth()
+                    painter = imageData.painter,
+                    contentDescription = imageData.contentDescription,
+                    alignment = imageData.alignment,
+                    modifier = imageData.modifier
                 )
             }
         }),

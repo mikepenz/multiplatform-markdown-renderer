@@ -48,16 +48,19 @@ internal fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: Strin
             MarkdownElementTypes.IMAGE -> child.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.let {
                 appendInlineContent(TAG_IMAGE_URL, it.getTextInNode(content).toString())
             }
+
             MarkdownElementTypes.EMPH -> {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
                 buildMarkdownAnnotatedString(content, child)
                 pop()
             }
+
             MarkdownElementTypes.STRONG -> {
                 pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
                 buildMarkdownAnnotatedString(content, child)
                 pop()
             }
+
             MarkdownElementTypes.CODE_SPAN -> {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
                 append(' ')
@@ -65,6 +68,7 @@ internal fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: Strin
                 append(' ')
                 pop()
             }
+
             MarkdownElementTypes.AUTOLINK -> appendAutoLink(content, child)
             MarkdownElementTypes.INLINE_LINK -> appendMarkdownLink(content, child)
             MarkdownElementTypes.SHORT_REFERENCE_LINK -> appendMarkdownLink(content, child)
@@ -73,6 +77,7 @@ internal fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: Strin
             GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
                 append(child.getTextInNode(content).toString())
             } else appendAutoLink(content, child)
+
             MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')
             MarkdownTokenTypes.DOUBLE_QUOTE -> append('\"')
             MarkdownTokenTypes.LPAREN -> append('(')

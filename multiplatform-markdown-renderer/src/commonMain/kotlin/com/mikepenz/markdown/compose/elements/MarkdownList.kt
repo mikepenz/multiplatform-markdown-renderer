@@ -45,6 +45,7 @@ private fun MarkdownListItems(
                         UNORDERED_LIST -> MarkdownBulletList(content, child, style, level + 1)
                     }
                 }
+
                 ORDERED_LIST -> MarkdownOrderedList(content, child, style, level + 1)
                 UNORDERED_LIST -> MarkdownBulletList(content, child, style, level + 1)
             }

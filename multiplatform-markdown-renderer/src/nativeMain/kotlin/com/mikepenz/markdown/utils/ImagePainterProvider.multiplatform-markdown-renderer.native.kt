@@ -10,6 +10,6 @@ internal actual fun imagePainter(url: String): Painter? {
 }
 
 @Composable
-internal actual fun painterIntrinsicSize(painter: Painter): Size{
+internal actual fun painterIntrinsicSize(painter: Painter): Size {
     return painter.intrinsicSize
 }
