@@ -35,7 +35,13 @@ fun MainLayout() {
             Sometimes it will even contain images within the text
             
             ![Image](https://avatars.githubusercontent.com/u/1476232?v=4)
-                
+             
+             Images can also be of different sizes
+             
+             ![Image](https://placehold.co/1000x200/png)
+             
+             ![Image](https://placehold.co/200x1000/png)
+             
             After installing GPG Suite (or your preferred solution) first create a new key.
             
             Supports reference links:
