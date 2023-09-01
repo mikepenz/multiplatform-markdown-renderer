@@ -16,6 +16,7 @@ interface ReferenceLinkHandler {
  */
 class ReferenceLinkHandlerImpl : ReferenceLinkHandler {
     private val stored = mutableMapOf<String, String?>()
+
     override fun store(label: String, destination: String?) {
         stored[label] = destination
     }
