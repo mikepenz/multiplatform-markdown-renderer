@@ -16,6 +16,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.*
+import androidx.compose.ui.unit.sp
 import com.mikepenz.markdown.compose.LocalImageTransformer
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
@@ -69,8 +70,8 @@ internal fun MarkdownText(
         color = LocalMarkdownColors.current.text,
         inlineContent = mapOf(TAG_IMAGE_URL to InlineTextContent(
             Placeholder(
-                width = imageState.imageSize.width,
-                height = imageState.imageSize.height,
+                width = imageState.imageSize.width.sp,
+                height = imageState.imageSize.height.sp,
                 placeholderVerticalAlign = PlaceholderVerticalAlign.Bottom
             )
         ) { link ->

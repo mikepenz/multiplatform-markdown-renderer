@@ -41,7 +41,7 @@ fun Markdown(
     padding: MarkdownPadding = markdownPadding(),
     modifier: Modifier = Modifier.fillMaxSize(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    imageTransformer: ImageTransformer = ImageTransformerImpl
+    imageTransformer: ImageTransformer = ImageTransformerImpl()
 ) {
     CompositionLocalProvider(
         LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl(),

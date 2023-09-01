@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 
 internal interface MarkdownImageState {
-    val imageSize: TextUnitSize
+    val imageSize: Size
     fun setContainerSize(intSize: IntSize)
     fun setImageSize(size: Size)
 }
@@ -29,9 +29,9 @@ internal class MarkdownImageStateImpl(private val density: Density) : MarkdownIm
     override val imageSize by derivedStateOf {
         with(density) {
             if (parentSize.isUnspecified) {
-                TextUnitSize(180.sp, 180.sp)
+                Size(180f,180f)
             } else if (intrinsicImageSize.isUnspecified) {
-                TextUnitSize(parentSize.width.toSp(), 180.sp)
+                Size(parentSize.width.toSp().value,180f)
             } else {
                 val width = minOf(intrinsicImageSize.width, parentSize.width)
 
@@ -40,8 +40,7 @@ internal class MarkdownImageStateImpl(private val density: Density) : MarkdownIm
                 } else {
                     (intrinsicImageSize.height * parentSize.width) / intrinsicImageSize.width
                 }
-
-                TextUnitSize(width.toSp(), height.toSp())
+                Size(width.toSp().value,height.toSp().value)
             }
         }
     }
