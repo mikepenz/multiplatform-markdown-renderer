@@ -1,16 +1,21 @@
-package com.mikepenz.markdown.compose
+package com.mikepenz.markdown.compose.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import com.mikepenz.markdown.compose.elements.*
+import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
+import com.mikepenz.markdown.compose.elements.MarkdownBulletList
 import com.mikepenz.markdown.compose.elements.MarkdownCodeBlock
 import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
 import com.mikepenz.markdown.compose.elements.MarkdownHeader
+import com.mikepenz.markdown.compose.elements.MarkdownImage
+import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
 import com.mikepenz.markdown.compose.elements.MarkdownParagraph
 import com.mikepenz.markdown.compose.elements.MarkdownText
 import com.mikepenz.markdown.model.MarkdownTypography
+import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
@@ -18,13 +23,18 @@ import org.intellij.markdown.ast.getTextInNode
 
 typealias MarkdownComponent = @Composable (MarkdownComponentModel) -> Unit
 
+typealias CustomMarkdownComponent = @Composable (IElementType, MarkdownComponentModel) -> Unit
+
+/**
+ * Model holding data relevant for a component
+ */
 data class MarkdownComponentModel(
     val content: String,
     val node: ASTNode,
     val typography: MarkdownTypography,
 )
 
-fun MarkdownComponentModel.getTextInNode() = node.getTextInNode(content)
+private fun MarkdownComponentModel.getTextInNode() = node.getTextInNode(content)
 
 @Composable
 fun markdownComponents(
@@ -44,6 +54,7 @@ fun markdownComponents(
     unorderedList: MarkdownComponent = CurrentComponentsBridge.unorderedList,
     image: MarkdownComponent = CurrentComponentsBridge.image,
     linkDefinition: MarkdownComponent = CurrentComponentsBridge.linkDefinition,
+    custom: CustomMarkdownComponent? = CurrentComponentsBridge.custom,
 ): MarkdownComponents = DefaultMarkdownComponents(
     text = text,
     eol = eol,
@@ -61,9 +72,13 @@ fun markdownComponents(
     unorderedList = unorderedList,
     image = image,
     linkDefinition = linkDefinition,
+    custom = custom,
 )
 
-
+/**
+ * Interface defining all supported components.
+ */
+@Stable
 interface MarkdownComponents {
     val text: MarkdownComponent
     val eol: MarkdownComponent
@@ -81,6 +96,7 @@ interface MarkdownComponents {
     val unorderedList: MarkdownComponent
     val image: MarkdownComponent
     val linkDefinition: MarkdownComponent
+    val custom: CustomMarkdownComponent?
 }
 
 private class DefaultMarkdownComponents(
@@ -100,8 +116,8 @@ private class DefaultMarkdownComponents(
     override val unorderedList: MarkdownComponent,
     override val image: MarkdownComponent,
     override val linkDefinition: MarkdownComponent,
+    override val custom: CustomMarkdownComponent?,
 ) : MarkdownComponents
-
 
 /**
  * Adapts the universal signature @Composable (MarkdownComponentModel) -> Unit to the existing components.
@@ -155,17 +171,11 @@ object CurrentComponentsBridge {
         MarkdownImage(it.content, it.node)
     }
     val linkDefinition: MarkdownComponent = {
-        val linkLabel = it.node
-            .findChildOfType(MarkdownElementTypes.LINK_LABEL)
-            ?.getTextInNode(it.content)
-            ?.toString()
+        val linkLabel = it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(it.content)?.toString()
         if (linkLabel != null) {
-            val destination =
-                it.node
-                    .findChildOfType(MarkdownElementTypes.LINK_DESTINATION)
-                    ?.getTextInNode(it.content)
-                    ?.toString()
+            val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(it.content)?.toString()
             LocalReferenceLinkHandler.current.store(linkLabel, destination)
         }
     }
+    val custom: CustomMarkdownComponent? = null
 }
