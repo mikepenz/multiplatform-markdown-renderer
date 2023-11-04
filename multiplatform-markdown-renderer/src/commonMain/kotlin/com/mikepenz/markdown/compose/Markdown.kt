@@ -7,24 +7,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
-import com.mikepenz.markdown.compose.elements.MarkdownBulletList
-import com.mikepenz.markdown.compose.elements.MarkdownCodeBlock
-import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
-import com.mikepenz.markdown.compose.elements.MarkdownHeader
-import com.mikepenz.markdown.compose.elements.MarkdownImage
-import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
-import com.mikepenz.markdown.compose.elements.MarkdownParagraph
-import com.mikepenz.markdown.compose.elements.MarkdownText
-import com.mikepenz.markdown.model.ImageTransformer
-import com.mikepenz.markdown.model.ImageTransformerImpl
-import com.mikepenz.markdown.model.MarkdownColors
-import com.mikepenz.markdown.model.MarkdownPadding
-import com.mikepenz.markdown.model.MarkdownTypography
-import com.mikepenz.markdown.model.ReferenceLinkHandlerImpl
-import com.mikepenz.markdown.model.markdownColor
-import com.mikepenz.markdown.model.markdownPadding
-import com.mikepenz.markdown.model.markdownTypography
+import com.mikepenz.markdown.compose.elements.*
+import com.mikepenz.markdown.model.*
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownElementTypes.ATX_1
 import org.intellij.markdown.MarkdownElementTypes.ATX_2
@@ -57,7 +41,8 @@ fun Markdown(
     padding: MarkdownPadding = markdownPadding(),
     modifier: Modifier = Modifier.fillMaxSize(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    imageTransformer: ImageTransformer = ImageTransformerImpl()
+    imageTransformer: ImageTransformer = ImageTransformerImpl(),
+    components: MarkdownComponents = markdownComponents(),
 ) {
     CompositionLocalProvider(
         LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl(),
@@ -69,9 +54,9 @@ fun Markdown(
         Column(modifier) {
             val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
             parsedTree.children.forEach { node ->
-                if (!node.handleElement(content)) {
+                if (!node.handleElement(components, content)) {
                     node.children.forEach { child ->
-                        child.handleElement(content)
+                        child.handleElement(components, content)
                     }
                 }
             }
@@ -116,5 +101,38 @@ private fun ASTNode.handleElement(content: String): Boolean {
 
         else -> handled = false
     }
+    return handled
+}
+
+
+@Composable
+private fun ASTNode.handleElement(components: MarkdownComponents, content: String): Boolean {
+    val model = MarkdownComponentModel(
+        content = content,
+        node = this,
+        typography = LocalMarkdownTypography.current
+    )
+    var handled = true
+    Spacer(Modifier.height(LocalMarkdownPadding.current.block))
+    when (type) {
+        TEXT -> components.text(model)
+        EOL -> components.eol(model)
+        CODE_FENCE -> components.codeFence(model)
+        CODE_BLOCK -> components.codeBlock(model)
+        ATX_1 -> components.heading1(model)
+        ATX_2 -> components.heading2(model)
+        ATX_3 -> components.heading3(model)
+        ATX_4 -> components.heading4(model)
+        ATX_5 -> components.heading5(model)
+        ATX_6 -> components.heading6(model)
+        BLOCK_QUOTE -> components.blockQuote(model)
+        PARAGRAPH -> components.paragraph(model)
+        ORDERED_LIST -> components.orderedList(model)
+        UNORDERED_LIST -> components.unorderedList(model)
+        IMAGE -> components.image(model)
+        LINK_DEFINITION -> components.linkDefinition(model)
+        else -> handled = false
+    }
+
     return handled
 }
