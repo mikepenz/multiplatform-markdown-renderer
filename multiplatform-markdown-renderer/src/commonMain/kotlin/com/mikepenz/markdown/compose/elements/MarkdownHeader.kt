@@ -1,17 +1,12 @@
 package com.mikepenz.markdown.compose.elements
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
-import com.mikepenz.markdown.compose.LocalMarkdownColors
+import androidx.compose.ui.text.buildAnnotatedString
+import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
-import org.intellij.markdown.ast.getTextInNode
 
 @Composable
 internal fun MarkdownHeader(
@@ -19,12 +14,14 @@ internal fun MarkdownHeader(
     node: ASTNode,
     style: TextStyle
 ) {
+
     node.findChildOfType(MarkdownTokenTypes.ATX_CONTENT)?.let {
-        Text(
-            it.getTextInNode(content).trim().toString(),
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
-            style = style,
-            color = LocalMarkdownColors.current.text
-        )
+        val styledText = buildAnnotatedString {
+            pushStyle(style.toSpanStyle())
+            buildMarkdownAnnotatedString(content, it)
+            pop()
+        }
+
+        MarkdownText(styledText, style = style)
     }
 }
