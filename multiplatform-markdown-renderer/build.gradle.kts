@@ -53,6 +53,8 @@ android {
 }
 
 kotlin {
+    targetHierarchy.default()
+
     targets.all {
         compilations.all {
             compilerOptions.configure {
@@ -84,7 +86,6 @@ kotlin {
     macosX64()
     macosArm64()
     iosSimulatorArm64()
-    ios()
 
     sourceSets {
         val commonMain by getting
@@ -102,10 +103,10 @@ kotlin {
         val jsTest by getting {
             dependsOn(fileBasedTest)
         }
-        val nativeMain by creating {
+        val nativeMain by getting {
             dependsOn(commonMain)
         }
-        val nativeTest by creating {
+        val nativeTest by getting {
             dependsOn(fileBasedTest)
         }
         val nativeSourceSets = listOf(
