@@ -27,7 +27,7 @@ internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: A
     val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
     val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
     (destination ?: linkLabel)?.let { pushStringAnnotation(TAG_URL, it) }
-    pushStyle(SpanStyle(textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
+    pushStyle(SpanStyle(color = LocalMarkdownColors.current.linkText, textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
     buildMarkdownAnnotatedString(content, linkText)
     pop()
 }
