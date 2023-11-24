@@ -32,6 +32,8 @@ import org.intellij.markdown.MarkdownElementTypes.IMAGE
 import org.intellij.markdown.MarkdownElementTypes.LINK_DEFINITION
 import org.intellij.markdown.MarkdownElementTypes.ORDERED_LIST
 import org.intellij.markdown.MarkdownElementTypes.PARAGRAPH
+import org.intellij.markdown.MarkdownElementTypes.SETEXT_1
+import org.intellij.markdown.MarkdownElementTypes.SETEXT_2
 import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
 import org.intellij.markdown.MarkdownTokenTypes.Companion.EOL
 import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
@@ -91,6 +93,8 @@ private fun ASTNode.handleElement(components: MarkdownComponents, content: Strin
         ATX_4 -> components.heading4(model)
         ATX_5 -> components.heading5(model)
         ATX_6 -> components.heading6(model)
+        SETEXT_1 -> components.setextHeading1(model)
+        SETEXT_2 -> components.setextHeading2(model)
         BLOCK_QUOTE -> components.blockQuote(model)
         PARAGRAPH -> components.paragraph(model)
         ORDERED_LIST -> components.orderedList(model)

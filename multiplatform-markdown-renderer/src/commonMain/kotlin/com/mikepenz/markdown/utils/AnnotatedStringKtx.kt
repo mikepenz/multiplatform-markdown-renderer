@@ -96,7 +96,9 @@ internal fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: Strin
             MarkdownTokenTypes.BACKTICK -> append('`')
             MarkdownTokenTypes.HARD_LINE_BREAK -> append("\n\n")
             MarkdownTokenTypes.EOL -> append('\n')
-            MarkdownTokenTypes.WHITE_SPACE -> append(' ')
+            MarkdownTokenTypes.WHITE_SPACE -> if (length > 0) {
+                append(' ')
+            }
         }
     }
 }
