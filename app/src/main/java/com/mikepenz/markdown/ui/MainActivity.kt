@@ -3,11 +3,29 @@ package com.mikepenz.markdown.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Switch
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.Markdown
@@ -24,7 +42,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainLayout() {
-    SampleTheme {
+   val isSystemInDarkMode = isSystemInDarkTheme()
+   var darkMode by remember { mutableStateOf(isSystemInDarkMode) }
+
+    SampleTheme(darkMode) {
+
         val markdown = """
             # Title 1
         
@@ -60,22 +82,47 @@ fun MainLayout() {
             
             [1]: https://mikepenz.dev/
             
-            - [Text] Some text
+            Unordered List
+            - unordered list item 1
+            - unordered list item 2
+            - unordered list item 3
+            
+            Ordered List
+            1. List item 1
+            2. List item 2
+            3. List item 3
             
             ```
             Code block test
             ```
         """.trimIndent()
 
-        val scrollState = rememberScrollState()
 
-        Markdown(
-            markdown,
+        LazyColumn(
             modifier = Modifier
-                .verticalScroll(scrollState)
-                .fillMaxSize()
-                .padding(16.dp)
-                .padding(bottom = 48.dp, top = 56.dp)
-        )
+                .fillMaxSize().background(MaterialTheme.colors.background).padding(horizontal = 16.dp),
+        ) {
+
+                item {
+                    Spacer(modifier = Modifier.height(56.dp))
+                }
+                item {
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = "Dark mode enabled", color = MaterialTheme.colors.onBackground)
+                        Switch(checked = darkMode, onCheckedChange = { darkMode = !darkMode })
+                    }
+                }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                item {
+                    Markdown(markdown)
+                }
+                item {
+                    Spacer(modifier = Modifier.height(48.dp))
+                }
+            }
+        }
+
     }
-}
+
