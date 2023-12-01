@@ -46,8 +46,10 @@ fun main() = application {
                 
                 Title 2
                 ------
-                
-                
+                              
+                [https://mikepenz.dev](https://mikepenz.dev)
+                [https://github.com/mikepenz](https://github.com/mikepenz)
+                [Mike Penz's Blog](https://blog.mikepenz.dev/)
                 """.trimIndent()
                 Markdown(
                     content,

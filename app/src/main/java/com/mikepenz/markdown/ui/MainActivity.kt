@@ -72,11 +72,6 @@ fun MainLayout() {
             But can also be a auto link: https://mikepenz.dev
    
             
-            Links with links as label are also handled:
-            [https://mikepenz.dev](https://mikepenz.dev)
-            [https://github.com/mikepenz](https://github.com/mikepenz)
-            [Mike Penz's Blog](https://blog.mikepenz.dev/)
-            
             Some `inline` code is also supported!
             
             ## Title 2
@@ -104,6 +99,12 @@ fun MainLayout() {
             ```
             Code block test
             ```
+            
+            
+            Links with links as label are also handled:
+            [https://mikepenz.dev](https://mikepenz.dev)
+            [https://github.com/mikepenz](https://github.com/mikepenz)
+            [Mike Penz's Blog](https://blog.mikepenz.dev/)
         """.trimIndent()
 
 
