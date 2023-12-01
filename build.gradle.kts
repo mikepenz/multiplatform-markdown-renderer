@@ -13,7 +13,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20")
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.9.10")
         classpath("com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:10.9.2")
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.5.10")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.5.11")
     }
 }
 
