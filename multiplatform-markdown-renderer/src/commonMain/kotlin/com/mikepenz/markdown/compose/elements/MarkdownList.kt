@@ -65,7 +65,8 @@ internal fun MarkdownOrderedList(
         Row(Modifier.fillMaxWidth()) {
             Text(
                 text = orderedListHandler.transform(child.findChildOfType(MarkdownTokenTypes.LIST_NUMBER)?.getTextInNode(content)),
-                style = style
+                style = style,
+                color = LocalMarkdownColors.current.text
             )
             val text = buildAnnotatedString {
                 pushStyle(style.toSpanStyle())
