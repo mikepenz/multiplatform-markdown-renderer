@@ -53,8 +53,13 @@ internal fun MarkdownText(
         detectTapGestures { pos ->
             layoutResult.value?.let { layoutResult ->
                 val position = layoutResult.getOffsetForPosition(pos)
-                content.getStringAnnotations(TAG_URL, position, position).reversed().firstOrNull()?.let{
-                    uriHandler.openUri(referenceLinkHandler.find(it.item))
+                content.getStringAnnotations(TAG_URL, position, position).reversed().firstOrNull()?.let {
+                    val foundReference = referenceLinkHandler.find(it.item)
+                    try {
+                        uriHandler.openUri(foundReference)
+                    } catch (t: Throwable) {
+                        println("Could not open the provided url: $foundReference")
+                    }
                 }
             }
         }
