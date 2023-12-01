@@ -17,6 +17,7 @@ import com.mikepenz.markdown.compose.elements.MarkdownText
 import com.mikepenz.markdown.model.MarkdownTypography
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
@@ -48,6 +49,8 @@ fun markdownComponents(
     heading4: MarkdownComponent = CurrentComponentsBridge.heading4,
     heading5: MarkdownComponent = CurrentComponentsBridge.heading5,
     heading6: MarkdownComponent = CurrentComponentsBridge.heading6,
+    setextHeading1: MarkdownComponent = CurrentComponentsBridge.setextHeading1,
+    setextHeading2: MarkdownComponent = CurrentComponentsBridge.setextHeading2,
     blockQuote: MarkdownComponent = CurrentComponentsBridge.blockQuote,
     paragraph: MarkdownComponent = CurrentComponentsBridge.paragraph,
     orderedList: MarkdownComponent = CurrentComponentsBridge.orderedList,
@@ -66,6 +69,8 @@ fun markdownComponents(
     heading4 = heading4,
     heading5 = heading5,
     heading6 = heading6,
+    setextHeading1 = setextHeading1,
+    setextHeading2 = setextHeading2,
     blockQuote = blockQuote,
     paragraph = paragraph,
     orderedList = orderedList,
@@ -90,6 +95,8 @@ interface MarkdownComponents {
     val heading4: MarkdownComponent
     val heading5: MarkdownComponent
     val heading6: MarkdownComponent
+    val setextHeading1: MarkdownComponent
+    val setextHeading2: MarkdownComponent
     val blockQuote: MarkdownComponent
     val paragraph: MarkdownComponent
     val orderedList: MarkdownComponent
@@ -110,6 +117,8 @@ private class DefaultMarkdownComponents(
     override val heading4: MarkdownComponent,
     override val heading5: MarkdownComponent,
     override val heading6: MarkdownComponent,
+    override val setextHeading1: MarkdownComponent,
+    override val setextHeading2: MarkdownComponent,
     override val blockQuote: MarkdownComponent,
     override val paragraph: MarkdownComponent,
     override val orderedList: MarkdownComponent,
@@ -151,6 +160,12 @@ object CurrentComponentsBridge {
     val heading6: MarkdownComponent = {
         MarkdownHeader(it.content, it.node, it.typography.h6)
     }
+    val setextHeading1: MarkdownComponent = {
+        MarkdownHeader(it.content, it.node, it.typography.h1, MarkdownTokenTypes.SETEXT_CONTENT)
+    }
+    val setextHeading2: MarkdownComponent = {
+        MarkdownHeader(it.content, it.node, it.typography.h2, MarkdownTokenTypes.SETEXT_CONTENT)
+    }
     val blockQuote: MarkdownComponent = {
         MarkdownBlockQuote(it.content, it.node)
     }
@@ -171,9 +186,12 @@ object CurrentComponentsBridge {
         MarkdownImage(it.content, it.node)
     }
     val linkDefinition: MarkdownComponent = {
-        val linkLabel = it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(it.content)?.toString()
+        val linkLabel =
+            it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(it.content)
+                ?.toString()
         if (linkLabel != null) {
-            val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(it.content)?.toString()
+            val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)
+                ?.getTextInNode(it.content)?.toString()
             LocalReferenceLinkHandler.current.store(linkLabel, destination)
         }
     }
