@@ -70,9 +70,12 @@ fun MainLayout() {
             [Reference Link Test][1] 
             
             But can also be a auto link: https://mikepenz.dev
+   
             
             Links with links as label are also handled:
             [https://mikepenz.dev](https://mikepenz.dev)
+            [https://github.com/mikepenz](https://github.com/mikepenz)
+            [Mike Penz's Blog](https://blog.mikepenz.dev/)
             
             Some `inline` code is also supported!
             
