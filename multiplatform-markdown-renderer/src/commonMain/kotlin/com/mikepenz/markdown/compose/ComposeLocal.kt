@@ -2,25 +2,20 @@ package com.mikepenz.markdown.compose
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.mikepenz.markdown.model.BulletHandler
-import com.mikepenz.markdown.model.ImageTransformer
-import com.mikepenz.markdown.model.MarkdownColors
-import com.mikepenz.markdown.model.MarkdownPadding
-import com.mikepenz.markdown.model.MarkdownTypography
-import com.mikepenz.markdown.model.ReferenceLinkHandler
+import com.mikepenz.markdown.model.*
 
 /**
  * The CompositionLocal to provide functionality related to transforming the bullet of an ordered list
  */
 val LocalBulletListHandler = staticCompositionLocalOf {
-    return@staticCompositionLocalOf BulletHandler { "• " }
+    return@staticCompositionLocalOf BulletHandler { _, _, _ -> "• " }
 }
 
 /**
  * The CompositionLocal to provide functionality related to transforming the bullet of an ordered list
  */
 val LocalOrderedListHandler = staticCompositionLocalOf {
-    return@staticCompositionLocalOf BulletHandler { "$it " }
+    return@staticCompositionLocalOf BulletHandler { _, _, index -> "${index + 1}. " }
 }
 
 /**
