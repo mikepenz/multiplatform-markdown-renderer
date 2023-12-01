@@ -39,6 +39,15 @@ fun main() = application {
                 ![Image](https://avatars.githubusercontent.com/u/1476232?v=4)
                 
                 There are many more things which can be experimented with like, inline `code`. 
+                
+                
+                Title 1
+                ======
+                
+                Title 2
+                ------
+                
+                
                 """.trimIndent()
                 Markdown(
                     content,
