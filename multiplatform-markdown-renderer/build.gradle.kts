@@ -53,7 +53,7 @@ android {
 }
 
 kotlin {
-    targetHierarchy.default()
+    applyDefaultHierarchyTemplate()
 
     targets.all {
         compilations.all {
@@ -64,7 +64,7 @@ kotlin {
         }
     }
 
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
     jvm {
@@ -85,6 +85,8 @@ kotlin {
     }
     macosX64()
     macosArm64()
+    iosX64()
+    iosArm64()
     iosSimulatorArm64()
 
     sourceSets {
