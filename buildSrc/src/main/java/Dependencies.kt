@@ -3,16 +3,16 @@ object Versions {
     const val androidCompileSdk = 34
     const val androidTargetSdk = androidCompileSdk
 
-    const val kotlin = "1.9.20"
+    const val kotlin = "1.9.21"
 
-    const val markdown = "0.5.2"
+    const val markdown = "0.6.0"
 
     const val coil = "2.5.0"
     const val compose = "1.5.4"
-    const val composeCompiler = "1.5.4-dev-k1.9.20-50f08dfa4b4"
+    const val composeCompiler = "1.5.5"
 
     const val material = "1.10.0"
-    const val activityCompose = "1.8.0"
+    const val activityCompose = "1.8.1"
     const val lifecycleKtx = "2.3.1"
 }
 
