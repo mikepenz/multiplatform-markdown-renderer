@@ -170,7 +170,7 @@ object CurrentComponentsBridge {
         MarkdownBlockQuote(it.content, it.node)
     }
     val paragraph: MarkdownComponent = {
-        MarkdownParagraph(it.content, it.node, it.typography.paragraph)
+        MarkdownParagraph(it.content, it.node, style = it.typography.paragraph)
     }
     val orderedList: MarkdownComponent = {
         Column(modifier = Modifier) {

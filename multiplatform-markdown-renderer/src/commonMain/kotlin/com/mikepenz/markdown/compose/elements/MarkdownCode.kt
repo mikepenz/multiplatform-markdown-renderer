@@ -36,7 +36,7 @@ private fun MarkdownCode(
 }
 
 @Composable
-internal fun MarkdownCodeFence(
+fun MarkdownCodeFence(
     content: String,
     node: ASTNode
 ) {
@@ -51,7 +51,7 @@ internal fun MarkdownCodeFence(
 }
 
 @Composable
-internal fun MarkdownCodeBlock(
+fun MarkdownCodeBlock(
     content: String,
     node: ASTNode
 ) {
