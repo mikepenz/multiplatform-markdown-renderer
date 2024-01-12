@@ -40,13 +40,31 @@ internal fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNo
     pop()
 }
 
+/**
+ * Builds an [AnnotatedString] with the contents of the given Markdown [ASTNode] node.
+ *
+ * This method automatically constructs the string with child components like:
+ * - Paragraph
+ * - Image
+ * - Strong
+ * - ...
+ */
 @Composable
-internal fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, node: ASTNode) {
+fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, node: ASTNode) {
     buildMarkdownAnnotatedString(content, node.children)
 }
 
+/**
+ * Builds an [AnnotatedString] with the contents of the given Markdown [ASTNode] node.
+ *
+ * This method automatically constructs the string with child components like:
+ * - Paragraph
+ * - Image
+ * - Strong
+ * - ...
+ */
 @Composable
-internal fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, children: List<ASTNode>) {
+fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, children: List<ASTNode>) {
     children.forEach { child ->
         when (child.type) {
             MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content, child)

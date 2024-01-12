@@ -23,7 +23,7 @@ import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 
 @Composable
-private fun MarkdownListItems(
+fun MarkdownListItems(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.list,
@@ -60,7 +60,7 @@ private fun MarkdownListItems(
 }
 
 @Composable
-internal fun MarkdownOrderedList(
+fun MarkdownOrderedList(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.ordered,
@@ -85,7 +85,7 @@ internal fun MarkdownOrderedList(
 }
 
 @Composable
-internal fun MarkdownBulletList(
+fun MarkdownBulletList(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.bullet,

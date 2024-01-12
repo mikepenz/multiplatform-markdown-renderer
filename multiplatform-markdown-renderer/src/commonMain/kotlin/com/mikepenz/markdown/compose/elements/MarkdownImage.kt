@@ -9,7 +9,7 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
 
 @Composable
-internal fun MarkdownImage(content: String, node: ASTNode) {
+fun MarkdownImage(content: String, node: ASTNode) {
 
     val link = node.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString() ?: return
 
