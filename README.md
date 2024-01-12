@@ -121,6 +121,48 @@ CompositionLocalProvider(LocalOrderedListHandler provides { "A.) " }) {
 }
 ```
 
+### Custom Components
+
+Since v0.9.0 it is possible to provide custom components, instead of the default ones. 
+This can be done by providing the components `MarkdownComponents` to the `Markdown` composable. 
+
+Use the `markdownComponents()` to keep defaults for non overwritten components.
+
+The `MarkdownComponent` will expose access to the `content: String`, `node: ASTNode`, `typography: MarkdownTypography`, offering full flexibility.
+
+```kotlin
+// Simple adjusted paragraph with different Modifier.
+val customParagraphComponent: MarkdownComponent = {
+    MarkdownParagraph(it.content, it.node, Modifier.align(Alignment.End))
+}
+
+// Full custom paragraph example
+val customParagraphComponent: MarkdownComponent = {
+    // build a styled paragraph. (util function provided by the library)
+    val styledText = buildAnnotatedString {
+        pushStyle(LocalMarkdownTypography.current.paragraph.toSpanStyle())
+        buildMarkdownAnnotatedString(content, it.node)
+        pop()
+    }
+
+    // define the `Text` composable
+    Text(
+        styledText,
+        modifier = Modifier.align(Alignment.End),
+        textAlign = TextAlign.End
+    )
+}
+
+// Define the `Markdown` composeable and pass in the custom paragraph component
+Markdown(
+    content,
+    components = markdownComponents(
+        paragraph = customParagraphComponent
+    )
+)
+
+```
+
 </p>
 </details>
 
@@ -148,7 +190,7 @@ Copyright for portions of the code are held by [Erik Hellman, 2020] as part of p
 
 ## License
 
-    Copyright 2023 Mike Penz
+    Copyright 2024 Mike Penz
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
