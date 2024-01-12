@@ -13,11 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.PlaceholderVerticalAlign
-import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.sp
 import com.mikepenz.markdown.compose.LocalImageTransformer
 import com.mikepenz.markdown.compose.LocalMarkdownColors
@@ -29,7 +25,7 @@ import com.mikepenz.markdown.utils.TAG_URL
 
 
 @Composable
-internal fun MarkdownText(
+fun MarkdownText(
     content: String,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text
@@ -38,7 +34,7 @@ internal fun MarkdownText(
 }
 
 @Composable
-internal fun MarkdownText(
+fun MarkdownText(
     content: AnnotatedString,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text

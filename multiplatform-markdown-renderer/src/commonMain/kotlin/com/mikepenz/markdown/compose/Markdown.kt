@@ -1,24 +1,13 @@
 package com.mikepenz.markdown.compose
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
-import com.mikepenz.markdown.model.ImageTransformer
-import com.mikepenz.markdown.model.ImageTransformerImpl
-import com.mikepenz.markdown.model.MarkdownColors
-import com.mikepenz.markdown.model.MarkdownPadding
-import com.mikepenz.markdown.model.MarkdownTypography
-import com.mikepenz.markdown.model.ReferenceLinkHandlerImpl
-import com.mikepenz.markdown.model.markdownColor
-import com.mikepenz.markdown.model.markdownPadding
-import com.mikepenz.markdown.model.markdownTypography
+import com.mikepenz.markdown.model.*
 import org.intellij.markdown.MarkdownElementTypes.ATX_1
 import org.intellij.markdown.MarkdownElementTypes.ATX_2
 import org.intellij.markdown.MarkdownElementTypes.ATX_3
@@ -36,6 +25,7 @@ import org.intellij.markdown.MarkdownElementTypes.SETEXT_1
 import org.intellij.markdown.MarkdownElementTypes.SETEXT_2
 import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
 import org.intellij.markdown.MarkdownTokenTypes.Companion.EOL
+import org.intellij.markdown.MarkdownTokenTypes.Companion.HORIZONTAL_RULE
 import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
@@ -63,9 +53,9 @@ fun Markdown(
         Column(modifier) {
             val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
             parsedTree.children.forEach { node ->
-                if (!node.handleElement(components, content)) {
+                if (!handleElement(node, components, content)) {
                     node.children.forEach { child ->
-                        child.handleElement(components, content)
+                        handleElement(child, components, content)
                     }
                 }
             }
@@ -74,35 +64,36 @@ fun Markdown(
 }
 
 @Composable
-private fun ASTNode.handleElement(components: MarkdownComponents, content: String): Boolean {
+private fun ColumnScope.handleElement(node: ASTNode, components: MarkdownComponents, content: String): Boolean {
     val model = MarkdownComponentModel(
         content = content,
-        node = this,
+        node = node,
         typography = LocalMarkdownTypography.current
     )
     var handled = true
     Spacer(Modifier.height(LocalMarkdownPadding.current.block))
-    when (type) {
-        TEXT -> components.text(model)
-        EOL -> components.eol(model)
-        CODE_FENCE -> components.codeFence(model)
-        CODE_BLOCK -> components.codeBlock(model)
-        ATX_1 -> components.heading1(model)
-        ATX_2 -> components.heading2(model)
-        ATX_3 -> components.heading3(model)
-        ATX_4 -> components.heading4(model)
-        ATX_5 -> components.heading5(model)
-        ATX_6 -> components.heading6(model)
-        SETEXT_1 -> components.setextHeading1(model)
-        SETEXT_2 -> components.setextHeading2(model)
-        BLOCK_QUOTE -> components.blockQuote(model)
-        PARAGRAPH -> components.paragraph(model)
-        ORDERED_LIST -> components.orderedList(model)
-        UNORDERED_LIST -> components.unorderedList(model)
-        IMAGE -> components.image(model)
-        LINK_DEFINITION -> components.linkDefinition(model)
+    when (node.type) {
+        TEXT -> components.text(this@handleElement, model)
+        EOL -> components.eol(this@handleElement, model)
+        CODE_FENCE -> components.codeFence(this@handleElement, model)
+        CODE_BLOCK -> components.codeBlock(this@handleElement, model)
+        ATX_1 -> components.heading1(this@handleElement, model)
+        ATX_2 -> components.heading2(this@handleElement, model)
+        ATX_3 -> components.heading3(this@handleElement, model)
+        ATX_4 -> components.heading4(this@handleElement, model)
+        ATX_5 -> components.heading5(this@handleElement, model)
+        ATX_6 -> components.heading6(this@handleElement, model)
+        SETEXT_1 -> components.setextHeading1(this@handleElement, model)
+        SETEXT_2 -> components.setextHeading2(this@handleElement, model)
+        BLOCK_QUOTE -> components.blockQuote(this@handleElement, model)
+        PARAGRAPH -> components.paragraph(this@handleElement, model)
+        ORDERED_LIST -> components.orderedList(this@handleElement, model)
+        UNORDERED_LIST -> components.unorderedList(this@handleElement, model)
+        IMAGE -> components.image(this@handleElement, model)
+        LINK_DEFINITION -> components.linkDefinition(this@handleElement, model)
+        HORIZONTAL_RULE -> components.horizontalRule(this@handleElement, model)
         else -> {
-            handled = components.custom?.invoke(type, model) != null
+            handled = components.custom?.invoke(this@handleElement, node.type, model) != null
         }
     }
 

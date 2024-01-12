@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.compose")
     application
+    id("org.jetbrains.compose")
 }
 
 group = "com.mikepenz"

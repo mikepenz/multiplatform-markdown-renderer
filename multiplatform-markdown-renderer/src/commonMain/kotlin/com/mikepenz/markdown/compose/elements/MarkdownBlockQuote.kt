@@ -15,7 +15,7 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
 
 @Composable
-internal fun MarkdownBlockQuote(
+fun MarkdownBlockQuote(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.quote

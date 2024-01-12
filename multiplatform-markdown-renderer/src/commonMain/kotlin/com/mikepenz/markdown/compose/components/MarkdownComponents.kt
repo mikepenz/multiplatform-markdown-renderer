@@ -1,19 +1,14 @@
 package com.mikepenz.markdown.compose.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
-import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
-import com.mikepenz.markdown.compose.elements.MarkdownBulletList
-import com.mikepenz.markdown.compose.elements.MarkdownCodeBlock
-import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
-import com.mikepenz.markdown.compose.elements.MarkdownHeader
-import com.mikepenz.markdown.compose.elements.MarkdownImage
-import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
-import com.mikepenz.markdown.compose.elements.MarkdownParagraph
-import com.mikepenz.markdown.compose.elements.MarkdownText
+import com.mikepenz.markdown.compose.elements.*
 import com.mikepenz.markdown.model.MarkdownTypography
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
@@ -22,9 +17,9 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 
-typealias MarkdownComponent = @Composable (MarkdownComponentModel) -> Unit
+typealias MarkdownComponent = @Composable ColumnScope.(MarkdownComponentModel) -> Unit
 
-typealias CustomMarkdownComponent = @Composable (IElementType, MarkdownComponentModel) -> Unit
+typealias CustomMarkdownComponent = @Composable ColumnScope.(IElementType, MarkdownComponentModel) -> Unit
 
 /**
  * Model holding data relevant for a component
@@ -57,6 +52,7 @@ fun markdownComponents(
     unorderedList: MarkdownComponent = CurrentComponentsBridge.unorderedList,
     image: MarkdownComponent = CurrentComponentsBridge.image,
     linkDefinition: MarkdownComponent = CurrentComponentsBridge.linkDefinition,
+    horizontalRule: MarkdownComponent = CurrentComponentsBridge.horizontalRule,
     custom: CustomMarkdownComponent? = CurrentComponentsBridge.custom,
 ): MarkdownComponents = DefaultMarkdownComponents(
     text = text,
@@ -77,6 +73,7 @@ fun markdownComponents(
     unorderedList = unorderedList,
     image = image,
     linkDefinition = linkDefinition,
+    horizontalRule = horizontalRule,
     custom = custom,
 )
 
@@ -103,6 +100,7 @@ interface MarkdownComponents {
     val unorderedList: MarkdownComponent
     val image: MarkdownComponent
     val linkDefinition: MarkdownComponent
+    val horizontalRule: MarkdownComponent
     val custom: CustomMarkdownComponent?
 }
 
@@ -125,6 +123,7 @@ private class DefaultMarkdownComponents(
     override val unorderedList: MarkdownComponent,
     override val image: MarkdownComponent,
     override val linkDefinition: MarkdownComponent,
+    override val horizontalRule: MarkdownComponent,
     override val custom: CustomMarkdownComponent?,
 ) : MarkdownComponents
 
@@ -170,7 +169,7 @@ object CurrentComponentsBridge {
         MarkdownBlockQuote(it.content, it.node)
     }
     val paragraph: MarkdownComponent = {
-        MarkdownParagraph(it.content, it.node, it.typography.paragraph)
+        MarkdownParagraph(it.content, it.node, style = it.typography.paragraph)
     }
     val orderedList: MarkdownComponent = {
         Column(modifier = Modifier) {
@@ -194,6 +193,9 @@ object CurrentComponentsBridge {
                 ?.getTextInNode(it.content)?.toString()
             LocalReferenceLinkHandler.current.store(linkLabel, destination)
         }
+    }
+    val horizontalRule: MarkdownComponent = {
+        Divider(Modifier.fillMaxWidth())
     }
     val custom: CustomMarkdownComponent? = null
 }
