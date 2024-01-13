@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.*
 import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.utils.filterNonListTypes
@@ -67,6 +66,7 @@ fun MarkdownOrderedList(
     level: Int = 0
 ) {
     val orderedListHandler = LocalOrderedListHandler.current
+    val listItemBottom = LocalMarkdownPadding.current.listItemBottom
     MarkdownListItems(content, node, style, level) { index, child ->
         Row(Modifier.fillMaxWidth()) {
             Text(
@@ -79,7 +79,7 @@ fun MarkdownOrderedList(
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes())
                 pop()
             }
-            MarkdownText(text, Modifier.padding(bottom = 4.dp), style = style)
+            MarkdownText(text, Modifier.padding(bottom = listItemBottom), style = style)
         }
     }
 }
@@ -92,6 +92,7 @@ fun MarkdownBulletList(
     level: Int = 0
 ) {
     val bulletHandler = LocalBulletListHandler.current
+    val listItemBottom = LocalMarkdownPadding.current.listItemBottom
     MarkdownListItems(content, node, style, level) { index, child ->
         Row(Modifier.fillMaxWidth()) {
             Text(
@@ -104,7 +105,7 @@ fun MarkdownBulletList(
                 buildMarkdownAnnotatedString(content, child.children.filterNonListTypes())
                 pop()
             }
-            MarkdownText(text, Modifier.padding(bottom = 4.dp), style = style)
+            MarkdownText(text, Modifier.padding(bottom = listItemBottom), style = style)
         }
     }
 }

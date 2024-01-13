@@ -1,18 +1,20 @@
 package com.mikepenz.markdown.compose.elements
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.compose.LocalMarkdownDimens
+import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
+import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
-import org.intellij.markdown.ast.getTextInNode
+import org.intellij.markdown.ast.findChildOfType
 
 @Composable
 fun MarkdownBlockQuote(
@@ -20,23 +22,35 @@ fun MarkdownBlockQuote(
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.quote
 ) {
-    Box(
+    val blockQuoteColor = LocalMarkdownColors.current.text
+    val blockQuoteThickness = LocalMarkdownDimens.current.blockQuoteThickness
+    val blockQuote = LocalMarkdownPadding.current.blockQuote
+    val blockQuoteText = LocalMarkdownPadding.current.blockQuoteText
+    val blockQuoteBar = LocalMarkdownPadding.current.blockQuoteBar
+
+    Column(
         modifier = Modifier
             .drawBehind {
                 drawLine(
-                    color = style.color,
-                    strokeWidth = 2f,
-                    start = Offset(12.dp.value, 0f),
-                    end = Offset(12.dp.value, size.height)
+                    color = blockQuoteColor,
+                    strokeWidth = blockQuoteThickness.toPx(),
+                    start = Offset(blockQuoteBar.calculateStartPadding(LayoutDirection.Ltr).toPx(), blockQuoteBar.calculateTopPadding().toPx()),
+                    end = Offset(blockQuoteBar.calculateStartPadding(LayoutDirection.Ltr).toPx(), size.height - blockQuoteBar.calculateBottomPadding().toPx())
                 )
             }
-            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+            .padding(blockQuote)
     ) {
-        val text = buildAnnotatedString {
-            pushStyle(style.toSpanStyle())
-            append(node.getTextInNode(content).toString())
-            pop()
+        val quote = node.findChildOfType(MarkdownElementTypes.PARAGRAPH)
+        if (quote != null) {
+            MarkdownParagraph(content, quote, style = style, modifier = Modifier.padding(blockQuoteText))
         }
-        Text(text)
+
+        val nestedQuote = node.findChildOfType(MarkdownElementTypes.BLOCK_QUOTE)
+        if (nestedQuote != null) {
+            if (quote != null) {
+                Spacer(Modifier.height(8.dp))
+            }
+            MarkdownBlockQuote(content, nestedQuote, style)
+        }
     }
 }

@@ -3,7 +3,6 @@ package com.mikepenz.markdown.compose.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
@@ -195,7 +194,7 @@ object CurrentComponentsBridge {
         }
     }
     val horizontalRule: MarkdownComponent = {
-        Divider(Modifier.fillMaxWidth())
+        MarkdownDivider(Modifier.fillMaxWidth())
     }
     val custom: CustomMarkdownComponent? = null
 }
