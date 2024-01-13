@@ -47,6 +47,14 @@ val LocalMarkdownPadding = staticCompositionLocalOf<MarkdownPadding> {
 }
 
 /**
+ * Local [MarkdownDimens] provider
+ */
+val LocalMarkdownDimens = compositionLocalOf<MarkdownDimens> {
+    error("No local MarkdownDimens")
+}
+
+
+/**
  * Local [ImageTransformer] provider
  */
 val LocalImageTransformer = staticCompositionLocalOf<ImageTransformer> {
