@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mikepenz.markdown.m2"
+    namespace = "com.mikepenz.markdown.m3"
     compileSdk = Versions.androidCompileSdk
 
     defaultConfig {
@@ -116,7 +116,7 @@ dependencies {
     commonMainApi(Deps.Markdown.core)
 
     commonMainCompileOnly(compose.runtime)
-    commonMainCompileOnly(compose.material)
+    commonMainCompileOnly(compose.material3)
 }
 
 tasks.dokkaHtml.configure {

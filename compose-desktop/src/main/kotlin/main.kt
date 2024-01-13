@@ -53,7 +53,7 @@ fun main() = application {
                 """.trimIndent()
                 Markdown(
                     content,
-                    modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(scrollState)
+                    modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(16.dp)
                 )
             }
         }

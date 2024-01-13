@@ -1,6 +1,5 @@
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_8
 
 plugins {
     kotlin("multiplatform")
@@ -138,7 +137,6 @@ dependencies {
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.ui)
     commonMainCompileOnly(compose.foundation)
-    commonMainCompileOnly(compose.material)
 
     "androidMainImplementation"(Deps.Compose.coilCompose)
 }
@@ -154,7 +152,7 @@ tasks.dokkaHtml.configure {
 tasks.create<Jar>("javadocJar") {
     dependsOn("dokkaJavadoc")
     archiveClassifier.set("javadoc")
-    from("$buildDir/javadoc")
+    from("${layout.buildDirectory}/javadoc")
 }
 
 mavenPublishing {
@@ -166,7 +164,7 @@ publishing {
     repositories {
         maven {
             name = "installLocally"
-            setUrl("${rootProject.buildDir}/localMaven")
+            setUrl("${rootProject.layout.buildDirectory}/localMaven")
         }
     }
 }
