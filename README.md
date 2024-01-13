@@ -45,7 +45,7 @@ For multiplatform projects specify this single dependency:
 dependencies {
     implementation("com.mikepenz:multiplatform-markdown-renderer:${version}")
 
-    // Offers Material 2 defaults for Material 2 themed apps (com.mikepenz.markdown.m2.Markdown)
+    // Offers Material 2 defaults for Material 3 themed apps (com.mikepenz.markdown.m2.Markdown)
     implementation("com.mikepenz:multiplatform-markdown-renderer-m2:${version}")
 
     // Offers Material 3 defaults for Material 3 themed apps (com.mikepenz.markdown.m2.Markdown)
