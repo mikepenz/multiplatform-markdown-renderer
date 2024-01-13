@@ -13,6 +13,7 @@ interface MarkdownPadding {
     val indentList: Dp
     val codeBlock: PaddingValues
     val blockQuote: PaddingValues
+    val blockQuoteText: PaddingValues
     val blockQuoteBar: PaddingValues.Absolute
 }
 
@@ -24,6 +25,7 @@ private class DefaultMarkdownPadding(
     override val indentList: Dp,
     override val codeBlock: PaddingValues,
     override val blockQuote: PaddingValues,
+    override val blockQuoteText: PaddingValues,
     override val blockQuoteBar: PaddingValues.Absolute,
 ) : MarkdownPadding
 
@@ -34,8 +36,9 @@ fun markdownPadding(
     listItemBottom: Dp = 4.dp,
     indentList: Dp = 8.dp,
     codeBlock: PaddingValues = PaddingValues(8.dp),
-    blockQuote: PaddingValues = PaddingValues(start = 16.dp, top = 16.dp, bottom = 16.dp),
-    blockQuoteBar: PaddingValues.Absolute = PaddingValues.Absolute(left = 4.dp, right = 4.dp),
+    blockQuote: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+    blockQuoteText: PaddingValues = PaddingValues(vertical = 4.dp),
+    blockQuoteBar: PaddingValues.Absolute = PaddingValues.Absolute(left = 4.dp, top = 2.dp, right = 4.dp, bottom = 2.dp),
 ): MarkdownPadding = DefaultMarkdownPadding(
     block = block,
     list = list,
@@ -43,5 +46,6 @@ fun markdownPadding(
     indentList = indentList,
     codeBlock = codeBlock,
     blockQuote = blockQuote,
+    blockQuoteText = blockQuoteText,
     blockQuoteBar = blockQuoteBar,
 )
