@@ -35,8 +35,8 @@ import org.intellij.markdown.parser.MarkdownParser
 @Composable
 fun Markdown(
     content: String,
-    colors: MarkdownColors = markdownColor(),
-    typography: MarkdownTypography = markdownTypography(),
+    colors: MarkdownColors,
+    typography: MarkdownTypography,
     modifier: Modifier = Modifier.fillMaxSize(),
     padding: MarkdownPadding = markdownPadding(),
     dimens: MarkdownDimens = markdownDimens(),
