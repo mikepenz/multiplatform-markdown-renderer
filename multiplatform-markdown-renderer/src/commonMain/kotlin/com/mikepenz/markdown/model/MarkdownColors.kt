@@ -22,6 +22,9 @@ interface MarkdownColors {
 
     /** Represents the color used for the inline background of code. */
     val inlineCodeBackground: Color
+
+    /** Represents the color used for the color of dividers. */
+    val dividerColor: Color
 }
 
 @Immutable
@@ -31,6 +34,7 @@ private class DefaultMarkdownColors(
     override val linkText: Color,
     override val codeBackground: Color,
     override val inlineCodeBackground: Color,
+    override val dividerColor: Color,
 ) : MarkdownColors
 
 @Composable
@@ -40,10 +44,12 @@ fun markdownColor(
     linkText: Color = text,
     codeBackground: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.1f),
     inlineCodeBackground: Color = codeBackground,
+    dividerColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f),
 ): MarkdownColors = DefaultMarkdownColors(
     text = text,
     codeText = codeText,
     linkText = linkText,
     codeBackground = codeBackground,
     inlineCodeBackground = inlineCodeBackground,
+    dividerColor = dividerColor,
 )

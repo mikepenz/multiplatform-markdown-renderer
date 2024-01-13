@@ -37,8 +37,9 @@ fun Markdown(
     content: String,
     colors: MarkdownColors = markdownColor(),
     typography: MarkdownTypography = markdownTypography(),
-    padding: MarkdownPadding = markdownPadding(),
     modifier: Modifier = Modifier.fillMaxSize(),
+    padding: MarkdownPadding = markdownPadding(),
+    dimens: MarkdownDimens = markdownDimens(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
     imageTransformer: ImageTransformer = ImageTransformerImpl(),
     components: MarkdownComponents = markdownComponents(),
@@ -46,6 +47,7 @@ fun Markdown(
     CompositionLocalProvider(
         LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl(),
         LocalMarkdownPadding provides padding,
+        LocalMarkdownDimens provides dimens,
         LocalMarkdownColors provides colors,
         LocalMarkdownTypography provides typography,
         LocalImageTransformer provides imageTransformer

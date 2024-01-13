@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.compose.LocalMarkdownDimens
+import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import org.intellij.markdown.ast.ASTNode
 
@@ -21,15 +23,17 @@ private fun MarkdownCode(
     style: TextStyle = LocalMarkdownTypography.current.code
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
+    val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
+    val codeBlockPadding = LocalMarkdownPadding.current.codeBlock
     Surface(
         color = backgroundCodeColor,
-        shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 8.dp)
+        shape = RoundedCornerShape(codeBackgroundCornerSize),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
     ) {
         Text(
             code,
             color = LocalMarkdownColors.current.codeText,
-            modifier = Modifier.horizontalScroll(rememberScrollState()).padding(8.dp),
+            modifier = Modifier.horizontalScroll(rememberScrollState()).padding(codeBlockPadding),
             style = style
         )
     }
