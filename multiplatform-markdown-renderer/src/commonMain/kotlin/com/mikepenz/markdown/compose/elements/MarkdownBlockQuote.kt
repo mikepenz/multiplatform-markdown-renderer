@@ -9,8 +9,10 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.LayoutDirection
+import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
+import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
@@ -21,25 +23,31 @@ fun MarkdownBlockQuote(
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.quote
 ) {
+    val blockQuoteColor = LocalMarkdownColors.current.text
     val blockQuoteThickness = LocalMarkdownDimens.current.blockQuoteThickness
-    val blockQuote = LocalMarkdownDimens.current.blockQuote
+    val blockQuote = LocalMarkdownPadding.current.blockQuote
+    val blockQuoteBar = LocalMarkdownPadding.current.blockQuoteBar
     Box(
         modifier = Modifier
             .drawBehind {
                 drawLine(
-                    color = style.color,
+                    color = blockQuoteColor,
                     strokeWidth = blockQuoteThickness.value,
-                    start = Offset(blockQuote.value, 0f),
-                    end = Offset(blockQuote.value, size.height)
+                    start = Offset(blockQuoteBar.calculateLeftPadding(LayoutDirection.Ltr).value, 0f),
+                    end = Offset(blockQuoteBar.calculateRightPadding(LayoutDirection.Ltr).value, size.height)
                 )
             }
-            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+            .padding(blockQuote)
     ) {
         val text = buildAnnotatedString {
             pushStyle(style.toSpanStyle())
             append(node.getTextInNode(content).toString())
             pop()
         }
-        Text(text)
+        Text(
+            text = text,
+            style = style,
+            color = LocalMarkdownColors.current.text,
+        )
     }
 }
