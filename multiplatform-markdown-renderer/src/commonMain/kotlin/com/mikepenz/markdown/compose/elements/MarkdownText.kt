@@ -18,6 +18,7 @@ import com.mikepenz.markdown.compose.LocalImageTransformer
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
+import com.mikepenz.markdown.compose.elements.material.Text
 import com.mikepenz.markdown.model.rememberMarkdownImageState
 import com.mikepenz.markdown.utils.TAG_IMAGE_URL
 import com.mikepenz.markdown.utils.TAG_URL

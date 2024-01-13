@@ -13,6 +13,8 @@ import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
+import com.mikepenz.markdown.compose.elements.material.Surface
+import com.mikepenz.markdown.compose.elements.material.Text
 import org.intellij.markdown.ast.ASTNode
 
 @Composable

@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import com.mikepenz.markdown.compose.*
+import com.mikepenz.markdown.compose.elements.material.Text
 import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.utils.filterNonListTypes
 import org.intellij.markdown.MarkdownElementTypes

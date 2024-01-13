@@ -1,4 +1,4 @@
-package com.mikepenz.markdown.compose.elements
+package com.mikepenz.markdown.compose.elements.material
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

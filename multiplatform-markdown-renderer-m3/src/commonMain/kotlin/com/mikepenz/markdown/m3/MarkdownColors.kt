@@ -13,10 +13,12 @@ fun markdownColor(
     linkText: Color = text,
     codeBackground: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
     inlineCodeBackground: Color = codeBackground,
+    dividerColor: Color = MaterialTheme.colorScheme.outlineVariant,
 ): MarkdownColors = DefaultMarkdownColors(
     text = text,
     codeText = codeText,
     linkText = linkText,
     codeBackground = codeBackground,
     inlineCodeBackground = inlineCodeBackground,
+    dividerColor = dividerColor,
 )

@@ -1,4 +1,4 @@
-package com.mikepenz.markdown.compose.elements
+package com.mikepenz.markdown.compose.elements.material
 
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.InlineTextContent
