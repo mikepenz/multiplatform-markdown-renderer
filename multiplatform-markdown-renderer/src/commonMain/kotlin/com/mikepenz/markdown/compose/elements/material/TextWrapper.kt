@@ -16,9 +16,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
+import com.mikepenz.markdown.compose.LocalMarkdownColors
 
 @Composable
-internal fun Text(
+internal fun MarkdownBasicText(
     text: String,
     style: TextStyle,
     modifier: Modifier = Modifier,
@@ -37,29 +38,13 @@ internal fun Text(
     minLines: Int = 1,
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
-    // TL:DR: profile before you change any line of code in this method
-    //
-    // The call to LocalContentAlpha.current looks like it can be avoided by only calling it in the
-    // last else block but, in 1.5, this causes a control flow group to be created because it would
-    // be a conditional call to a composable function. The call is currently made unconditionally
-    // since the call to LocalContentAlpha.current does not create a group (it is a read-only
-    // composable) and looking up the value in the composition locals map is currently faster than
-    // creating a group to avoid it.
-    //
-    // Similar notes regarding lambda allocations. It appears there's a path to optimize for
-    // zero-allocations in the style-provided color route, but this either introduces a group or a
-    // box depending on how it's coded. It's also possible that allocating a final ColorProducer
-    // subclass with no capture may be a successful optimization, but it appeared slower in initial
-    // profiling.
-    //
-    // If changing ANY LINE OF CODE, please confirm that it's faster or the same speed using
-    // profilers and benchmarks.
+    // Note: This component is ported over from Material2 Text - to remove the dependency on Material
     val overrideColorOrUnspecified: Color = if (color.isSpecified) {
         color
     } else if (style.color.isSpecified) {
         style.color
     } else {
-        Color.Black // TODO
+        LocalMarkdownColors.current.text
     }
 
     BasicText(
@@ -85,7 +70,7 @@ internal fun Text(
 }
 
 @Composable
-internal fun Text(
+internal fun MarkdownBasicText(
     text: AnnotatedString,
     style: TextStyle,
     modifier: Modifier = Modifier,
@@ -105,30 +90,13 @@ internal fun Text(
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
 ) {
-    // TL:DR: profile before you change any line of code in this method
-    //
-    // The call to LocalContentAlpha.current looks like it can be avoided by only calling it in the
-    // last else block but, in 1.5, this causes a control flow group to be created because it would
-    // be a conditional call to a composable function. The call is currently made unconditionally
-    // since the call to LocalContentAlpha.current does not create a group (it is a read-only
-    // composable) and looking up the value in the composition locals map is currently faster than
-    // creating a group to avoid it.
-    //
-    // Similar notes regarding lambda allocations. It appears there's a path to optimize for
-    // zero-allocations in the style-provided color route, but this either introduces a group or a
-    // box depending on how it's coded. It's also possible that allocating a final ColorProducer
-    // subclass with no capture may be a successful optimization, but it appeared slower in initial
-    // profiling.
-    //
-    // If changing ANY LINE OF CODE, please confirm that it's faster or the same speed using
-    // profilers and benchmarks.
-
+    // Note: This component is ported over from Material2 Text - to remove the dependency on Material
     val overrideColorOrUnspecified = if (color.isSpecified) {
         color
     } else if (style.color.isSpecified) {
         style.color
     } else {
-        Color.Black // TODO
+        LocalMarkdownColors.current.text
     }
 
     BasicText(

@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import com.mikepenz.markdown.compose.*
-import com.mikepenz.markdown.compose.elements.material.Text
+import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.utils.filterNonListTypes
 import org.intellij.markdown.MarkdownElementTypes
@@ -69,7 +69,7 @@ fun MarkdownOrderedList(
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
     MarkdownListItems(content, node, style, level) { index, child ->
         Row(Modifier.fillMaxWidth()) {
-            Text(
+            MarkdownBasicText(
                 text = orderedListHandler.transform(LIST_NUMBER, child.findChildOfType(LIST_NUMBER)?.getTextInNode(content), index),
                 style = style,
                 color = LocalMarkdownColors.current.text
@@ -95,7 +95,7 @@ fun MarkdownBulletList(
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
     MarkdownListItems(content, node, style, level) { index, child ->
         Row(Modifier.fillMaxWidth()) {
-            Text(
+            MarkdownBasicText(
                 bulletHandler.transform(LIST_BULLET, child.findChildOfType(LIST_BULLET)?.getTextInNode(content), index),
                 style = style,
                 color = LocalMarkdownColors.current.text
