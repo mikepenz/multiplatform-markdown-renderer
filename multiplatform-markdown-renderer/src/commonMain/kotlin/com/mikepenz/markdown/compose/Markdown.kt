@@ -99,5 +99,11 @@ private fun ColumnScope.handleElement(node: ASTNode, components: MarkdownCompone
         }
     }
 
+    if(!handled) {
+        node.children.forEach { child ->
+            handleElement(child, components, content)
+        }
+    }
+
     return handled
 }
