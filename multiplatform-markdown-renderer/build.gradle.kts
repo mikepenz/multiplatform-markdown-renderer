@@ -32,6 +32,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.composeCompiler
+    }
+
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "11"
 
@@ -138,7 +142,10 @@ dependencies {
     commonMainCompileOnly(compose.ui)
     commonMainCompileOnly(compose.foundation)
 
-    "androidMainImplementation"(Deps.Compose.coilCompose)
+    "androidMainImplementation"(Deps.Compose.coilCompose) {
+        exclude("androidx.compose.foundation")
+        exclude("androidx.compose.ui")
+    }
 }
 
 tasks.dokkaHtml.configure {
