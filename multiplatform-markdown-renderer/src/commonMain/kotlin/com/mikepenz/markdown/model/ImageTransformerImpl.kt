@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import com.mikepenz.markdown.utils.imagePainter
 import com.mikepenz.markdown.utils.painterIntrinsicSize
 
-internal class ImageTransformerImpl : ImageTransformer {
+class ImageTransformerImpl : ImageTransformer {
 
     @Composable
     override fun transform(link: String): ImageData? {

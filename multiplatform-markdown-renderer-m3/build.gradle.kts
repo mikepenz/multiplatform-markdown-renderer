@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mikepenz.markdown"
+    namespace = "com.mikepenz.markdown.m3"
     compileSdk = Versions.androidCompileSdk
 
     defaultConfig {
@@ -34,21 +34,6 @@ android {
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "11"
-
-        kotlinOptions {
-            if (project.findProperty("composeCompilerReports") == "true") {
-                freeCompilerArgs += listOf(
-                    "-P",
-                    "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${project.buildDir.absolutePath}/compose_compiler"
-                )
-            }
-            if (project.findProperty("composeCompilerMetrics") == "true") {
-                freeCompilerArgs += listOf(
-                    "-P",
-                    "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=${project.buildDir.absolutePath}/compose_compiler"
-                )
-            }
-        }
     }
 }
 
@@ -71,12 +56,6 @@ kotlin {
         compilations {
             all {
                 kotlinOptions.jvmTarget = "11"
-            }
-        }
-
-        testRuns["test"].executionTask.configure {
-            useJUnit {
-                excludeCategories("org.intellij.markdown.ParserPerformanceTest")
             }
         }
     }
@@ -132,13 +111,12 @@ kotlin {
 }
 
 dependencies {
+    commonMainApi(project(":multiplatform-markdown-renderer"))
+
     commonMainApi(Deps.Markdown.core)
 
     commonMainCompileOnly(compose.runtime)
-    commonMainCompileOnly(compose.ui)
-    commonMainCompileOnly(compose.foundation)
-
-    "androidMainImplementation"(Deps.Compose.coilCompose)
+    commonMainCompileOnly(compose.material3)
 }
 
 tasks.dokkaHtml.configure {

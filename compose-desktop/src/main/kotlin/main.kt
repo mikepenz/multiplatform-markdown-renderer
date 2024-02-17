@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.mikepenz.markdown.compose.Markdown
+import com.mikepenz.markdown.m2.Markdown
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "Markdown Sample") {
@@ -53,7 +53,7 @@ fun main() = application {
                 """.trimIndent()
                 Markdown(
                     content,
-                    modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(scrollState)
+                    modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(16.dp)
                 )
             }
         }

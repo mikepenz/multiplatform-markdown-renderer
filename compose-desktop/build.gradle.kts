@@ -19,6 +19,7 @@ dependencies {
     implementation(compose.foundation)
     implementation(compose.material)
     implementation(project(":multiplatform-markdown-renderer"))
+    implementation(project(":multiplatform-markdown-renderer-m2"))
 }
 
 application {

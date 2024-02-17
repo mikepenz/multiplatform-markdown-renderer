@@ -1,11 +1,6 @@
 package com.mikepenz.markdown.model
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.isUnspecified
 import androidx.compose.ui.platform.LocalDensity
