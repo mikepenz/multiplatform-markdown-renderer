@@ -45,7 +45,7 @@ jobs:
             gradle-${{ runner.os }}-
 
       - name: Publish the macOS artifacts
-        if: matrix.os == 'macOS-latest'
+        if: matrix.os == 'macos-14'
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.NEXUS_PASSWORD }}
@@ -59,7 +59,7 @@ jobs:
 
   build:
     name: Build
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - name: Checkout
         uses: actions/checkout@v4
