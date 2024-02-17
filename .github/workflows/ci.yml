@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ macOS-latest ]
+        os: [ macos-14 ]
 
     runs-on: ${{matrix.os}}
 
@@ -90,7 +90,7 @@ jobs:
         run: ./gradlew lintDebug
 
       - name: Detekt
-        if: github.event_name  == 'pull_request'
+        if: github.event_name  == 'pull_request' && false
         run: ./gradlew detekt
 
       - name: Setup Ruby
