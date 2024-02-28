@@ -48,7 +48,7 @@ dependencies {
     // Offers Material 2 defaults for Material 3 themed apps (com.mikepenz.markdown.m2.Markdown)
     implementation("com.mikepenz:multiplatform-markdown-renderer-m2:${version}")
 
-    // Offers Material 3 defaults for Material 3 themed apps (com.mikepenz.markdown.m2.Markdown)
+    // Offers Material 3 defaults for Material 3 themed apps (com.mikepenz.markdown.m3.Markdown)
     implementation("com.mikepenz:multiplatform-markdown-renderer-m3:${version}")
 }
 ```
