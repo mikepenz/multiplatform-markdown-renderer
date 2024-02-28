@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.Markdown
+import com.mikepenz.markdown.m2.Markdown
 
 class MainActivity : ComponentActivity() {
 

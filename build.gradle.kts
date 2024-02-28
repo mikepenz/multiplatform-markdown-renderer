@@ -8,12 +8,12 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:8.2.1")
-        classpath("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.21.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20")
+        classpath("com.android.tools.build:gradle:8.2.2")
+        classpath("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.5")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.9.10")
-        classpath("com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:10.10.0")
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.5.11")
+        classpath("com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:11.1.0")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.6.0")
     }
 }
 
@@ -29,10 +29,9 @@ allprojects {
     }
 }
 
-subprojects {
-    apply(from = "../detekt.gradle")
-
-    dependencies {
-        "detektPlugins"("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
-    }
-}
+// subprojects {
+//     apply(from = "../detekt.gradle")
+//     dependencies {
+//         "detektPlugins"("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
+//     }
+// }

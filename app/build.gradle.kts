@@ -68,6 +68,7 @@ android {
 
 dependencies {
     implementation(project(":multiplatform-markdown-renderer"))
+    implementation(project(":multiplatform-markdown-renderer-m2"))
 
     with(Deps.Android) {
         implementation(material)

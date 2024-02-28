@@ -35,8 +35,8 @@ import org.intellij.markdown.parser.MarkdownParser
 @Composable
 fun Markdown(
     content: String,
-    colors: MarkdownColors = markdownColor(),
-    typography: MarkdownTypography = markdownTypography(),
+    colors: MarkdownColors,
+    typography: MarkdownTypography,
     modifier: Modifier = Modifier.fillMaxSize(),
     padding: MarkdownPadding = markdownPadding(),
     dimens: MarkdownDimens = markdownDimens(),
@@ -96,6 +96,12 @@ private fun ColumnScope.handleElement(node: ASTNode, components: MarkdownCompone
         HORIZONTAL_RULE -> components.horizontalRule(this@handleElement, model)
         else -> {
             handled = components.custom?.invoke(this@handleElement, node.type, model) != null
+        }
+    }
+
+    if(!handled) {
+        node.children.forEach { child ->
+            handleElement(child, components, content)
         }
     }
 

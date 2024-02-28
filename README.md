@@ -33,6 +33,7 @@
 -------
 
 ## Setup
+
 ### Using Gradle
 
 <details open><summary><b>Multiplatform</b></summary>
@@ -43,6 +44,12 @@ For multiplatform projects specify this single dependency:
 ```kotlin
 dependencies {
     implementation("com.mikepenz:multiplatform-markdown-renderer:${version}")
+
+    // Offers Material 2 defaults for Material 3 themed apps (com.mikepenz.markdown.m2.Markdown)
+    implementation("com.mikepenz:multiplatform-markdown-renderer-m2:${version}")
+
+    // Offers Material 3 defaults for Material 3 themed apps (com.mikepenz.markdown.m3.Markdown)
+    implementation("com.mikepenz:multiplatform-markdown-renderer-m3:${version}")
 }
 ```
 
@@ -53,6 +60,7 @@ dependencies {
 <p>
 
 To use the library on JVM, you have to include:
+
 ```kotlin
 dependencies {
     implementation("com.mikepenz:multiplatform-markdown-renderer-jvm:${version}")
@@ -66,6 +74,7 @@ dependencies {
 <p>
 
 For Android a special dependency is available:
+
 ```kotlin
 dependencies {
     implementation("com.mikepenz:multiplatform-markdown-renderer-android:${version}")
@@ -74,6 +83,11 @@ dependencies {
 
 </p>
 </details>
+
+> [!TIP]
+> Since 0.13.0 the core library does not depend on a Material theme anymore. Include the `-m2` or `-m3` module to get
+> access to the defaults.
+
 
 -------
 
@@ -123,12 +137,13 @@ CompositionLocalProvider(LocalOrderedListHandler provides { "A.) " }) {
 
 ### Custom Components
 
-Since v0.9.0 it is possible to provide custom components, instead of the default ones. 
-This can be done by providing the components `MarkdownComponents` to the `Markdown` composable. 
+Since v0.9.0 it is possible to provide custom components, instead of the default ones.
+This can be done by providing the components `MarkdownComponents` to the `Markdown` composable.
 
 Use the `markdownComponents()` to keep defaults for non overwritten components.
 
-The `MarkdownComponent` will expose access to the `content: String`, `node: ASTNode`, `typography: MarkdownTypography`, offering full flexibility.
+The `MarkdownComponent` will expose access to the `content: String`, `node: ASTNode`, `typography: MarkdownTypography`,
+offering full flexibility.
 
 ```kotlin
 // Simple adjusted paragraph with different Modifier.
@@ -153,7 +168,7 @@ val customParagraphComponent: MarkdownComponent = {
     )
 }
 
-// Define the `Markdown` composeable and pass in the custom paragraph component
+// Define the `Markdown` composable and pass in the custom paragraph component
 Markdown(
     content,
     components = markdownComponents(
@@ -168,25 +183,31 @@ Markdown(
 
 ## Dependency
 
-This project uses JetBrains [markdown](https://github.com/JetBrains/markdown/) Multiplatform Markdown processor as dependency to parse the markdown content.
+This project uses JetBrains [markdown](https://github.com/JetBrains/markdown/) Multiplatform Markdown processor as
+dependency to parse the markdown content.
 
 ## Developed By
 
 * Mike Penz
- * [mikepenz.com](http://mikepenz.com) - <mikepenz@gmail.com>
- * [paypal.me/mikepenz](http://paypal.me/mikepenz)
+* [mikepenz.com](http://mikepenz.com) - <mikepenz@gmail.com>
+* [paypal.me/mikepenz](http://paypal.me/mikepenz)
 
 ## Contributors
 
-This free, open source software was also made possible by a group of volunteers that put many hours of hard work into it. See the [CONTRIBUTORS.md](CONTRIBUTORS.md) file for details.
+This free, open source software was also made possible by a group of volunteers that put many hours of hard work into
+it. See the [CONTRIBUTORS.md](CONTRIBUTORS.md) file for details.
 
 ## Credits
 
-Big thanks to [Erik Hellman](https://twitter.com/ErikHellman) and his awesome article on [Rendering Markdown with Jetpack Compose](https://www.hellsoft.se/rendering-markdown-with-jetpack-compose/), and the related source [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer).
+Big thanks to [Erik Hellman](https://twitter.com/ErikHellman) and his awesome article
+on [Rendering Markdown with Jetpack Compose](https://www.hellsoft.se/rendering-markdown-with-jetpack-compose/), and the
+related source [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer).
 
 ## Fork License
 
-Copyright for portions of the code are held by [Erik Hellman, 2020] as part of project [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer) under the MIT license. All other copyright for project multiplatform-markdown-renderer are held by [Mike Penz, 2023] under the Apache License, Version 2.0.
+Copyright for portions of the code are held by [Erik Hellman, 2020] as part of
+project [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer) under the MIT license. All other copyright
+for project multiplatform-markdown-renderer are held by [Mike Penz, 2023] under the Apache License, Version 2.0.
 
 ## License
 
