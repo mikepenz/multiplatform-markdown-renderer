@@ -36,5 +36,6 @@ object Deps {
         const val material = "androidx.compose.material:material:${Versions.compose}"
 
         const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil}"
+        const val coilComposeSvg = "io.coil-kt:coil-svg:${Versions.coil}"
     }
 }
