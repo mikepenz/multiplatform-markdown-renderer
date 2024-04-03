@@ -146,10 +146,6 @@ dependencies {
         exclude("androidx.compose.foundation")
         exclude("androidx.compose.ui")
     }
-    "androidMainImplementation"(Deps.Compose.coilComposeSvg) {
-        exclude("androidx.compose.foundation")
-        exclude("androidx.compose.ui")
-    }
 }
 
 tasks.dokkaHtml.configure {

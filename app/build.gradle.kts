@@ -78,9 +78,9 @@ dependencies {
         implementation(activityCompose)
     }
 
-
     with(Deps.Compose) {
         implementation(coilCompose)
+        implementation(coilComposeSvg)
 
         implementation(foundationLayout)
         implementation(material)

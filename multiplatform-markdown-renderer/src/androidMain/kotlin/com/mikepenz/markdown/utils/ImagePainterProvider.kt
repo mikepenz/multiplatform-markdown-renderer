@@ -12,15 +12,11 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
-import coil3.svg.SvgDecoder
 
 @Composable
 internal actual fun imagePainter(url: String): Painter? {
     return rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
-            .components {
-                add(SvgDecoder.Factory())
-            }
             .data(url)
             .size(Size.ORIGINAL)
             .build()
