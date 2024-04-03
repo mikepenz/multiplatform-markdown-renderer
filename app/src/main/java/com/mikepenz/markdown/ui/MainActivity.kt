@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,10 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,13 +24,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mikepenz.markdown.compose.Markdown
 import com.mikepenz.markdown.m2.Markdown
 
 class MainActivity : ComponentActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MainLayout()
         }
@@ -43,8 +40,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainLayout() {
-   val isSystemInDarkMode = isSystemInDarkTheme()
-   var darkMode by remember { mutableStateOf(isSystemInDarkMode) }
+    val isSystemInDarkMode = isSystemInDarkTheme()
+    var darkMode by remember { mutableStateOf(isSystemInDarkMode) }
 
     SampleTheme(darkMode) {
 
@@ -111,29 +108,35 @@ fun MainLayout() {
 
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize().background(MaterialTheme.colors.background).padding(horizontal = 16.dp),
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
+                .padding(horizontal = 16.dp),
         ) {
 
-                item {
-                    Spacer(modifier = Modifier.height(56.dp))
-                }
-                item {
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "Dark mode enabled", color = MaterialTheme.colors.onBackground)
-                        Switch(checked = darkMode, onCheckedChange = { darkMode = !darkMode })
-                    }
-                }
-                item {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-                item {
-                    Markdown(markdown)
-                }
-                item {
-                    Spacer(modifier = Modifier.height(48.dp))
+            item {
+                Spacer(modifier = Modifier.height(56.dp))
+            }
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "Dark mode enabled", color = MaterialTheme.colors.onBackground)
+                    Switch(checked = darkMode, onCheckedChange = { darkMode = !darkMode })
                 }
             }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            item {
+                Markdown(markdown)
+            }
+            item {
+                Spacer(modifier = Modifier.height(48.dp))
+            }
         }
-
     }
+
+}
 
