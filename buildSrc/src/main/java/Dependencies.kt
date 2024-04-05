@@ -5,7 +5,7 @@ object Versions {
 
     const val kotlin = "1.9.23"
 
-    const val markdown = "0.6.1"
+    const val markdown = "0.7.0"
 
     const val coil = "2.6.0"
     const val compose = "1.6.4"
