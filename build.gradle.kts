@@ -8,12 +8,12 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:8.2.2")
+        classpath("com.android.tools.build:gradle:8.3.1")
         classpath("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.5")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.9.10")
-        classpath("com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:11.1.0")
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.6.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.23")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.9.20")
+        classpath("com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:11.1.1")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.6.1")
     }
 }
 

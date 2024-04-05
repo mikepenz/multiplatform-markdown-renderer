@@ -1,5 +1,6 @@
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     kotlin("multiplatform")
@@ -67,7 +68,6 @@ kotlin {
             }
         }
     }
-
     androidTarget {
         publishLibraryVariants("release")
     }
@@ -83,6 +83,10 @@ kotlin {
                 excludeCategories("org.intellij.markdown.ParserPerformanceTest")
             }
         }
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
     }
     js(IR) {
         nodejs()

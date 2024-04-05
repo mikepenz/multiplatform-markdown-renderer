@@ -45,7 +45,7 @@ For multiplatform projects specify this single dependency:
 dependencies {
     implementation("com.mikepenz:multiplatform-markdown-renderer:${version}")
 
-    // Offers Material 2 defaults for Material 3 themed apps (com.mikepenz.markdown.m2.Markdown)
+    // Offers Material 2 defaults for Material 2 themed apps (com.mikepenz.markdown.m2.Markdown)
     implementation("com.mikepenz:multiplatform-markdown-renderer-m2:${version}")
 
     // Offers Material 3 defaults for Material 3 themed apps (com.mikepenz.markdown.m3.Markdown)
@@ -180,6 +180,19 @@ Markdown(
 
 </p>
 </details>
+
+### Image Loading
+
+In the current versions of the library, image loading is included in different variants.
+
+- Android: Uses `coil` to load images (Default configuration). The global `ImageLoader` is respected. 
+- JVM: Load image as HTTPUrlConnection and set to the view
+- JS / Native: No image loading provided at this time
+
+Provide your own `ImageTransformer` to the `Markdown` compose function to modify this behavior. 
+
+> [!NOTE]  
+> It is planned to update to coil3 for all platforms once it reaches a more stable release cycle.
 
 ## Dependency
 
