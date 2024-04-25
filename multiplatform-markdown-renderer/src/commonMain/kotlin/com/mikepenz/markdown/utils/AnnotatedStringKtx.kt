@@ -85,7 +85,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
             }
 
             MarkdownElementTypes.CODE_SPAN -> {
-                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace, background = LocalMarkdownColors.current.inlineCodeBackground))
+                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace, color = LocalMarkdownColors.current.inlineCodeText, background = LocalMarkdownColors.current.inlineCodeBackground))
                 append(' ')
                 buildMarkdownAnnotatedString(content, child.children.innerList())
                 append(' ')

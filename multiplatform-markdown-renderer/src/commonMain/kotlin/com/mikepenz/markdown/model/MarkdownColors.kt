@@ -12,6 +12,9 @@ interface MarkdownColors {
     /** Represents the color used for the text of code. */
     val codeText: Color
 
+    /** Represents the color used for the text of code. */
+    val inlineCodeText: Color
+
     /** Represents the color used for the text of links. */
     val linkText: Color
 
@@ -29,6 +32,7 @@ interface MarkdownColors {
 class DefaultMarkdownColors(
     override val text: Color,
     override val codeText: Color,
+    override val inlineCodeText: Color,
     override val linkText: Color,
     override val codeBackground: Color,
     override val inlineCodeBackground: Color,

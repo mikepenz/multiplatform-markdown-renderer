@@ -10,6 +10,7 @@ import com.mikepenz.markdown.model.MarkdownColors
 fun markdownColor(
     text: Color = MaterialTheme.colorScheme.onBackground,
     codeText: Color = MaterialTheme.colorScheme.onBackground,
+    inlineCodeText: Color = codeText,
     linkText: Color = text,
     codeBackground: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
     inlineCodeBackground: Color = codeBackground,
@@ -17,6 +18,7 @@ fun markdownColor(
 ): MarkdownColors = DefaultMarkdownColors(
     text = text,
     codeText = codeText,
+    inlineCodeText = inlineCodeText,
     linkText = linkText,
     codeBackground = codeBackground,
     inlineCodeBackground = inlineCodeBackground,
