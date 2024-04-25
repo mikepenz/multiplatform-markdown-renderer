@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.compose.elements.*
 import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.utils.getLinkAnchorText
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
@@ -184,13 +185,16 @@ object CurrentComponentsBridge {
         MarkdownImage(it.content, it.node)
     }
     val linkDefinition: MarkdownComponent = {
-        val linkLabel =
-            it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(it.content)
-                ?.toString()
-        if (linkLabel != null) {
+        val anchorText = it.node.getLinkAnchorText(it.content)
+        val linkLabel = it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)
+            ?.getTextInNode(it.content)
+            ?.toString()
+        (anchorText ?: linkLabel)?.also { label ->
             val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)
                 ?.getTextInNode(it.content)?.toString()
-            LocalReferenceLinkHandler.current.store(linkLabel, destination)
+            if (destination != null) {
+                LocalReferenceLinkHandler.current.store(label, destination)
+            }
         }
     }
     val horizontalRule: MarkdownComponent = {
