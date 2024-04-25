@@ -44,13 +44,19 @@ fun MarkdownText(
     val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
     val imageState = rememberMarkdownImageState()
 
-    val hasUrl = content.getStringAnnotations(TAG_URL, 0, content.length).any()
+    val annotations = content.getStringAnnotations(TAG_URL, 0, content.length)
+        .sortedBy { it.end }
+        .distinctBy { it.start }
+    val hasUrl = annotations.any()
     val textModifier = if (hasUrl) modifier.pointerInput(Unit) {
         detectTapGestures { pos ->
             layoutResult.value?.let { layoutResult ->
-                val position = layoutResult.getOffsetForPosition(pos)
-                content.getStringAnnotations(TAG_URL, position, position).reversed().firstOrNull()?.let {
-                    val foundReference = referenceLinkHandler.find(it.item)
+                val offset = layoutResult.getOffsetForPosition(pos)
+                annotations.firstOrNull { range ->
+                    val endOfClickableSpan = range.start + range.item.length
+                    (range.start..<endOfClickableSpan).contains(offset)
+                }?.also { annotation ->
+                    val foundReference = referenceLinkHandler.find(annotation.item)
                     try {
                         uriHandler.openUri(foundReference)
                     } catch (t: Throwable) {
