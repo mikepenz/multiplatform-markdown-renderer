@@ -15,6 +15,7 @@ import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
+import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 
 @Composable
@@ -29,6 +30,7 @@ internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: A
     (destination ?: linkLabel)?.let { pushStringAnnotation(TAG_URL, it) }
     pushStyle(SpanStyle(color = LocalMarkdownColors.current.linkText, textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
     buildMarkdownAnnotatedString(content, linkText)
+    pop()
     pop()
 }
 
@@ -84,8 +86,14 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                 pop()
             }
 
+            GFMElementTypes.STRIKETHROUGH -> {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
+                buildMarkdownAnnotatedString(content, child)
+                pop()
+            }
+
             MarkdownElementTypes.CODE_SPAN -> {
-                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace, background = LocalMarkdownColors.current.inlineCodeBackground))
+                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace, color = LocalMarkdownColors.current.inlineCodeText, background = LocalMarkdownColors.current.inlineCodeBackground))
                 append(' ')
                 buildMarkdownAnnotatedString(content, child.children.innerList())
                 append(' ')
