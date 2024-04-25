@@ -9,6 +9,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
@@ -26,15 +27,30 @@ internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: A
     }
     val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
     val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
-    (destination ?: linkLabel)?.let { pushStringAnnotation(TAG_URL, it) }
+    val anchorText = node.getLinkAnchorText(content)
+    (anchorText ?: destination ?: linkLabel)?.also { label ->
+        pushStringAnnotation(TAG_URL, label)
+    }
+    (anchorText ?: linkLabel)?.also { label ->
+        if (destination != null) {
+            LocalReferenceLinkHandler.current.store(label, destination)
+        }
+    }
     pushStyle(SpanStyle(color = LocalMarkdownColors.current.linkText, textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
     buildMarkdownAnnotatedString(content, linkText)
     pop()
 }
 
+@Composable
 internal fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNode) {
-    val destination = node.getTextInNode(content).toString()
-    pushStringAnnotation(TAG_URL, (destination))
+    val destination = node.getTextInNode(content).toString().takeIf { it.isNotEmpty() }
+    val anchorText = node.getLinkAnchorText(content)
+    (anchorText ?: destination)?.also {  label ->
+        pushStringAnnotation(TAG_URL, label)
+        if (destination != null) {
+            LocalReferenceLinkHandler.current.store(label, destination)
+        }
+    }
     pushStyle(SpanStyle(textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
     append(destination)
     pop()
