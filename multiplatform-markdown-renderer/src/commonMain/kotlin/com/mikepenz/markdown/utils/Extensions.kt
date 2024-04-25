@@ -4,6 +4,8 @@ import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.findChildOfType
+import org.intellij.markdown.ast.getTextInNode
 
 /**
  * Tag used to indicate an url for inline content. Required for click handling.
@@ -44,3 +46,14 @@ internal fun List<ASTNode>.innerList(): List<ASTNode> = this.subList(1, this.siz
 internal fun List<ASTNode>.filterNonListTypes(): List<ASTNode> = this.filter { n ->
     n.type != MarkdownElementTypes.ORDERED_LIST && n.type != MarkdownElementTypes.UNORDERED_LIST && n.type != MarkdownTokenTypes.EOL
 }
+
+/**
+ * Helper function to extract the link anchor text (i.e. the clickable label) of a hyperlink node inside
+ * a given content of text. Returns null if it is not possible to find any.
+ */
+internal fun ASTNode.getLinkAnchorText(content: String): String? = buildString {
+    findChildOfType(MarkdownElementTypes.LINK_TEXT)?.children?.innerList().orEmpty()
+        .forEach { node ->
+            append(node.getTextInNode(content))
+        }
+}.takeIf { text -> text.isNotEmpty() }
