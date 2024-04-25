@@ -16,7 +16,7 @@ import com.mikepenz.markdown.compose.LocalMarkdownDimens
 @Composable
 fun MarkdownDivider(
     modifier: Modifier = Modifier,
-    color: Color = LocalMarkdownColors.current.codeBackground,
+    color: Color = LocalMarkdownColors.current.dividerColor,
     thickness: Dp = LocalMarkdownDimens.current.dividerThickness,
 ) {
     val targetThickness = if (thickness == Dp.Hairline) {
