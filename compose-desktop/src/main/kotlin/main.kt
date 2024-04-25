@@ -34,7 +34,7 @@ fun main() = application {
                 }
                 ```
                 
-                You can find more information on [GitHub](https://github.com/mikepenz/multiplatform-markdown-renderer).
+                You can find more information on [GitHub](https://github.com/mikepenz/multiplatform-markdown-renderer). More Text after this.
                 
                 ![Image](https://avatars.githubusercontent.com/u/1476232?v=4)
                 

@@ -30,6 +30,7 @@ internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: A
     pushStyle(SpanStyle(color = LocalMarkdownColors.current.linkText, textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
     buildMarkdownAnnotatedString(content, linkText)
     pop()
+    pop()
 }
 
 internal fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNode) {
