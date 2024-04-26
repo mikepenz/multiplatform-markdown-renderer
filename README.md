@@ -146,8 +146,26 @@ Markdown(
                 SquigglyUnderlineSpanPainter(animator = animator)
             )
         }
-    },
-    modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(16.dp)
+    }
+)
+```
+
+### Extend Annotated string handling
+
+The library already handles a significant amount of different tokens, however not all. To allow
+special integrations expand this, you can pass in a custom `annotator` to the `Markdown`
+composeable. This `annotator` allows you to customize existing handled tokens, but also add new
+ones.
+
+```kotlin
+Markdown(
+    content,
+    annotator = markdownAnnotator { content, child ->
+        if (child.type == GFMElementTypes.STRIKETHROUGH) {
+            append("Replaced you :)")
+            true // return true to consume this ASTNode child
+        } else false
+    }
 )
 ```
 
