@@ -13,12 +13,14 @@ import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageTransformerImpl
+import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.MarkdownColors
 import com.mikepenz.markdown.model.MarkdownDimens
 import com.mikepenz.markdown.model.MarkdownExtendedSpans
 import com.mikepenz.markdown.model.MarkdownPadding
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.model.ReferenceLinkHandlerImpl
+import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.model.markdownDimens
 import com.mikepenz.markdown.model.markdownExtendedSpans
 import com.mikepenz.markdown.model.markdownPadding
@@ -56,6 +58,7 @@ fun Markdown(
     dimens: MarkdownDimens = markdownDimens(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
     imageTransformer: ImageTransformer = ImageTransformerImpl(),
+    annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
     components: MarkdownComponents = markdownComponents(),
 ) {
@@ -66,6 +69,7 @@ fun Markdown(
         LocalMarkdownColors provides colors,
         LocalMarkdownTypography provides typography,
         LocalImageTransformer provides imageTransformer,
+        LocalMarkdownAnnotator provides annotator,
         LocalMarkdownExtendedSpans provides extendedSpans
     ) {
         Column(modifier) {

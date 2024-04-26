@@ -3,8 +3,10 @@ package com.mikepenz.markdown.compose
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.mikepenz.markdown.model.BulletHandler
+import com.mikepenz.markdown.model.DefaultMarkdownAnnotator
 import com.mikepenz.markdown.model.DefaultMarkdownExtendedSpans
 import com.mikepenz.markdown.model.ImageTransformer
+import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.MarkdownColors
 import com.mikepenz.markdown.model.MarkdownDimens
 import com.mikepenz.markdown.model.MarkdownExtendedSpans
@@ -66,6 +68,13 @@ val LocalMarkdownDimens = compositionLocalOf<MarkdownDimens> {
  */
 val LocalImageTransformer = staticCompositionLocalOf<ImageTransformer> {
     error("No local ImageTransformer")
+}
+
+/**
+ * Local [MarkdownAnnotator] provider
+ */
+val LocalMarkdownAnnotator = compositionLocalOf<MarkdownAnnotator> {
+    return@compositionLocalOf DefaultMarkdownAnnotator(null)
 }
 
 /**
