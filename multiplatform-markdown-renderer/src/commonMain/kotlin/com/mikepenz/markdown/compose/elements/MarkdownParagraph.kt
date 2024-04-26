@@ -13,12 +13,17 @@ fun MarkdownParagraph(
     content: String,
     node: ASTNode,
     modifier: Modifier = Modifier,
-    style: TextStyle = LocalMarkdownTypography.current.paragraph
+    style: TextStyle = LocalMarkdownTypography.current.paragraph,
 ) {
     val styledText = buildAnnotatedString {
         pushStyle(style.toSpanStyle())
         buildMarkdownAnnotatedString(content, node)
         pop()
     }
-    MarkdownText(styledText, modifier = modifier, style = style)
+
+    MarkdownText(
+        styledText,
+        modifier = modifier,
+        style = style,
+    )
 }

@@ -12,13 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import com.mikepenz.markdown.compose.LocalImageTransformer
 import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.compose.LocalMarkdownExtendedSpans
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
+import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
+import com.mikepenz.markdown.compose.extendedspans.drawBehind
 import com.mikepenz.markdown.model.rememberMarkdownImageState
 import com.mikepenz.markdown.utils.TAG_IMAGE_URL
 import com.mikepenz.markdown.utils.TAG_URL
@@ -28,7 +35,7 @@ import com.mikepenz.markdown.utils.TAG_URL
 fun MarkdownText(
     content: String,
     modifier: Modifier = Modifier,
-    style: TextStyle = LocalMarkdownTypography.current.text
+    style: TextStyle = LocalMarkdownTypography.current.text,
 ) {
     MarkdownText(AnnotatedString(content), modifier, style)
 }
@@ -37,7 +44,42 @@ fun MarkdownText(
 fun MarkdownText(
     content: AnnotatedString,
     modifier: Modifier = Modifier,
-    style: TextStyle = LocalMarkdownTypography.current.text
+    style: TextStyle = LocalMarkdownTypography.current.text,
+    extendedSpans: ExtendedSpans? = LocalMarkdownExtendedSpans.current.extendedSpans?.invoke()
+) {
+    // extend the annotated string with extended spans styles if provided
+    val extendedStyledText = if (extendedSpans != null) {
+        remember(content) {
+            extendedSpans.extend(content)
+        }
+    } else {
+        content
+    }
+
+    // forward the `onTextLayout` to `extended-spans` if provided
+    val onTextLayout: (TextLayoutResult) -> Unit = if (extendedSpans != null) {
+        { result ->
+            extendedSpans.onTextLayout(result)
+        }
+    } else {
+        {}
+    }
+
+    // call drawBehind with the `exended-spans` if provided
+    val extendedModifier = if (extendedSpans != null) {
+        modifier.drawBehind(extendedSpans)
+    } else modifier
+
+
+    MarkdownText(extendedStyledText, extendedModifier, style, onTextLayout)
+}
+
+@Composable
+fun MarkdownText(
+    content: AnnotatedString,
+    modifier: Modifier = Modifier,
+    style: TextStyle = LocalMarkdownTypography.current.text,
+    onTextLayout: (TextLayoutResult) -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
     val referenceLinkHandler = LocalReferenceLinkHandler.current
@@ -49,14 +91,15 @@ fun MarkdownText(
         detectTapGestures { pos ->
             layoutResult.value?.let { layoutResult ->
                 val position = layoutResult.getOffsetForPosition(pos)
-                content.getStringAnnotations(TAG_URL, position, position).reversed().firstOrNull()?.let {
-                    val foundReference = referenceLinkHandler.find(it.item)
-                    try {
-                        uriHandler.openUri(foundReference)
-                    } catch (t: Throwable) {
-                        println("Could not open the provided url: $foundReference")
+                content.getStringAnnotations(TAG_URL, position, position).reversed().firstOrNull()
+                    ?.let {
+                        val foundReference = referenceLinkHandler.find(it.item)
+                        try {
+                            uriHandler.openUri(foundReference)
+                        } catch (t: Throwable) {
+                            println("Could not open the provided url: $foundReference")
+                        }
                     }
-                }
             }
         }
     } else modifier
@@ -96,6 +139,9 @@ fun MarkdownText(
                 )
             }
         }),
-        onTextLayout = { layoutResult.value = it }
+        onTextLayout = {
+            layoutResult.value = it
+            onTextLayout?.invoke(it)
+        }
     )
 }

@@ -5,7 +5,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
-import com.mikepenz.markdown.model.*
+import com.mikepenz.markdown.model.ImageTransformer
+import com.mikepenz.markdown.model.ImageTransformerImpl
+import com.mikepenz.markdown.model.MarkdownAnnotator
+import com.mikepenz.markdown.model.MarkdownColors
+import com.mikepenz.markdown.model.MarkdownDimens
+import com.mikepenz.markdown.model.MarkdownExtendedSpans
+import com.mikepenz.markdown.model.MarkdownPadding
+import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.model.markdownAnnotator
+import com.mikepenz.markdown.model.markdownDimens
+import com.mikepenz.markdown.model.markdownExtendedSpans
+import com.mikepenz.markdown.model.markdownPadding
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 
@@ -19,6 +30,8 @@ fun Markdown(
     dimens: MarkdownDimens = markdownDimens(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
     imageTransformer: ImageTransformer = ImageTransformerImpl(),
+    annotator: MarkdownAnnotator = markdownAnnotator(),
+    extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
     components: MarkdownComponents = markdownComponents(),
 ) = com.mikepenz.markdown.compose.Markdown(
     content,
@@ -29,5 +42,7 @@ fun Markdown(
     dimens,
     flavour,
     imageTransformer,
+    annotator,
+    extendedSpans,
     components,
 )
