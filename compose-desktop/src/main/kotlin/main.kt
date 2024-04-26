@@ -5,11 +5,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
+import com.mikepenz.markdown.compose.extendedspans.RoundedCornerSpanPainter
+import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
+import com.mikepenz.markdown.compose.extendedspans.rememberSquigglyUnderlineAnimator
 import com.mikepenz.markdown.m2.Markdown
+import com.mikepenz.markdown.model.markdownExtendedSpans
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "Markdown Sample") {
@@ -40,7 +46,6 @@ fun main() = application {
                 
                 There are many more things which can be experimented with like, inline `code`. 
                 
-                
                 Title 1
                 ======
                 
@@ -51,8 +56,18 @@ fun main() = application {
                 [https://github.com/mikepenz](https://github.com/mikepenz)
                 [Mike Penz's Blog](https://blog.mikepenz.dev/)
                 """.trimIndent()
+
                 Markdown(
                     content,
+                    extendedSpans = markdownExtendedSpans {
+                        val animator = rememberSquigglyUnderlineAnimator()
+                        remember {
+                            ExtendedSpans(
+                                RoundedCornerSpanPainter(),
+                                SquigglyUnderlineSpanPainter(animator = animator)
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(16.dp)
                 )
             }
