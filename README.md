@@ -85,7 +85,8 @@ dependencies {
 </details>
 
 > [!TIP]
-> Since 0.13.0 the core library does not depend on a Material theme anymore. Include the `-m2` or `-m3` module to get
+> Since 0.13.0 the core library does not depend on a Material theme anymore. Include the `-m2`
+> or `-m3` module to get
 > access to the defaults.
 
 
@@ -121,6 +122,35 @@ Markdown(
 )
 ```
 
+### Extended spans
+
+Starting with 0.16.0 the library includes support
+for [extended-spans](https://github.com/saket/extended-spans).
+> The library was integrated to to make it multiplatform compatible. All credits for its
+> functionality goes to [
+Saket Narayan](https://github.com/saket).
+
+It is not enabled by default, however you can enable it quickly by configuring the `extendedSpans`
+for your `Markdown` composeable.
+Define the `ExtendedSpans` you want to apply (including optionally your own custom ones) and return
+it.
+
+```kotlin
+Markdown(
+    content,
+    extendedSpans = markdownExtendedSpans {
+        val animator = rememberSquigglyUnderlineAnimator()
+        remember {
+            ExtendedSpans(
+                RoundedCornerSpanPainter(),
+                SquigglyUnderlineSpanPainter(animator = animator)
+            )
+        }
+    },
+    modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(16.dp)
+)
+```
+
 ### Adjust List Ordering
 
 ```kotlin
@@ -142,7 +172,8 @@ This can be done by providing the components `MarkdownComponents` to the `Markdo
 
 Use the `markdownComponents()` to keep defaults for non overwritten components.
 
-The `MarkdownComponent` will expose access to the `content: String`, `node: ASTNode`, `typography: MarkdownTypography`,
+The `MarkdownComponent` will expose access to
+the `content: String`, `node: ASTNode`, `typography: MarkdownTypography`,
 offering full flexibility.
 
 ```kotlin
@@ -185,18 +216,20 @@ Markdown(
 
 In the current versions of the library, image loading is included in different variants.
 
-- Android: Uses `coil` to load images (Default configuration). The global `ImageLoader` is respected. 
+- Android: Uses `coil` to load images (Default configuration). The global `ImageLoader` is
+  respected.
 - JVM: Load image as HTTPUrlConnection and set to the view
 - JS / Native: No image loading provided at this time
 
-Provide your own `ImageTransformer` to the `Markdown` compose function to modify this behavior. 
+Provide your own `ImageTransformer` to the `Markdown` compose function to modify this behavior.
 
 > [!NOTE]  
 > It is planned to update to coil3 for all platforms once it reaches a more stable release cycle.
 
 ## Dependency
 
-This project uses JetBrains [markdown](https://github.com/JetBrains/markdown/) Multiplatform Markdown processor as
+This project uses JetBrains [markdown](https://github.com/JetBrains/markdown/) Multiplatform
+Markdown processor as
 dependency to parse the markdown content.
 
 ## Developed By
@@ -207,20 +240,27 @@ dependency to parse the markdown content.
 
 ## Contributors
 
-This free, open source software was also made possible by a group of volunteers that put many hours of hard work into
+This free, open source software was also made possible by a group of volunteers that put many hours
+of hard work into
 it. See the [CONTRIBUTORS.md](CONTRIBUTORS.md) file for details.
 
 ## Credits
 
 Big thanks to [Erik Hellman](https://twitter.com/ErikHellman) and his awesome article
-on [Rendering Markdown with Jetpack Compose](https://www.hellsoft.se/rendering-markdown-with-jetpack-compose/), and the
-related source [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer).
+on [Rendering Markdown with Jetpack Compose](https://www.hellsoft.se/rendering-markdown-with-jetpack-compose/),
+and the related source [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer).
+
+Also huge thanks to [Saket Narayan](https://github.com/saket/) for his great work on
+the [extended-spans](https://github.com/saket/extended-spans) project. Ported into this project to
+make it multiplatform.
 
 ## Fork License
 
 Copyright for portions of the code are held by [Erik Hellman, 2020] as part of
-project [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer) under the MIT license. All other copyright
-for project multiplatform-markdown-renderer are held by [Mike Penz, 2023] under the Apache License, Version 2.0.
+project [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer) under the MIT license.
+All other copyright
+for project multiplatform-markdown-renderer are held by [Mike Penz, 2023] under the Apache License,
+Version 2.0.
 
 ## License
 
