@@ -25,10 +25,19 @@ internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: A
         append(node.getTextInNode(content).toString())
         return
     }
-    val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
-    val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
+    val destination =
+        node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)
+            ?.toString()
+    val linkLabel =
+        node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
     (destination ?: linkLabel)?.let { pushStringAnnotation(TAG_URL, it) }
-    pushStyle(SpanStyle(color = LocalMarkdownColors.current.linkText, textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
+    pushStyle(
+        SpanStyle(
+            color = LocalMarkdownColors.current.linkText,
+            textDecoration = TextDecoration.Underline,
+            fontWeight = FontWeight.Bold
+        )
+    )
     buildMarkdownAnnotatedString(content, linkText)
     pop()
     pop()
@@ -67,64 +76,80 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, node: 
  */
 @Composable
 fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, children: List<ASTNode>) {
+    var skipIfNext: Any? = null
     children.forEach { child ->
-        when (child.type) {
-            MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content, child)
-            MarkdownElementTypes.IMAGE -> child.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.let {
-                appendInlineContent(TAG_IMAGE_URL, it.getTextInNode(content).toString())
-            }
+        if (skipIfNext == null || skipIfNext != child.type) {
+            when (child.type) {
+                MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content, child)
+                MarkdownElementTypes.IMAGE -> child.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)
+                    ?.let {
+                        appendInlineContent(TAG_IMAGE_URL, it.getTextInNode(content).toString())
+                    }
 
-            MarkdownElementTypes.EMPH -> {
-                pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
-                buildMarkdownAnnotatedString(content, child)
-                pop()
-            }
+                MarkdownElementTypes.EMPH -> {
+                    pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
+                    buildMarkdownAnnotatedString(content, child)
+                    pop()
+                }
 
-            MarkdownElementTypes.STRONG -> {
-                pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
-                buildMarkdownAnnotatedString(content, child)
-                pop()
-            }
+                MarkdownElementTypes.STRONG -> {
+                    pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
+                    buildMarkdownAnnotatedString(content, child)
+                    pop()
+                }
 
-            GFMElementTypes.STRIKETHROUGH -> {
-                pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
-                buildMarkdownAnnotatedString(content, child)
-                pop()
-            }
+                GFMElementTypes.STRIKETHROUGH -> {
+                    pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
+                    buildMarkdownAnnotatedString(content, child)
+                    pop()
+                }
 
-            MarkdownElementTypes.CODE_SPAN -> {
-                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace, color = LocalMarkdownColors.current.inlineCodeText, background = LocalMarkdownColors.current.inlineCodeBackground))
-                append(' ')
-                buildMarkdownAnnotatedString(content, child.children.innerList())
-                append(' ')
-                pop()
-            }
+                MarkdownElementTypes.CODE_SPAN -> {
+                    pushStyle(
+                        SpanStyle(
+                            fontFamily = FontFamily.Monospace,
+                            color = LocalMarkdownColors.current.inlineCodeText,
+                            background = LocalMarkdownColors.current.inlineCodeBackground
+                        )
+                    )
+                    append(' ')
+                    buildMarkdownAnnotatedString(content, child.children.innerList())
+                    append(' ')
+                    pop()
+                }
 
-            MarkdownElementTypes.AUTOLINK -> appendAutoLink(content, child)
-            MarkdownElementTypes.INLINE_LINK -> appendMarkdownLink(content, child)
-            MarkdownElementTypes.SHORT_REFERENCE_LINK -> appendMarkdownLink(content, child)
-            MarkdownElementTypes.FULL_REFERENCE_LINK -> appendMarkdownLink(content, child)
-            TEXT -> append(child.getTextInNode(content).toString())
-            GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
-                append(child.getTextInNode(content).toString())
-            } else appendAutoLink(content, child)
+                MarkdownElementTypes.AUTOLINK -> appendAutoLink(content, child)
+                MarkdownElementTypes.INLINE_LINK -> appendMarkdownLink(content, child)
+                MarkdownElementTypes.SHORT_REFERENCE_LINK -> appendMarkdownLink(content, child)
+                MarkdownElementTypes.FULL_REFERENCE_LINK -> appendMarkdownLink(content, child)
+                TEXT -> append(child.getTextInNode(content).toString())
+                GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
+                    append(child.getTextInNode(content).toString())
+                } else appendAutoLink(content, child)
 
-            MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')
-            MarkdownTokenTypes.DOUBLE_QUOTE -> append('\"')
-            MarkdownTokenTypes.LPAREN -> append('(')
-            MarkdownTokenTypes.RPAREN -> append(')')
-            MarkdownTokenTypes.LBRACKET -> append('[')
-            MarkdownTokenTypes.RBRACKET -> append(']')
-            MarkdownTokenTypes.LT -> append('<')
-            MarkdownTokenTypes.GT -> append('>')
-            MarkdownTokenTypes.COLON -> append(':')
-            MarkdownTokenTypes.EXCLAMATION_MARK -> append('!')
-            MarkdownTokenTypes.BACKTICK -> append('`')
-            MarkdownTokenTypes.HARD_LINE_BREAK -> append("\n\n")
-            MarkdownTokenTypes.EOL -> append('\n')
-            MarkdownTokenTypes.WHITE_SPACE -> if (length > 0) {
-                append(' ')
+                MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')
+                MarkdownTokenTypes.DOUBLE_QUOTE -> append('\"')
+                MarkdownTokenTypes.LPAREN -> append('(')
+                MarkdownTokenTypes.RPAREN -> append(')')
+                MarkdownTokenTypes.LBRACKET -> append('[')
+                MarkdownTokenTypes.RBRACKET -> append(']')
+                MarkdownTokenTypes.LT -> append('<')
+                MarkdownTokenTypes.GT -> append('>')
+                MarkdownTokenTypes.COLON -> append(':')
+                MarkdownTokenTypes.EXCLAMATION_MARK -> append('!')
+                MarkdownTokenTypes.BACKTICK -> append('`')
+                MarkdownTokenTypes.HARD_LINE_BREAK -> append("\n\n")
+                MarkdownTokenTypes.EOL -> append('\n')
+                MarkdownTokenTypes.WHITE_SPACE -> if (length > 0) {
+                    append(' ')
+                }
+
+                MarkdownTokenTypes.BLOCK_QUOTE -> {
+                    skipIfNext = MarkdownTokenTypes.WHITE_SPACE
+                }
             }
+        } else {
+            skipIfNext = null
         }
     }
 }
