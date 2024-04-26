@@ -8,11 +8,11 @@ object Versions {
     const val markdown = "0.7.0"
 
     const val coil = "2.6.0"
-    const val compose = "1.6.4"
-    const val composeCompiler = "1.5.11"
+    const val compose = "1.6.6"
+    const val composeCompiler = "1.5.12"
 
     const val material = "1.11.0"
-    const val activityCompose = "1.8.2"
+    const val activityCompose = "1.9.0"
 }
 
 object Deps {
