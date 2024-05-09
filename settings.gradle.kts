@@ -26,3 +26,4 @@ include(":multiplatform-markdown-renderer-m3")
 
 include(":app")
 include(":compose-desktop")
+include(":app-desktop")
