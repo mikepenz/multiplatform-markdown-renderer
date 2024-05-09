@@ -9,15 +9,21 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
+import com.mikepenz.aboutlibraries.Libs
+import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
+import com.mikepenz.aboutlibraries.ui.compose.m3.LibraryDefaults
+import com.mikepenz.app_wasm.generated.resources.Res
 import com.mikepenz.markdown.Github
 import com.mikepenz.markdown.OpenSourceInitiative
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
@@ -62,7 +68,6 @@ fun main() {
                 }
             ) { padding ->
                 if (showLicenses) {
-                    /*
                     var libs by remember { mutableStateOf<Libs?>(null) }
                     LaunchedEffect("aboutlibraries.json") {
                         libs = Libs.Builder()
@@ -75,8 +80,6 @@ fun main() {
                         colors = LibraryDefaults.libraryColors(backgroundColor = Color.Transparent),
                         contentPadding = padding
                     )
-
-                     */
                 } else {
                     val scrollState = rememberScrollState()
                     SelectionContainer {
