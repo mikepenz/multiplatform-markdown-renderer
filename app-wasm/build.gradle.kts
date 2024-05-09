@@ -34,8 +34,7 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
 
-                // implementation(libs.aboutlibraries.core)
-                // implementation(libs.bundles.aboutlibs)
+                implementation(libs.bundles.aboutlibs)
 
                 implementation(projects.multiplatformMarkdownRenderer)
                 implementation(projects.multiplatformMarkdownRendererM3)
