@@ -3,7 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm")
     application
-    id("org.jetbrains.compose")
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeCompiler)
 }
 
 group = "com.mikepenz"
@@ -15,11 +16,12 @@ repositories {
 }
 
 dependencies {
+    implementation(projects.multiplatformMarkdownRenderer)
+    implementation(projects.multiplatformMarkdownRendererM2)
+
     implementation(compose.desktop.currentOs)
     implementation(compose.foundation)
     implementation(compose.material)
-    implementation(project(":multiplatform-markdown-renderer"))
-    implementation(project(":multiplatform-markdown-renderer-m2"))
 }
 
 application {

@@ -4,19 +4,20 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.compose")
-    id("org.jetbrains.dokka")
-    id("com.vanniktech.maven.publish") version "0.25.3"
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.mavenPublish)
 }
 
 android {
     namespace = "com.mikepenz.markdown"
-    compileSdk = Versions.androidCompileSdk
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = Versions.androidMinSdk
-        targetSdk = Versions.androidTargetSdk
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     buildTypes {
@@ -31,10 +32,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = Versions.composeCompiler
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -140,16 +137,12 @@ kotlin {
 }
 
 dependencies {
-    commonMainApi(Deps.Markdown.core)
+    commonMainApi(libs.markdown)
+    commonMainApi(libs.coil.core)
 
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.ui)
     commonMainCompileOnly(compose.foundation)
-
-    "androidMainImplementation"(Deps.Compose.coilCompose) {
-        exclude("androidx.compose.foundation")
-        exclude("androidx.compose.ui")
-    }
 }
 
 tasks.dokkaHtml.configure {

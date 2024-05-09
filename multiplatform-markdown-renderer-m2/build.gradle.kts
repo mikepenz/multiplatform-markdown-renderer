@@ -4,19 +4,20 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.compose")
-    id("org.jetbrains.dokka")
-    id("com.vanniktech.maven.publish") version "0.25.3"
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.mavenPublish)
 }
 
 android {
     namespace = "com.mikepenz.markdown.m2"
-    compileSdk = Versions.androidCompileSdk
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = Versions.androidMinSdk
-        targetSdk = Versions.androidTargetSdk
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
     }
 
     buildTypes {
@@ -116,9 +117,8 @@ kotlin {
 }
 
 dependencies {
-    commonMainApi(project(":multiplatform-markdown-renderer"))
-
-    commonMainApi(Deps.Markdown.core)
+    commonMainApi(projects.multiplatformMarkdownRenderer)
+    commonMainApi(libs.markdown)
 
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.material)

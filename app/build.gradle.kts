@@ -1,8 +1,10 @@
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
-    id("com.android.application")
     kotlin("android")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeCompiler)
 }
 
 if (openSourcSigningFile != null) {
@@ -11,12 +13,12 @@ if (openSourcSigningFile != null) {
 
 android {
     namespace = "com.mikepenz.markdown.app"
-    compileSdk = Versions.androidCompileSdk
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.mikepenz.markdown"
-        minSdk = Versions.androidMinSdk
-        targetSdk = Versions.androidTargetSdk
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
 
         versionCode = property("VERSION_CODE").toString().toInt()
         versionName = property("VERSION_NAME").toString()
@@ -27,10 +29,6 @@ android {
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = Versions.composeCompiler
     }
 
     buildTypes {
@@ -67,27 +65,19 @@ android {
 }
 
 dependencies {
-    implementation(project(":multiplatform-markdown-renderer"))
-    implementation(project(":multiplatform-markdown-renderer-m2"))
+    implementation(projects.multiplatformMarkdownRenderer)
+    implementation(projects.multiplatformMarkdownRendererM2)
 
-    with(Deps.Android) {
-        implementation(material)
-    }
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.bundles.coil)
+    implementation(libs.coil.svg)
 
-    with(Deps.AndroidX) {
-        implementation(activityCompose)
-    }
-
-    with(Deps.Compose) {
-        implementation(coilCompose)
-        implementation(coilComposeSvg)
-
-        implementation(foundationLayout)
-        implementation(material)
-        implementation(ui)
-        implementation(uiTooling)
-        implementation(uiGraphics)
-    }
+    implementation(compose.foundation)
+    implementation(compose.material)
+    implementation(compose.material3)
+    implementation(compose.ui)
+    implementation(compose.uiTooling)
 }
 
 private val openSourcSigningFile: String?
@@ -97,5 +87,6 @@ private val openSourcSigningFile: String?
             rootProject.file("local.properties").takeIf { it.exists() }?.let {
                 prop.load(it.inputStream())
             }
-        }.getProperty(k, null) ?: if (project.hasProperty(k)) project.property(k)?.toString() else null
+        }.getProperty(k, null) ?: if (project.hasProperty(k)) project.property(k)
+            ?.toString() else null
     }
