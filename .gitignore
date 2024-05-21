@@ -42,3 +42,4 @@ captures/
 
 # Generated podspec
 *.podspec
+/.kotlin/

@@ -24,7 +24,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
+import com.mikepenz.markdown.compose.extendedspans.RoundedCornerSpanPainter
+import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
+import com.mikepenz.markdown.compose.extendedspans.rememberSquigglyUnderlineAnimator
 import com.mikepenz.markdown.m2.Markdown
+import com.mikepenz.markdown.model.markdownExtendedSpans
 
 class MainActivity : ComponentActivity() {
 
@@ -44,68 +49,6 @@ fun MainLayout() {
     var darkMode by remember { mutableStateOf(isSystemInDarkMode) }
 
     SampleTheme(darkMode) {
-
-        val markdown = """
-            # Title 1
-        
-            To get started with this library, just provide some Markdown.
-           
-            Usually Markdown will contain different characters *or different styles*, which can **change** just as you ~write~ different text. 
-           
-            Sometimes it will even contain images within the text
-            
-            ![Image](https://avatars.githubusercontent.com/u/1476232?v=4)
-             
-             Images can also be of different sizes
-             
-             ![Image](https://placehold.co/1000x200/png)
-             
-             ![Image](https://placehold.co/200x1000/png)
-             
-            After installing GPG Suite (or your preferred solution) first create a new key.
-            
-            Supports reference links:
-            [Reference Link Test][1] 
-            
-            But can also be a auto link: https://mikepenz.dev
-   
-            
-            Some `inline` code is also supported!
-            
-            ## Title 2
-            
-            ### Title 3 test
-            
-            Title 1
-            ======
-            
-            Title 2
-            ------
-            
-            [1]: https://mikepenz.dev/
-            
-            Unordered List
-            - unordered list item 1
-            - unordered list item 2
-            - unordered list item 3
-            
-            Ordered List
-            1. List item 1
-            2. List item 2
-            3. List item 3
-            
-            ```
-            Code block test
-            ```
-            
-            
-            Links with links as label are also handled:
-            [https://mikepenz.dev](https://mikepenz.dev)
-            [https://github.com/mikepenz](https://github.com/mikepenz)
-            [Mike Penz's Blog](https://blog.mikepenz.dev/)
-        """.trimIndent()
-
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -130,13 +73,110 @@ fun MainLayout() {
                 Spacer(modifier = Modifier.height(16.dp))
             }
             item {
-                Markdown(markdown)
+                Markdown(
+                    MARKDOWN,
+                    extendedSpans = markdownExtendedSpans {
+                        val animator = rememberSquigglyUnderlineAnimator()
+                        remember {
+                            ExtendedSpans(
+                                RoundedCornerSpanPainter(),
+                                SquigglyUnderlineSpanPainter(animator = animator)
+                            )
+                        }
+                    },
+                )
             }
             item {
                 Spacer(modifier = Modifier.height(48.dp))
             }
         }
     }
-
 }
 
+private const val MARKDOWN = """
+# Markdown Playground
+
+---
+
+# This is an H1
+
+## This is an H2
+
+### This is an H3
+
+#### This is an H4
+
+##### This is an H5
+
+###### This is an H6
+
+This is a paragraph with some *italic* and **bold** text.
+
+This is a paragraph with some `inline code`.
+
+This is a paragraph with a [link](https://www.jetbrains.com/).
+
+This is a code block:
+```kotlin
+fun main() {
+println("Hello, world!")
+}
+```
+
+> This is a block quote.
+
+This is a divider
+
+---
+
+The above was supposed to be a divider.
+
+~~This is strikethrough with two tildes~~
+
+~This is strikethrough~
+
+This is an ordered list:
+1. Item 1
+2. Item 2
+3. Item 3
+
+This is an unordered list with dashes:
+- Item 1
+- Item 2
+- Item 3
+
+This is an unordered list with asterisks:
+* Item 1
+* Item 2
+* Item 3
+
+-------- 
+
+# Random
+
+### Getting Started
+                
+For multiplatform projects specify this single dependency:
+
+```
+dependencies {
+    implementation("com.mikepenz:multiplatform-markdown-renderer:{version}")
+}
+```
+
+You can find more information on [GitHub](https://github.com/mikepenz/multiplatform-markdown-renderer). More Text after this.
+
+![Image](https://avatars.githubusercontent.com/u/1476232?v=4)
+
+There are many more things which can be experimented with like, inline `code`. 
+
+Title 1
+======
+
+Title 2
+------
+              
+[https://mikepenz.dev](https://mikepenz.dev)
+[https://github.com/mikepenz](https://github.com/mikepenz)
+[Mike Penz's Blog](https://blog.mikepenz.dev/)
+"""
