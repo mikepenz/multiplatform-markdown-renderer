@@ -143,7 +143,7 @@ dependencies {
     commonMainCompileOnly(compose.ui)
     commonMainCompileOnly(compose.foundation)
 
-    "androidMainImplementation"(Deps.Compose.coilCompose) {
+    "androidMainImplementation"(libs.bundles.coil) {
         exclude("androidx.compose.foundation")
         exclude("androidx.compose.ui")
     }
