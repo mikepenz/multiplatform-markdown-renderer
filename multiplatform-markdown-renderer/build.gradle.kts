@@ -138,11 +138,15 @@ kotlin {
 
 dependencies {
     commonMainApi(libs.markdown)
-    commonMainApi(libs.coil.core)
 
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.ui)
     commonMainCompileOnly(compose.foundation)
+
+    "androidMainImplementation"(Deps.Compose.coilCompose) {
+        exclude("androidx.compose.foundation")
+        exclude("androidx.compose.ui")
+    }
 }
 
 tasks.dokkaHtml.configure {

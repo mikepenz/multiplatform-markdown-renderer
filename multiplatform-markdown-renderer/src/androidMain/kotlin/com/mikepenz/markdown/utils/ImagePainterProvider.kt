@@ -8,10 +8,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
-import coil3.compose.AsyncImagePainter
-import coil3.compose.rememberAsyncImagePainter
-import coil3.request.ImageRequest
-import coil3.size.Size
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import coil.size.Size
 
 @Composable
 internal actual fun imagePainter(url: String): Painter? {
