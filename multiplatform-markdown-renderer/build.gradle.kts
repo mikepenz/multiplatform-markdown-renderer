@@ -138,7 +138,10 @@ kotlin {
 
 dependencies {
     commonMainApi(libs.markdown)
-    commonMainApi(libs.coil.core)
+    commonMainApi(libs.coil.core) {
+        exclude("androidx.compose.foundation")
+        exclude("androidx.compose.ui")
+    }
 
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.ui)
