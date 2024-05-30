@@ -234,8 +234,10 @@ Markdown(
 
 In the current versions of the library, image loading is included in different variants.
 
-- Android: Uses `coil` to load images (Default configuration). The global `ImageLoader` is
-  respected. Use `SingletonImageLoader.Factory` (as of 0.20.0) on your Application class to configure it.
+Since 0.20.0 `coil3` is used. Define a `SingletonImageLoader.Factory` to configure its behavior.
+
+- Android: Uses `coil3` to load images (Default configuration). The global `ImageLoader` is
+  respected.
 - JVM: Load image as HTTPUrlConnection and set to the view
 - JS / Native: No image loading provided at this time
 
