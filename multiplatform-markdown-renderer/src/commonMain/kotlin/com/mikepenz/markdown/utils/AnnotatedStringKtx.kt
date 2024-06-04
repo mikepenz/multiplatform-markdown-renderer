@@ -44,10 +44,19 @@ internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: A
     pop()
 }
 
+@Composable
 internal fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNode) {
-    val destination = node.getTextInNode(content).toString()
+    val targetNode =
+        node.children.firstOrNull { it.type.name == MarkdownElementTypes.AUTOLINK.name } ?: node
+    val destination = targetNode.getTextInNode(content).toString()
     pushStringAnnotation(TAG_URL, (destination))
-    pushStyle(SpanStyle(textDecoration = TextDecoration.Underline, fontWeight = FontWeight.Bold))
+    pushStyle(
+        SpanStyle(
+            color = LocalMarkdownColors.current.linkText,
+            textDecoration = TextDecoration.Underline,
+            fontWeight = FontWeight.Bold
+        )
+    )
     append(destination)
     pop()
 }
