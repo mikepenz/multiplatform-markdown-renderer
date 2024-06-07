@@ -10,6 +10,7 @@ compose-plugin = "1.6.10"
 kotlin = "2.0.0"
 dokka = "1.9.20"
 coil = "3.0.0-SNAPSHOT"
+coil2 = "2.6.0"
 aboutlib = "11.2.0-a01"
 markdown = "0.7.2"
 detekt = "1.23.6"
@@ -28,6 +29,8 @@ aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose-m3", ve
 coil-core = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+coil2-core = { module = "io.coil-kt:coil-compose", version.ref = "coil2" }
+coil2-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil2" }
 markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
 
 [plugins]
@@ -43,4 +46,5 @@ mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "gradleMvnPu
 
 [bundles]
 coil = ["coil-core", "coil-network"]
+coil2 = ["coil-core"]
 aboutlibs = ["aboutlibraries-core", "aboutlibraries-compose"]

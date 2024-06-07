@@ -38,6 +38,7 @@ kotlin {
 
                 implementation(projects.multiplatformMarkdownRenderer)
                 implementation(projects.multiplatformMarkdownRendererM3)
+                implementation(projects.multiplatformMarkdownRendererCoil3)
             }
         }
     }

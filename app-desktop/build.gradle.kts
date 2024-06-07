@@ -18,6 +18,7 @@ repositories {
 dependencies {
     implementation(projects.multiplatformMarkdownRenderer)
     implementation(projects.multiplatformMarkdownRendererM2)
+    implementation(projects.multiplatformMarkdownRendererCoil2)
 
     implementation(compose.desktop.currentOs)
     implementation(compose.foundation)

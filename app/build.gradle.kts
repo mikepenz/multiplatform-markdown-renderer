@@ -67,6 +67,7 @@ android {
 dependencies {
     implementation(projects.multiplatformMarkdownRenderer)
     implementation(projects.multiplatformMarkdownRendererM2)
+    implementation(projects.multiplatformMarkdownRendererCoil3)
 
     implementation(libs.androidx.material)
     implementation(libs.androidx.activity.compose)
