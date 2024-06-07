@@ -230,7 +230,7 @@ Markdown(
 </p>
 </details>
 
-### Image Loading
+****### Image Loading
 
 Starting with 0.21.0 the library does not include image loading by default, however exposes 2
 modules for either coil2 or coil3 dependencies.
@@ -238,11 +238,9 @@ The chosen image transformer implementation has to be passed to the `Markdown` A
 
 #### coil2
 
-
-
 ```groovy
 // Offers coil2 (Coil2ImageTransformerImpl)
-implementation("com.mikepenz:multiplatform-markdown-renderer-m2:${version}")
+implementation("com.mikepenz:multiplatform-markdown-renderer-coil2:${version}")
 ```
 
 ```kotlin
@@ -262,7 +260,7 @@ Markdown(
 
 ```groovy
 // Offers coil3 (Coil3ImageTransformerImpl)
-implementation("com.mikepenz:multiplatform-markdown-renderer-m3:${version}")
+implementation("com.mikepenz:multiplatform-markdown-renderer-coil3:${version}")
 ```
 
 ```kotlin
