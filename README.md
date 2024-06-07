@@ -230,21 +230,51 @@ Markdown(
 </p>
 </details>
 
-### Image Loading
+****### Image Loading
 
-In the current versions of the library, image loading is included in different variants.
+Starting with 0.21.0 the library does not include image loading by default, however exposes 2
+modules for either coil2 or coil3 dependencies.
+The chosen image transformer implementation has to be passed to the `Markdown` API.
 
-Since 0.20.0 `coil3` is used. Define a `SingletonImageLoader.Factory` to configure its behavior.
+#### coil2
 
-- Android: Uses `coil3` to load images (Default configuration). The global `ImageLoader` is
-  respected.
-- JVM: Load image as HTTPUrlConnection and set to the view
-- JS / Native: No image loading provided at this time
+```groovy
+// Offers coil2 (Coil2ImageTransformerImpl)
+implementation("com.mikepenz:multiplatform-markdown-renderer-coil2:${version}")
+```
 
-Provide your own `ImageTransformer` to the `Markdown` compose function to modify this behavior.
+```kotlin
+Markdown(
+    MARKDOWN,
+    imageTransformer = Coil2ImageTransformerImpl,
+)
+```
+
+> [!NOTE]
+> 0.21.0 adds JVM support for this dependency via `HTTPUrlConnection` -> however this is expected to be removed in the future.
 
 > [!NOTE]  
-> It is planned to update to coil3 for all platforms once it reaches a more stable release cycle.
+> Please refer to the official coil2 documentation on how to adjust the `ImageLoader`
+
+#### coil3
+
+```groovy
+// Offers coil3 (Coil3ImageTransformerImpl)
+implementation("com.mikepenz:multiplatform-markdown-renderer-coil3:${version}")
+```
+
+```kotlin
+Markdown(
+    MARKDOWN,
+    imageTransformer = Coil3ImageTransformerImpl,
+)
+```
+
+> [!NOTE]  
+> Please refer to the official coil3 documentation on how to adjust the `SingletonImageLoader`
+
+> [!NOTE]  
+> The `coil3` module does depend on SNAPSHOT builds of coil3
 
 ## Dependency
 

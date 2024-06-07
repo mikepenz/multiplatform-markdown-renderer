@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mikepenz.markdown.coil3.Coil3ImageTransformerImpl
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.RoundedCornerSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
@@ -75,6 +76,7 @@ fun MainLayout() {
             item {
                 Markdown(
                     MARKDOWN,
+                    imageTransformer = Coil3ImageTransformerImpl,
                     extendedSpans = markdownExtendedSpans {
                         val animator = rememberSquigglyUnderlineAnimator()
                         remember {

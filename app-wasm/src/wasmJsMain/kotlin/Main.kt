@@ -1,3 +1,4 @@
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -20,17 +21,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
+import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibraryDefaults
 import com.mikepenz.app_wasm.generated.resources.Res
 import com.mikepenz.markdown.Github
 import com.mikepenz.markdown.OpenSourceInitiative
+import com.mikepenz.markdown.coil3.Coil3ImageTransformerImpl
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.RoundedCornerSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.rememberSquigglyUnderlineAnimator
 import com.mikepenz.markdown.m3.Markdown
+import com.mikepenz.markdown.model.ImageData
 import com.mikepenz.markdown.model.markdownExtendedSpans
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
@@ -85,6 +92,7 @@ fun main() {
                     SelectionContainer {
                         Markdown(
                             MARKDOWN,
+                            imageTransformer = Coil3ImageTransformerImpl,
                             modifier = Modifier.padding(padding).fillMaxSize()
                                 .verticalScroll(scrollState)
                                 .padding(16.dp),
