@@ -230,7 +230,7 @@ Markdown(
 </p>
 </details>
 
-****### Image Loading
+### Image Loading
 
 Starting with 0.21.0 the library does not include image loading by default, however exposes 2
 modules for either coil2 or coil3 dependencies.
