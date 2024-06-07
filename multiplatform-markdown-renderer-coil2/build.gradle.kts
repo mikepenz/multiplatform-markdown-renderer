@@ -101,6 +101,7 @@ kotlin {
 dependencies {
     commonMainApi(projects.multiplatformMarkdownRenderer)
     commonMainCompileOnly(compose.runtime)
+    commonMainCompileOnly(compose.ui)
 
     "androidMainApi"(libs.coil2.core)
 }
