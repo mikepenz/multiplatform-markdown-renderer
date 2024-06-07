@@ -138,8 +138,6 @@ kotlin {
 
 dependencies {
     commonMainApi(libs.markdown)
-    commonMainApi(libs.coil.core)
-
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.ui)
     commonMainCompileOnly(compose.foundation)
