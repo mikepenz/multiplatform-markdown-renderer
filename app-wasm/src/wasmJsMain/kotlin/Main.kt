@@ -161,4 +161,35 @@ This is an unordered list with asterisks:
 * Item 1
 * Item 2
 * Item 3
+
+-------- 
+
+# Random
+
+### Getting Started
+                
+For multiplatform projects specify this single dependency:
+
+```
+dependencies {
+    implementation("com.mikepenz:multiplatform-markdown-renderer:{version}")
+}
+```
+
+You can find more information on [GitHub](https://github.com/mikepenz/multiplatform-markdown-renderer). More Text after this.
+
+![Image](https://avatars.githubusercontent.com/u/1476232?v=4)
+
+There are many more things which can be experimented with like, inline `code`. 
+
+Title 1
+======
+
+Title 2
+------
+              
+[https://mikepenz.dev](https://mikepenz.dev)
+[https://github.com/mikepenz](https://github.com/mikepenz)
+[Mike Penz's Blog](https://blog.mikepenz.dev/)
+<https://blog.mikepenz.dev/>
 """
