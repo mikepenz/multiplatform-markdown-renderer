@@ -87,6 +87,26 @@ jobs:
           ./gradlew clean || true
           ./gradlew app:assembleDebug --stacktrace
 
+      - name: Run Tests
+        run: |
+          ./gradlew app:validateDebugScreenshotTest
+
+      - name: Publish Test Report
+        if: (failure() || success()) && github.event_name == 'pull_request'
+        uses: mikepenz/action-junit-report@v4
+        with:
+          report_paths: '**/app/build/test-results/validateDebugScreenshotTest/TEST-*.xml'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_failure: true
+          annotate_only: true
+          detailed_summary: true
+
+      - name: Archive Test Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Test-Artifacts"
+          path: "app/build/reports/screenshotTest/preview/debug/"
+
       - name: Run Lint
         if: github.event_name  == 'pull_request'
         run: ./gradlew lintDebug

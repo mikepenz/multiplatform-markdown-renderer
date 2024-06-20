@@ -15,6 +15,7 @@ aboutlib = "11.2.1"
 markdown = "0.7.3"
 detekt = "1.23.6"
 gradleMvnPublish = "0.28.0"
+screenshot = "0.0.1-alpha01"
 
 [libraries]
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
@@ -43,6 +44,7 @@ dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlib" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "gradleMvnPublish" }
+screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot"}
 
 [bundles]
 coil = ["coil-core", "coil-network"]
