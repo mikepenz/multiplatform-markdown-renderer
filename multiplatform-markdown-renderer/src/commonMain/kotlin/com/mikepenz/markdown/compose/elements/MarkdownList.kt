@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import com.mikepenz.markdown.compose.*
+import com.mikepenz.markdown.compose.LocalBulletListHandler
+import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.compose.LocalMarkdownPadding
+import com.mikepenz.markdown.compose.LocalMarkdownTypography
+import com.mikepenz.markdown.compose.LocalOrderedListHandler
+import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
-import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
-import com.mikepenz.markdown.utils.filterNonListTypes
+import com.mikepenz.markdown.compose.handleElement
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownElementTypes.ORDERED_LIST
 import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
@@ -31,7 +34,13 @@ fun MarkdownListItems(
 ) {
     val listDp = LocalMarkdownPadding.current.list
     val indentListDp = LocalMarkdownPadding.current.indentList
-    Column(modifier = Modifier.padding(start = (indentListDp) * level, top = listDp, bottom = listDp)) {
+    Column(
+        modifier = Modifier.padding(
+            start = (indentListDp) * level,
+            top = listDp,
+            bottom = listDp
+        )
+    ) {
         var index = 0
         node.children.forEach { child ->
             when (child.type) {
@@ -41,16 +50,6 @@ fun MarkdownListItems(
                         ORDERED_LIST -> MarkdownOrderedList(content, child, style, level + 1)
                         UNORDERED_LIST -> MarkdownBulletList(content, child, style, level + 1)
                     }
-                    index++
-                }
-
-                ORDERED_LIST -> {
-                    MarkdownOrderedList(content, child, style, level + 1)
-                    index++
-                }
-
-                UNORDERED_LIST -> {
-                    MarkdownBulletList(content, child, style, level + 1)
                     index++
                 }
             }
@@ -70,16 +69,23 @@ fun MarkdownOrderedList(
     MarkdownListItems(content, node, style, level) { index, child ->
         Row(Modifier.fillMaxWidth()) {
             MarkdownBasicText(
-                text = orderedListHandler.transform(LIST_NUMBER, child.findChildOfType(LIST_NUMBER)?.getTextInNode(content), index),
+                text = orderedListHandler.transform(
+                    LIST_NUMBER,
+                    child.findChildOfType(LIST_NUMBER)?.getTextInNode(content),
+                    index
+                ),
                 style = style,
                 color = LocalMarkdownColors.current.text
             )
-            val text = buildAnnotatedString {
-                pushStyle(style.toSpanStyle())
-                buildMarkdownAnnotatedString(content, child.children.filterNonListTypes())
-                pop()
+
+            Column(Modifier.padding(bottom = listItemBottom)) {
+                handleElement(
+                    node = child,
+                    components = markdownComponents(),
+                    content = content,
+                    includeSpacer = false
+                )
             }
-            MarkdownText(text, Modifier.padding(bottom = listItemBottom), style = style)
         }
     }
 }
@@ -96,16 +102,23 @@ fun MarkdownBulletList(
     MarkdownListItems(content, node, style, level) { index, child ->
         Row(Modifier.fillMaxWidth()) {
             MarkdownBasicText(
-                bulletHandler.transform(LIST_BULLET, child.findChildOfType(LIST_BULLET)?.getTextInNode(content), index),
+                bulletHandler.transform(
+                    LIST_BULLET,
+                    child.findChildOfType(LIST_BULLET)?.getTextInNode(content),
+                    index
+                ),
                 style = style,
                 color = LocalMarkdownColors.current.text
             )
-            val text = buildAnnotatedString {
-                pushStyle(style.toSpanStyle())
-                buildMarkdownAnnotatedString(content, child.children.filterNonListTypes())
-                pop()
+
+            Column(Modifier.padding(bottom = listItemBottom)) {
+                handleElement(
+                    node = child,
+                    components = markdownComponents(),
+                    content = content,
+                    includeSpacer = false
+                )
             }
-            MarkdownText(text, Modifier.padding(bottom = listItemBottom), style = style)
         }
     }
 }

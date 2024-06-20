@@ -12,13 +12,13 @@ import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.model.ImageTransformer
-import com.mikepenz.markdown.model.NoOpImageTransformerImpl
 import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.MarkdownColors
 import com.mikepenz.markdown.model.MarkdownDimens
 import com.mikepenz.markdown.model.MarkdownExtendedSpans
 import com.mikepenz.markdown.model.MarkdownPadding
 import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.model.NoOpImageTransformerImpl
 import com.mikepenz.markdown.model.ReferenceLinkHandlerImpl
 import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.model.markdownDimens
@@ -86,10 +86,11 @@ fun Markdown(
 }
 
 @Composable
-private fun ColumnScope.handleElement(
+internal fun ColumnScope.handleElement(
     node: ASTNode,
     components: MarkdownComponents,
-    content: String
+    content: String,
+    includeSpacer: Boolean = true,
 ): Boolean {
     val model = MarkdownComponentModel(
         content = content,
@@ -97,7 +98,7 @@ private fun ColumnScope.handleElement(
         typography = LocalMarkdownTypography.current
     )
     var handled = true
-    Spacer(Modifier.height(LocalMarkdownPadding.current.block))
+    if (includeSpacer) Spacer(Modifier.height(LocalMarkdownPadding.current.block))
     when (node.type) {
         TEXT -> components.text(this@handleElement, model)
         EOL -> components.eol(this@handleElement, model)
@@ -125,7 +126,7 @@ private fun ColumnScope.handleElement(
 
     if (!handled) {
         node.children.forEach { child ->
-            handleElement(child, components, content)
+            handleElement(child, components, content, includeSpacer)
         }
     }
 
