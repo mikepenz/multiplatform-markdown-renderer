@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.screenshot)
 }
 
 if (openSourcSigningFile != null) {
@@ -62,6 +63,7 @@ android {
         kotlinOptions.jvmTarget = "11"
     }
 
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
 dependencies {
