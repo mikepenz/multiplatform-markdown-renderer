@@ -30,6 +30,12 @@ class SnapshotTests {
         Markdown(MARKDOWN_RANDOM)
     }
 
+    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 380)
+    @Composable
+    fun ListCodeBlockTest() = TestThemeSetup {
+        Markdown(MARKDOWN_LIST_CODE_BLOCK)
+    }
+
     /**Helper to have a single place setting up the theme*/
     @Composable
     private fun TestThemeSetup(dark: Boolean = false, block: @Composable () -> Unit) {
@@ -127,4 +133,20 @@ Title 2
 [https://github.com/mikepenz](https://github.com/mikepenz)
 [Mike Penz's Blog](https://blog.mikepenz.dev/)
 <https://blog.mikepenz.dev/>
+""".trimIndent()
+
+
+private val MARKDOWN_LIST_CODE_BLOCK = """
+- Main item
+  - Subitem 1
+  - Subitem 2
+    - Sub-subitem 1
+    ```
+    Some code
+    
+    
+    And some more
+    ```
+    - Sub-subitem 2
+  - Subitem 3
 """.trimIndent()
