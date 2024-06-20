@@ -144,6 +144,7 @@ jobs:
         run: ./gradlew app:assembleRelease app:bundleRelease
 
       - name: Collect artifacts
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
           COLLECT_PWD=${PWD}
           mkdir -p "artifacts"
@@ -151,6 +152,7 @@ jobs:
           find . -name "*release.aab" -type f -exec cp {} "artifacts" \;
 
       - name: Archive Artifacts
+        if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4
         with:
           name: "App-Artifacts"
