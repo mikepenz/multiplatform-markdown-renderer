@@ -56,6 +56,8 @@ jobs:
           ./gradlew multiplatform-markdown-renderer:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
           ./gradlew multiplatform-markdown-renderer-m2:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
           ./gradlew multiplatform-markdown-renderer-m3:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
+          ./gradlew multiplatform-markdown-renderer-coil2:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
+          ./gradlew multiplatform-markdown-renderer-coil3:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
 
   build:
     name: Build
@@ -84,6 +86,26 @@ jobs:
         run: |
           ./gradlew clean || true
           ./gradlew app:assembleDebug --stacktrace
+
+      - name: Run Tests
+        run: |
+          ./gradlew app:validateDebugScreenshotTest
+
+      - name: Publish Test Report
+        if: (failure() || success()) && github.event_name == 'pull_request'
+        uses: mikepenz/action-junit-report@v4
+        with:
+          report_paths: '**/app/build/test-results/validateDebugScreenshotTest/TEST-*.xml'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_failure: true
+          annotate_only: true
+          detailed_summary: true
+
+      - name: Archive Test Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: "Test-Artifacts"
+          path: "app/build/reports/screenshotTest/preview/debug/"
 
       - name: Run Lint
         if: github.event_name  == 'pull_request'
@@ -122,6 +144,7 @@ jobs:
         run: ./gradlew app:assembleRelease app:bundleRelease
 
       - name: Collect artifacts
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
           COLLECT_PWD=${PWD}
           mkdir -p "artifacts"
@@ -129,6 +152,7 @@ jobs:
           find . -name "*release.aab" -type f -exec cp {} "artifacts" \;
 
       - name: Archive Artifacts
+        if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4
         with:
           name: "App-Artifacts"
