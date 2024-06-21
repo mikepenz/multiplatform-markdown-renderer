@@ -6,12 +6,12 @@ import org.intellij.markdown.ast.ASTNode
 /**
  * Tag used to indicate an url for inline content. Required for click handling.
  */
-internal const val TAG_URL = "MARKDOWN_URL"
+const val MARKDOWN_TAG_URL = "MARKDOWN_URL"
 
 /**
  * Tag used to indicate an image url for inline content. Required for rendering.
  */
-internal const val TAG_IMAGE_URL = "MARKDOWN_IMAGE_URL"
+const val MARKDOWN_TAG_IMAGE_URL = "MARKDOWN_IMAGE_URL"
 
 /**
  * Find a child node recursive
