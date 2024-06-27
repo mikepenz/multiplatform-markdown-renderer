@@ -21,7 +21,6 @@ allprojects {
         google()
         maven { setUrl("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
         maven { setUrl("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental") }
-        maven("https://oss.sonatype.org/content/repositories/snapshots")
     }
 }
 
