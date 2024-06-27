@@ -12,7 +12,6 @@ import com.mikepenz.markdown.compose.LocalMarkdownAnnotator
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
@@ -26,10 +25,13 @@ internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: A
         append(node.getTextInNode(content).toString())
         return
     }
-    val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getTextInNode(content)?.toString()
-    val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(content)?.toString()
+    val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)
+        ?.getTextInNode(content)
+        ?.toString()
+    val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)
+        ?.getTextInNode(content)?.toString()
     val annotation = destination ?: linkLabel
-    if (annotation != null) pushStringAnnotation(TAG_URL, annotation)
+    if (annotation != null) pushStringAnnotation(MARKDOWN_TAG_URL, annotation)
     pushStyle(
         SpanStyle(
             color = LocalMarkdownColors.current.linkText,
@@ -48,7 +50,7 @@ internal fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNo
         it.type.name == MarkdownElementTypes.AUTOLINK.name
     } ?: node
     val destination = targetNode.getTextInNode(content).toString()
-    pushStringAnnotation(TAG_URL, (destination))
+    pushStringAnnotation(MARKDOWN_TAG_URL, (destination))
     pushStyle(
         SpanStyle(
             color = LocalMarkdownColors.current.linkText,
@@ -95,10 +97,9 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                     MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content, child)
                     MarkdownElementTypes.IMAGE -> child.findChildOfTypeRecursive(
                         MarkdownElementTypes.LINK_DESTINATION
-                    )
-                        ?.let {
-                            appendInlineContent(TAG_IMAGE_URL, it.getTextInNode(content).toString())
-                        }
+                    )?.let {
+                        appendInlineContent(MARKDOWN_TAG_IMAGE_URL, it.getTextInNode(content).toString())
+                    }
 
                     MarkdownElementTypes.EMPH -> {
                         pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
@@ -136,7 +137,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                     MarkdownElementTypes.INLINE_LINK -> appendMarkdownLink(content, child)
                     MarkdownElementTypes.SHORT_REFERENCE_LINK -> appendMarkdownLink(content, child)
                     MarkdownElementTypes.FULL_REFERENCE_LINK -> appendMarkdownLink(content, child)
-                    TEXT -> append(child.getTextInNode(content).toString())
+                    MarkdownTokenTypes.TEXT -> append(child.getTextInNode(content).toString())
                     GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
                         append(child.getTextInNode(content).toString())
                     } else appendAutoLink(content, child)
