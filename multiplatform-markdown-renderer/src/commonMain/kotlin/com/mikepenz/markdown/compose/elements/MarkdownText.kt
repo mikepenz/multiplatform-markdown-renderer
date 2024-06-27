@@ -27,8 +27,8 @@ import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.drawBehind
 import com.mikepenz.markdown.model.rememberMarkdownImageState
-import com.mikepenz.markdown.utils.TAG_IMAGE_URL
-import com.mikepenz.markdown.utils.TAG_URL
+import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
+import com.mikepenz.markdown.utils.MARKDOWN_TAG_URL
 
 
 @Composable
@@ -86,12 +86,12 @@ fun MarkdownText(
     val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
     val imageState = rememberMarkdownImageState()
 
-    val hasUrl = content.getStringAnnotations(TAG_URL, 0, content.length).any()
+    val hasUrl = content.getStringAnnotations(MARKDOWN_TAG_URL, 0, content.length).any()
     val textModifier = if (hasUrl) modifier.pointerInput(Unit) {
         detectTapGestures { pos ->
             layoutResult.value?.let { layoutResult ->
                 val position = layoutResult.getOffsetForPosition(pos)
-                content.getStringAnnotations(TAG_URL, position, position).reversed().firstOrNull()
+                content.getStringAnnotations(MARKDOWN_TAG_URL, position, position).reversed().firstOrNull()
                     ?.let {
                         val foundReference = referenceLinkHandler.find(it.item)
                         try {
@@ -115,7 +115,7 @@ fun MarkdownText(
             .animateContentSize(),
         style = style,
         color = LocalMarkdownColors.current.text,
-        inlineContent = mapOf(TAG_IMAGE_URL to InlineTextContent(
+        inlineContent = mapOf(MARKDOWN_TAG_IMAGE_URL to InlineTextContent(
             Placeholder(
                 width = imageState.imageSize.width.sp,
                 height = imageState.imageSize.height.sp,
