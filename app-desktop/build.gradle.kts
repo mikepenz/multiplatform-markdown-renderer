@@ -18,11 +18,15 @@ repositories {
 dependencies {
     implementation(projects.multiplatformMarkdownRenderer)
     implementation(projects.multiplatformMarkdownRendererM2)
-    implementation(projects.multiplatformMarkdownRendererCoil2)
+    implementation(projects.multiplatformMarkdownRendererCoil3)
 
     implementation(compose.desktop.currentOs)
     implementation(compose.foundation)
     implementation(compose.material)
+
+    // required for coil
+    implementation(libs.coil.network.ktor)
+    implementation(libs.kotlinx.coroutines.swing)
 }
 
 application {
