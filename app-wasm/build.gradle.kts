@@ -39,6 +39,10 @@ kotlin {
                 implementation(projects.multiplatformMarkdownRenderer)
                 implementation(projects.multiplatformMarkdownRendererM3)
                 implementation(projects.multiplatformMarkdownRendererCoil3)
+
+                // required for coil
+                implementation(libs.coil.network.ktor)
+                implementation(libs.ktor.client.core)
             }
         }
     }
