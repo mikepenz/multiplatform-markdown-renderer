@@ -17,7 +17,7 @@ markdown = "0.7.3"
 detekt = "1.23.6"
 gradleMvnPublish = "0.28.0"
 screenshot = "0.0.1-alpha02"
-ktor = "3.0.0-beta-2"
+ktor = "3.0.0-wasm2"
 
 [libraries]
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
