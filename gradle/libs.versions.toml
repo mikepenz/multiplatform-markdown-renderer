@@ -17,7 +17,7 @@ markdown = "0.7.3"
 detekt = "1.23.6"
 gradleMvnPublish = "0.28.0"
 screenshot = "0.0.1-alpha02"
-ktor = "3.0.0-wasm2"
+ktor = "3.0.0-beta-2"
 
 [libraries]
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
@@ -38,6 +38,7 @@ coil2-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil2" }
 markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
