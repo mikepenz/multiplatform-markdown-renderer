@@ -7,14 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import com.mikepenz.markdown.compose.LocalBulletListHandler
-import com.mikepenz.markdown.compose.LocalMarkdownColors
-import com.mikepenz.markdown.compose.LocalMarkdownPadding
-import com.mikepenz.markdown.compose.LocalMarkdownTypography
-import com.mikepenz.markdown.compose.LocalOrderedListHandler
-import com.mikepenz.markdown.compose.components.markdownComponents
+import com.mikepenz.markdown.compose.*
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
-import com.mikepenz.markdown.compose.handleElement
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownElementTypes.ORDERED_LIST
 import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
@@ -30,7 +24,7 @@ fun MarkdownListItems(
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.list,
     level: Int = 0,
-    item: @Composable (index: Int, child: ASTNode) -> Unit
+    item: @Composable (index: Int, child: ASTNode) -> Unit,
 ) {
     val listDp = LocalMarkdownPadding.current.list
     val indentListDp = LocalMarkdownPadding.current.indentList
@@ -62,7 +56,7 @@ fun MarkdownOrderedList(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.ordered,
-    level: Int = 0
+    level: Int = 0,
 ) {
     val orderedListHandler = LocalOrderedListHandler.current
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
@@ -81,7 +75,7 @@ fun MarkdownOrderedList(
             Column(Modifier.padding(bottom = listItemBottom)) {
                 handleElement(
                     node = child,
-                    components = markdownComponents(),
+                    components = LocalMarkdownComponents.current,
                     content = content,
                     includeSpacer = false
                 )
@@ -95,7 +89,7 @@ fun MarkdownBulletList(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.bullet,
-    level: Int = 0
+    level: Int = 0,
 ) {
     val bulletHandler = LocalBulletListHandler.current
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
@@ -114,7 +108,7 @@ fun MarkdownBulletList(
             Column(Modifier.padding(bottom = listItemBottom)) {
                 handleElement(
                     node = child,
-                    components = markdownComponents(),
+                    components = LocalMarkdownComponents.current,
                     content = content,
                     includeSpacer = false
                 )

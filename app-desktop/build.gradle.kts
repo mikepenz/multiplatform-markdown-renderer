@@ -26,6 +26,8 @@ dependencies {
 
     // required for coil
     implementation(libs.coil.network.ktor)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.java)
     implementation(libs.kotlinx.coroutines.swing)
 }
 
