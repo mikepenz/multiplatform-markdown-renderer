@@ -2,6 +2,8 @@ package com.mikepenz.markdown.compose
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
+import com.mikepenz.markdown.compose.components.MarkdownComponents
+import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.model.BulletHandler
 import com.mikepenz.markdown.model.DefaultMarkdownAnnotator
 import com.mikepenz.markdown.model.DefaultMarkdownExtendedSpans
@@ -82,4 +84,11 @@ val LocalMarkdownAnnotator = compositionLocalOf<MarkdownAnnotator> {
  */
 val LocalMarkdownExtendedSpans = compositionLocalOf<MarkdownExtendedSpans> {
     return@compositionLocalOf DefaultMarkdownExtendedSpans(null)
+}
+
+/**
+ * Local [MarkdownComponents] provider
+ */
+val LocalMarkdownComponents = compositionLocalOf<MarkdownComponents> {
+    return@compositionLocalOf markdownComponents()
 }
