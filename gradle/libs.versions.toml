@@ -38,6 +38,7 @@ coil2-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil2" }
 markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
