@@ -28,7 +28,7 @@ import org.intellij.markdown.ast.ASTNode
 @Composable
 private fun MarkdownCode(
     code: String,
-    style: TextStyle = LocalMarkdownTypography.current.code
+    style: TextStyle = LocalMarkdownTypography.current.code,
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
@@ -50,12 +50,14 @@ private fun MarkdownCode(
 @Composable
 fun MarkdownCodeFence(
     content: String,
-    node: ASTNode
+    node: ASTNode,
 ) {
-    // CODE_FENCE_START, FENCE_LANG, {content}, CODE_FENCE_END
+    // CODE_FENCE_START, FENCE_LANG, {content // CODE_FENCE_CONTENT // x-times}, CODE_FENCE_END
+    // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}, EOL
+    // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}
     if (node.children.size >= 3) {
         val start = node.children[2].startOffset
-        val end = node.children[node.children.size - 2].endOffset
+        val end = node.children[(node.children.size - 2).coerceAtLeast(2)].endOffset
         MarkdownCode(content.subSequence(start, end).toString().replaceIndent())
     } else {
         // invalid code block, skipping
@@ -65,7 +67,7 @@ fun MarkdownCodeFence(
 @Composable
 fun MarkdownCodeBlock(
     content: String,
-    node: ASTNode
+    node: ASTNode,
 ) {
     val start = node.children[0].startOffset
     val end = node.children[node.children.size - 1].endOffset
@@ -80,7 +82,7 @@ internal fun MarkdownCodeBackground(
     shape: Shape = RectangleShape,
     border: BorderStroke? = null,
     elevation: Dp = 0.dp,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Box(
         modifier = modifier
