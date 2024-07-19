@@ -31,7 +31,6 @@ data class MarkdownComponentModel(
 
 private fun MarkdownComponentModel.getTextInNode() = node.getTextInNode(content)
 
-@Composable
 fun markdownComponents(
     text: MarkdownComponent = CurrentComponentsBridge.text,
     eol: MarkdownComponent = CurrentComponentsBridge.eol,
