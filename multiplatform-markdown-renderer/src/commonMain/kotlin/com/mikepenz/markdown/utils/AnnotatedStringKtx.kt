@@ -93,6 +93,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
     children.forEach { child ->
         if (skipIfNext == null || skipIfNext != child.type) {
             if (annotator == null || !annotator(content, child)) {
+                val parentType = child.parent?.type
                 when (child.type) {
                     // Element types
                     MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content, child)
@@ -157,7 +158,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                     MarkdownTokenTypes.EXCLAMATION_MARK -> append('!')
                     MarkdownTokenTypes.BACKTICK -> append('`')
                     MarkdownTokenTypes.HARD_LINE_BREAK -> append("\n\n")
-                    MarkdownTokenTypes.EMPH -> if (child.parent?.type != MarkdownElementTypes.EMPH) append('*')
+                    MarkdownTokenTypes.EMPH -> if (parentType != MarkdownElementTypes.EMPH && parentType != MarkdownElementTypes.STRONG) append('*')
                     MarkdownTokenTypes.EOL -> append('\n')
                     MarkdownTokenTypes.WHITE_SPACE -> if (length > 0) {
                         append(' ')
