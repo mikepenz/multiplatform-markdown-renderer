@@ -94,6 +94,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
         if (skipIfNext == null || skipIfNext != child.type) {
             if (annotator == null || !annotator(content, child)) {
                 when (child.type) {
+                    // Element types
                     MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content, child)
                     MarkdownElementTypes.IMAGE -> child.findChildOfTypeRecursive(
                         MarkdownElementTypes.LINK_DESTINATION
@@ -137,6 +138,8 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                     MarkdownElementTypes.INLINE_LINK -> appendMarkdownLink(content, child)
                     MarkdownElementTypes.SHORT_REFERENCE_LINK -> appendMarkdownLink(content, child)
                     MarkdownElementTypes.FULL_REFERENCE_LINK -> appendMarkdownLink(content, child)
+
+                    // Token Types
                     MarkdownTokenTypes.TEXT -> append(child.getTextInNode(content).toString())
                     GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
                         append(child.getTextInNode(content).toString())
@@ -154,6 +157,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                     MarkdownTokenTypes.EXCLAMATION_MARK -> append('!')
                     MarkdownTokenTypes.BACKTICK -> append('`')
                     MarkdownTokenTypes.HARD_LINE_BREAK -> append("\n\n")
+                    MarkdownTokenTypes.EMPH -> if (child.parent?.type != MarkdownElementTypes.EMPH) append('*')
                     MarkdownTokenTypes.EOL -> append('\n')
                     MarkdownTokenTypes.WHITE_SPACE -> if (length > 0) {
                         append(' ')
