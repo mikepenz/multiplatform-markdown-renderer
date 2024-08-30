@@ -13,7 +13,7 @@ import com.mikepenz.markdown.model.ImageTransformer
 object Coil3ImageTransformerImpl : ImageTransformer {
 
     @Composable
-    override fun transform(link: String): ImageData? {
+    override fun transform(link: String): ImageData {
         return rememberAsyncImagePainter(
             model = ImageRequest.Builder(LocalPlatformContext.current)
                 .data(link)
@@ -28,9 +28,7 @@ object Coil3ImageTransformerImpl : ImageTransformer {
         if (painter is AsyncImagePainter) {
             val painterState = painter.state.collectAsState()
             val intrinsicSize = painterState.value.painter?.intrinsicSize
-            if (intrinsicSize != null) {
-                size = intrinsicSize
-            }
+            intrinsicSize?.also { size = it }
         }
         return size
     }
