@@ -1,12 +1,6 @@
 package com.mikepenz.markdown.coil3
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.painter.Painter
 import coil3.compose.AsyncImagePainter
@@ -33,13 +27,11 @@ object Coil3ImageTransformerImpl : ImageTransformer {
         var size by remember(painter) { mutableStateOf(painter.intrinsicSize) }
         if (painter is AsyncImagePainter) {
             val painterState = painter.state.collectAsState()
-            LaunchedEffect(painterState) {
-                painterState.value.painter?.let {
-                    size = it.intrinsicSize
-                }
+            val intrinsicSize = painterState.value.painter?.intrinsicSize
+            if (intrinsicSize != null) {
+                size = intrinsicSize
             }
         }
-
         return size
     }
 }
