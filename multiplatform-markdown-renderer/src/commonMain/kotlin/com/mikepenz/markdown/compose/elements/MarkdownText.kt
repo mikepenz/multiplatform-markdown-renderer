@@ -6,15 +6,15 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.text.InlineTextContent
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import com.mikepenz.markdown.compose.*
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
@@ -110,6 +110,16 @@ fun MarkdownText(
         }
     } else modifier
 
+
+    val transformer = LocalImageTransformer.current
+    val placeholderState by derivedStateOf {
+        transformer.placeholderConfig(
+            imageState.density,
+            imageState.containerSize,
+            imageState.intrinsicImageSize
+        )
+    }
+
     MarkdownBasicText(
         text = content,
         modifier = textModifier
@@ -123,31 +133,30 @@ fun MarkdownText(
         color = LocalMarkdownColors.current.text,
         inlineContent = mapOf(MARKDOWN_TAG_IMAGE_URL to InlineTextContent(
             Placeholder(
-                width = imageState.imageSize.width.sp,
-                height = imageState.imageSize.height.sp,
-                placeholderVerticalAlign = PlaceholderVerticalAlign.Bottom
+                width = placeholderState.size.width.sp,
+                height = placeholderState.size.height.sp,
+                placeholderVerticalAlign = placeholderState.verticalAlign
             )
         ) { link ->
-            val transformer = LocalImageTransformer.current
-
             transformer.transform(link)?.let { imageData ->
                 val intrinsicSize = transformer.intrinsicSize(imageData.painter)
-
                 LaunchedEffect(intrinsicSize) {
                     imageState.setImageSize(intrinsicSize)
                 }
-
                 Image(
                     painter = imageData.painter,
                     contentDescription = imageData.contentDescription,
+                    modifier = imageData.modifier,
                     alignment = imageData.alignment,
-                    modifier = imageData.modifier
+                    contentScale = imageData.contentScale,
+                    alpha = imageData.alpha,
+                    colorFilter = imageData.colorFilter
                 )
             }
         }),
         onTextLayout = {
             layoutResult.value = it
-            onTextLayout?.invoke(it)
+            onTextLayout.invoke(it)
         }
     )
 }
