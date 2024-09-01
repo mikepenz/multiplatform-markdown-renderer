@@ -17,8 +17,11 @@ fun MarkdownImage(content: String, node: ASTNode) {
         Image(
             painter = imageData.painter,
             contentDescription = imageData.contentDescription,
+            modifier = imageData.modifier,
             alignment = imageData.alignment,
-            modifier = imageData.modifier
+            contentScale = imageData.contentScale,
+            alpha = imageData.alpha,
+            colorFilter = imageData.colorFilter
         )
     }
 }
