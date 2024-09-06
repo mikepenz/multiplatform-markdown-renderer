@@ -301,8 +301,9 @@ Markdown(
 )
 
 // ADVANCED: Customize Highlights library by defining different theme
-val highlightsBuilder = remember {
-    Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isSystemInDarkTheme()))
+val isDarkTheme = isSystemInDarkTheme()
+val highlightsBuilder = remember(isDarkTheme) {
+    Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isDarkTheme))
 }
 Markdown(
     MARKDOWN,
