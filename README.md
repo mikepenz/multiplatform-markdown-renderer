@@ -251,7 +251,8 @@ Markdown(
 ```
 
 > [!NOTE]
-> 0.21.0 adds JVM support for this dependency via `HTTPUrlConnection` -> however this is expected to be removed in the future.
+> 0.21.0 adds JVM support for this dependency via `HTTPUrlConnection` -> however this is expected to be removed in the
+> future.
 
 > [!NOTE]  
 > Please refer to the official coil2 documentation on how to adjust the `ImageLoader`
@@ -275,6 +276,42 @@ Markdown(
 
 > [!NOTE]  
 > The `coil3` module does depend on SNAPSHOT builds of coil3
+
+### Syntax Highlighting
+
+The library (introduced with 0.27.0) offers optional support for syntax highlighting via
+the [Highlights](https://github.com/SnipMeDev/Highlights) project.
+This support is not included in the core, and can be enabled by adding the `multiplatform-markdown-renderer-code`
+dependency.
+
+```groovy
+implementation("com.mikepenz:multiplatform-markdown-renderer-code:${version}")
+```
+
+Once added, the `Markdown` has to be configured to use the alternative code highlighter. 
+
+```kotlin
+// Use default color scheme
+Markdown(
+    MARKDOWN,
+    components = markdownComponents(
+        codeBlock = highlightedCodeBlock,
+        codeFence = highlightedCodeFence,
+    )
+)
+
+// ADVANCED: Customize Highlights library by defining different theme
+val highlightsBuilder = remember {
+    Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isSystemInDarkTheme()))
+}
+Markdown(
+    MARKDOWN,
+    components = markdownComponents(
+        codeBlock = { MarkdownHighlightedCodeBlock(it.content, it.node, highlightsBuilder) },
+        codeFence = { MarkdownHighlightedCodeFence(it.content, it.node, highlightsBuilder) },
+    )
+)
+```
 
 ## Dependency
 
