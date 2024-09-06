@@ -1,3 +1,4 @@
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -11,12 +12,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.mikepenz.markdown.coil3.Coil3ImageTransformerImpl
+import com.mikepenz.markdown.compose.components.markdownComponents
+import com.mikepenz.markdown.compose.elements.MarkdownHighlightedCodeBlock
+import com.mikepenz.markdown.compose.elements.MarkdownHighlightedCodeFence
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.RoundedCornerSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.rememberSquigglyUnderlineAnimator
 import com.mikepenz.markdown.m2.Markdown
 import com.mikepenz.markdown.model.markdownExtendedSpans
+import dev.snipme.highlights.Highlights
+import dev.snipme.highlights.model.SyntaxThemes
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "Markdown Sample") {
@@ -29,9 +35,16 @@ fun main() = application {
                 }
             ) {
                 val scrollState = rememberScrollState()
+                val highlightsBuilder = remember {
+                    Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isSystemInDarkTheme()))
+                }
 
                 Markdown(
                     MARKDOWN,
+                    components = markdownComponents(
+                        codeBlock = { MarkdownHighlightedCodeBlock(it.content, it.node, highlightsBuilder) },
+                        codeFence = { MarkdownHighlightedCodeFence(it.content, it.node, highlightsBuilder) },
+                    ),
                     imageTransformer = Coil3ImageTransformerImpl,
                     extendedSpans = markdownExtendedSpans {
                         val animator = rememberSquigglyUnderlineAnimator()
@@ -76,7 +89,7 @@ This is a paragraph with a [link](https://www.jetbrains.com/).
 This is a code block:
 ```kotlin
 fun main() {
-println("Hello, world!")
+    println("Hello, world!")
 }
 ```
 

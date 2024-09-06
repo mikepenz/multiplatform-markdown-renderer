@@ -1,7 +1,6 @@
 package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -16,29 +15,51 @@ import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
+import com.mikepenz.markdown.compose.components.MarkdownComponent
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import dev.snipme.highlights.Highlights
 import dev.snipme.highlights.model.BoldHighlight
 import dev.snipme.highlights.model.ColorHighlight
 import dev.snipme.highlights.model.SyntaxLanguage
-import dev.snipme.highlights.model.SyntaxThemes
+import org.intellij.markdown.ast.ASTNode
+
+/** Default definition for the [MarkdownHighlightedCodeFence]. Uses default theme, attempts to apply language from markdown. */
+val highlightedCodeFence: MarkdownComponent = { MarkdownHighlightedCodeFence(it.content, it.node) }
+
+/** Default definition for the [MarkdownHighlightedCodeBlock]. Uses default theme, attempts to apply language from markdown. */
+val highlightedCodeBlock: MarkdownComponent = { MarkdownHighlightedCodeBlock(it.content, it.node) }
 
 @Composable
-private fun MarkdownHighlightedCode(
+fun MarkdownHighlightedCodeFence(content: String, node: ASTNode, highlights: Highlights.Builder = Highlights.Builder()) {
+    MarkdownCodeFence(content, node) { code, language ->
+        MarkdownHighlightedCode(code, language, highlights)
+    }
+}
+
+@Composable
+fun MarkdownHighlightedCodeBlock(content: String, node: ASTNode, highlights: Highlights.Builder = Highlights.Builder()) {
+    MarkdownCodeBlock(content, node) { code, language ->
+        MarkdownHighlightedCode(code, language, highlights)
+    }
+}
+
+@Composable
+fun MarkdownHighlightedCode(
     code: String,
+    language: String?,
+    highlights: Highlights.Builder = Highlights.Builder(),
     style: TextStyle = LocalMarkdownTypography.current.code,
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
     val codeBlockPadding = LocalMarkdownPadding.current.codeBlock
+    val syntaxLanguage = remember(language) { language?.let { SyntaxLanguage.getByName(it) } }
 
-    val darkTheme = isSystemInDarkTheme()
     val codeHighlights by remembering(code) {
         derivedStateOf {
-            Highlights.Builder()
+            highlights
                 .code(code)
-                .theme(SyntaxThemes.default(darkTheme))
-                .language(SyntaxLanguage.DEFAULT)
+                .let { if (syntaxLanguage != null) it.language(syntaxLanguage) else it }
                 .build()
         }
     }
