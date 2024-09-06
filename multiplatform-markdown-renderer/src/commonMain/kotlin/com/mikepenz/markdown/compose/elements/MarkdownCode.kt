@@ -76,7 +76,7 @@ fun MarkdownCodeBlock(
 
 
 @Composable
-internal fun MarkdownCodeBackground(
+fun MarkdownCodeBackground(
     color: Color,
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
