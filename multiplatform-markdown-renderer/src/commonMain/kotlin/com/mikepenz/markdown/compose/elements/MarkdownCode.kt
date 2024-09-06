@@ -23,7 +23,10 @@ import com.mikepenz.markdown.compose.LocalMarkdownDimens
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.findChildOfType
+import org.intellij.markdown.ast.getTextInNode
 
 @Composable
 private fun MarkdownCode(
@@ -34,15 +37,10 @@ private fun MarkdownCode(
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
     val codeBlockPadding = LocalMarkdownPadding.current.codeBlock
     MarkdownCodeBackground(
-        color = backgroundCodeColor,
-        shape = RoundedCornerShape(codeBackgroundCornerSize),
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+        color = backgroundCodeColor, shape = RoundedCornerShape(codeBackgroundCornerSize), modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
     ) {
         MarkdownBasicText(
-            code,
-            color = LocalMarkdownColors.current.codeText,
-            modifier = Modifier.horizontalScroll(rememberScrollState()).padding(codeBlockPadding),
-            style = style
+            code, color = LocalMarkdownColors.current.codeText, modifier = Modifier.horizontalScroll(rememberScrollState()).padding(codeBlockPadding), style = style
         )
     }
 }
@@ -51,14 +49,17 @@ private fun MarkdownCode(
 fun MarkdownCodeFence(
     content: String,
     node: ASTNode,
+    block: @Composable (String, String?) -> Unit = { code, _ -> MarkdownCode(code) },
 ) {
     // CODE_FENCE_START, FENCE_LANG, {content // CODE_FENCE_CONTENT // x-times}, CODE_FENCE_END
     // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}, EOL
     // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}
+
+    val language = node.findChildOfType(MarkdownTokenTypes.FENCE_LANG)?.getTextInNode(content)?.toString()
     if (node.children.size >= 3) {
         val start = node.children[2].startOffset
         val end = node.children[(node.children.size - 2).coerceAtLeast(2)].endOffset
-        MarkdownCode(content.subSequence(start, end).toString().replaceIndent())
+        block(content.subSequence(start, end).toString().replaceIndent(), language)
     } else {
         // invalid code block, skipping
     }
@@ -68,15 +69,16 @@ fun MarkdownCodeFence(
 fun MarkdownCodeBlock(
     content: String,
     node: ASTNode,
+    block: @Composable (String, String?) -> Unit = { code, _ -> MarkdownCode(code) },
 ) {
     val start = node.children[0].startOffset
     val end = node.children[node.children.size - 1].endOffset
-    MarkdownCode(content.subSequence(start, end).toString().replaceIndent())
+    val language = node.findChildOfType(MarkdownTokenTypes.FENCE_LANG)?.getTextInNode(content)?.toString()
+    block(content.subSequence(start, end).toString().replaceIndent(), language)
 }
 
-
 @Composable
-internal fun MarkdownCodeBackground(
+fun MarkdownCodeBackground(
     color: Color,
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
@@ -84,17 +86,10 @@ internal fun MarkdownCodeBackground(
     elevation: Dp = 0.dp,
     content: @Composable () -> Unit,
 ) {
-    Box(
-        modifier = modifier
-            .shadow(elevation, shape, clip = false)
-            .then(if (border != null) Modifier.border(border, shape) else Modifier)
-            .background(color = color, shape = shape)
-            .clip(shape)
-            .semantics(mergeDescendants = false) {
-                isTraversalGroup = true
-            }
-            .pointerInput(Unit) {},
-        propagateMinConstraints = true
+    Box(modifier = modifier.shadow(elevation, shape, clip = false).then(if (border != null) Modifier.border(border, shape) else Modifier).background(color = color, shape = shape)
+        .clip(shape).semantics(mergeDescendants = false) {
+            isTraversalGroup = true
+        }.pointerInput(Unit) {}, propagateMinConstraints = true
     ) {
         content()
     }

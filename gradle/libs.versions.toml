@@ -18,6 +18,7 @@ detekt = "1.23.6"
 gradleMvnPublish = "0.29.0"
 screenshot = "0.0.1-alpha05"
 ktor = "3.0.0-beta-2"
+highlights = "0.9.1"
 
 [libraries]
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
@@ -39,6 +40,7 @@ markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
+highlights = { module = "dev.snipme:highlights", version.ref = "highlights" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
