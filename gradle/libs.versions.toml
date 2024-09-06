@@ -1,23 +1,23 @@
 [versions]
-agp = "8.5.1"
+agp = "8.5.2"
 compileSdk = "34"
 minSdk = "21"
 targetSdk = "34"
-androidx-activityCompose = "1.9.0"
+androidx-activityCompose = "1.9.1"
 androidx-material = "1.12.0"
 compose = "1.6.8"
 compose-plugin = "1.6.11"
-kotlin = "2.0.0"
+kotlin = "2.0.20"
 coroutines = "1.8.1"
 dokka = "1.9.20"
-coil = "3.0.0-alpha08"
-coil2 = "2.6.0"
-aboutlib = "11.2.2"
+coil = "3.0.0-alpha10"
+coil2 = "2.7.0"
+aboutlib = "11.2.3"
 markdown = "0.7.3"
 detekt = "1.23.6"
-gradleMvnPublish = "0.28.0"
-screenshot = "0.0.1-alpha02"
-ktor = "3.0.0-wasm2"
+gradleMvnPublish = "0.29.0"
+screenshot = "0.0.1-alpha05"
+ktor = "3.0.0-beta-2"
 
 [libraries]
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
@@ -32,7 +32,7 @@ aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose-m3", ve
 coil-core = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
-coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 coil2-core = { module = "io.coil-kt:coil-compose", version.ref = "coil2" }
 coil2-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil2" }
 markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
