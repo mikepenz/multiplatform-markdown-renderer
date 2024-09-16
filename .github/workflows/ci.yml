@@ -58,6 +58,7 @@ jobs:
           ./gradlew multiplatform-markdown-renderer-m3:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
           ./gradlew multiplatform-markdown-renderer-coil2:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
           ./gradlew multiplatform-markdown-renderer-coil3:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
+          ./gradlew multiplatform-markdown-renderer-code:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
 
   build:
     name: Build
