@@ -1,7 +1,6 @@
 package com.mikepenz.markdown.model
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 
 interface MarkdownTypography {
