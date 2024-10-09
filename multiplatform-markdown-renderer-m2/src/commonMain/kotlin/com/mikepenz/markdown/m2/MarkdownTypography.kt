@@ -6,6 +6,9 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.model.DefaultMarkdownTypography
 import com.mikepenz.markdown.model.MarkdownTypography
 
@@ -23,9 +26,14 @@ fun markdownTypography(
     paragraph: TextStyle = MaterialTheme.typography.body1,
     ordered: TextStyle = MaterialTheme.typography.body1,
     bullet: TextStyle = MaterialTheme.typography.body1,
-    list: TextStyle = MaterialTheme.typography.body1
+    list: TextStyle = MaterialTheme.typography.body1,
+    link: TextStyle = MaterialTheme.typography.body1.copy(
+        fontWeight = FontWeight.Bold,
+        color = markdownColor().linkText,
+        textDecoration = TextDecoration.Underline
+    ),
 ): MarkdownTypography = DefaultMarkdownTypography(
     h1 = h1, h2 = h2, h3 = h3, h4 = h4, h5 = h5, h6 = h6,
     text = text, quote = quote, code = code, paragraph = paragraph,
-    ordered = ordered, bullet = bullet, list = list
+    ordered = ordered, bullet = bullet, list = list, link = link,
 )

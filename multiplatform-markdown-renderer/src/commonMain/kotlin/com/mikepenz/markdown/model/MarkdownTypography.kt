@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.model
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 
 interface MarkdownTypography {
@@ -17,6 +18,7 @@ interface MarkdownTypography {
     val ordered: TextStyle
     val bullet: TextStyle
     val list: TextStyle
+    val link: TextStyle
 }
 
 @Immutable
@@ -33,5 +35,6 @@ class DefaultMarkdownTypography(
     override val paragraph: TextStyle,
     override val ordered: TextStyle,
     override val bullet: TextStyle,
-    override val list: TextStyle
+    override val list: TextStyle,
+    override val link: TextStyle,
 ) : MarkdownTypography

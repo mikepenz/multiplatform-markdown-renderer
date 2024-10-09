@@ -10,6 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import com.mikepenz.markdown.compose.LocalMarkdownAnnotator
 import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
@@ -33,11 +34,7 @@ internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: A
     val annotation = destination ?: linkLabel
     if (annotation != null) pushStringAnnotation(MARKDOWN_TAG_URL, annotation)
     pushStyle(
-        SpanStyle(
-            color = LocalMarkdownColors.current.linkText,
-            textDecoration = TextDecoration.Underline,
-            fontWeight = FontWeight.Bold
-        )
+        LocalMarkdownTypography.current.link.toSpanStyle()
     )
     buildMarkdownAnnotatedString(content, linkText)
     pop()
@@ -51,12 +48,9 @@ internal fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNo
     } ?: node
     val destination = targetNode.getTextInNode(content).toString()
     pushStringAnnotation(MARKDOWN_TAG_URL, (destination))
+    LocalMarkdownTypography.current.link.toSpanStyle()
     pushStyle(
-        SpanStyle(
-            color = LocalMarkdownColors.current.linkText,
-            textDecoration = TextDecoration.Underline,
-            fontWeight = FontWeight.Bold
-        )
+        LocalMarkdownTypography.current.link.toSpanStyle()
     )
     append(destination)
     pop()
