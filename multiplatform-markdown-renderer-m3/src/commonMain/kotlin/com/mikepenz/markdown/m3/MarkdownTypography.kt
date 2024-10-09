@@ -29,7 +29,6 @@ fun markdownTypography(
     list: TextStyle = MaterialTheme.typography.bodyLarge,
     link: TextStyle = MaterialTheme.typography.bodyLarge.copy(
         fontWeight = FontWeight.Bold,
-        color = markdownColor().linkText,
         textDecoration = TextDecoration.Underline
     ),
 ): MarkdownTypography = DefaultMarkdownTypography(

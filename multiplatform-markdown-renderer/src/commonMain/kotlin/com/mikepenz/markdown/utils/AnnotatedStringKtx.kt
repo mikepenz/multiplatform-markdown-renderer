@@ -33,9 +33,9 @@ internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: A
         ?.getTextInNode(content)?.toString()
     val annotation = destination ?: linkLabel
     if (annotation != null) pushStringAnnotation(MARKDOWN_TAG_URL, annotation)
-    pushStyle(
-        LocalMarkdownTypography.current.link.toSpanStyle()
-    )
+    val linkColor = LocalMarkdownColors.current.linkText
+    val linkTextStyle = LocalMarkdownTypography.current.link.copy(color = linkColor).toSpanStyle()
+    pushStyle(linkTextStyle)
     buildMarkdownAnnotatedString(content, linkText)
     pop()
     if (annotation != null) pop()
@@ -48,10 +48,9 @@ internal fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNo
     } ?: node
     val destination = targetNode.getTextInNode(content).toString()
     pushStringAnnotation(MARKDOWN_TAG_URL, (destination))
-    LocalMarkdownTypography.current.link.toSpanStyle()
-    pushStyle(
-        LocalMarkdownTypography.current.link.toSpanStyle()
-    )
+    val linkColor = LocalMarkdownColors.current.linkText
+    val linkTextStyle = LocalMarkdownTypography.current.link.copy(color = linkColor).toSpanStyle()
+    pushStyle(linkTextStyle)
     append(destination)
     pop()
 }
