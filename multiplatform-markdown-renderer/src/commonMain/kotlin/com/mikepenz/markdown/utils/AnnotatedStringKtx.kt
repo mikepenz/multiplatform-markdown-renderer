@@ -4,7 +4,6 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -114,12 +113,12 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                     }
 
                     MarkdownElementTypes.CODE_SPAN -> {
+                        val codeStyle = LocalMarkdownTypography.current.inlineCode
                         pushStyle(
-                            SpanStyle(
-                                fontFamily = FontFamily.Monospace,
+                            codeStyle.copy(
                                 color = LocalMarkdownColors.current.inlineCodeText,
                                 background = LocalMarkdownColors.current.inlineCodeBackground
-                            )
+                            ).toSpanStyle()
                         )
                         append(' ')
                         buildMarkdownAnnotatedString(content, child.children.innerList())
