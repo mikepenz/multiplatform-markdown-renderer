@@ -113,7 +113,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                     }
 
                     MarkdownElementTypes.CODE_SPAN -> {
-                        val codeStyle = LocalMarkdownTypography.current.code
+                        val codeStyle = LocalMarkdownTypography.current.inlineCode
                         pushStyle(
                             codeStyle.copy(
                                 color = LocalMarkdownColors.current.inlineCodeText,

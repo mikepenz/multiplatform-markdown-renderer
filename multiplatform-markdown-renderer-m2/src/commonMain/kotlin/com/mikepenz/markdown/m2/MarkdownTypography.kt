@@ -21,6 +21,7 @@ fun markdownTypography(
     h6: TextStyle = MaterialTheme.typography.h6,
     text: TextStyle = MaterialTheme.typography.body1,
     code: TextStyle = MaterialTheme.typography.body2.copy(fontFamily = FontFamily.Monospace),
+    inlineCode: TextStyle = text.copy(fontFamily = FontFamily.Monospace),
     quote: TextStyle = MaterialTheme.typography.body2.plus(SpanStyle(fontStyle = FontStyle.Italic)),
     paragraph: TextStyle = MaterialTheme.typography.body1,
     ordered: TextStyle = MaterialTheme.typography.body1,
@@ -32,6 +33,6 @@ fun markdownTypography(
     ),
 ): MarkdownTypography = DefaultMarkdownTypography(
     h1 = h1, h2 = h2, h3 = h3, h4 = h4, h5 = h5, h6 = h6,
-    text = text, quote = quote, code = code, paragraph = paragraph,
+    text = text, quote = quote, code = code, inlineCode = inlineCode, paragraph = paragraph,
     ordered = ordered, bullet = bullet, list = list, link = link,
 )
