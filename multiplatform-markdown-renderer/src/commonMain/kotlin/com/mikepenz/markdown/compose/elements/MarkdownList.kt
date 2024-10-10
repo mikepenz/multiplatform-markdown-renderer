@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import com.mikepenz.markdown.compose.*
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
+import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownElementTypes.ORDERED_LIST
 import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
@@ -16,7 +17,6 @@ import org.intellij.markdown.MarkdownTokenTypes.Companion.LIST_BULLET
 import org.intellij.markdown.MarkdownTokenTypes.Companion.LIST_NUMBER
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
-import org.intellij.markdown.ast.getTextInNode
 
 @Composable
 fun MarkdownListItems(
@@ -65,7 +65,7 @@ fun MarkdownOrderedList(
             MarkdownBasicText(
                 text = orderedListHandler.transform(
                     LIST_NUMBER,
-                    child.findChildOfType(LIST_NUMBER)?.getTextInNode(content),
+                    child.findChildOfType(LIST_NUMBER)?.getUnescapedTextInNode(content),
                     index
                 ),
                 style = style,
@@ -98,7 +98,7 @@ fun MarkdownBulletList(
             MarkdownBasicText(
                 bulletHandler.transform(
                     LIST_BULLET,
-                    child.findChildOfType(LIST_BULLET)?.getTextInNode(content),
+                    child.findChildOfType(LIST_BULLET)?.getUnescapedTextInNode(content),
                     index
                 ),
                 style = style,

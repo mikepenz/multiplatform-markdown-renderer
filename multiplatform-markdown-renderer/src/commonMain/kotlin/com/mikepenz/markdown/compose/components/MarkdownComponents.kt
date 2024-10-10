@@ -9,12 +9,12 @@ import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.compose.elements.*
 import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
-import org.intellij.markdown.ast.getTextInNode
 
 typealias MarkdownComponent = @Composable ColumnScope.(MarkdownComponentModel) -> Unit
 
@@ -29,7 +29,7 @@ data class MarkdownComponentModel(
     val typography: MarkdownTypography,
 )
 
-private fun MarkdownComponentModel.getTextInNode() = node.getTextInNode(content)
+private fun MarkdownComponentModel.getUnescapedTextInNode() = node.getUnescapedTextInNode(content)
 
 fun markdownComponents(
     text: MarkdownComponent = CurrentComponentsBridge.text,
@@ -130,7 +130,7 @@ private class DefaultMarkdownComponents(
  */
 object CurrentComponentsBridge {
     val text: MarkdownComponent = {
-        MarkdownText(it.getTextInNode().toString())
+        MarkdownText(it.getUnescapedTextInNode())
     }
     val eol: MarkdownComponent = { }
     val codeFence: MarkdownComponent = {
@@ -184,11 +184,10 @@ object CurrentComponentsBridge {
     }
     val linkDefinition: MarkdownComponent = {
         val linkLabel =
-            it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getTextInNode(it.content)
-                ?.toString()
+            it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(it.content)
         if (linkLabel != null) {
             val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)
-                ?.getTextInNode(it.content)?.toString()
+                ?.getUnescapedTextInNode(it.content)
             LocalReferenceLinkHandler.current.store(linkLabel, destination)
         }
     }
