@@ -40,5 +40,8 @@ internal fun List<ASTNode>.innerList(): List<ASTNode> = this.subList(1, this.siz
 
 internal fun ASTNode.getUnescapedTextInNode(allFileText: CharSequence): String {
     val escapedText = getTextInNode(allFileText).toString()
-    return EntityConverter.replaceEntities(escapedText, false, true)
+    return EntityConverter.replaceEntities(escapedText,
+        processEntities = false,
+        processEscapes = true
+    )
 }
