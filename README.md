@@ -224,7 +224,42 @@ Markdown(
         paragraph = customParagraphComponent
     )
 )
+```
 
+Another example to of a custom component is changing the rendering of an unordered list.
+
+```kotlin
+// Define a custom component for rendering unordered list items in Markdown
+val customUnorderedListComponent: MarkdownComponent = {
+    // Use the MarkdownListItems composable to render the list items
+    MarkdownListItems(it.content, it.node, level = 0) { index, child ->
+        // Create a row layout for each list item with spacing between elements
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            // Render an icon for the bullet point with a green tint
+            Icon(
+                imageVector = icon,
+                tint = Color.Green,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+            )
+            // Extract the bullet marker text from the child node
+            val bulletMarker: String = child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(it.content).toString()
+            // Extract the item text and remove the bullet marker from it
+            val itemText = child.getTextInNode(it.content).toString().replace(bulletMarker, "")
+
+            // Render the item text using the MarkdownText composable
+            MarkdownText(content = itemText)
+        }
+    }
+}
+
+// Define the `Markdown` composable and pass in the custom unorderedList component
+Markdown(
+    content,
+    components = markdownComponents(
+        unorderedList = customUnorderedListComponent
+    )
+)
 ```
 
 </p>
