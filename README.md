@@ -238,12 +238,12 @@ val customUnorderedListComponent: MarkdownComponent = {
             // Render an icon for the bullet point with a green tint
             Icon(
                 imageVector = icon,
-                tint = Color.GREEN,
+                tint = Color.Green,
                 contentDescription = null,
                 modifier = Modifier.size(20.dp),
             )
             // Extract the bullet marker text from the child node
-            val bulletMarker: String = child.findChildOfType(LIST_BULLET)?.getTextInNode(it.content).toString()
+            val bulletMarker: String = child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(it.content).toString()
             // Extract the item text and remove the bullet marker from it
             val itemText = child.getTextInNode(it.content).toString().replace(bulletMarker, "")
 
