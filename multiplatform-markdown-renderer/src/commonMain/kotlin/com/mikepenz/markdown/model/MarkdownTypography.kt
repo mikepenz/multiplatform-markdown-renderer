@@ -17,6 +17,7 @@ interface MarkdownTypography {
     val ordered: TextStyle
     val bullet: TextStyle
     val list: TextStyle
+    val link: TextStyle
 }
 
 @Immutable
@@ -33,5 +34,6 @@ class DefaultMarkdownTypography(
     override val paragraph: TextStyle,
     override val ordered: TextStyle,
     override val bullet: TextStyle,
-    override val list: TextStyle
+    override val list: TextStyle,
+    override val link: TextStyle,
 ) : MarkdownTypography
