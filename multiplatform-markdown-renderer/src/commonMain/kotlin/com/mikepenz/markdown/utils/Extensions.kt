@@ -3,7 +3,6 @@ package com.mikepenz.markdown.utils
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
-import org.intellij.markdown.html.entities.EntityConverter
 
 /**
  * Tag used to indicate an url for inline content. Required for click handling.
