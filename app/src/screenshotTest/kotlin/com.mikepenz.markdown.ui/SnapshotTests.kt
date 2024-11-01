@@ -63,11 +63,11 @@ private val MARKDOWN_DEFAULT = """
 
 ###### This is an H6
 
-This is a paragraph with some *italic* and **bold** text.
+This is a paragraph with some *italic* and **bold** text\.
 
-This is a paragraph with some `inline code`.
+This is a paragraph with some `inline code`\.
 
-This is a paragraph with a [link](https://www.jetbrains.com/).
+This is a paragraph with a [link](https://www.jetbrains.com/)\.
 
 This is a code block:
 ```kotlin

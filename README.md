@@ -224,7 +224,42 @@ Markdown(
         paragraph = customParagraphComponent
     )
 )
+```
 
+Another example to of a custom component is changing the rendering of an unordered list.
+
+```kotlin
+// Define a custom component for rendering unordered list items in Markdown
+val customUnorderedListComponent: MarkdownComponent = {
+    // Use the MarkdownListItems composable to render the list items
+    MarkdownListItems(it.content, it.node, level = 0) { index, child ->
+        // Create a row layout for each list item with spacing between elements
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            // Render an icon for the bullet point with a green tint
+            Icon(
+                imageVector = icon,
+                tint = Color.Green,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+            )
+            // Extract the bullet marker text from the child node
+            val bulletMarker: String = child.findChildOfType(MarkdownTokenTypes.LIST_BULLET)?.getTextInNode(it.content).toString()
+            // Extract the item text and remove the bullet marker from it
+            val itemText = child.getTextInNode(it.content).toString().replace(bulletMarker, "")
+
+            // Render the item text using the MarkdownText composable
+            MarkdownText(content = itemText)
+        }
+    }
+}
+
+// Define the `Markdown` composable and pass in the custom unorderedList component
+Markdown(
+    content,
+    components = markdownComponents(
+        unorderedList = customUnorderedListComponent
+    )
+)
 ```
 
 </p>
@@ -251,7 +286,8 @@ Markdown(
 ```
 
 > [!NOTE]
-> 0.21.0 adds JVM support for this dependency via `HTTPUrlConnection` -> however this is expected to be removed in the future.
+> 0.21.0 adds JVM support for this dependency via `HTTPUrlConnection` -> however this is expected to be removed in the
+> future.
 
 > [!NOTE]  
 > Please refer to the official coil2 documentation on how to adjust the `ImageLoader`
@@ -275,6 +311,43 @@ Markdown(
 
 > [!NOTE]  
 > The `coil3` module does depend on SNAPSHOT builds of coil3
+
+### Syntax Highlighting
+
+The library (introduced with 0.27.0) offers optional support for syntax highlighting via
+the [Highlights](https://github.com/SnipMeDev/Highlights) project.
+This support is not included in the core, and can be enabled by adding the `multiplatform-markdown-renderer-code`
+dependency.
+
+```groovy
+implementation("com.mikepenz:multiplatform-markdown-renderer-code:${version}")
+```
+
+Once added, the `Markdown` has to be configured to use the alternative code highlighter. 
+
+```kotlin
+// Use default color scheme
+Markdown(
+    MARKDOWN,
+    components = markdownComponents(
+        codeBlock = highlightedCodeBlock,
+        codeFence = highlightedCodeFence,
+    )
+)
+
+// ADVANCED: Customize Highlights library by defining different theme
+val isDarkTheme = isSystemInDarkTheme()
+val highlightsBuilder = remember(isDarkTheme) {
+    Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isDarkTheme))
+}
+Markdown(
+    MARKDOWN,
+    components = markdownComponents(
+        codeBlock = { MarkdownHighlightedCodeBlock(it.content, it.node, highlightsBuilder) },
+        codeFence = { MarkdownHighlightedCodeFence(it.content, it.node, highlightsBuilder) },
+    )
+)
+```
 
 ## Dependency
 

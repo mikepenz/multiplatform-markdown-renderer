@@ -4,17 +4,16 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import com.mikepenz.markdown.compose.LocalMarkdownAnnotator
 import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
-import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 
@@ -22,23 +21,19 @@ import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: ASTNode) {
     val linkText = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.children?.innerList()
     if (linkText == null) {
-        append(node.getTextInNode(content).toString())
+        append(node.getUnescapedTextInNode(content))
         return
     }
     val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)
-        ?.getTextInNode(content)
+        ?.getUnescapedTextInNode(content)
         ?.toString()
     val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)
-        ?.getTextInNode(content)?.toString()
+        ?.getUnescapedTextInNode(content)
     val annotation = destination ?: linkLabel
     if (annotation != null) pushStringAnnotation(MARKDOWN_TAG_URL, annotation)
-    pushStyle(
-        SpanStyle(
-            color = LocalMarkdownColors.current.linkText,
-            textDecoration = TextDecoration.Underline,
-            fontWeight = FontWeight.Bold
-        )
-    )
+    val linkColor = LocalMarkdownColors.current.linkText
+    val linkTextStyle = LocalMarkdownTypography.current.link.copy(color = linkColor).toSpanStyle()
+    pushStyle(linkTextStyle)
     buildMarkdownAnnotatedString(content, linkText)
     pop()
     if (annotation != null) pop()
@@ -49,15 +44,11 @@ internal fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNo
     val targetNode = node.children.firstOrNull {
         it.type.name == MarkdownElementTypes.AUTOLINK.name
     } ?: node
-    val destination = targetNode.getTextInNode(content).toString()
+    val destination = targetNode.getUnescapedTextInNode(content)
     pushStringAnnotation(MARKDOWN_TAG_URL, (destination))
-    pushStyle(
-        SpanStyle(
-            color = LocalMarkdownColors.current.linkText,
-            textDecoration = TextDecoration.Underline,
-            fontWeight = FontWeight.Bold
-        )
-    )
+    val linkColor = LocalMarkdownColors.current.linkText
+    val linkTextStyle = LocalMarkdownTypography.current.link.copy(color = linkColor).toSpanStyle()
+    pushStyle(linkTextStyle)
     append(destination)
     pop()
 }
@@ -100,7 +91,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                     MarkdownElementTypes.IMAGE -> child.findChildOfTypeRecursive(
                         MarkdownElementTypes.LINK_DESTINATION
                     )?.let {
-                        appendInlineContent(MARKDOWN_TAG_IMAGE_URL, it.getTextInNode(content).toString())
+                        appendInlineContent(MARKDOWN_TAG_IMAGE_URL, it.getUnescapedTextInNode(content))
                     }
 
                     MarkdownElementTypes.EMPH -> {
@@ -122,12 +113,12 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                     }
 
                     MarkdownElementTypes.CODE_SPAN -> {
+                        val codeStyle = LocalMarkdownTypography.current.inlineCode
                         pushStyle(
-                            SpanStyle(
-                                fontFamily = FontFamily.Monospace,
+                            codeStyle.copy(
                                 color = LocalMarkdownColors.current.inlineCodeText,
                                 background = LocalMarkdownColors.current.inlineCodeBackground
-                            )
+                            ).toSpanStyle()
                         )
                         append(' ')
                         buildMarkdownAnnotatedString(content, child.children.innerList())
@@ -141,9 +132,9 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(content: String, childr
                     MarkdownElementTypes.FULL_REFERENCE_LINK -> appendMarkdownLink(content, child)
 
                     // Token Types
-                    MarkdownTokenTypes.TEXT -> append(child.getTextInNode(content).toString())
+                    MarkdownTokenTypes.TEXT -> append(child.getUnescapedTextInNode(content))
                     GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
-                        append(child.getTextInNode(content).toString())
+                        append(child.getUnescapedTextInNode(content))
                     } else appendAutoLink(content, child)
 
                     MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')

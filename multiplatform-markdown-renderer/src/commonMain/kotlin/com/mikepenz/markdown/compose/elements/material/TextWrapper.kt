@@ -70,7 +70,7 @@ internal fun MarkdownBasicText(
 }
 
 @Composable
-internal fun MarkdownBasicText(
+fun MarkdownBasicText(
     text: AnnotatedString,
     style: TextStyle,
     modifier: Modifier = Modifier,

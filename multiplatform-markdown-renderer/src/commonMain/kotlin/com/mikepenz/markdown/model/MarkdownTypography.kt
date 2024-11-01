@@ -6,6 +6,7 @@ import androidx.compose.ui.text.TextStyle
 interface MarkdownTypography {
     val text: TextStyle
     val code: TextStyle
+    val inlineCode: TextStyle
     val h1: TextStyle
     val h2: TextStyle
     val h3: TextStyle
@@ -17,6 +18,7 @@ interface MarkdownTypography {
     val ordered: TextStyle
     val bullet: TextStyle
     val list: TextStyle
+    val link: TextStyle
 }
 
 @Immutable
@@ -29,9 +31,11 @@ class DefaultMarkdownTypography(
     override val h6: TextStyle,
     override val text: TextStyle,
     override val code: TextStyle,
+    override val inlineCode: TextStyle,
     override val quote: TextStyle,
     override val paragraph: TextStyle,
     override val ordered: TextStyle,
     override val bullet: TextStyle,
-    override val list: TextStyle
+    override val list: TextStyle,
+    override val link: TextStyle,
 ) : MarkdownTypography

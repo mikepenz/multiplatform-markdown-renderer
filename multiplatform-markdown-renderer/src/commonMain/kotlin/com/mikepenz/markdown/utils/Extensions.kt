@@ -2,6 +2,7 @@ package com.mikepenz.markdown.utils
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.getTextInNode
 
 /**
  * Tag used to indicate an url for inline content. Required for click handling.
@@ -35,3 +36,11 @@ internal fun ASTNode.findChildOfTypeRecursive(type: IElementType): ASTNode? {
  * E.g. we don't want to render the brackets of a link
  */
 internal fun List<ASTNode>.innerList(): List<ASTNode> = this.subList(1, this.size - 1)
+
+internal fun ASTNode.getUnescapedTextInNode(allFileText: CharSequence): String {
+    val escapedText = getTextInNode(allFileText).toString()
+    return EntityConverter.replaceEntities(escapedText,
+        processEntities = false,
+        processEscapes = true
+    )
+}
