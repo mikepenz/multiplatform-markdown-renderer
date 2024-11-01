@@ -55,6 +55,7 @@ interface ImageTransformer {
 data class PlaceholderConfig(
     val size: Size,
     val verticalAlign: PlaceholderVerticalAlign = PlaceholderVerticalAlign.Bottom,
+    val animate: Boolean = true,
 )
 
 @Immutable

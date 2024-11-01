@@ -128,32 +128,36 @@ fun MarkdownText(
                     imageState.setContainerSize(coordinates.size)
                 }
             }
-            .animateContentSize(),
+            .let {
+                if (placeholderState.animate) it.animateContentSize() else it
+            },
         style = style,
         color = LocalMarkdownColors.current.text,
-        inlineContent = mapOf(MARKDOWN_TAG_IMAGE_URL to InlineTextContent(
-            Placeholder(
-                width = placeholderState.size.width.sp,
-                height = placeholderState.size.height.sp,
-                placeholderVerticalAlign = placeholderState.verticalAlign
-            )
-        ) { link ->
-            transformer.transform(link)?.let { imageData ->
-                val intrinsicSize = transformer.intrinsicSize(imageData.painter)
-                LaunchedEffect(intrinsicSize) {
-                    imageState.setImageSize(intrinsicSize)
-                }
-                Image(
-                    painter = imageData.painter,
-                    contentDescription = imageData.contentDescription,
-                    modifier = imageData.modifier,
-                    alignment = imageData.alignment,
-                    contentScale = imageData.contentScale,
-                    alpha = imageData.alpha,
-                    colorFilter = imageData.colorFilter
+        inlineContent = mapOf(
+            MARKDOWN_TAG_IMAGE_URL to InlineTextContent(
+                Placeholder(
+                    width = placeholderState.size.width.sp,
+                    height = placeholderState.size.height.sp,
+                    placeholderVerticalAlign = placeholderState.verticalAlign
                 )
+            ) { link ->
+                transformer.transform(link)?.let { imageData ->
+                    val intrinsicSize = transformer.intrinsicSize(imageData.painter)
+                    LaunchedEffect(intrinsicSize) {
+                        imageState.setImageSize(intrinsicSize)
+                    }
+                    Image(
+                        painter = imageData.painter,
+                        contentDescription = imageData.contentDescription,
+                        modifier = imageData.modifier,
+                        alignment = imageData.alignment,
+                        contentScale = imageData.contentScale,
+                        alpha = imageData.alpha,
+                        colorFilter = imageData.colorFilter
+                    )
+                }
             }
-        }),
+        ),
         onTextLayout = {
             layoutResult.value = it
             onTextLayout.invoke(it)
