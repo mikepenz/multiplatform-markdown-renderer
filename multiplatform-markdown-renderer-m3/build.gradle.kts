@@ -139,7 +139,7 @@ tasks.create<Jar>("javadocJar") {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.S01)
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, true)
     signAllPublications()
 }
 
