@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = "com.mikepenz.markdown"
-        minSdk = libs.versions.minSdk.get().toInt()
+        minSdk = 24 // anything below faces: https://github.com/mikepenz/multiplatform-markdown-renderer/issues/223
         targetSdk = libs.versions.targetSdk.get().toInt()
 
         versionCode = property("VERSION_CODE").toString().toInt()
