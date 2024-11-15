@@ -40,7 +40,7 @@ internal fun AnnotatedString.Builder.appendMarkdownLink(content: String, node: A
 }
 
 @Composable
-internal fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNode) {
+fun AnnotatedString.Builder.appendAutoLink(content: String, node: ASTNode) {
     val targetNode = node.children.firstOrNull {
         it.type.name == MarkdownElementTypes.AUTOLINK.name
     } ?: node
