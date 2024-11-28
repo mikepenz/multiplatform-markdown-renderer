@@ -12,6 +12,8 @@ fun markdownColor(
     codeText: Color = MaterialTheme.colors.onBackground,
     inlineCodeText: Color = codeText,
     linkText: Color = text,
+    codeTitleText: Color = codeText,
+    codeTitleBackground: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
     codeBackground: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.1f),
     inlineCodeBackground: Color = codeBackground,
     dividerColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f),
@@ -20,6 +22,8 @@ fun markdownColor(
     codeText = codeText,
     inlineCodeText = inlineCodeText,
     linkText = linkText,
+    codeTitleBackground = codeTitleBackground,
+    codeTitleText = codeTitleText,
     codeBackground = codeBackground,
     inlineCodeBackground = inlineCodeBackground,
     dividerColor = dividerColor
