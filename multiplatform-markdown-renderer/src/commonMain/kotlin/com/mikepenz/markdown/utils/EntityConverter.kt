@@ -7,14 +7,14 @@ import org.intellij.markdown.html.entities.Entities
  * Removed HTML focused escaping by https://github.com/mikepenz/multiplatform-markdown-renderer/pull/222
  */
 object EntityConverter {
-    private const val escapeAllowedString = """!"#\$%&'\(\)\*\+,\-.\/:;<=>\?@\[\\\]\^_`{\|}~"""
+    private const val ESCAPE_ALLOWED_STRING = """!"#\$%&'\(\)\*\+,\-.\/:;<=>\?@\[\\\]\^_`{\|}~"""
     private val REGEX = Regex("""&(?:([a-zA-Z0-9]+)|#([0-9]{1,8})|#[xX]([a-fA-F0-9]{1,8}));|(["&<>])""")
-    private val REGEX_ESCAPES = Regex("${REGEX.pattern}|\\\\([$escapeAllowedString])")
+    private val REGEX_ESCAPES = Regex("${REGEX.pattern}|\\\\([$ESCAPE_ALLOWED_STRING])")
 
     fun replaceEntities(
         text: CharSequence,
         processEntities: Boolean,
-        processEscapes: Boolean
+        processEscapes: Boolean,
     ): String {
         val regex = if (processEscapes) REGEX_ESCAPES else REGEX
         return regex.replace(text) { match ->
