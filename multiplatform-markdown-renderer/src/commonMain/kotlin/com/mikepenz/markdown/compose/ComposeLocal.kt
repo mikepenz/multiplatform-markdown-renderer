@@ -4,17 +4,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
-import com.mikepenz.markdown.model.BulletHandler
-import com.mikepenz.markdown.model.DefaultMarkdownAnnotator
-import com.mikepenz.markdown.model.DefaultMarkdownExtendedSpans
-import com.mikepenz.markdown.model.ImageTransformer
-import com.mikepenz.markdown.model.MarkdownAnnotator
-import com.mikepenz.markdown.model.MarkdownColors
-import com.mikepenz.markdown.model.MarkdownDimens
-import com.mikepenz.markdown.model.MarkdownExtendedSpans
-import com.mikepenz.markdown.model.MarkdownPadding
-import com.mikepenz.markdown.model.MarkdownTypography
-import com.mikepenz.markdown.model.ReferenceLinkHandler
+import com.mikepenz.markdown.model.*
 
 /**
  * The CompositionLocal to provide functionality related to transforming the bullet of an ordered list
@@ -91,4 +81,11 @@ val LocalMarkdownExtendedSpans = compositionLocalOf<MarkdownExtendedSpans> {
  */
 val LocalMarkdownComponents = compositionLocalOf<MarkdownComponents> {
     return@compositionLocalOf markdownComponents()
+}
+
+/**
+ * Local [MarkdownAnimations] provider
+ */
+val LocalMarkdownAnimations = compositionLocalOf<MarkdownAnimations> {
+    error("No local MarkdownAnimations")
 }

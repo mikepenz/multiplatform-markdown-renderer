@@ -1,6 +1,5 @@
 package com.mikepenz.markdown.compose.elements
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -75,6 +74,7 @@ fun MarkdownText(
     style: TextStyle = LocalMarkdownTypography.current.text,
     onTextLayout: (TextLayoutResult) -> Unit,
 ) {
+    val animations = LocalMarkdownAnimations.current
     val uriHandler = LocalUriHandler.current
     val referenceLinkHandler = LocalReferenceLinkHandler.current
     val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
@@ -110,7 +110,6 @@ fun MarkdownText(
         }
     } else modifier
 
-
     val transformer = LocalImageTransformer.current
     val placeholderState by derivedStateOf {
         transformer.placeholderConfig(
@@ -129,7 +128,8 @@ fun MarkdownText(
                 }
             }
             .let {
-                if (placeholderState.animate) it.animateContentSize() else it
+                // for backwards compatibility still check the `animate` property
+                if (placeholderState.animate) animations.animateTextSize(it) else it
             },
         style = style,
         color = LocalMarkdownColors.current.text,

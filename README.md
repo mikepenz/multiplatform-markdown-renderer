@@ -122,6 +122,19 @@ Markdown(
 )
 ```
 
+### Disable Animation
+
+By default, the `MarkdownText` animates size changes (if images are loaded).
+
+```kotlin
+Markdown(
+    content,
+    animations = markdownAnimations(
+        animateTextSize = { this /** No animation */ }
+    ),
+}
+```
+
 ### Extended spans
 
 Starting with 0.16.0 the library includes support
