@@ -110,7 +110,6 @@ fun MarkdownText(
         }
     } else modifier
 
-
     val transformer = LocalImageTransformer.current
     val placeholderState by derivedStateOf {
         transformer.placeholderConfig(
@@ -128,7 +127,10 @@ fun MarkdownText(
                     imageState.setContainerSize(coordinates.size)
                 }
             }
-            .let { animations.animateTextSize(it) },
+            .let {
+                // for backwards compatibility still check the `animate` property
+                if (placeholderState.animate) animations.animateTextSize(it) else it
+            },
         style = style,
         color = LocalMarkdownColors.current.text,
         inlineContent = mapOf(
