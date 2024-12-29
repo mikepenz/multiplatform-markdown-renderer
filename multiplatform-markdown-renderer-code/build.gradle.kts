@@ -145,10 +145,10 @@ dependencies {
     commonMainApi(libs.highlights)
 }
 
-tasks.dokkaHtml.configure {
+dokka {
     dokkaSourceSets {
         configureEach {
-            noAndroidSdkLink.set(false)
+            enableAndroidDocumentationLink.set(true)
         }
     }
 }
