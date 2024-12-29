@@ -41,7 +41,7 @@ fun MarkdownText(
     style: TextStyle = LocalMarkdownTypography.current.text,
     extendedSpans: ExtendedSpans? = LocalMarkdownExtendedSpans.current.extendedSpans?.invoke(),
 ) {
-    // extend the annotated string with extended spans styles if provided
+    // extend the annotated string with `extended-spans` styles if provided
     val extendedStyledText = if (extendedSpans != null) {
         remember(content) {
             extendedSpans.extend(content)
@@ -59,7 +59,7 @@ fun MarkdownText(
         {}
     }
 
-    // call drawBehind with the `exended-spans` if provided
+    // call drawBehind with the `extended-spans` if provided
     val extendedModifier = if (extendedSpans != null) {
         modifier.drawBehind(extendedSpans)
     } else modifier
