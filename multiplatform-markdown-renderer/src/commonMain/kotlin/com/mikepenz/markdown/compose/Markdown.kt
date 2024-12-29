@@ -45,6 +45,7 @@ fun Markdown(
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
     components: MarkdownComponents = markdownComponents(),
+    animations: MarkdownAnimations = markdownAnimations(),
 ) {
     CompositionLocalProvider(
         LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl(),
@@ -56,6 +57,7 @@ fun Markdown(
         LocalMarkdownAnnotator provides annotator,
         LocalMarkdownExtendedSpans provides extendedSpans,
         LocalMarkdownComponents provides components,
+        LocalMarkdownAnimations provides animations,
     ) {
         Column(modifier) {
             val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
