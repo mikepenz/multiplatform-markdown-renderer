@@ -142,10 +142,10 @@ dependencies {
     commonMainCompileOnly(compose.runtime)
 }
 
-tasks.dokkaHtml.configure {
+dokka {
     dokkaSourceSets {
         configureEach {
-            noAndroidSdkLink.set(false)
+            enableAndroidDocumentationLink.set(true)
         }
     }
 }
