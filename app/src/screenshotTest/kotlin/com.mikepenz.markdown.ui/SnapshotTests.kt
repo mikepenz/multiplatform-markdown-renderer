@@ -29,8 +29,8 @@ class SnapshotTests {
         Markdown(MARKDOWN_LIST_CODE_BLOCK)
     }
 
-    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 380)
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 380, uiMode = Configuration.UI_MODE_NIGHT_YES)
+    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1250)
+    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1250, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
     fun TableTest() = SampleTheme(isSystemInDarkTheme()) {
         Markdown(MARKDOWN_TABLE)
@@ -144,8 +144,45 @@ private val MARKDOWN_LIST_CODE_BLOCK = """
 """.trimIndent()
 
 private val MARKDOWN_TABLE = """
-| *Header 1* | ~Header 2~ |
-|----------|----------|
-| Cell 1   | Cell 2   |
-| Cell 3   | Cell 4   |
+// simple table
+    
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
+// simple table with long rows
+
+| Command | Description |
+| --- | --- |
+| git status | List all new or modified files |
+| git diff | Show file differences that haven't been staged |
+
+//  formatting table content
+
+| Command | Description |
+| --- | --- |
+| `git status` | List all *new or modified* files |
+| `git diff` | Show file differences that **haven't been** staged |
+
+// alignment - not supported as of yet
+
+| Left-aligned | Center-aligned | Right-aligned |
+| :---         |     :---:      |          ---: |
+| git status   | git status     | git status    |
+| git diff     | git diff       | git diff      |
+
+// special content
+
+| Name     | Character |
+| ---      | ---       |
+| Backtick | `         |
+| Pipe     | \|        |
+
+// incorrect columns
+
+| abc | def |
+| --- | --- |
+| bar |
+| bar | baz | boo |
 """.trimIndent()
