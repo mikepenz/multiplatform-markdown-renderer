@@ -139,9 +139,8 @@ Markdown(
 
 Starting with 0.16.0 the library includes support
 for [extended-spans](https://github.com/saket/extended-spans).
-> The library was integrated to to make it multiplatform compatible. All credits for its
-> functionality goes to [
-Saket Narayan](https://github.com/saket).
+> The library was integrated to make it multiplatform-compatible. 
+> All credits for its functionality go to [Saket Narayan](https://github.com/saket).
 
 It is not enabled by default, however you can enable it quickly by configuring the `extendedSpans`
 for your `Markdown` composeable.
