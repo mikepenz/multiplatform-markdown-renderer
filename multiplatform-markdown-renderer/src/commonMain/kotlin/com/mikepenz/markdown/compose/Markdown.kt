@@ -24,6 +24,7 @@ import org.intellij.markdown.MarkdownElementTypes.PARAGRAPH
 import org.intellij.markdown.MarkdownElementTypes.SETEXT_1
 import org.intellij.markdown.MarkdownElementTypes.SETEXT_2
 import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
+import org.intellij.markdown.MarkdownElementTypes.TABLE
 import org.intellij.markdown.MarkdownTokenTypes.Companion.EOL
 import org.intellij.markdown.MarkdownTokenTypes.Companion.HORIZONTAL_RULE
 import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
@@ -106,6 +107,7 @@ internal fun ColumnScope.handleElement(
         IMAGE -> components.image(this@handleElement, model)
         LINK_DEFINITION -> components.linkDefinition(this@handleElement, model)
         HORIZONTAL_RULE -> components.horizontalRule(this@handleElement, model)
+        TABLE -> components.table(this@handleElement, model)
         else -> {
             handled = components.custom?.invoke(this@handleElement, node.type, model) != null
         }

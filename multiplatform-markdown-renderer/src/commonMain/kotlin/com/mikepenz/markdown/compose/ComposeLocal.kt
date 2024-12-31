@@ -89,3 +89,10 @@ val LocalMarkdownComponents = compositionLocalOf<MarkdownComponents> {
 val LocalMarkdownAnimations = compositionLocalOf<MarkdownAnimations> {
     error("No local MarkdownAnimations")
 }
+
+/**
+ * Local [MarkdownTable] provider
+ */
+val LocalMarkdownTable = compositionLocalOf<MarkdownComponent> {
+    error("No local MarkdownTable")
+}
