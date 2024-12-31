@@ -51,6 +51,7 @@ fun markdownComponents(
     image: MarkdownComponent = CurrentComponentsBridge.image,
     linkDefinition: MarkdownComponent = CurrentComponentsBridge.linkDefinition,
     horizontalRule: MarkdownComponent = CurrentComponentsBridge.horizontalRule,
+    table: MarkdownComponent = CurrentComponentsBridge.table,
     custom: CustomMarkdownComponent? = CurrentComponentsBridge.custom,
 ): MarkdownComponents = DefaultMarkdownComponents(
     text = text,
@@ -72,6 +73,7 @@ fun markdownComponents(
     image = image,
     linkDefinition = linkDefinition,
     horizontalRule = horizontalRule,
+    table = table,
     custom = custom,
 )
 
@@ -99,6 +101,7 @@ interface MarkdownComponents {
     val image: MarkdownComponent
     val linkDefinition: MarkdownComponent
     val horizontalRule: MarkdownComponent
+    val table: MarkdownComponent
     val custom: CustomMarkdownComponent?
 }
 
@@ -122,6 +125,7 @@ private class DefaultMarkdownComponents(
     override val image: MarkdownComponent,
     override val linkDefinition: MarkdownComponent,
     override val horizontalRule: MarkdownComponent,
+    override val table: MarkdownComponent,
     override val custom: CustomMarkdownComponent?,
 ) : MarkdownComponents
 
@@ -193,6 +197,9 @@ object CurrentComponentsBridge {
     }
     val horizontalRule: MarkdownComponent = {
         MarkdownDivider(Modifier.fillMaxWidth())
+    }
+    val table: MarkdownComponent = {
+        MarkdownTable(it.content, it.node, style = it.typography.text)
     }
     val custom: CustomMarkdownComponent? = null
 }

@@ -275,6 +275,21 @@ Markdown(
 )
 ```
 
+### Table Support
+
+Starting with 0.30.0, the library includes support for rendering tables in markdown. The `Markdown` composable will automatically handle table elements in your markdown content.
+
+```kotlin
+val markdown = """
+| Header 1 | Header 2 |
+|----------|----------|
+| Cell 1   | Cell 2   |
+| Cell 3   | Cell 4   |
+""".trimIndent()
+
+Markdown(markdown)
+```
+
 </p>
 </details>
 
