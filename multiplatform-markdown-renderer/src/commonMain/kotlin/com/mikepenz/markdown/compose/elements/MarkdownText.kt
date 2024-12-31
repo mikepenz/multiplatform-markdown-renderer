@@ -10,18 +10,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.sp
 import com.mikepenz.markdown.compose.*
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.drawBehind
 import com.mikepenz.markdown.model.rememberMarkdownImageState
-import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
-import com.mikepenz.markdown.utils.MARKDOWN_TAG_URL
+import com.mikepenz.markdown.utils.*
+import org.intellij.markdown.IElementType
+import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.findChildOfType
 
 
 @Composable
@@ -31,6 +30,28 @@ fun MarkdownText(
     style: TextStyle = LocalMarkdownTypography.current.text,
 ) {
     MarkdownText(AnnotatedString(content), modifier, style)
+}
+
+@Composable
+fun MarkdownText(
+    content: String,
+    node: ASTNode,
+    style: TextStyle,
+    modifier: Modifier = Modifier,
+    contentChildType: IElementType? = null,
+) {
+    val annotator = LocalMarkdownAnnotator.current
+    val linkTextSpanStyle = LocalMarkdownTypography.current.linkTextSpanStyle
+    val codeSpanStyle = LocalMarkdownTypography.current.codeSpanStyle
+    val childNode = contentChildType?.let { node.findChildOfType(it) } ?: node
+
+    val styledText = buildAnnotatedString {
+        pushStyle(style.toSpanStyle())
+        buildMarkdownAnnotatedString(content, childNode, linkTextSpanStyle, codeSpanStyle, annotator)
+        pop()
+    }
+
+    MarkdownText(styledText, modifier = modifier, style = style)
 }
 
 @Composable

@@ -15,6 +15,8 @@ fun markdownColor(
     codeBackground: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
     inlineCodeBackground: Color = codeBackground,
     dividerColor: Color = MaterialTheme.colorScheme.outlineVariant,
+    tableText: Color = text,
+    tableBackground: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.02f),
 ): MarkdownColors = DefaultMarkdownColors(
     text = text,
     codeText = codeText,
@@ -23,4 +25,6 @@ fun markdownColor(
     codeBackground = codeBackground,
     inlineCodeBackground = inlineCodeBackground,
     dividerColor = dividerColor,
+    tableText = tableText,
+    tableBackground = tableBackground,
 )

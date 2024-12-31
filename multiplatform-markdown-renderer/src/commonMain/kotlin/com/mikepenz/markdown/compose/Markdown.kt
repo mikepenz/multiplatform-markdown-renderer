@@ -29,6 +29,7 @@ import org.intellij.markdown.MarkdownTokenTypes.Companion.HORIZONTAL_RULE
 import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
+import org.intellij.markdown.flavours.gfm.GFMElementTypes.TABLE
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
 
@@ -106,6 +107,7 @@ internal fun ColumnScope.handleElement(
         IMAGE -> components.image(this@handleElement, model)
         LINK_DEFINITION -> components.linkDefinition(this@handleElement, model)
         HORIZONTAL_RULE -> components.horizontalRule(this@handleElement, model)
+        TABLE -> components.table(this@handleElement, model)
         else -> {
             handled = components.custom?.invoke(this@handleElement, node.type, model) != null
         }
