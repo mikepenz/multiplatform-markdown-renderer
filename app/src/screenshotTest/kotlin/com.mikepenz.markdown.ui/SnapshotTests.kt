@@ -1,47 +1,39 @@
 package com.mikepenz.markdown.ui
 
+import android.content.res.Configuration
 import android.graphics.Color
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mikepenz.markdown.m2.Markdown
 
 class SnapshotTests {
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1750)
+    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1750, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
-    fun DefaultTest() = TestThemeSetup {
-        Markdown(MARKDOWN_DEFAULT)
-    }
-
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1750)
-    @Composable
-    fun DefaultDarkTest() = TestThemeSetup(true) {
+    fun DefaultTest() = SampleTheme(isSystemInDarkTheme()) {
         Markdown(MARKDOWN_DEFAULT)
     }
 
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1000)
+    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1000, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
-    fun RandomTest() = TestThemeSetup {
-        Markdown(MARKDOWN_RANDOM)
-    }
-
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1000)
-    @Composable
-    fun RandomDarkTest() = TestThemeSetup(true) {
+    fun RandomTest() = SampleTheme(isSystemInDarkTheme()) {
         Markdown(MARKDOWN_RANDOM)
     }
 
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 380)
+    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 380, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
-    fun ListCodeBlockTest() = TestThemeSetup {
+    fun ListCodeBlockTest() = SampleTheme(isSystemInDarkTheme()) {
         Markdown(MARKDOWN_LIST_CODE_BLOCK)
     }
 
-    /**Helper to have a single place setting up the theme*/
+    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 380)
+    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 380, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
-    private fun TestThemeSetup(dark: Boolean = false, block: @Composable () -> Unit) {
-        SampleTheme(dark) {
-            block()
-        }
+    fun TableTest() = SampleTheme(isSystemInDarkTheme()) {
+        Markdown(MARKDOWN_TABLE)
     }
 }
 
@@ -149,4 +141,11 @@ private val MARKDOWN_LIST_CODE_BLOCK = """
     ```
     - Sub-subitem 2
   - Subitem 3
+""".trimIndent()
+
+private val MARKDOWN_TABLE = """
+| *Header 1* | ~Header 2~ |
+|----------|----------|
+| Cell 1   | Cell 2   |
+| Cell 3   | Cell 4   |
 """.trimIndent()
