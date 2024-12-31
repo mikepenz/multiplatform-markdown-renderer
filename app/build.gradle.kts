@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.konan.properties.Properties
 plugins {
     kotlin("android")
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.screenshot)
 }

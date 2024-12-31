@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 plugins {
     kotlin("multiplatform")
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.dokka)
     alias(libs.plugins.mavenPublish)
@@ -60,8 +60,8 @@ kotlin {
     targets.all {
         compilations.all {
             compilerOptions.configure {
-                languageVersion.set(KotlinVersion.KOTLIN_1_9)
-                apiVersion.set(KotlinVersion.KOTLIN_1_9)
+                languageVersion.set(KotlinVersion.KOTLIN_2_0)
+                apiVersion.set(KotlinVersion.KOTLIN_2_0)
             }
         }
     }

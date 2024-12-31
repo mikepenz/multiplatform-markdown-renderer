@@ -123,6 +123,15 @@ This is an unordered list with asterisks:
 
 -------- 
 
+This is a markdown table:
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
+--------
+
 # Random
 
 ### Getting Started

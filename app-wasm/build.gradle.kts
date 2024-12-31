@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     kotlin("multiplatform")
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     id("com.mikepenz.aboutlibraries.plugin")
 }
