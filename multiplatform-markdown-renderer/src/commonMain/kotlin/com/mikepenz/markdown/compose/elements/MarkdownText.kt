@@ -1,6 +1,5 @@
 package com.mikepenz.markdown.compose.elements
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -11,18 +10,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.sp
 import com.mikepenz.markdown.compose.*
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.drawBehind
 import com.mikepenz.markdown.model.rememberMarkdownImageState
-import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
-import com.mikepenz.markdown.utils.MARKDOWN_TAG_URL
+import com.mikepenz.markdown.utils.*
+import org.intellij.markdown.IElementType
+import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.findChildOfType
 
 
 @Composable
@@ -36,12 +34,34 @@ fun MarkdownText(
 
 @Composable
 fun MarkdownText(
+    content: String,
+    node: ASTNode,
+    style: TextStyle,
+    modifier: Modifier = Modifier,
+    contentChildType: IElementType? = null,
+) {
+    val annotator = LocalMarkdownAnnotator.current
+    val linkTextSpanStyle = LocalMarkdownTypography.current.linkTextSpanStyle
+    val codeSpanStyle = LocalMarkdownTypography.current.codeSpanStyle
+    val childNode = contentChildType?.let { node.findChildOfType(it) } ?: node
+
+    val styledText = buildAnnotatedString {
+        pushStyle(style.toSpanStyle())
+        buildMarkdownAnnotatedString(content, childNode, linkTextSpanStyle, codeSpanStyle, annotator)
+        pop()
+    }
+
+    MarkdownText(styledText, modifier = modifier, style = style)
+}
+
+@Composable
+fun MarkdownText(
     content: AnnotatedString,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text,
     extendedSpans: ExtendedSpans? = LocalMarkdownExtendedSpans.current.extendedSpans?.invoke(),
 ) {
-    // extend the annotated string with extended spans styles if provided
+    // extend the annotated string with `extended-spans` styles if provided
     val extendedStyledText = if (extendedSpans != null) {
         remember(content) {
             extendedSpans.extend(content)
@@ -59,7 +79,7 @@ fun MarkdownText(
         {}
     }
 
-    // call drawBehind with the `exended-spans` if provided
+    // call drawBehind with the `extended-spans` if provided
     val extendedModifier = if (extendedSpans != null) {
         modifier.drawBehind(extendedSpans)
     } else modifier
@@ -75,6 +95,7 @@ fun MarkdownText(
     style: TextStyle = LocalMarkdownTypography.current.text,
     onTextLayout: (TextLayoutResult) -> Unit,
 ) {
+    val animations = LocalMarkdownAnimations.current
     val uriHandler = LocalUriHandler.current
     val referenceLinkHandler = LocalReferenceLinkHandler.current
     val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
@@ -110,7 +131,6 @@ fun MarkdownText(
         }
     } else modifier
 
-
     val transformer = LocalImageTransformer.current
     val placeholderState by derivedStateOf {
         transformer.placeholderConfig(
@@ -129,7 +149,8 @@ fun MarkdownText(
                 }
             }
             .let {
-                if (placeholderState.animate) it.animateContentSize() else it
+                // for backwards compatibility still check the `animate` property
+                if (placeholderState.animate) animations.animateTextSize(it) else it
             },
         style = style,
         color = LocalMarkdownColors.current.text,

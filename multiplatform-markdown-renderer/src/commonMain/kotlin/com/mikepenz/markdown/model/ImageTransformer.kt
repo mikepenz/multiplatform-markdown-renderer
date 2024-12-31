@@ -55,6 +55,7 @@ interface ImageTransformer {
 data class PlaceholderConfig(
     val size: Size,
     val verticalAlign: PlaceholderVerticalAlign = PlaceholderVerticalAlign.Bottom,
+    @Deprecated("This parameter is not used anymore and will be removed in the future.")
     val animate: Boolean = true,
 )
 
