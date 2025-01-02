@@ -1,7 +1,10 @@
 rootProject.name = "multiplatform-markdown-renderer-root"
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
+    includeBuild("gradle/build-logic")
+
     repositories {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         google()

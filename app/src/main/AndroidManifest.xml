@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sample">
         <activity
-            android:name="com.mikepenz.markdown.ui.MainActivity"
+            android:name="com.mikepenz.markdown.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Sample.NoActionBar">
             <intent-filter>

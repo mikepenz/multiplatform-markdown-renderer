@@ -1,52 +1,42 @@
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.CanvasBasedWindow
-import coil3.compose.AsyncImage
-import coil3.compose.LocalPlatformContext
-import coil3.compose.rememberAsyncImagePainter
-import coil3.request.ImageRequest
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.application
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibraryDefaults
-import com.mikepenz.app_wasm.generated.resources.Res
+import com.mikepenz.app_desktop.generated.resources.Res
 import com.mikepenz.markdown.Github
 import com.mikepenz.markdown.OpenSourceInitiative
+import com.mikepenz.markdown.SampleTheme
 import com.mikepenz.markdown.coil3.Coil3ImageTransformerImpl
+import com.mikepenz.markdown.compose.components.markdownComponents
+import com.mikepenz.markdown.compose.elements.MarkdownHighlightedCodeBlock
+import com.mikepenz.markdown.compose.elements.MarkdownHighlightedCodeFence
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.RoundedCornerSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.rememberSquigglyUnderlineAnimator
-import com.mikepenz.markdown.m3.Markdown
-import com.mikepenz.markdown.model.ImageData
+import com.mikepenz.markdown.m2.Markdown
 import com.mikepenz.markdown.model.markdownExtendedSpans
+import dev.snipme.highlights.Highlights
+import dev.snipme.highlights.model.SyntaxThemes
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-@OptIn(
-    ExperimentalComposeUiApi::class,
-    ExperimentalMaterial3Api::class, ExperimentalResourceApi::class
-)
-fun main() {
-    CanvasBasedWindow("Markdown Sample", canvasElementId = "markdownCanvas") {
+@OptIn(ExperimentalResourceApi::class)
+fun main() = application {
+    Window(onCloseRequest = ::exitApplication, title = "Markdown Sample") {
+        val scrollState = rememberScrollState()
+        val isDarkTheme = isSystemInDarkTheme()
         val uriHandler = LocalUriHandler.current
         var showLicenses by remember { mutableStateOf(false) }
 
@@ -84,18 +74,29 @@ fun main() {
                     LibrariesContainer(
                         libraries = libs,
                         modifier = Modifier.fillMaxSize(),
-                        colors = LibraryDefaults.libraryColors(backgroundColor = Color.Transparent),
+                        // sample uses material 2 - proxy theme
+                        colors = LibraryDefaults.libraryColors(
+                            backgroundColor = MaterialTheme.colors.background,
+                            contentColor = contentColorFor(MaterialTheme.colors.background),
+                            badgeBackgroundColor = MaterialTheme.colors.primary,
+                            badgeContentColor = contentColorFor(MaterialTheme.colors.background),
+                            dialogConfirmButtonColor = MaterialTheme.colors.primary,
+                        ),
                         contentPadding = padding
                     )
                 } else {
-                    val scrollState = rememberScrollState()
+                    val highlightsBuilder = remember(isDarkTheme) {
+                        Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isDarkTheme))
+                    }
+
                     SelectionContainer {
                         Markdown(
                             MARKDOWN,
+                            components = markdownComponents(
+                                codeBlock = { MarkdownHighlightedCodeBlock(it.content, it.node, highlightsBuilder) },
+                                codeFence = { MarkdownHighlightedCodeFence(it.content, it.node, highlightsBuilder) },
+                            ),
                             imageTransformer = Coil3ImageTransformerImpl,
-                            modifier = Modifier.padding(padding).fillMaxSize()
-                                .verticalScroll(scrollState)
-                                .padding(16.dp),
                             extendedSpans = markdownExtendedSpans {
                                 val animator = rememberSquigglyUnderlineAnimator()
                                 remember {
@@ -105,6 +106,7 @@ fun main() {
                                     )
                                 }
                             },
+                            modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(16.dp)
                         )
                     }
                 }
@@ -112,6 +114,7 @@ fun main() {
         }
     }
 }
+
 
 private const val MARKDOWN = """
 # Markdown Playground
@@ -139,7 +142,7 @@ This is a paragraph with a [link](https://www.jetbrains.com/).
 This is a code block:
 ```kotlin
 fun main() {
-println("Hello, world!")
+    println("Hello, world!")
 }
 ```
 

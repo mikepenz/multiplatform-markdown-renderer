@@ -14,7 +14,6 @@ coil = "3.0.4"
 coil2 = "2.7.0"
 aboutlib = "11.3.0-rc02"
 markdown = "0.7.3"
-detekt = "1.23.7"
 gradleMvnPublish = "0.30.0"
 screenshot = "0.0.1-alpha08"
 ktor = "3.0.3"
@@ -42,6 +41,14 @@ ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 highlights = { module = "dev.snipme:highlights", version.ref = "highlights" }
 
+# Build logic dependencies
+android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
+mavenPublish-gradlePlugin = { module = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin", version.ref = "gradleMvnPublish" }
+dokka-gradlePlugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -50,7 +57,6 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlib" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "gradleMvnPublish" }
 screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot" }
 

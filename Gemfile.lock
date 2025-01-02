@@ -29,8 +29,6 @@ GEM
     danger-android_lint (0.0.12)
       danger-plugin-api (~> 1.0)
       oga
-    danger-kotlin_detekt (0.0.3)
-      danger-plugin-api (~> 1.0)
     danger-plugin-api (1.0.0)
       danger (> 2.0)
     faraday (2.7.10)
@@ -75,7 +73,6 @@ PLATFORMS
 DEPENDENCIES
   danger
   danger-android_lint
-  danger-kotlin_detekt
 
 BUNDLED WITH
    2.4.10

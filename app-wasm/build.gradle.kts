@@ -1,9 +1,8 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
-    kotlin("multiplatform")
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
+    id("com.mikepenz.kotlin.multiplatform")
+    id("com.mikepenz.compose")
     id("com.mikepenz.aboutlibraries.plugin")
 }
 
@@ -51,8 +50,4 @@ kotlin {
 aboutLibraries {
     registerAndroidTasks = false
     duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
-}
-
-compose.experimental {
-    web.application {}
 }
