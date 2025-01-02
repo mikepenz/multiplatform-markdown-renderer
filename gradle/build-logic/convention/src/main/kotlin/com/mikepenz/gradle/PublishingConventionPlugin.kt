@@ -32,7 +32,7 @@ fun Project.configureDocumentation() {
 
 fun Project.configurePublishing() {
     mavenPublishing {
-        configure(KotlinMultiplatform(JavadocJar.Dokka("dokkaGeneratePublicationHtml"), false, androidVariantsToPublish = listOf("release")))
+        configure(KotlinMultiplatform(JavadocJar.Dokka("dokkaGeneratePublicationHtml"), true, androidVariantsToPublish = listOf("release")))
 
         publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, true)
         signAllPublications()
