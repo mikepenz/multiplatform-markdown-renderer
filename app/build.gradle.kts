@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
+    kotlin("android")
     id("com.mikepenz.android.application")
     id("com.mikepenz.kotlin.multiplatform")
     id("com.mikepenz.compose")
@@ -22,12 +23,6 @@ android {
 
     @Suppress("UnstableApiUsage")
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
-}
-
-
-composeCompiler {
-    reportsDestination = layout.buildDirectory.dir("compose_compiler")
-    metricsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
 dependencies {
