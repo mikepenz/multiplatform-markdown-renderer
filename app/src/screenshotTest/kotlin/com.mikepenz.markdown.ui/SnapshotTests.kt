@@ -32,6 +32,13 @@ class SnapshotTests {
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1250)
     @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1250, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
+    fun ListTest() = SampleTheme(isSystemInDarkTheme()) {
+        Markdown(MARKDOWN_LIST)
+    }
+
+    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1250)
+    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1250, uiMode = Configuration.UI_MODE_NIGHT_YES)
+    @Composable
     fun TableTest() = SampleTheme(isSystemInDarkTheme()) {
         Markdown(MARKDOWN_TABLE)
     }
@@ -185,4 +192,42 @@ private val MARKDOWN_TABLE = """
 | --- | --- |
 | bar |
 | bar | baz | boo |
+""".trimIndent()
+
+private val MARKDOWN_LIST = """
+// unordered list
+
+- George Washington
+- John Adams
+- Thomas Jefferson
+
+// mixed unordered list (not properly supported by markdown lib)
+
+- George Washington
+* John Adams
++ Thomas Jefferson
+
+// ordered list
+
+1. James Madison
+2. James Monroe
+3. John Quincy Adams
+
+// nested list
+
+1. First list item
+   - First nested list item
+     - Second nested list item
+
+// deep nested un-ordered list
+
+* 1
+* **Bold**: 2
+  * 3
+  * **Bold**: 4
+      * 5
+      * **Bold**: 6
+      * 7
+  * 8
+* **Bold**: 9
 """.trimIndent()
