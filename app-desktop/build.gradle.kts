@@ -1,14 +1,13 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    id("com.mikepenz.convention-plugin.kotlin-multiplatform")
-    id("com.mikepenz.convention-plugin.compose")
+    id("com.mikepenz.convention.kotlin-multiplatform")
+    id("com.mikepenz.convention.compose")
     id("com.mikepenz.aboutlibraries.plugin")
 }
 
 group = "com.mikepenz"
 version = "1.0.0"
-
 
 kotlin {
     jvm()
@@ -34,13 +33,13 @@ kotlin {
                 implementation(compose.material)
 
                 // about libs
-                implementation(libs.bundles.aboutlibs)
+                implementation(baseLibs.bundles.aboutlibs)
 
                 // required for coil
                 implementation(libs.coil.network.ktor)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.java)
-                implementation(libs.kotlinx.coroutines.swing)
+                implementation(baseLibs.kotlinx.coroutines.swing)
             }
         }
     }

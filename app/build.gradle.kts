@@ -2,11 +2,11 @@ import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     kotlin("android")
-    id("com.mikepenz.convention-plugin.android-application")
-    id("com.mikepenz.convention-plugin.kotlin-multiplatform")
-    id("com.mikepenz.convention-plugin.compose")
+    id("com.mikepenz.convention.android-application")
+    id("com.mikepenz.convention.kotlin-multiplatform")
+    id("com.mikepenz.convention.compose")
     id("com.mikepenz.aboutlibraries.plugin")
-    alias(libs.plugins.screenshot)
+    alias(baseLibs.plugins.screenshot)
 }
 
 if (openSourceSigningFile != null) {
