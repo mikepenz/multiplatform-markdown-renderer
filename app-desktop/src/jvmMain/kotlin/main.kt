@@ -53,7 +53,7 @@ fun main() = application {
                                 )
                             }
                             IconButton(onClick = {
-                                uriHandler.openUri("https://github.com/mikepenz/AboutLibraries")
+                                uriHandler.openUri("https://github.com/mikepenz/multiplatform-markdown-renderer")
                             }) {
                                 Icon(
                                     imageVector = Github,

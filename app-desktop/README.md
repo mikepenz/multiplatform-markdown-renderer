@@ -9,5 +9,5 @@
 ### Run Wasm app
 
 ```
-./gradlew :app-desktop:wasmJsRun   
+./gradlew :app-desktop:run   
 ```
