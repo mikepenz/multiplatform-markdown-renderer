@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
-    id("com.mikepenz.kotlin.multiplatform")
-    id("com.mikepenz.compose")
+    id("com.mikepenz.convention.kotlin-multiplatform")
+    id("com.mikepenz.convention.compose")
     id("com.mikepenz.aboutlibraries.plugin")
 }
 
@@ -33,7 +33,7 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
 
-                implementation(libs.bundles.aboutlibs)
+                implementation(baseLibs.bundles.aboutlibs)
 
                 implementation(projects.multiplatformMarkdownRenderer)
                 implementation(projects.multiplatformMarkdownRendererM3)

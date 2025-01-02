@@ -1,8 +1,8 @@
 plugins {
-    id("com.mikepenz.android.library")
-    id("com.mikepenz.kotlin.multiplatform")
-    id("com.mikepenz.compose")
-    id("com.mikepenz.publishing")
+    id("com.mikepenz.convention.android-library")
+    id("com.mikepenz.convention.kotlin-multiplatform")
+    id("com.mikepenz.convention.compose")
+    id("com.mikepenz.convention.publishing")
 }
 
 android {
