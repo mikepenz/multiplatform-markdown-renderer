@@ -1,69 +1,33 @@
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
-    kotlin("android")
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
+    id("com.mikepenz.android.application")
+    id("com.mikepenz.kotlin.multiplatform")
+    id("com.mikepenz.compose")
+    id("com.mikepenz.aboutlibraries.plugin")
     alias(libs.plugins.screenshot)
 }
 
-if (openSourcSigningFile != null) {
-    apply(from = openSourcSigningFile)
+if (openSourceSigningFile != null) {
+    apply(from = openSourceSigningFile)
 }
 
 android {
     namespace = "com.mikepenz.markdown.app"
-    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.mikepenz.markdown"
-        minSdk = 24 // anything below faces: https://github.com/mikepenz/multiplatform-markdown-renderer/issues/223
-        targetSdk = libs.versions.targetSdk.get().toInt()
-
-        versionCode = property("VERSION_CODE").toString().toInt()
-        versionName = property("VERSION_NAME").toString()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
         setProperty("archivesBaseName", "markdown-renderer-sample-v$versionName-c$versionCode")
     }
 
-    buildFeatures {
-        compose = true
-    }
-
-    buildTypes {
-        getByName("debug") {
-            signingConfig = signingConfigs.findByName("debug")
-        }
-
-        getByName("release") {
-            signingConfig = signingConfigs.findByName("release")
-
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            )
-        }
-    }
-
-    packagingOptions {
-        resources.excludes.add("META-INF/licenses/**")
-        resources.excludes.add("META-INF/AL2.0")
-        resources.excludes.add("META-INF/LGPL2.1")
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
-    }
-
+    @Suppress("UnstableApiUsage")
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
+}
+
+
+composeCompiler {
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    metricsDestination = layout.buildDirectory.dir("compose_compiler")
 }
 
 dependencies {
@@ -83,7 +47,12 @@ dependencies {
     implementation(compose.uiTooling)
 }
 
-private val openSourcSigningFile: String?
+aboutLibraries {
+    registerAndroidTasks = false
+    duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+}
+
+private val openSourceSigningFile: String?
     get() {
         val k = "openSource.signing.file"
         return Properties().also { prop ->

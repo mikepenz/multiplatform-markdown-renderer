@@ -150,6 +150,7 @@ fun MarkdownText(
             }
             .let {
                 // for backwards compatibility still check the `animate` property
+                @Suppress("DEPRECATION")
                 if (placeholderState.animate) animations.animateTextSize(it) else it
             },
         style = style,

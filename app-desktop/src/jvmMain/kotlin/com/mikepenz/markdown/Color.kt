@@ -1,3 +1,5 @@
+package com.mikepenz.markdown
+
 import androidx.compose.ui.graphics.Color
 
 val SampleGreen = Color(0xff09B3AF)
