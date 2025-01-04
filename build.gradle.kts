@@ -8,7 +8,7 @@ plugins {
     alias(baseLibs.plugins.composeCompiler) apply false
     alias(baseLibs.plugins.kotlinMultiplatform) apply false
     alias(baseLibs.plugins.dokka)
-    alias(baseLibs.plugins.aboutlibraries) apply false
+    alias(baseLibs.plugins.aboutLibraries) apply false
     alias(baseLibs.plugins.mavenPublish) apply false
 }
 

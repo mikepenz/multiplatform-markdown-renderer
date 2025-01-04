@@ -27,7 +27,6 @@ kotlin {
                 implementation(projects.multiplatformMarkdownRendererCoil3)
                 implementation(projects.multiplatformMarkdownRendererCode)
 
-                implementation(compose.components.resources)
                 implementation(compose.desktop.currentOs)
                 implementation(compose.foundation)
                 implementation(compose.material)

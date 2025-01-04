@@ -1,9 +1,8 @@
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
-    kotlin("android")
+    id("com.mikepenz.convention.kotlin")
     id("com.mikepenz.convention.android-application")
-    id("com.mikepenz.convention.kotlin-multiplatform")
     id("com.mikepenz.convention.compose")
     id("com.mikepenz.aboutlibraries.plugin")
     alias(baseLibs.plugins.screenshot)
