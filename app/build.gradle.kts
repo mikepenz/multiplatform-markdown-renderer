@@ -1,15 +1,9 @@
-import org.jetbrains.kotlin.konan.properties.Properties
-
 plugins {
     id("com.mikepenz.convention.kotlin")
     id("com.mikepenz.convention.android-application")
     id("com.mikepenz.convention.compose")
     id("com.mikepenz.aboutlibraries.plugin")
     alias(baseLibs.plugins.screenshot)
-}
-
-if (openSourceSigningFile != null) {
-    apply(from = openSourceSigningFile)
 }
 
 android {
@@ -45,14 +39,3 @@ aboutLibraries {
     registerAndroidTasks = false
     duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
 }
-
-private val openSourceSigningFile: String?
-    get() {
-        val k = "openSource.signing.file"
-        return Properties().also { prop ->
-            rootProject.file("local.properties").takeIf { it.exists() }?.let {
-                prop.load(it.inputStream())
-            }
-        }.getProperty(k, null) ?: if (project.hasProperty(k)) project.property(k)
-            ?.toString() else null
-    }
