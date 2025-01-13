@@ -24,10 +24,26 @@ import dev.snipme.highlights.model.SyntaxLanguage
 import org.intellij.markdown.ast.ASTNode
 
 /** Default definition for the [MarkdownHighlightedCodeFence]. Uses default theme, attempts to apply language from markdown. */
-val highlightedCodeFence: MarkdownComponent = { MarkdownHighlightedCodeFence(it.content, it.node) }
+val highlightedCodeFence: MarkdownComponent = {
+    MarkdownHighlightedCodeFence(
+        content = it.content,
+        node = it.node,
+        highlights = Highlights.Builder(
+            theme = SyntaxThemes.default(darkMode = isDarkMode())
+        ),
+    )
+}
 
 /** Default definition for the [MarkdownHighlightedCodeBlock]. Uses default theme, attempts to apply language from markdown. */
-val highlightedCodeBlock: MarkdownComponent = { MarkdownHighlightedCodeBlock(it.content, it.node) }
+val highlightedCodeBlock: MarkdownComponent = {
+    MarkdownHighlightedCodeBlock(
+        content = it.content,
+        node = it.node,
+        highlights = Highlights.Builder(
+            theme = SyntaxThemes.default(darkMode = isDarkMode())
+        ),
+    )
+}
 
 @Composable
 fun MarkdownHighlightedCodeFence(content: String, node: ASTNode, highlights: Highlights.Builder = Highlights.Builder()) {
@@ -54,13 +70,11 @@ fun MarkdownHighlightedCode(
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
     val codeBlockPadding = LocalMarkdownPadding.current.codeBlock
     val syntaxLanguage = remember(language) { language?.let { SyntaxLanguage.getByName(it) } }
-    val isDarkMode = LocalMarkdownColors.current.codeBackground.luminance() > 0.5
 
     val codeHighlights by remembering(code) {
         derivedStateOf {
             highlights
                 .code(code)
-                .theme(SyntaxThemes.default(darkMode = isDarkMode))
                 .let { if (syntaxLanguage != null) it.language(syntaxLanguage) else it }
                 .build()
         }
@@ -109,3 +123,6 @@ internal inline fun <T, K> remembering(
 internal fun AnnotatedString.Builder.text(text: String, style: SpanStyle = SpanStyle()) = withStyle(style = style) {
     append(text)
 }
+
+@Composable
+internal fun isDarkMode() = LocalMarkdownColors.current.codeBackground.luminance() > 0.5
