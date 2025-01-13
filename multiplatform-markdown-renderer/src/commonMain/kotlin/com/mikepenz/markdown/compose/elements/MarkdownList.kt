@@ -40,7 +40,7 @@ fun MarkdownListItems(
         node.children.forEach { child ->
             when (child.type) {
                 MarkdownElementTypes.LIST_ITEM -> {
-                    val listIndicator = when (child.type) {
+                    val listIndicator = when (node.type) {
                         ORDERED_LIST -> child.findChildOfType(LIST_NUMBER)
                         UNORDERED_LIST -> child.findChildOfType(LIST_BULLET)
                         else -> null
