@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -29,7 +30,7 @@ val highlightedCodeFence: MarkdownComponent = {
         content = it.content,
         node = it.node,
         highlights = Highlights.Builder(
-            theme = SyntaxThemes.default(darkMode = isDarkMode())
+            theme = SyntaxThemes.default(darkMode = isSystemInDarkTheme())
         ),
     )
 }
@@ -40,7 +41,7 @@ val highlightedCodeBlock: MarkdownComponent = {
         content = it.content,
         node = it.node,
         highlights = Highlights.Builder(
-            theme = SyntaxThemes.default(darkMode = isDarkMode())
+            theme = SyntaxThemes.default(darkMode = isSystemInDarkTheme())
         ),
     )
 }
@@ -123,6 +124,3 @@ internal inline fun <T, K> remembering(
 internal fun AnnotatedString.Builder.text(text: String, style: SpanStyle = SpanStyle()) = withStyle(style = style) {
     append(text)
 }
-
-@Composable
-internal fun isDarkMode() = LocalMarkdownColors.current.codeBackground.luminance() > 0.5
