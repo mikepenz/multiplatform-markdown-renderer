@@ -26,36 +26,36 @@ import dev.snipme.highlights.model.SyntaxThemes
 import org.intellij.markdown.ast.ASTNode
 
 /** Default definition for the [MarkdownHighlightedCodeFence]. Uses default theme, attempts to apply language from markdown. */
-val highlightedCodeFence: MarkdownComponent = {
-    MarkdownHighlightedCodeFence(
-        content = it.content,
-        node = it.node,
-        highlights = Highlights.Builder(
-            theme = SyntaxThemes.default(darkMode = isSystemInDarkTheme())
-        ),
-    )
-}
+val highlightedCodeFence: MarkdownComponent = { MarkdownHighlightedCodeFence(it.content, it.node) }
 
 /** Default definition for the [MarkdownHighlightedCodeBlock]. Uses default theme, attempts to apply language from markdown. */
-val highlightedCodeBlock: MarkdownComponent = {
-    MarkdownHighlightedCodeBlock(
-        content = it.content,
-        node = it.node,
-        highlights = Highlights.Builder(
-            theme = SyntaxThemes.default(darkMode = isSystemInDarkTheme())
-        ),
-    )
-}
+val highlightedCodeBlock: MarkdownComponent = { MarkdownHighlightedCodeBlock(it.content, it.node) }
 
 @Composable
-fun MarkdownHighlightedCodeFence(content: String, node: ASTNode, highlights: Highlights.Builder = Highlights.Builder()) {
+fun MarkdownHighlightedCodeFence(
+    content: String,
+    node: ASTNode,
+    highlights: Highlights.Builder = Highlights.Builder(
+        theme = SyntaxThemes.default(
+            darkMode = isSystemInDarkTheme()
+        )
+    )
+) {
     MarkdownCodeFence(content, node) { code, language ->
         MarkdownHighlightedCode(code, language, highlights)
     }
 }
 
 @Composable
-fun MarkdownHighlightedCodeBlock(content: String, node: ASTNode, highlights: Highlights.Builder = Highlights.Builder()) {
+fun MarkdownHighlightedCodeBlock(
+    content: String,
+    node: ASTNode,
+    highlights: Highlights.Builder = Highlights.Builder(
+        theme = SyntaxThemes.default(
+            darkMode = isSystemInDarkTheme()
+        )
+    )
+) {
     MarkdownCodeBlock(content, node) { code, language ->
         MarkdownHighlightedCode(code, language, highlights)
     }
