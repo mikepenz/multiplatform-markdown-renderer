@@ -39,7 +39,7 @@ fun MarkdownHighlightedCodeFence(
         theme = SyntaxThemes.default(
             darkMode = isSystemInDarkTheme()
         )
-    )
+    ),
 ) {
     MarkdownCodeFence(content, node) { code, language ->
         MarkdownHighlightedCode(code, language, highlights)
@@ -54,7 +54,7 @@ fun MarkdownHighlightedCodeBlock(
         theme = SyntaxThemes.default(
             darkMode = isSystemInDarkTheme()
         )
-    )
+    ),
 ) {
     MarkdownCodeBlock(content, node) { code, language ->
         MarkdownHighlightedCode(code, language, highlights)
