@@ -1,46 +1,62 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    kotlin("jvm")
-    application
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
+    id("com.mikepenz.convention.kotlin-multiplatform")
+    id("com.mikepenz.convention.compose")
+    id("com.mikepenz.aboutlibraries.plugin")
 }
 
 group = "com.mikepenz"
 version = "1.0.0"
 
-repositories {
-    mavenCentral()
-    maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
+kotlin {
+    jvm()
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation(projects.multiplatformMarkdownRenderer)
+                implementation(projects.multiplatformMarkdownRendererM2)
+                implementation(projects.multiplatformMarkdownRendererCoil3)
+                implementation(projects.multiplatformMarkdownRendererCode)
+
+                implementation(compose.desktop.currentOs)
+                implementation(compose.foundation)
+                implementation(compose.material)
+
+                // about libs
+                implementation(baseLibs.bundles.aboutlibs)
+
+                // required for coil
+                implementation(libs.coil.network.ktor)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.java)
+                implementation(baseLibs.kotlinx.coroutines.swing)
+            }
+        }
+    }
 }
 
-dependencies {
-    implementation(projects.multiplatformMarkdownRenderer)
-    implementation(projects.multiplatformMarkdownRendererM2)
-    implementation(projects.multiplatformMarkdownRendererCoil3)
-    implementation(projects.multiplatformMarkdownRendererCode)
+compose.desktop {
+    application {
+        mainClass = "MainKt"
 
-    implementation(compose.desktop.currentOs)
-    implementation(compose.foundation)
-    implementation(compose.material)
-
-    // required for coil
-    implementation(libs.coil.network.ktor)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.java)
-    implementation(libs.kotlinx.coroutines.swing)
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "multiplatform-markdown-renderer"
+            packageVersion = "1.0.0"
+        }
+    }
 }
 
-application {
-    mainClass.set("MainKt")
-}
-
-tasks.withType<JavaCompile> {
-    sourceCompatibility = "11"
-    targetCompatibility = "11"
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+aboutLibraries {
+    registerAndroidTasks = false
+    duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
 }

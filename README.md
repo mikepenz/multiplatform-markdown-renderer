@@ -336,9 +336,6 @@ Markdown(
 > [!NOTE]  
 > Please refer to the official coil3 documentation on how to adjust the `SingletonImageLoader`
 
-> [!NOTE]  
-> The `coil3` module does depend on SNAPSHOT builds of coil3
-
 ### Syntax Highlighting
 
 The library (introduced with 0.27.0) offers optional support for syntax highlighting via

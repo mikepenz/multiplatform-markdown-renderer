@@ -1,4 +1,5 @@
 rootProject.name = "multiplatform-markdown-renderer-root"
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -7,6 +8,7 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
+        mavenLocal()
     }
 }
 
@@ -17,6 +19,13 @@ dependencyResolutionManagement {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
         maven("https://oss.sonatype.org/content/repositories/snapshots")
+        mavenLocal()
+    }
+
+    versionCatalogs {
+        create("baseLibs") {
+            from("com.mikepenz:version-catalog:0.1.1")
+        }
     }
 }
 

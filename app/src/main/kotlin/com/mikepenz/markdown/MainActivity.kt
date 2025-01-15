@@ -1,51 +1,70 @@
+package com.mikepenz.markdown
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Switch
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.application
 import com.mikepenz.markdown.coil3.Coil3ImageTransformerImpl
-import com.mikepenz.markdown.compose.components.markdownComponents
-import com.mikepenz.markdown.compose.elements.MarkdownHighlightedCodeBlock
-import com.mikepenz.markdown.compose.elements.MarkdownHighlightedCodeFence
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.RoundedCornerSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.rememberSquigglyUnderlineAnimator
 import com.mikepenz.markdown.m2.Markdown
 import com.mikepenz.markdown.model.markdownExtendedSpans
-import dev.snipme.highlights.Highlights
-import dev.snipme.highlights.model.SyntaxThemes
+import com.mikepenz.markdown.ui.SampleTheme
 
-fun main() = application {
-    Window(onCloseRequest = ::exitApplication, title = "Markdown Sample") {
-        SampleTheme {
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = { Text("Markdown Sample") }
-                    )
-                }
-            ) {
-                val scrollState = rememberScrollState()
-                val isDarkTheme = isSystemInDarkTheme()
-                val highlightsBuilder = remember(isDarkTheme) {
-                    Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isDarkTheme))
-                }
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
+        setContent {
+            MainLayout()
+        }
+    }
+}
+
+@Composable
+fun MainLayout() {
+    val isSystemInDarkMode = isSystemInDarkTheme()
+    var darkMode by remember { mutableStateOf(isSystemInDarkMode) }
+
+    SampleTheme(darkMode) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
+                .padding(horizontal = 16.dp),
+        ) {
+
+            item {
+                Spacer(modifier = Modifier.height(56.dp))
+            }
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "Dark mode enabled", color = MaterialTheme.colors.onBackground)
+                    Switch(checked = darkMode, onCheckedChange = { darkMode = !darkMode })
+                }
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            item {
                 Markdown(
                     MARKDOWN,
-                    components = markdownComponents(
-                        codeBlock = { MarkdownHighlightedCodeBlock(it.content, it.node, highlightsBuilder) },
-                        codeFence = { MarkdownHighlightedCodeFence(it.content, it.node, highlightsBuilder) },
-                    ),
                     imageTransformer = Coil3ImageTransformerImpl,
                     extendedSpans = markdownExtendedSpans {
                         val animator = rememberSquigglyUnderlineAnimator()
@@ -56,13 +75,14 @@ fun main() = application {
                             )
                         }
                     },
-                    modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(16.dp)
                 )
+            }
+            item {
+                Spacer(modifier = Modifier.height(48.dp))
             }
         }
     }
 }
-
 
 private const val MARKDOWN = """
 # Markdown Playground
@@ -90,7 +110,7 @@ This is a paragraph with a [link](https://www.jetbrains.com/).
 This is a code block:
 ```kotlin
 fun main() {
-    println("Hello, world!")
+println("Hello, world!")
 }
 ```
 
@@ -122,15 +142,6 @@ This is an unordered list with asterisks:
 * Item 3
 
 -------- 
-
-This is a markdown table:
-
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-
---------
 
 # Random
 

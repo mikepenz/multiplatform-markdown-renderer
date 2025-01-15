@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -21,6 +22,7 @@ import dev.snipme.highlights.Highlights
 import dev.snipme.highlights.model.BoldHighlight
 import dev.snipme.highlights.model.ColorHighlight
 import dev.snipme.highlights.model.SyntaxLanguage
+import dev.snipme.highlights.model.SyntaxThemes
 import org.intellij.markdown.ast.ASTNode
 
 /** Default definition for the [MarkdownHighlightedCodeFence]. Uses default theme, attempts to apply language from markdown. */
@@ -30,14 +32,30 @@ val highlightedCodeFence: MarkdownComponent = { MarkdownHighlightedCodeFence(it.
 val highlightedCodeBlock: MarkdownComponent = { MarkdownHighlightedCodeBlock(it.content, it.node) }
 
 @Composable
-fun MarkdownHighlightedCodeFence(content: String, node: ASTNode, highlights: Highlights.Builder = Highlights.Builder()) {
+fun MarkdownHighlightedCodeFence(
+    content: String,
+    node: ASTNode,
+    highlights: Highlights.Builder = Highlights.Builder(
+        theme = SyntaxThemes.default(
+            darkMode = isSystemInDarkTheme()
+        )
+    ),
+) {
     MarkdownCodeFence(content, node) { code, language ->
         MarkdownHighlightedCode(code, language, highlights)
     }
 }
 
 @Composable
-fun MarkdownHighlightedCodeBlock(content: String, node: ASTNode, highlights: Highlights.Builder = Highlights.Builder()) {
+fun MarkdownHighlightedCodeBlock(
+    content: String,
+    node: ASTNode,
+    highlights: Highlights.Builder = Highlights.Builder(
+        theme = SyntaxThemes.default(
+            darkMode = isSystemInDarkTheme()
+        )
+    ),
+) {
     MarkdownCodeBlock(content, node) { code, language ->
         MarkdownHighlightedCode(code, language, highlights)
     }

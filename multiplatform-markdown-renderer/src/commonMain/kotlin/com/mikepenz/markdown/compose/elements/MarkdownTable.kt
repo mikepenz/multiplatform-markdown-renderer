@@ -82,11 +82,10 @@ internal fun MarkdownTableHeader(
                         text = content.buildMarkdownAnnotatedString(it, style.copy(fontWeight = FontWeight.Bold)),
                         style = style.copy(fontWeight = FontWeight.Bold),
                         color = LocalMarkdownColors.current.tableText,
-                        modifier = Modifier.padding(tableCellPadding),
+                        modifier = Modifier.padding(tableCellPadding).weight(1f),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Box(Modifier.weight(1f))
                 }
             }
         }
@@ -110,11 +109,10 @@ internal fun MarkdownTableRow(
                 text = content.buildMarkdownAnnotatedString(cell, style),
                 style = style,
                 color = LocalMarkdownColors.current.tableText,
-                modifier = Modifier.padding(tableCellPadding),
+                modifier = Modifier.padding(tableCellPadding).weight(1f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Box(Modifier.weight(1f))
         }
     }
 }

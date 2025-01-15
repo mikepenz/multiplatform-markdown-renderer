@@ -33,16 +33,6 @@ File.open("settings.gradle.kts", "r") do |file_handle|
             android_lint.filtering = true
             android_lint.lint(inline_mode: true)
         end
-
-        # Detekt
-        detektFile = String.new(gradleModule + "/build/reports/detekt.xml")
-        if File.file?(detektFile)
-            kotlin_detekt.report_file = detektFile
-            kotlin_detekt.skip_gradle_task = true
-            kotlin_detekt.severity = "warning"
-            kotlin_detekt.filtering = true
-            kotlin_detekt.detekt(inline_mode: true)
-        end
     end
   end
 end

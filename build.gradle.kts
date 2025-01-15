@@ -1,13 +1,15 @@
 plugins {
+    alias(libs.plugins.conventionPlugin)
+
     // this is necessary to avoid the plugins to be loaded multiple times in each subproject's classloader
-    alias(libs.plugins.androidApplication) apply false
-    alias(libs.plugins.androidLibrary) apply false
-    alias(libs.plugins.composeCompiler) apply false
-    alias(libs.plugins.kotlinMultiplatform) apply false
-    alias(libs.plugins.dokka)
-    alias(libs.plugins.aboutlibraries) apply false
-    alias(libs.plugins.detekt)
-    alias(libs.plugins.mavenPublish) apply false
+    alias(baseLibs.plugins.androidApplication) apply false
+    alias(baseLibs.plugins.androidLibrary) apply false
+    alias(baseLibs.plugins.composeMultiplatform) apply false
+    alias(baseLibs.plugins.composeCompiler) apply false
+    alias(baseLibs.plugins.kotlinMultiplatform) apply false
+    alias(baseLibs.plugins.dokka)
+    alias(baseLibs.plugins.aboutLibraries) apply false
+    alias(baseLibs.plugins.mavenPublish) apply false
 }
 
 allprojects {
@@ -22,10 +24,3 @@ allprojects {
         maven { setUrl("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental") }
     }
 }
-
-// subprojects {
-//     apply(from = "../detekt.gradle")
-//     dependencies {
-//         "detektPlugins"("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
-//     }
-// }
