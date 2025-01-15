@@ -36,8 +36,8 @@ class SnapshotTests {
         Markdown(MARKDOWN_LIST)
     }
 
-    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1250)
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1250, uiMode = Configuration.UI_MODE_NIGHT_YES)
+    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
+    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
     fun TableTest() = SampleTheme(isSystemInDarkTheme()) {
         Markdown(MARKDOWN_TABLE)
@@ -192,6 +192,15 @@ private val MARKDOWN_TABLE = """
 | --- | --- |
 | bar |
 | bar | baz | boo |
+
+// different cell lengths
+
+| Header 1 | Header 2 |
+|----------|----------|
+| Longer text | Ab  |
+| Lorem   | CD 45   |
+| Ipsum dd   | EF 67   |
+
 """.trimIndent()
 
 private val MARKDOWN_LIST = """
