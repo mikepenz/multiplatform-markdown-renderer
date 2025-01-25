@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.*
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
@@ -28,12 +27,14 @@ fun MarkdownListItems(
     bullet: @Composable (index: Int, child: ASTNode?) -> Unit,
 ) {
     val listDp = LocalMarkdownPadding.current.list
-    val indentListDp = LocalMarkdownPadding.current.indentList
+    val indentListDp = LocalMarkdownPadding.current.listIndent
+    val listItemPaddingDp = LocalMarkdownPadding.current.listItemTop
+    val listItemBottom = LocalMarkdownPadding.current.listItemBottom
     Column(
         modifier = Modifier.padding(
             start = (indentListDp) * level,
-            top = if (level == 0) listDp else 0.dp,
-            bottom = if (level == 0) listDp else 0.dp
+            top = listDp,
+            bottom = listDp
         )
     ) {
         var index = 0
@@ -46,7 +47,7 @@ fun MarkdownListItems(
                         else -> null
                     }
 
-                    Row(Modifier.fillMaxWidth()) {
+                    Row(Modifier.fillMaxWidth().padding(top = listItemPaddingDp, bottom = listItemBottom)) {
                         bullet(index, listIndicator)
 
                         Column {
@@ -54,17 +55,19 @@ fun MarkdownListItems(
                                 when (nestedChild.type) {
                                     ORDERED_LIST -> MarkdownOrderedList(content, nestedChild, style, level + 1)
                                     UNORDERED_LIST -> MarkdownBulletList(content, nestedChild, style, level + 1)
-                                    else -> handleElement(
-                                        node = nestedChild,
-                                        components = LocalMarkdownComponents.current,
-                                        content = content,
-                                        includeSpacer = false
-                                    )
+                                    else -> {
+                                        handleElement(
+                                            node = nestedChild,
+                                            components = LocalMarkdownComponents.current,
+                                            content = content,
+                                            includeSpacer = false
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
-                    
+
                     index++
                 }
             }
@@ -80,7 +83,6 @@ fun MarkdownOrderedList(
     level: Int = 0,
 ) {
     val orderedListHandler = LocalOrderedListHandler.current
-    val listItemBottom = LocalMarkdownPadding.current.listItemBottom
     MarkdownListItems(content, node, style, level) { index, child ->
         MarkdownBasicText(
             text = orderedListHandler.transform(
@@ -90,7 +92,6 @@ fun MarkdownOrderedList(
             ),
             style = style,
             color = LocalMarkdownColors.current.text,
-            modifier = Modifier.padding(bottom = listItemBottom)
         )
     }
 }

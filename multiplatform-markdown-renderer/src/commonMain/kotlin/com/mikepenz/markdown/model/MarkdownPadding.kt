@@ -8,9 +8,18 @@ import androidx.compose.ui.unit.dp
 
 interface MarkdownPadding {
     val block: Dp
+
+    /** Padding top and bottom of a list (per layer) */
     val list: Dp
+
+    /** Padding top of a list item */
+    val listItemTop: Dp
+
+    /** Padding bottom of a list item */
     val listItemBottom: Dp
-    val indentList: Dp
+
+    /** The indent per list level */
+    val listIndent: Dp
     val codeBlock: PaddingValues
     val blockQuote: PaddingValues
     val blockQuoteText: PaddingValues
@@ -21,8 +30,9 @@ interface MarkdownPadding {
 private class DefaultMarkdownPadding(
     override val block: Dp,
     override val list: Dp,
+    override val listItemTop: Dp,
     override val listItemBottom: Dp,
-    override val indentList: Dp,
+    override val listIndent: Dp,
     override val codeBlock: PaddingValues,
     override val blockQuote: PaddingValues,
     override val blockQuoteText: PaddingValues,
@@ -32,9 +42,12 @@ private class DefaultMarkdownPadding(
 @Composable
 fun markdownPadding(
     block: Dp = 2.dp,
-    list: Dp = 8.dp,
+    list: Dp = 4.dp,
+    listItemTop: Dp = 4.dp,
     listItemBottom: Dp = 4.dp,
-    indentList: Dp = 8.dp,
+    /** Deprecated, please use `listIndent` instead */
+    indentList: Dp? = null,
+    listIndent: Dp = 8.dp,
     codeBlock: PaddingValues = PaddingValues(8.dp),
     blockQuote: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
     blockQuoteText: PaddingValues = PaddingValues(vertical = 4.dp),
@@ -42,8 +55,9 @@ fun markdownPadding(
 ): MarkdownPadding = DefaultMarkdownPadding(
     block = block,
     list = list,
+    listItemTop = listItemTop,
     listItemBottom = listItemBottom,
-    indentList = indentList,
+    listIndent = indentList ?: listIndent,
     codeBlock = codeBlock,
     blockQuote = blockQuote,
     blockQuoteText = blockQuoteText,
