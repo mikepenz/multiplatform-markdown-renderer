@@ -5,21 +5,40 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.text.InlineTextContent
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.sp
-import com.mikepenz.markdown.compose.*
+import com.mikepenz.markdown.compose.LocalImageTransformer
+import com.mikepenz.markdown.compose.LocalMarkdownAnimations
+import com.mikepenz.markdown.compose.LocalMarkdownAnnotator
+import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.compose.LocalMarkdownExtendedSpans
+import com.mikepenz.markdown.compose.LocalMarkdownTypography
+import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.drawBehind
 import com.mikepenz.markdown.model.rememberMarkdownImageState
-import com.mikepenz.markdown.utils.*
+import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
+import com.mikepenz.markdown.utils.MARKDOWN_TAG_URL
+import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
+import com.mikepenz.markdown.utils.codeSpanStyle
+import com.mikepenz.markdown.utils.linkTextSpanStyle
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
@@ -45,11 +64,12 @@ fun MarkdownText(
     val annotator = LocalMarkdownAnnotator.current
     val linkTextSpanStyle = LocalMarkdownTypography.current.linkTextSpanStyle
     val codeSpanStyle = LocalMarkdownTypography.current.codeSpanStyle
+    val referenceLinkHandler = LocalReferenceLinkHandler.current
     val childNode = contentChildType?.let { node.findChildOfType(it) } ?: node
 
     val styledText = buildAnnotatedString {
         pushStyle(style.toSpanStyle())
-        buildMarkdownAnnotatedString(content, childNode, linkTextSpanStyle, codeSpanStyle, annotator)
+        buildMarkdownAnnotatedString(content, childNode, linkTextSpanStyle, codeSpanStyle, annotator, referenceLinkHandler)
         pop()
     }
 
@@ -111,8 +131,7 @@ fun MarkdownText(
 
             val foundReference = layoutResult.value?.let { layoutResult ->
                 val position = layoutResult.getOffsetForPosition(pos)
-                content.getStringAnnotations(MARKDOWN_TAG_URL, position, position).reversed().firstOrNull()
-                    ?.let { referenceLinkHandler.find(it.item) }
+                content.getStringAnnotations(MARKDOWN_TAG_URL, position, position).reversed().firstOrNull()?.let { referenceLinkHandler.find(it.item) }
             }
 
             if (foundReference != null) {

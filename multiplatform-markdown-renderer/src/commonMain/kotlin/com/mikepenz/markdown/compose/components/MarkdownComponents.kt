@@ -7,7 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
-import com.mikepenz.markdown.compose.elements.*
+import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
+import com.mikepenz.markdown.compose.elements.MarkdownBulletList
+import com.mikepenz.markdown.compose.elements.MarkdownCodeBlock
+import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
+import com.mikepenz.markdown.compose.elements.MarkdownDivider
+import com.mikepenz.markdown.compose.elements.MarkdownHeader
+import com.mikepenz.markdown.compose.elements.MarkdownImage
+import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
+import com.mikepenz.markdown.compose.elements.MarkdownParagraph
+import com.mikepenz.markdown.compose.elements.MarkdownTable
+import com.mikepenz.markdown.compose.elements.MarkdownText
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import org.intellij.markdown.IElementType
@@ -187,11 +197,9 @@ object CurrentComponentsBridge {
         MarkdownImage(it.content, it.node)
     }
     val linkDefinition: MarkdownComponent = {
-        val linkLabel =
-            it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(it.content)
+        val linkLabel = it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(it.content)
         if (linkLabel != null) {
-            val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)
-                ?.getUnescapedTextInNode(it.content)
+            val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(it.content)
             LocalReferenceLinkHandler.current.store(linkLabel, destination)
         }
     }
