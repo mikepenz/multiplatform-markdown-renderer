@@ -7,6 +7,8 @@ import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalUriHandler
@@ -102,7 +104,7 @@ fun MarkdownText(
     val imageState = rememberMarkdownImageState()
 
     val hasUrl = content.getStringAnnotations(MARKDOWN_TAG_URL, 0, content.length).any()
-    val textModifier = if (hasUrl) modifier.pointerInput(Unit) {
+    val textModifier = if (hasUrl) modifier.pointerHoverIcon(PointerIcon.Hand, true).pointerInput(Unit) {
         awaitEachGesture {
             val pointer = awaitFirstDown()
             val pos = pointer.position // current position
