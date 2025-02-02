@@ -105,8 +105,12 @@ class SquigglyUnderlineSpanPainter(
         builder: AnnotatedString.Builder,
     ): LinkAnnotation {
         val defaultStyle = linkAnnotation.styles?.style
-        val updated = if (defaultStyle != null) decorate(defaultStyle, start, end, text, builder) else null
- 
+        val textDecoration = defaultStyle?.textDecoration
+
+        // return fast if no text decoration is set
+        if (defaultStyle == null || textDecoration == null || Underline !in textDecoration) return linkAnnotation
+
+        val updated = decorate(defaultStyle, start, end, text, builder)
         return if (linkAnnotation is LinkAnnotation.Url) {
             LinkAnnotation.Url(linkAnnotation.url, TextLinkStyles(updated), linkAnnotation.linkInteractionListener)
         } else if (linkAnnotation is LinkAnnotation.Clickable) {
