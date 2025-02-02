@@ -20,11 +20,11 @@ abstract class ExtendedSpanPainter {
         start: Int,
         end: Int,
         text: AnnotatedString,
-        builder: AnnotatedString.Builder
+        builder: AnnotatedString.Builder,
     ): SpanStyle
 
     abstract fun drawInstructionsFor(
-        layoutResult: TextLayoutResult
+        layoutResult: TextLayoutResult,
     ): SpanDrawInstructions
 
     /**
@@ -38,7 +38,7 @@ abstract class ExtendedSpanPainter {
     protected fun TextLayoutResult.getBoundingBoxes(
         startOffset: Int,
         endOffset: Int,
-        flattenForFullParagraphs: Boolean = false
+        flattenForFullParagraphs: Boolean = false,
     ): List<Rect> {
         if (startOffset == endOffset) {
             return emptyList()

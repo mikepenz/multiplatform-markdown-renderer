@@ -15,9 +15,9 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.util.fastForEachIndexed
 import com.mikepenz.markdown.compose.extendedspans.internal.deserializeToColor
-import com.mikepenz.markdown.compose.extendedspans.internal.fastForEach
-import com.mikepenz.markdown.compose.extendedspans.internal.fastForEachIndexed
 import com.mikepenz.markdown.compose.extendedspans.internal.serialize
 
 /**
@@ -41,17 +41,12 @@ class RoundedCornerSpanPainter(
         start: Int,
         end: Int,
         text: AnnotatedString,
-        builder: AnnotatedString.Builder
+        builder: AnnotatedString.Builder,
     ): SpanStyle {
         return if (span.background.isUnspecified) {
             span
         } else {
-            builder.addStringAnnotation(
-                TAG,
-                annotation = span.background.serialize(),
-                start = start,
-                end = end
-            )
+            builder.addStringAnnotation(TAG, annotation = span.background.serialize(), start = start, end = end)
             span.copy(background = Color.Unspecified)
         }
     }
@@ -107,7 +102,7 @@ class RoundedCornerSpanPainter(
 
     data class Stroke(
         val color: (background: Color) -> Color,
-        val width: TextUnit = 1.sp
+        val width: TextUnit = 1.sp,
     ) {
         constructor(color: Color, width: TextUnit = 1.sp) : this(
             color = { color },
@@ -117,7 +112,7 @@ class RoundedCornerSpanPainter(
 
     data class TextPaddingValues(
         val horizontal: TextUnit = 0.sp,
-        val vertical: TextUnit = 0.sp
+        val vertical: TextUnit = 0.sp,
     )
 
     companion object {
