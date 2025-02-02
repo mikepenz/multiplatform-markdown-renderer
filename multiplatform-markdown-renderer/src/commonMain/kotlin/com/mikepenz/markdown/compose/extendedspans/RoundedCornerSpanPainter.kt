@@ -14,13 +14,13 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastForEachIndexed
 import com.mikepenz.markdown.compose.extendedspans.internal.deserializeToColor
 import com.mikepenz.markdown.compose.extendedspans.internal.serialize
+import com.mikepenz.markdown.compose.extendedspans.internal.update
 
 /**
  * Draws round rectangles behind text annotated using `SpanStyle(background = …)`.
@@ -63,11 +63,12 @@ class RoundedCornerSpanPainter(
         val defaultStyle = linkAnnotation.styles?.style
         // return fast if background is not set
         if (defaultStyle == null || defaultStyle.background.isUnspecified == true) return linkAnnotation
-        val updated = decorate(defaultStyle, start, end, text, builder)
+        builder.addStringAnnotation(TAG, annotation = defaultStyle.background.serialize(), start = start, end = end)
+        val updatedTextLinkStyles = linkAnnotation.styles?.update { copy(background = Color.Unspecified) }
         return if (linkAnnotation is LinkAnnotation.Url) {
-            LinkAnnotation.Url(linkAnnotation.url, TextLinkStyles(updated), linkAnnotation.linkInteractionListener)
+            LinkAnnotation.Url(linkAnnotation.url, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
         } else if (linkAnnotation is LinkAnnotation.Clickable) {
-            LinkAnnotation.Clickable(linkAnnotation.tag, TextLinkStyles(updated), linkAnnotation.linkInteractionListener)
+            LinkAnnotation.Clickable(linkAnnotation.tag, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
         } else {
             throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
         }

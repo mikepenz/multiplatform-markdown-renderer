@@ -28,7 +28,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.style.TextDecoration.Companion.LineThrough
 import androidx.compose.ui.text.style.TextDecoration.Companion.None
 import androidx.compose.ui.text.style.TextDecoration.Companion.Underline
@@ -41,6 +40,7 @@ import com.mikepenz.markdown.compose.extendedspans.internal.colorOrNull
 import com.mikepenz.markdown.compose.extendedspans.internal.deserializeToColor
 import com.mikepenz.markdown.compose.extendedspans.internal.fastMapRange
 import com.mikepenz.markdown.compose.extendedspans.internal.serialize
+import com.mikepenz.markdown.compose.extendedspans.internal.update
 import kotlin.math.ceil
 import kotlin.math.sin
 import kotlin.time.Duration
@@ -119,12 +119,11 @@ class SquigglyUnderlineSpanPainter(
 
         builder.addStringAnnotation(TAG, annotation = textColor.serialize(), start = start, end = end)
 
-        val updatedStyle = defaultStyle.copy(textDecoration = if (LineThrough in textDecoration) LineThrough else None)
-
+        val updatedTextLinkStyles = linkAnnotation.styles?.update { copy(textDecoration = if (LineThrough in textDecoration) LineThrough else None) }
         return if (linkAnnotation is LinkAnnotation.Url) {
-            LinkAnnotation.Url(linkAnnotation.url, TextLinkStyles(updatedStyle), linkAnnotation.linkInteractionListener)
+            LinkAnnotation.Url(linkAnnotation.url, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
         } else if (linkAnnotation is LinkAnnotation.Clickable) {
-            LinkAnnotation.Clickable(linkAnnotation.tag, TextLinkStyles(updatedStyle), linkAnnotation.linkInteractionListener)
+            LinkAnnotation.Clickable(linkAnnotation.tag, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
         } else {
             throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
         }
