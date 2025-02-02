@@ -1,9 +1,6 @@
 package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,33 +9,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onPlaced
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.sp
+import com.mikepenz.markdown.annotator.annotatorSettings
+import com.mikepenz.markdown.annotator.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.compose.LocalImageTransformer
 import com.mikepenz.markdown.compose.LocalMarkdownAnimations
-import com.mikepenz.markdown.compose.LocalMarkdownAnnotator
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownExtendedSpans
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
-import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.drawBehind
 import com.mikepenz.markdown.model.rememberMarkdownImageState
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
-import com.mikepenz.markdown.utils.MARKDOWN_TAG_URL
-import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
-import com.mikepenz.markdown.utils.codeSpanStyle
-import com.mikepenz.markdown.utils.linkTextSpanStyle
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
@@ -61,15 +50,12 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     contentChildType: IElementType? = null,
 ) {
-    val annotator = LocalMarkdownAnnotator.current
-    val linkTextSpanStyle = LocalMarkdownTypography.current.linkTextSpanStyle
-    val codeSpanStyle = LocalMarkdownTypography.current.codeSpanStyle
-    val referenceLinkHandler = LocalReferenceLinkHandler.current
+    val annotatorSettings = annotatorSettings()
     val childNode = contentChildType?.let { node.findChildOfType(it) } ?: node
 
     val styledText = buildAnnotatedString {
         pushStyle(style.toSpanStyle())
-        buildMarkdownAnnotatedString(content, childNode, linkTextSpanStyle, codeSpanStyle, annotator, referenceLinkHandler)
+        buildMarkdownAnnotatedString(content = content, node = childNode, annotatorSettings = annotatorSettings)
         pop()
     }
 
@@ -106,7 +92,6 @@ fun MarkdownText(
         modifier.drawBehind(extendedSpans)
     } else modifier
 
-
     MarkdownText(extendedStyledText, extendedModifier, style, onTextLayout)
 }
 
@@ -118,39 +103,8 @@ fun MarkdownText(
     onTextLayout: (TextLayoutResult) -> Unit,
 ) {
     val animations = LocalMarkdownAnimations.current
-    val uriHandler = LocalUriHandler.current
-    val referenceLinkHandler = LocalReferenceLinkHandler.current
     val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
     val imageState = rememberMarkdownImageState()
-
-    val hasUrl = content.getStringAnnotations(MARKDOWN_TAG_URL, 0, content.length).any()
-    val textModifier = if (hasUrl) modifier.pointerHoverIcon(PointerIcon.Hand, true).pointerInput(Unit) {
-        awaitEachGesture {
-            val pointer = awaitFirstDown()
-            val pos = pointer.position // current position
-
-            val foundReference = layoutResult.value?.let { layoutResult ->
-                val position = layoutResult.getOffsetForPosition(pos)
-                content.getStringAnnotations(MARKDOWN_TAG_URL, position, position).reversed().firstOrNull()?.let { referenceLinkHandler.find(it.item) }
-            }
-
-            if (foundReference != null) {
-                pointer.consume() // consume if we clicked on a link
-
-                val up = waitForUpOrCancellation()
-                if (up != null) {
-                    up.consume()
-
-                    // wait for finger up to navigate to the link
-                    try {
-                        uriHandler.openUri(foundReference)
-                    } catch (t: Throwable) {
-                        println("Could not open the provided url: $foundReference")
-                    }
-                }
-            }
-        }
-    } else modifier
 
     val transformer = LocalImageTransformer.current
     val placeholderState by derivedStateOf {
@@ -163,7 +117,7 @@ fun MarkdownText(
 
     MarkdownBasicText(
         text = content,
-        modifier = textModifier
+        modifier = modifier
             .onPlaced {
                 it.parentLayoutCoordinates?.also { coordinates ->
                     imageState.setContainerSize(coordinates.size)
