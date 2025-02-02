@@ -73,7 +73,7 @@ class RoundedCornerSpanPainter(
         }
     }
 
-    override fun drawInstructionsFor(layoutResult: TextLayoutResult): SpanDrawInstructions {
+    override fun drawInstructionsFor(layoutResult: TextLayoutResult, color: Color?): SpanDrawInstructions {
         val text = layoutResult.layoutInput.text
         val annotations = text.getStringAnnotations(TAG, start = 0, end = text.length)
 

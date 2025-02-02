@@ -4,6 +4,7 @@
 package com.mikepenz.markdown.compose.extendedspans
 
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
@@ -37,6 +38,7 @@ abstract class ExtendedSpanPainter {
 
     abstract fun drawInstructionsFor(
         layoutResult: TextLayoutResult,
+        color: Color? = null,
     ): SpanDrawInstructions
 
     /**

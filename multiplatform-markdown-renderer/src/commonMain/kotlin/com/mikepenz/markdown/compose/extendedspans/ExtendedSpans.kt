@@ -8,6 +8,7 @@ package com.mikepenz.markdown.compose.extendedspans
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.LinkAnnotation
@@ -78,10 +79,10 @@ class ExtendedSpans(
         }
     }
 
-    fun onTextLayout(layoutResult: TextLayoutResult) {
+    fun onTextLayout(layoutResult: TextLayoutResult, color: Color? = null) {
         layoutResult.checkIfExtendWasCalled()
         drawInstructions = painters.fastMap {
-            it.drawInstructionsFor(layoutResult)
+            it.drawInstructionsFor(layoutResult, color)
         }
     }
 

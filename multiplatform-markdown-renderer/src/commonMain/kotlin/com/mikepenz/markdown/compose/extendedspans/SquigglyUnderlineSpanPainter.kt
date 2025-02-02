@@ -130,7 +130,7 @@ class SquigglyUnderlineSpanPainter(
         }
     }
 
-    override fun drawInstructionsFor(layoutResult: TextLayoutResult): SpanDrawInstructions {
+    override fun drawInstructionsFor(layoutResult: TextLayoutResult, color: Color?): SpanDrawInstructions {
         val text = layoutResult.layoutInput.text
         val annotations = text.getStringAnnotations(TAG, start = 0, end = text.length)
 
@@ -148,7 +148,7 @@ class SquigglyUnderlineSpanPainter(
                     endOffset = annotation.end
                 )
 
-                val textColor = annotation.item.deserializeToColor() ?: layoutResult.layoutInput.style.color
+                val textColor = annotation.item.deserializeToColor() ?: layoutResult.layoutInput.style.color.colorOrNull() ?: color ?: Color.Unspecified
                 boxes.fastForEach { box ->
                     path.rewind()
                     path.buildSquigglesFor(box, density = this)

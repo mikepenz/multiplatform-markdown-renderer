@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
@@ -79,12 +80,12 @@ fun MarkdownText(
     }
 
     // forward the `onTextLayout` to `extended-spans` if provided
-    val onTextLayout: (TextLayoutResult) -> Unit = if (extendedSpans != null) {
-        { result ->
-            extendedSpans.onTextLayout(result)
+    val onTextLayout: (TextLayoutResult, Color?) -> Unit = if (extendedSpans != null) {
+        { layoutResult, color ->
+            extendedSpans.onTextLayout(layoutResult, color)
         }
     } else {
-        {}
+        { _, _ -> }
     }
 
     // call drawBehind with the `extended-spans` if provided
@@ -100,8 +101,9 @@ fun MarkdownText(
     content: AnnotatedString,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text,
-    onTextLayout: (TextLayoutResult) -> Unit,
+    onTextLayout: (TextLayoutResult, Color?) -> Unit,
 ) {
+    val baseColor = LocalMarkdownColors.current.text
     val animations = LocalMarkdownAnimations.current
     val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
     val imageState = rememberMarkdownImageState()
@@ -129,7 +131,7 @@ fun MarkdownText(
                 if (placeholderState.animate) animations.animateTextSize(it) else it
             },
         style = style,
-        color = LocalMarkdownColors.current.text,
+        color = baseColor,
         inlineContent = mapOf(
             MARKDOWN_TAG_IMAGE_URL to InlineTextContent(
                 Placeholder(
@@ -157,7 +159,7 @@ fun MarkdownText(
         ),
         onTextLayout = {
             layoutResult.value = it
-            onTextLayout.invoke(it)
+            onTextLayout.invoke(it, baseColor)
         }
     )
 }
