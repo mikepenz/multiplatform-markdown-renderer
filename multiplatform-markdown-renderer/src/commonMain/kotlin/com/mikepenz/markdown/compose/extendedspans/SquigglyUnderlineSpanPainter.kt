@@ -41,6 +41,7 @@ import com.mikepenz.markdown.compose.extendedspans.internal.deserializeToColor
 import com.mikepenz.markdown.compose.extendedspans.internal.fastMapRange
 import com.mikepenz.markdown.compose.extendedspans.internal.serialize
 import com.mikepenz.markdown.compose.extendedspans.internal.update
+import kotlin.math.PI
 import kotlin.math.ceil
 import kotlin.math.sin
 import kotlin.time.Duration
@@ -190,7 +191,7 @@ class SquigglyUnderlineSpanPainter(
     companion object {
         private const val TAG = "squiggly_underline_span"
         private const val SEGMENTS_PER_WAVELENGTH = 10
-        private const val TWO_PI = 2 * Math.PI.toFloat()
+        private const val TWO_PI = 2 * PI.toFloat()
     }
 }
 
