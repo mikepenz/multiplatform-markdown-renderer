@@ -14,3 +14,7 @@ internal fun Color?.serialize(): String {
 internal fun String.deserializeToColor(): Color? {
     return if (this == "null") null else Color(this.toInt())
 }
+
+internal fun Color?.colorOrNull(): Color? {
+    return if (this == null || isUnspecified) null else this
+}

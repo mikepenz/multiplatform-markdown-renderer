@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastFirstOrNull
 import androidx.compose.ui.util.fastForEach
+import com.mikepenz.markdown.compose.extendedspans.internal.colorOrNull
 import com.mikepenz.markdown.compose.extendedspans.internal.deserializeToColor
 import com.mikepenz.markdown.compose.extendedspans.internal.fastMapRange
 import com.mikepenz.markdown.compose.extendedspans.internal.serialize
@@ -110,11 +111,20 @@ class SquigglyUnderlineSpanPainter(
         // return fast if no text decoration is set
         if (defaultStyle == null || textDecoration == null || Underline !in textDecoration) return linkAnnotation
 
-        val updated = decorate(defaultStyle, start, end, text, builder)
+        val textColor = defaultStyle.color.colorOrNull() ?: text.spanStyles.fastFirstOrNull {
+            // I don't think this predicate will work for text annotated with overlapping
+            // multiple colors, but I'm not too interested in solving for that use case.
+            it.start <= start && it.end >= end && it.item.color.isSpecified
+        }?.item?.color ?: Color.Unspecified
+
+        builder.addStringAnnotation(TAG, annotation = textColor.serialize(), start = start, end = end)
+
+        val updatedStyle = defaultStyle.copy(textDecoration = if (LineThrough in textDecoration) LineThrough else None)
+
         return if (linkAnnotation is LinkAnnotation.Url) {
-            LinkAnnotation.Url(linkAnnotation.url, TextLinkStyles(updated), linkAnnotation.linkInteractionListener)
+            LinkAnnotation.Url(linkAnnotation.url, TextLinkStyles(updatedStyle), linkAnnotation.linkInteractionListener)
         } else if (linkAnnotation is LinkAnnotation.Clickable) {
-            LinkAnnotation.Clickable(linkAnnotation.tag, TextLinkStyles(updated), linkAnnotation.linkInteractionListener)
+            LinkAnnotation.Clickable(linkAnnotation.tag, TextLinkStyles(updatedStyle), linkAnnotation.linkInteractionListener)
         } else {
             throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
         }
@@ -123,7 +133,6 @@ class SquigglyUnderlineSpanPainter(
     override fun drawInstructionsFor(layoutResult: TextLayoutResult): SpanDrawInstructions {
         val text = layoutResult.layoutInput.text
         val annotations = text.getStringAnnotations(TAG, start = 0, end = text.length)
-        val linkAnnotations = text.getLinkAnnotations(start = 0, end = text.length)
 
         return SpanDrawInstructions {
             val pathStyle = Stroke(
@@ -133,13 +142,13 @@ class SquigglyUnderlineSpanPainter(
                 pathEffect = PathEffect.cornerPathEffect(radius = wavelength.toPx()), // For slightly smoother waves.
             )
 
-            fun drawForAnnotation(start: Int, end: Int, color: Color?) {
+            annotations.fastForEach { annotation ->
                 val boxes = layoutResult.getBoundingBoxes(
-                    startOffset = start,
-                    endOffset = end
+                    startOffset = annotation.start,
+                    endOffset = annotation.end
                 )
 
-                val textColor = color ?: layoutResult.layoutInput.style.color
+                val textColor = annotation.item.deserializeToColor() ?: layoutResult.layoutInput.style.color
                 boxes.fastForEach { box ->
                     path.rewind()
                     path.buildSquigglesFor(box, density = this)
@@ -150,13 +159,6 @@ class SquigglyUnderlineSpanPainter(
                     )
                 }
 
-            }
-
-            annotations.fastForEach { annotation ->
-                drawForAnnotation(annotation.start, annotation.end, annotation.item.deserializeToColor())
-            }
-            linkAnnotations.fastForEach { annotation ->
-                drawForAnnotation(annotation.start, annotation.end, annotation.item.styles?.style?.color)
             }
         }
     }

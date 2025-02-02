@@ -76,16 +76,15 @@ class RoundedCornerSpanPainter(
     override fun drawInstructionsFor(layoutResult: TextLayoutResult): SpanDrawInstructions {
         val text = layoutResult.layoutInput.text
         val annotations = text.getStringAnnotations(TAG, start = 0, end = text.length)
-        val linkAnnotations = text.getLinkAnnotations(start = 0, end = text.length)
 
         return SpanDrawInstructions {
             val cornerRadius = CornerRadius(cornerRadius.toPx())
 
-            fun drawForAnnotation(start: Int, end: Int, color: Color?) {
-                val backgroundColor = color!!
+            annotations.fastForEach { annotation ->
+                val backgroundColor = annotation.item.deserializeToColor()!!
                 val boxes = layoutResult.getBoundingBoxes(
-                    startOffset = start,
-                    endOffset = end,
+                    startOffset = annotation.start,
+                    endOffset = annotation.end,
                     flattenForFullParagraphs = true
                 )
                 boxes.fastForEachIndexed { index, box ->
@@ -119,13 +118,6 @@ class RoundedCornerSpanPainter(
                         )
                     }
                 }
-            }
-
-            annotations.fastForEach { annotation ->
-                drawForAnnotation(annotation.start, annotation.end, annotation.item.deserializeToColor())
-            }
-            linkAnnotations.fastForEach { annotation ->
-                drawForAnnotation(annotation.start, annotation.end, annotation.item.styles?.style?.background)
             }
         }
     }
