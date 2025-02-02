@@ -1,8 +1,8 @@
+@file:Suppress("NAME_SHADOWING")
+
 // Copyright 2023, Saket Narayan
 // SPDX-License-Identifier: Apache-2.0
 // https://github.com/saket/extended-spans
-@file:Suppress("NAME_SHADOWING")
-
 package com.mikepenz.markdown.compose.extendedspans
 
 import androidx.compose.animation.core.LinearEasing
@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextDecoration.Companion.LineThrough
@@ -33,12 +34,13 @@ import androidx.compose.ui.text.style.TextDecoration.Companion.Underline
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastFirstOrNull
+import androidx.compose.ui.util.fastForEach
+import com.mikepenz.markdown.compose.extendedspans.internal.colorOrNull
 import com.mikepenz.markdown.compose.extendedspans.internal.deserializeToColor
-import com.mikepenz.markdown.compose.extendedspans.internal.fastFirstOrNull
-import com.mikepenz.markdown.compose.extendedspans.internal.fastForEach
 import com.mikepenz.markdown.compose.extendedspans.internal.fastMapRange
 import com.mikepenz.markdown.compose.extendedspans.internal.serialize
-import kotlin.math.PI
+import com.mikepenz.markdown.compose.extendedspans.internal.update
 import kotlin.math.ceil
 import kotlin.math.sin
 import kotlin.time.Duration
@@ -79,7 +81,7 @@ class SquigglyUnderlineSpanPainter(
         start: Int,
         end: Int,
         text: AnnotatedString,
-        builder: AnnotatedString.Builder
+        builder: AnnotatedString.Builder,
     ): SpanStyle {
         val textDecoration = span.textDecoration
         return if (textDecoration == null || Underline !in textDecoration) {
@@ -91,17 +93,43 @@ class SquigglyUnderlineSpanPainter(
                 it.start <= start && it.end >= end && it.item.color.isSpecified
             }?.item?.color ?: Color.Unspecified
 
-            builder.addStringAnnotation(
-                TAG,
-                annotation = textColor.serialize(),
-                start = start,
-                end = end
-            )
+            builder.addStringAnnotation(TAG, annotation = textColor.serialize(), start = start, end = end)
             span.copy(textDecoration = if (LineThrough in textDecoration) LineThrough else None)
         }
     }
 
-    override fun drawInstructionsFor(layoutResult: TextLayoutResult): SpanDrawInstructions {
+    override fun decorate(
+        linkAnnotation: LinkAnnotation,
+        start: Int,
+        end: Int,
+        text: AnnotatedString,
+        builder: AnnotatedString.Builder,
+    ): LinkAnnotation {
+        val defaultStyle = linkAnnotation.styles?.style
+        val textDecoration = defaultStyle?.textDecoration
+
+        // return fast if no text decoration is set
+        if (defaultStyle == null || textDecoration == null || Underline !in textDecoration) return linkAnnotation
+
+        val textColor = defaultStyle.color.colorOrNull() ?: text.spanStyles.fastFirstOrNull {
+            // I don't think this predicate will work for text annotated with overlapping
+            // multiple colors, but I'm not too interested in solving for that use case.
+            it.start <= start && it.end >= end && it.item.color.isSpecified
+        }?.item?.color ?: Color.Unspecified
+
+        builder.addStringAnnotation(TAG, annotation = textColor.serialize(), start = start, end = end)
+
+        val updatedTextLinkStyles = linkAnnotation.styles?.update { copy(textDecoration = if (LineThrough in textDecoration) LineThrough else None) }
+        return if (linkAnnotation is LinkAnnotation.Url) {
+            LinkAnnotation.Url(linkAnnotation.url, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
+        } else if (linkAnnotation is LinkAnnotation.Clickable) {
+            LinkAnnotation.Clickable(linkAnnotation.tag, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
+        } else {
+            throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
+        }
+    }
+
+    override fun drawInstructionsFor(layoutResult: TextLayoutResult, color: Color?): SpanDrawInstructions {
         val text = layoutResult.layoutInput.text
         val annotations = text.getStringAnnotations(TAG, start = 0, end = text.length)
 
@@ -118,8 +146,8 @@ class SquigglyUnderlineSpanPainter(
                     startOffset = annotation.start,
                     endOffset = annotation.end
                 )
-                val textColor =
-                    annotation.item.deserializeToColor() ?: layoutResult.layoutInput.style.color
+
+                val textColor = annotation.item.deserializeToColor() ?: layoutResult.layoutInput.style.color.colorOrNull() ?: color ?: Color.Unspecified
                 boxes.fastForEach { box ->
                     path.rewind()
                     path.buildSquigglesFor(box, density = this)
@@ -129,6 +157,7 @@ class SquigglyUnderlineSpanPainter(
                         style = pathStyle
                     )
                 }
+
             }
         }
     }
@@ -147,8 +176,7 @@ class SquigglyUnderlineSpanPainter(
         var pointX = lineStart
         fastMapRange(0, numOfPoints) { point ->
             val proportionOfWavelength = (pointX - lineStart) / wavelength.toPx()
-            val radiansX =
-                proportionOfWavelength * TWO_PI + (TWO_PI * animator.animationProgress.value)
+            val radiansX = proportionOfWavelength * TWO_PI + (TWO_PI * animator.animationProgress.value)
             val offsetY = lineBottom + (sin(radiansX) * amplitude.toPx())
 
             when (point) {
@@ -162,7 +190,7 @@ class SquigglyUnderlineSpanPainter(
     companion object {
         private const val TAG = "squiggly_underline_span"
         private const val SEGMENTS_PER_WAVELENGTH = 10
-        private const val TWO_PI = 2 * PI.toFloat()
+        private const val TWO_PI = 2 * Math.PI.toFloat()
     }
 }
 

@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.model
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.TextStyle
 
 interface MarkdownTypography {
@@ -18,7 +19,10 @@ interface MarkdownTypography {
     val ordered: TextStyle
     val bullet: TextStyle
     val list: TextStyle
+
+    @Deprecated("Use textLink instead", ReplaceWith("textLink"))
     val link: TextStyle
+    val textLink: TextLinkStyles
 }
 
 @Immutable
@@ -37,5 +41,7 @@ class DefaultMarkdownTypography(
     override val ordered: TextStyle,
     override val bullet: TextStyle,
     override val list: TextStyle,
+    @Deprecated("Use textLink instead", replaceWith = ReplaceWith("textLink"))
     override val link: TextStyle,
+    override val textLink: TextLinkStyles,
 ) : MarkdownTypography

@@ -24,15 +24,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.times
-import com.mikepenz.markdown.compose.LocalMarkdownAnnotator
+import com.mikepenz.markdown.annotator.annotatorSettings
+import com.mikepenz.markdown.annotator.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
-import com.mikepenz.markdown.compose.LocalMarkdownTypography
-import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
-import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
-import com.mikepenz.markdown.utils.codeSpanStyle
-import com.mikepenz.markdown.utils.linkTextSpanStyle
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.flavours.gfm.GFMElementTypes.HEADER
@@ -103,11 +99,8 @@ fun MarkdownTableHeader(
     maxLines: Int = 1,
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
-    val annotator = LocalMarkdownAnnotator.current
-    val linkTextSpanStyle = LocalMarkdownTypography.current.linkTextSpanStyle
-    val codeSpanStyle = LocalMarkdownTypography.current.codeSpanStyle
-    val referenceLinkHandler = LocalReferenceLinkHandler.current
     val tableCellPadding = LocalMarkdownDimens.current.tableCellPadding
+    val annotatorSettings = annotatorSettings()
     Row(
         verticalAlignment = verticalAlignment,
         modifier = Modifier.widthIn(tableWidth).height(IntrinsicSize.Max)
@@ -119,10 +112,7 @@ fun MarkdownTableHeader(
                         text = content.buildMarkdownAnnotatedString(
                             textNode = it,
                             style = style.copy(fontWeight = FontWeight.Bold),
-                            linkTextSpanStyle = linkTextSpanStyle,
-                            codeSpanStyle = codeSpanStyle,
-                            annotator = annotator,
-                            referenceLinkHandler = referenceLinkHandler
+                            annotatorSettings = annotatorSettings,
                         ),
                         style = style.copy(fontWeight = FontWeight.Bold),
                         color = LocalMarkdownColors.current.tableText,
@@ -146,11 +136,8 @@ fun MarkdownTableRow(
     maxLines: Int = 1,
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
-    val annotator = LocalMarkdownAnnotator.current
-    val linkTextSpanStyle = LocalMarkdownTypography.current.linkTextSpanStyle
-    val codeSpanStyle = LocalMarkdownTypography.current.codeSpanStyle
-    val referenceLinkHandler = LocalReferenceLinkHandler.current
     val tableCellPadding = LocalMarkdownDimens.current.tableCellPadding
+    val annotatorSettings = annotatorSettings()
     Row(
         verticalAlignment = verticalAlignment,
         modifier = Modifier.widthIn(tableWidth)
@@ -160,10 +147,7 @@ fun MarkdownTableRow(
                 text = content.buildMarkdownAnnotatedString(
                     textNode = cell,
                     style = style,
-                    linkTextSpanStyle = linkTextSpanStyle,
-                    codeSpanStyle = codeSpanStyle,
-                    annotator = annotator,
-                    referenceLinkHandler = referenceLinkHandler
+                    annotatorSettings = annotatorSettings,
                 ),
                 style = style,
                 color = LocalMarkdownColors.current.tableText,

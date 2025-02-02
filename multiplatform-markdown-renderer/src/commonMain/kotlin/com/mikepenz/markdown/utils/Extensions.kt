@@ -9,11 +9,6 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
 
 /**
- * Tag used to indicate an url for inline content. Required for click handling.
- */
-const val MARKDOWN_TAG_URL = "MARKDOWN_URL"
-
-/**
  * Tag used to indicate an image url for inline content. Required for rendering.
  */
 const val MARKDOWN_TAG_IMAGE_URL = "MARKDOWN_IMAGE_URL"
@@ -59,14 +54,6 @@ fun ASTNode.getUnescapedTextInNode(allFileText: CharSequence): String {
         processEscapes = true
     )
 }
-
-/**
- * Extension property to get the `SpanStyle` for link text.
- * This style is defined by the `link` typography and the current markdown colors.
- */
-val MarkdownTypography.linkTextSpanStyle: SpanStyle
-    @Composable
-    get() = link.copy(color = LocalMarkdownColors.current.linkText).toSpanStyle()
 
 /**
  * Extension property to get the `SpanStyle` for inline code text.
