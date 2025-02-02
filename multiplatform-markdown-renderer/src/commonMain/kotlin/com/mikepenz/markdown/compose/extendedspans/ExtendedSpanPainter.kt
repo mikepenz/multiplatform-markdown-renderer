@@ -6,6 +6,7 @@ package com.mikepenz.markdown.compose.extendedspans
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.ResolvedTextDirection.Ltr
@@ -22,6 +23,17 @@ abstract class ExtendedSpanPainter {
         text: AnnotatedString,
         builder: AnnotatedString.Builder,
     ): SpanStyle
+
+    /**
+     * Can be used for removing any existing text link styles from [text] so that they can be drawn manually.
+     */
+    abstract fun decorate(
+        linkAnnotation: LinkAnnotation,
+        start: Int,
+        end: Int,
+        text: AnnotatedString,
+        builder: AnnotatedString.Builder,
+    ): LinkAnnotation
 
     abstract fun drawInstructionsFor(
         layoutResult: TextLayoutResult,

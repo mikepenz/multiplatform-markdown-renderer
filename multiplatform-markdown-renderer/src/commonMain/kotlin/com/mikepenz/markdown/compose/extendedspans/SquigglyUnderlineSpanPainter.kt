@@ -25,8 +25,10 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.style.TextDecoration.Companion.LineThrough
 import androidx.compose.ui.text.style.TextDecoration.Companion.None
 import androidx.compose.ui.text.style.TextDecoration.Companion.Underline
@@ -95,9 +97,29 @@ class SquigglyUnderlineSpanPainter(
         }
     }
 
+    override fun decorate(
+        linkAnnotation: LinkAnnotation,
+        start: Int,
+        end: Int,
+        text: AnnotatedString,
+        builder: AnnotatedString.Builder,
+    ): LinkAnnotation {
+        val defaultStyle = linkAnnotation.styles?.style
+        val updated = if (defaultStyle != null) decorate(defaultStyle, start, end, text, builder) else null
+ 
+        return if (linkAnnotation is LinkAnnotation.Url) {
+            LinkAnnotation.Url(linkAnnotation.url, TextLinkStyles(updated), linkAnnotation.linkInteractionListener)
+        } else if (linkAnnotation is LinkAnnotation.Clickable) {
+            LinkAnnotation.Clickable(linkAnnotation.tag, TextLinkStyles(updated), linkAnnotation.linkInteractionListener)
+        } else {
+            throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
+        }
+    }
+
     override fun drawInstructionsFor(layoutResult: TextLayoutResult): SpanDrawInstructions {
         val text = layoutResult.layoutInput.text
         val annotations = text.getStringAnnotations(TAG, start = 0, end = text.length)
+        val linkAnnotations = text.getLinkAnnotations(start = 0, end = text.length)
 
         return SpanDrawInstructions {
             val pathStyle = Stroke(
@@ -107,12 +129,13 @@ class SquigglyUnderlineSpanPainter(
                 pathEffect = PathEffect.cornerPathEffect(radius = wavelength.toPx()), // For slightly smoother waves.
             )
 
-            annotations.fastForEach { annotation ->
+            fun drawForAnnotation(start: Int, end: Int, color: Color?) {
                 val boxes = layoutResult.getBoundingBoxes(
-                    startOffset = annotation.start,
-                    endOffset = annotation.end
+                    startOffset = start,
+                    endOffset = end
                 )
-                val textColor = annotation.item.deserializeToColor() ?: layoutResult.layoutInput.style.color
+
+                val textColor = color ?: layoutResult.layoutInput.style.color
                 boxes.fastForEach { box ->
                     path.rewind()
                     path.buildSquigglesFor(box, density = this)
@@ -122,6 +145,14 @@ class SquigglyUnderlineSpanPainter(
                         style = pathStyle
                     )
                 }
+
+            }
+
+            annotations.fastForEach { annotation ->
+                drawForAnnotation(annotation.start, annotation.end, annotation.item.deserializeToColor())
+            }
+            linkAnnotations.fastForEach { annotation ->
+                drawForAnnotation(annotation.start, annotation.end, annotation.item.styles?.style?.color)
             }
         }
     }

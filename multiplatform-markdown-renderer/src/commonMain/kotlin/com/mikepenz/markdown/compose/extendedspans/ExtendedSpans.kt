@@ -66,7 +66,11 @@ class ExtendedSpans(
                 addUrlAnnotation(it.item, it.start, it.end)
             }
             text.getLinkAnnotations(start = 0, end = text.length).fastForEach { range ->
-                when (val item = range.item) {
+                val decorated = painters.fastFold(initial = range.item) { updated, painter ->
+                    painter.decorate(updated, range.start, range.end, text = text, builder = this)
+                }
+
+                when (val item = decorated) {
                     is LinkAnnotation.Url -> addLink(item, range.start, range.end)
                     is LinkAnnotation.Clickable -> addLink(item, range.start, range.end)
                 }

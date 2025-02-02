@@ -11,8 +11,10 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.isUnspecified
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastForEach
@@ -51,18 +53,38 @@ class RoundedCornerSpanPainter(
         }
     }
 
+    override fun decorate(
+        linkAnnotation: LinkAnnotation,
+        start: Int,
+        end: Int,
+        text: AnnotatedString,
+        builder: AnnotatedString.Builder,
+    ): LinkAnnotation {
+        val defaultStyle = linkAnnotation.styles?.style
+        val updated = if (defaultStyle != null) decorate(defaultStyle, start, end, text, builder) else null
+
+        return if (linkAnnotation is LinkAnnotation.Url) {
+            LinkAnnotation.Url(linkAnnotation.url, TextLinkStyles(updated), linkAnnotation.linkInteractionListener)
+        } else if (linkAnnotation is LinkAnnotation.Clickable) {
+            LinkAnnotation.Clickable(linkAnnotation.tag, TextLinkStyles(updated), linkAnnotation.linkInteractionListener)
+        } else {
+            throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
+        }
+    }
+
     override fun drawInstructionsFor(layoutResult: TextLayoutResult): SpanDrawInstructions {
         val text = layoutResult.layoutInput.text
         val annotations = text.getStringAnnotations(TAG, start = 0, end = text.length)
+        val linkAnnotations = text.getLinkAnnotations(start = 0, end = text.length)
 
         return SpanDrawInstructions {
             val cornerRadius = CornerRadius(cornerRadius.toPx())
 
-            annotations.fastForEach { annotation ->
-                val backgroundColor = annotation.item.deserializeToColor()!!
+            fun drawForAnnotation(start: Int, end: Int, color: Color?) {
+                val backgroundColor = color!!
                 val boxes = layoutResult.getBoundingBoxes(
-                    startOffset = annotation.start,
-                    endOffset = annotation.end,
+                    startOffset = start,
+                    endOffset = end,
                     flattenForFullParagraphs = true
                 )
                 boxes.fastForEachIndexed { index, box ->
@@ -96,6 +118,13 @@ class RoundedCornerSpanPainter(
                         )
                     }
                 }
+            }
+
+            annotations.fastForEach { annotation ->
+                drawForAnnotation(annotation.start, annotation.end, annotation.item.deserializeToColor())
+            }
+            linkAnnotations.fastForEach { annotation ->
+                drawForAnnotation(annotation.start, annotation.end, annotation.item.styles?.style?.background)
             }
         }
     }
