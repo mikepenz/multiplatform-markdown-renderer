@@ -4,15 +4,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.toSize
 
-internal interface MarkdownImageState {
+interface MarkdownImageState {
     val density: Density
     val containerSize: Size
     val intrinsicImageSize: Size
-    fun setContainerSize(intSize: IntSize)
-    fun setImageSize(size: Size)
+    fun updateContainerSize(size: Size)
+    fun updateImageSize(size: Size)
 }
 
 internal class MarkdownImageStateImpl(override val density: Density) : MarkdownImageState {
@@ -21,11 +19,11 @@ internal class MarkdownImageStateImpl(override val density: Density) : MarkdownI
 
     override var intrinsicImageSize by mutableStateOf(Size.Unspecified)
 
-    override fun setContainerSize(intSize: IntSize) {
-        containerSize = intSize.toSize()
+    override fun updateContainerSize(size: Size) {
+        containerSize = size
     }
 
-    override fun setImageSize(size: Size) {
+    override fun updateImageSize(size: Size) {
         intrinsicImageSize = size
     }
 }
@@ -33,7 +31,5 @@ internal class MarkdownImageStateImpl(override val density: Density) : MarkdownI
 @Composable
 internal fun rememberMarkdownImageState(): MarkdownImageState {
     val density = LocalDensity.current
-    return remember(density) {
-        MarkdownImageStateImpl(density)
-    }
+    return remember(density) { MarkdownImageStateImpl(density) }
 }
