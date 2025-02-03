@@ -89,10 +89,12 @@ fun MarkdownText(
     }
 
     // forward the `onTextLayout` to `extended-spans` if provided
-    val onTextLayout: ((TextLayoutResult, Color?) -> Unit)? = extendedSpans?.let {
+    val onTextLayout: ((TextLayoutResult, Color?) -> Unit)? = if (extendedSpans != null) {
         { layoutResult, color ->
             extendedSpans.onTextLayout(layoutResult, color)
         }
+    } else {
+        null
     }
 
     // call drawBehind with the `extended-spans` if provided
