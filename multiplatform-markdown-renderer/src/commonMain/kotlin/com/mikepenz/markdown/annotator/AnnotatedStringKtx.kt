@@ -266,7 +266,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     MarkdownTokenTypes.COLON -> append(':')
                     MarkdownTokenTypes.EXCLAMATION_MARK -> append('!')
                     MarkdownTokenTypes.BACKTICK -> append('`')
-                    MarkdownTokenTypes.HARD_LINE_BREAK -> append("\n\n")
+                    MarkdownTokenTypes.HARD_LINE_BREAK -> append('\n')
                     MarkdownTokenTypes.EMPH -> if (parentType != MarkdownElementTypes.EMPH && parentType != MarkdownElementTypes.STRONG) append('*')
                     MarkdownTokenTypes.EOL -> append('\n')
                     MarkdownTokenTypes.WHITE_SPACE -> if (length > 0) append(' ')
