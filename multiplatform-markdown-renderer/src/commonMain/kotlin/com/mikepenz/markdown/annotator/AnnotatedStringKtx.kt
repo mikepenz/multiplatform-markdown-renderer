@@ -133,18 +133,37 @@ fun AnnotatedString.Builder.appendMarkdownLink(
         return
     }
     val text = linkText.firstOrNull()?.getUnescapedTextInNode(content)
-    val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(content)
-    val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(content)
+    val destination =
+        node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(content)
+    val linkLabel =
+        node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(content)
     val annotation = destination ?: linkLabel
 
     if (annotation != null) {
-        if (text != null) annotatorSettings.referenceLinkHandler?.store(text, annotation)
-        withLink(LinkAnnotation.Url(annotation, annotatorSettings.linkTextSpanStyle, annotatorSettings.linkInteractionListener)) {
+        text?.let { annotatorSettings.referenceLinkHandler?.store(it, annotation) }
+
+        val linkStyle = if (node.parent?.type == GFMElementTypes.STRIKETHROUGH) {
+            annotatorSettings.linkTextSpanStyle.withUnderline()
+        } else {
+            annotatorSettings.linkTextSpanStyle
+        }
+
+        withLink(LinkAnnotation.Url(annotation, linkStyle, annotatorSettings.linkInteractionListener)) {
             buildMarkdownAnnotatedString(content, linkText, annotatorSettings)
         }
     } else {
         buildMarkdownAnnotatedString(content, linkText, annotatorSettings)
     }
+
+}
+
+fun TextLinkStyles.withUnderline(): TextLinkStyles {
+    return TextLinkStyles(
+        style = style?.merge(SpanStyle(textDecoration = TextDecoration.LineThrough + TextDecoration.Underline)),
+        focusedStyle = focusedStyle,
+        hoveredStyle = hoveredStyle,
+        pressedStyle = pressedStyle
+    )
 }
 
 /**
