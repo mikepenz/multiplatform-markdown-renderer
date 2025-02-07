@@ -5,6 +5,10 @@ import androidx.compose.runtime.Composable
 import com.mikepenz.markdown.m2.Markdown
 import com.mikepenz.markdown.ui.annotation.DarkLightPreview
 
+/**
+ * Covers elements in lists behavior as documented
+ * https://www.markdownguide.org/basic-syntax/#adding-elements-in-lists
+ */
 class ElementsInListsTests {
     @DarkLightPreview
     @Composable
