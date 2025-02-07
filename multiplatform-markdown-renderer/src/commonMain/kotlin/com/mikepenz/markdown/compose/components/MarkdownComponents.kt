@@ -7,17 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
-import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
-import com.mikepenz.markdown.compose.elements.MarkdownBulletList
-import com.mikepenz.markdown.compose.elements.MarkdownCodeBlock
-import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
-import com.mikepenz.markdown.compose.elements.MarkdownDivider
-import com.mikepenz.markdown.compose.elements.MarkdownHeader
-import com.mikepenz.markdown.compose.elements.MarkdownImage
-import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
-import com.mikepenz.markdown.compose.elements.MarkdownParagraph
-import com.mikepenz.markdown.compose.elements.MarkdownTable
-import com.mikepenz.markdown.compose.elements.MarkdownText
+import com.mikepenz.markdown.compose.elements.*
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import org.intellij.markdown.IElementType
@@ -37,6 +27,7 @@ data class MarkdownComponentModel(
     val content: String,
     val node: ASTNode,
     val typography: MarkdownTypography,
+    val markdownComponents: MarkdownComponents,
 )
 
 private fun MarkdownComponentModel.getUnescapedTextInNode() = node.getUnescapedTextInNode(content)
@@ -178,7 +169,7 @@ object CurrentComponentsBridge {
         MarkdownHeader(it.content, it.node, it.typography.h2, MarkdownTokenTypes.SETEXT_CONTENT)
     }
     val blockQuote: MarkdownComponent = {
-        MarkdownBlockQuote(it.content, it.node)
+        MarkdownBlockQuote(it.content, it.node, markdownComponents = it.markdownComponents)
     }
     val paragraph: MarkdownComponent = {
         MarkdownParagraph(it.content, it.node, style = it.typography.paragraph)
