@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import com.mikepenz.markdown.annotator.annotatorSettings
 import com.mikepenz.markdown.annotator.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.compose.LocalImageTransformer
@@ -27,6 +29,9 @@ import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.drawBehind
+import com.mikepenz.markdown.model.ImageTransformer
+import com.mikepenz.markdown.model.MarkdownImageState
+import com.mikepenz.markdown.model.PlaceholderConfig
 import com.mikepenz.markdown.model.rememberMarkdownImageState
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
 import org.intellij.markdown.IElementType
@@ -52,11 +57,15 @@ fun MarkdownText(
     contentChildType: IElementType? = null,
 ) {
     val annotatorSettings = annotatorSettings()
-    val childNode = contentChildType?.let { node.findChildOfType(it) } ?: node
+    val childNode = contentChildType?.run(node::findChildOfType) ?: node
 
     val styledText = buildAnnotatedString {
         pushStyle(style.toSpanStyle())
-        buildMarkdownAnnotatedString(content = content, node = childNode, annotatorSettings = annotatorSettings)
+        buildMarkdownAnnotatedString(
+            content = content,
+            node = childNode,
+            annotatorSettings = annotatorSettings
+        )
         pop()
     }
 
@@ -80,12 +89,12 @@ fun MarkdownText(
     }
 
     // forward the `onTextLayout` to `extended-spans` if provided
-    val onTextLayout: (TextLayoutResult, Color?) -> Unit = if (extendedSpans != null) {
+    val onTextLayout: ((TextLayoutResult, Color?) -> Unit)? = if (extendedSpans != null) {
         { layoutResult, color ->
             extendedSpans.onTextLayout(layoutResult, color)
         }
     } else {
-        { _, _ -> }
+        null
     }
 
     // call drawBehind with the `extended-spans` if provided
@@ -101,14 +110,15 @@ fun MarkdownText(
     content: AnnotatedString,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text,
-    onTextLayout: (TextLayoutResult, Color?) -> Unit,
+    onTextLayout: ((TextLayoutResult, Color?) -> Unit)?,
 ) {
     val baseColor = LocalMarkdownColors.current.text
     val animations = LocalMarkdownAnimations.current
-    val layoutResult = remember { mutableStateOf<TextLayoutResult?>(null) }
+    val transformer = LocalImageTransformer.current
+
+    val layoutResult: MutableState<TextLayoutResult?> = remember { mutableStateOf(null) }
     val imageState = rememberMarkdownImageState()
 
-    val transformer = LocalImageTransformer.current
     val placeholderState by derivedStateOf {
         transformer.placeholderConfig(
             imageState.density,
@@ -122,7 +132,7 @@ fun MarkdownText(
         modifier = modifier
             .onPlaced {
                 it.parentLayoutCoordinates?.also { coordinates ->
-                    imageState.setContainerSize(coordinates.size)
+                    imageState.updateContainerSize(coordinates.size.toSize())
                 }
             }
             .let {
@@ -133,34 +143,46 @@ fun MarkdownText(
         style = style,
         color = baseColor,
         inlineContent = mapOf(
-            MARKDOWN_TAG_IMAGE_URL to InlineTextContent(
-                Placeholder(
-                    width = placeholderState.size.width.sp,
-                    height = placeholderState.size.height.sp,
-                    placeholderVerticalAlign = placeholderState.verticalAlign
-                )
-            ) { link ->
-                transformer.transform(link)?.let { imageData ->
-                    val intrinsicSize = transformer.intrinsicSize(imageData.painter)
-                    LaunchedEffect(intrinsicSize) {
-                        imageState.setImageSize(intrinsicSize)
-                    }
-                    Image(
-                        painter = imageData.painter,
-                        contentDescription = imageData.contentDescription,
-                        modifier = imageData.modifier,
-                        alignment = imageData.alignment,
-                        contentScale = imageData.contentScale,
-                        alpha = imageData.alpha,
-                        colorFilter = imageData.colorFilter
-                    )
-                }
-            }
+            MARKDOWN_TAG_IMAGE_URL to createImageInlineTextContent(
+                placeholderState,
+                transformer,
+                imageState
+            )
         ),
         onTextLayout = {
             layoutResult.value = it
-            onTextLayout.invoke(it, baseColor)
+            onTextLayout?.invoke(it, baseColor)
         }
     )
 }
 
+
+fun createImageInlineTextContent(
+    placeholderState: PlaceholderConfig,
+    transformer: ImageTransformer,
+    imageState: MarkdownImageState
+): InlineTextContent {
+    return InlineTextContent(
+        Placeholder(
+            width = placeholderState.size.width.sp,
+            height = placeholderState.size.height.sp,
+            placeholderVerticalAlign = placeholderState.verticalAlign
+        )
+    ) { link ->
+        transformer.transform(link)?.let { imageData ->
+            val intrinsicSize = transformer.intrinsicSize(imageData.painter)
+            LaunchedEffect(intrinsicSize) {
+                imageState.updateImageSize(intrinsicSize)
+            }
+            Image(
+                painter = imageData.painter,
+                contentDescription = imageData.contentDescription,
+                modifier = imageData.modifier,
+                alignment = imageData.alignment,
+                contentScale = imageData.contentScale,
+                alpha = imageData.alpha,
+                colorFilter = imageData.colorFilter
+            )
+        }
+    }
+}

@@ -8,9 +8,9 @@ import androidx.compose.ui.text.TextLinkStyles
  */
 fun TextLinkStyles.update(block: SpanStyle.() -> SpanStyle): TextLinkStyles {
     return TextLinkStyles(
-        style = style?.let { block(it) },
-        focusedStyle = focusedStyle?.let { block(it) },
-        hoveredStyle = hoveredStyle?.let { block(it) },
-        pressedStyle = pressedStyle?.let { block(it) },
+        style = style?.run(block),
+        focusedStyle = focusedStyle?.run(block),
+        hoveredStyle = focusedStyle?.run(block),
+        pressedStyle = focusedStyle?.run(block),
     )
 }
