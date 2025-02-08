@@ -101,7 +101,6 @@ internal fun ColumnScope.handleElement(
     val model = MarkdownComponentModel(
         content = content,
         node = node,
-        markdownComponents = components,
         typography = LocalMarkdownTypography.current,
     )
     var handled = true
