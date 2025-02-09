@@ -18,6 +18,7 @@ import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
 import com.mikepenz.markdown.utils.findChildOfTypeRecursive
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import com.mikepenz.markdown.utils.innerList
+import com.mikepenz.markdown.utils.mapAutoLinkToType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
@@ -140,7 +141,7 @@ fun AnnotatedString.Builder.appendMarkdownLink(
     if (annotation != null) {
         if (text != null) annotatorSettings.referenceLinkHandler?.store(text, annotation)
         withLink(LinkAnnotation.Url(annotation, annotatorSettings.linkTextSpanStyle, annotatorSettings.linkInteractionListener)) {
-            buildMarkdownAnnotatedString(content, linkText, annotatorSettings)
+            buildMarkdownAnnotatedString(content, linkText.mapAutoLinkToType(), annotatorSettings)
         }
     } else {
         buildMarkdownAnnotatedString(content, linkText, annotatorSettings)

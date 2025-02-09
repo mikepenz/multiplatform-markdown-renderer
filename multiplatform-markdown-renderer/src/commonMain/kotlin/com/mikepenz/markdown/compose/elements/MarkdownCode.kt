@@ -1,9 +1,13 @@
 package com.mikepenz.markdown.compose.elements
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -86,7 +90,8 @@ fun MarkdownCodeBackground(
     elevation: Dp = 0.dp,
     content: @Composable () -> Unit,
 ) {
-    Box(modifier = modifier.shadow(elevation, shape, clip = false).then(if (border != null) Modifier.border(border, shape) else Modifier).background(color = color, shape = shape)
+    Box(
+        modifier = modifier.shadow(elevation, shape, clip = false).then(if (border != null) Modifier.border(border, shape) else Modifier).background(color = color, shape = shape)
         .clip(shape).semantics(mergeDescendants = false) {
             isTraversalGroup = true
         }.pointerInput(Unit) {}, propagateMinConstraints = true
