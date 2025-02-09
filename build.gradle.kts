@@ -10,6 +10,7 @@ plugins {
     alias(baseLibs.plugins.dokka)
     alias(baseLibs.plugins.aboutLibraries) apply false
     alias(baseLibs.plugins.mavenPublish) apply false
+    alias(baseLibs.plugins.binaryCompatiblityValidator) apply false
 }
 
 allprojects {

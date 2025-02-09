@@ -1,0 +1,15 @@
+public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownHighlightedCodeKt {
+	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownHighlightedCodeKt;
+	public fun <init> ()V
+	public final fun getLambda-1$multiplatform_markdown_renderer_code ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-2$multiplatform_markdown_renderer_code ()Lkotlin/jvm/functions/Function4;
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownHighlightedCodeKt {
+	public static final fun MarkdownHighlightedCode (Ljava/lang/String;Ljava/lang/String;Ldev/snipme/highlights/Highlights$Builder;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownHighlightedCodeBlock (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Ldev/snipme/highlights/Highlights$Builder;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownHighlightedCodeFence (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Ldev/snipme/highlights/Highlights$Builder;Landroidx/compose/runtime/Composer;II)V
+	public static final fun getHighlightedCodeBlock ()Lkotlin/jvm/functions/Function4;
+	public static final fun getHighlightedCodeFence ()Lkotlin/jvm/functions/Function4;
+}
+

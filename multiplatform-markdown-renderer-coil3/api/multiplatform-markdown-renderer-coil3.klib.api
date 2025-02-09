@@ -1,0 +1,16 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, macosArm64, macosX64, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.mikepenz:multiplatform-markdown-renderer-coil3>
+final object com.mikepenz.markdown.coil3/Coil3ImageTransformerImpl : com.mikepenz.markdown.model/ImageTransformer { // com.mikepenz.markdown.coil3/Coil3ImageTransformerImpl|null[0]
+    final fun intrinsicSize(androidx.compose.ui.graphics.painter/Painter, androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui.geometry/Size // com.mikepenz.markdown.coil3/Coil3ImageTransformerImpl.intrinsicSize|intrinsicSize(androidx.compose.ui.graphics.painter.Painter;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+    final fun transform(kotlin/String, androidx.compose.runtime/Composer?, kotlin/Int): com.mikepenz.markdown.model/ImageData // com.mikepenz.markdown.coil3/Coil3ImageTransformerImpl.transform|transform(kotlin.String;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
+}
+
+final val com.mikepenz.markdown.coil3/com_mikepenz_markdown_coil3_Coil3ImageTransformerImpl$stableprop // com.mikepenz.markdown.coil3/com_mikepenz_markdown_coil3_Coil3ImageTransformerImpl$stableprop|#static{}com_mikepenz_markdown_coil3_Coil3ImageTransformerImpl$stableprop[0]
+
+final fun com.mikepenz.markdown.coil3/com_mikepenz_markdown_coil3_Coil3ImageTransformerImpl$stableprop_getter(): kotlin/Int // com.mikepenz.markdown.coil3/com_mikepenz_markdown_coil3_Coil3ImageTransformerImpl$stableprop_getter|com_mikepenz_markdown_coil3_Coil3ImageTransformerImpl$stableprop_getter(){}[0]
