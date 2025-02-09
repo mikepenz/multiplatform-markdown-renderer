@@ -13,10 +13,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
-import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.handleElement
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
@@ -26,7 +26,6 @@ import org.intellij.markdown.ast.findChildOfType
 fun MarkdownBlockQuote(
     content: String,
     node: ASTNode,
-    markdownComponents: MarkdownComponents,
     style: TextStyle = LocalMarkdownTypography.current.quote,
 ) {
     val blockQuoteColor = LocalMarkdownColors.current.text
@@ -34,6 +33,7 @@ fun MarkdownBlockQuote(
     val blockQuote = LocalMarkdownPadding.current.blockQuote
     val blockQuoteText = LocalMarkdownPadding.current.blockQuoteText
     val blockQuoteBar = LocalMarkdownPadding.current.blockQuoteBar
+    val markdownComponents = LocalMarkdownComponents.current
 
     Column(
         modifier = Modifier
@@ -64,7 +64,6 @@ fun MarkdownBlockQuote(
             MarkdownBlockQuote(
                 content = content,
                 node = nestedQuote,
-                markdownComponents = markdownComponents,
                 style = style
             )
         }
