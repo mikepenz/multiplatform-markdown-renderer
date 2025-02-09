@@ -1,0 +1,16 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, macosArm64, macosX64, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.mikepenz:multiplatform-markdown-renderer-code>
+final val com.mikepenz.markdown.compose.elements/highlightedCodeBlock // com.mikepenz.markdown.compose.elements/highlightedCodeBlock|{}highlightedCodeBlock[0]
+    final fun <get-highlightedCodeBlock>(): kotlin/Function4<androidx.compose.foundation.layout/ColumnScope, com.mikepenz.markdown.compose.components/MarkdownComponentModel, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // com.mikepenz.markdown.compose.elements/highlightedCodeBlock.<get-highlightedCodeBlock>|<get-highlightedCodeBlock>(){}[0]
+final val com.mikepenz.markdown.compose.elements/highlightedCodeFence // com.mikepenz.markdown.compose.elements/highlightedCodeFence|{}highlightedCodeFence[0]
+    final fun <get-highlightedCodeFence>(): kotlin/Function4<androidx.compose.foundation.layout/ColumnScope, com.mikepenz.markdown.compose.components/MarkdownComponentModel, androidx.compose.runtime/Composer, kotlin/Int, kotlin/Unit> // com.mikepenz.markdown.compose.elements/highlightedCodeFence.<get-highlightedCodeFence>|<get-highlightedCodeFence>(){}[0]
+
+final fun com.mikepenz.markdown.compose.elements/MarkdownHighlightedCode(kotlin/String, kotlin/String?, dev.snipme.highlights/Highlights.Builder?, androidx.compose.ui.text/TextStyle?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.mikepenz.markdown.compose.elements/MarkdownHighlightedCode|MarkdownHighlightedCode(kotlin.String;kotlin.String?;dev.snipme.highlights.Highlights.Builder?;androidx.compose.ui.text.TextStyle?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.mikepenz.markdown.compose.elements/MarkdownHighlightedCodeBlock(kotlin/String, org.intellij.markdown.ast/ASTNode, dev.snipme.highlights/Highlights.Builder?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.mikepenz.markdown.compose.elements/MarkdownHighlightedCodeBlock|MarkdownHighlightedCodeBlock(kotlin.String;org.intellij.markdown.ast.ASTNode;dev.snipme.highlights.Highlights.Builder?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun com.mikepenz.markdown.compose.elements/MarkdownHighlightedCodeFence(kotlin/String, org.intellij.markdown.ast/ASTNode, dev.snipme.highlights/Highlights.Builder?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // com.mikepenz.markdown.compose.elements/MarkdownHighlightedCodeFence|MarkdownHighlightedCodeFence(kotlin.String;org.intellij.markdown.ast.ASTNode;dev.snipme.highlights.Highlights.Builder?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]

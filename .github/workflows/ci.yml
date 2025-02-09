@@ -108,6 +108,10 @@ jobs:
           name: "Test-Artifacts"
           path: "app/build/reports/screenshotTest/preview/debug/"
 
+      - name: Aoi Check
+        if: github.event_name  == 'pull_request'
+        run: ./gradlew apiCheck
+
       - name: Run Lint
         if: github.event_name  == 'pull_request'
         run: ./gradlew lintDebug

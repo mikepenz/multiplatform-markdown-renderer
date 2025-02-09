@@ -1,0 +1,565 @@
+public final class com/mikepenz/markdown/annotator/AnnotatedStringKtxKt {
+	public static final fun appendAutoLink (Landroidx/compose/ui/text/AnnotatedString$Builder;Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/annotator/AnnotatorSettings;)V
+	public static final fun appendMarkdownLink (Landroidx/compose/ui/text/AnnotatedString$Builder;Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/annotator/AnnotatorSettings;)V
+	public static final fun buildMarkdownAnnotatedString (Landroidx/compose/ui/text/AnnotatedString$Builder;Ljava/lang/String;Ljava/util/List;Lcom/mikepenz/markdown/annotator/AnnotatorSettings;)V
+	public static final fun buildMarkdownAnnotatedString (Landroidx/compose/ui/text/AnnotatedString$Builder;Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/annotator/AnnotatorSettings;)V
+	public static final fun buildMarkdownAnnotatedString (Ljava/lang/String;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/SpanStyle;Landroidx/compose/ui/text/SpanStyle;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;)Landroidx/compose/ui/text/AnnotatedString;
+	public static final fun buildMarkdownAnnotatedString (Ljava/lang/String;Landroidx/compose/ui/text/TextStyle;Lcom/mikepenz/markdown/annotator/AnnotatorSettings;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;)Landroidx/compose/ui/text/AnnotatedString;
+	public static final fun buildMarkdownAnnotatedString (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lcom/mikepenz/markdown/annotator/AnnotatorSettings;)Landroidx/compose/ui/text/AnnotatedString;
+	public static synthetic fun buildMarkdownAnnotatedString$default (Ljava/lang/String;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/SpanStyle;Landroidx/compose/ui/text/SpanStyle;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;ILjava/lang/Object;)Landroidx/compose/ui/text/AnnotatedString;
+	public static synthetic fun buildMarkdownAnnotatedString$default (Ljava/lang/String;Landroidx/compose/ui/text/TextStyle;Lcom/mikepenz/markdown/annotator/AnnotatorSettings;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;ILjava/lang/Object;)Landroidx/compose/ui/text/AnnotatedString;
+}
+
+public abstract interface class com/mikepenz/markdown/annotator/AnnotatorSettings {
+	public abstract fun getAnnotator ()Lcom/mikepenz/markdown/model/MarkdownAnnotator;
+	public abstract fun getCodeSpanStyle ()Landroidx/compose/ui/text/SpanStyle;
+	public abstract fun getLinkInteractionListener ()Landroidx/compose/ui/text/LinkInteractionListener;
+	public abstract fun getLinkTextSpanStyle ()Landroidx/compose/ui/text/TextLinkStyles;
+	public abstract fun getReferenceLinkHandler ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
+}
+
+public final class com/mikepenz/markdown/annotator/AnnotatorSettingsKt {
+	public static final fun annotatorSettings (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/platform/UriHandler;Landroidx/compose/ui/text/LinkInteractionListener;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/annotator/AnnotatorSettings;
+}
+
+public final class com/mikepenz/markdown/annotator/DefaultAnnotatorSettings : com/mikepenz/markdown/annotator/AnnotatorSettings {
+	public static final field $stable I
+	public fun <init> (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;)V
+	public synthetic fun <init> (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;)V
+	public synthetic fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getAnnotator ()Lcom/mikepenz/markdown/model/MarkdownAnnotator;
+	public fun getCodeSpanStyle ()Landroidx/compose/ui/text/SpanStyle;
+	public fun getLinkInteractionListener ()Landroidx/compose/ui/text/LinkInteractionListener;
+	public fun getLinkTextSpanStyle ()Landroidx/compose/ui/text/TextLinkStyles;
+	public fun getReferenceLinkHandler ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
+}
+
+public final class com/mikepenz/markdown/compose/ComposeLocalKt {
+	public static final fun getLocalBulletListHandler ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalImageTransformer ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownAnimations ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownAnnotator ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownComponents ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownDimens ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownExtendedSpans ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownPadding ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownTypography ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalOrderedListHandler ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalReferenceLinkHandler ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+}
+
+public final class com/mikepenz/markdown/compose/MarkdownKt {
+	public static final fun Markdown (Ljava/lang/String;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/mikepenz/markdown/compose/components/ComposableSingletons$MarkdownComponentsKt {
+	public static final field INSTANCE Lcom/mikepenz/markdown/compose/components/ComposableSingletons$MarkdownComponentsKt;
+	public fun <init> ()V
+	public final fun getLambda-1$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-10$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-11$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-12$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-13$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-14$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-15$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-16$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-17$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-18$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-19$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-2$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-20$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-3$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-4$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-5$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-6$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-7$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-8$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-9$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+}
+
+public final class com/mikepenz/markdown/compose/components/CurrentComponentsBridge {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/mikepenz/markdown/compose/components/CurrentComponentsBridge;
+	public final fun getBlockQuote ()Lkotlin/jvm/functions/Function4;
+	public final fun getCodeBlock ()Lkotlin/jvm/functions/Function4;
+	public final fun getCodeFence ()Lkotlin/jvm/functions/Function4;
+	public final fun getCustom ()Lkotlin/jvm/functions/Function5;
+	public final fun getEol ()Lkotlin/jvm/functions/Function4;
+	public final fun getHeading1 ()Lkotlin/jvm/functions/Function4;
+	public final fun getHeading2 ()Lkotlin/jvm/functions/Function4;
+	public final fun getHeading3 ()Lkotlin/jvm/functions/Function4;
+	public final fun getHeading4 ()Lkotlin/jvm/functions/Function4;
+	public final fun getHeading5 ()Lkotlin/jvm/functions/Function4;
+	public final fun getHeading6 ()Lkotlin/jvm/functions/Function4;
+	public final fun getHorizontalRule ()Lkotlin/jvm/functions/Function4;
+	public final fun getImage ()Lkotlin/jvm/functions/Function4;
+	public final fun getLinkDefinition ()Lkotlin/jvm/functions/Function4;
+	public final fun getOrderedList ()Lkotlin/jvm/functions/Function4;
+	public final fun getParagraph ()Lkotlin/jvm/functions/Function4;
+	public final fun getSetextHeading1 ()Lkotlin/jvm/functions/Function4;
+	public final fun getSetextHeading2 ()Lkotlin/jvm/functions/Function4;
+	public final fun getTable ()Lkotlin/jvm/functions/Function4;
+	public final fun getText ()Lkotlin/jvm/functions/Function4;
+	public final fun getUnorderedList ()Lkotlin/jvm/functions/Function4;
+}
+
+public final class com/mikepenz/markdown/compose/components/MarkdownComponentModel {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownTypography;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lorg/intellij/markdown/ast/ASTNode;
+	public final fun component3 ()Lcom/mikepenz/markdown/model/MarkdownTypography;
+	public final fun copy (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownTypography;)Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;
+	public static synthetic fun copy$default (Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownTypography;ILjava/lang/Object;)Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContent ()Ljava/lang/String;
+	public final fun getNode ()Lorg/intellij/markdown/ast/ASTNode;
+	public final fun getTypography ()Lcom/mikepenz/markdown/model/MarkdownTypography;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/mikepenz/markdown/compose/components/MarkdownComponents {
+	public abstract fun getBlockQuote ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getCodeBlock ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getCodeFence ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getCustom ()Lkotlin/jvm/functions/Function5;
+	public abstract fun getEol ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getHeading1 ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getHeading2 ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getHeading3 ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getHeading4 ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getHeading5 ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getHeading6 ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getHorizontalRule ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getImage ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getLinkDefinition ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getOrderedList ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getParagraph ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getSetextHeading1 ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getSetextHeading2 ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getTable ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getText ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getUnorderedList ()Lkotlin/jvm/functions/Function4;
+}
+
+public final class com/mikepenz/markdown/compose/components/MarkdownComponentsKt {
+	public static final fun markdownComponents (Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function5;)Lcom/mikepenz/markdown/compose/components/MarkdownComponents;
+	public static synthetic fun markdownComponents$default (Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function5;ILjava/lang/Object;)Lcom/mikepenz/markdown/compose/components/MarkdownComponents;
+}
+
+public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt {
+	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt;
+	public fun <init> ()V
+	public final fun getLambda-1$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-2$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+}
+
+public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownTableKt {
+	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownTableKt;
+	public fun <init> ()V
+	public final fun getLambda-1$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function6;
+	public final fun getLambda-2$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function6;
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownBlockQuoteKt {
+	public static final fun MarkdownBlockQuote (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownCodeKt {
+	public static final fun MarkdownCodeBackground-xzXfpvY (JLandroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/BorderStroke;FLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownCodeBlock (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownCodeFence (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownDividerKt {
+	public static final fun MarkdownDivider-aM-cp0Q (Landroidx/compose/ui/Modifier;JFLandroidx/compose/runtime/Composer;II)V
+	public static final fun VerticalMarkdownDivider-aM-cp0Q (Landroidx/compose/ui/Modifier;JFLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownHeaderKt {
+	public static final fun MarkdownHeader (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lorg/intellij/markdown/IElementType;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownImageKt {
+	public static final fun MarkdownImage (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownListKt {
+	public static final fun MarkdownBulletList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILandroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownListItems (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownOrderedList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILandroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownParagraphKt {
+	public static final fun MarkdownParagraph (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownTableKt {
+	public static final fun MarkdownTable (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function6;Lkotlin/jvm/functions/Function6;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownTableHeader-5QDCva0 (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILandroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownTableRow-5QDCva0 (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILandroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownTextKt {
+	public static final fun MarkdownText (Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lcom/mikepenz/markdown/compose/extendedspans/ExtendedSpans;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownText (Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownText (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownText (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Modifier;Lorg/intellij/markdown/IElementType;Landroidx/compose/runtime/Composer;II)V
+	public static final fun createImageInlineTextContent (Lcom/mikepenz/markdown/model/PlaceholderConfig;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownImageState;)Landroidx/compose/foundation/text/InlineTextContent;
+}
+
+public final class com/mikepenz/markdown/compose/elements/material/TextWrapperKt {
+	public static final fun MarkdownBasicText-eIOHA4g (Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Modifier;JJLandroidx/compose/ui/text/font/FontStyle;Landroidx/compose/ui/text/font/FontWeight;Landroidx/compose/ui/text/font/FontFamily;JLandroidx/compose/ui/text/style/TextDecoration;IJIZIILjava/util/Map;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
+}
+
+public abstract class com/mikepenz/markdown/compose/extendedspans/ExtendedSpanPainter {
+	public static final field $stable I
+	public fun <init> ()V
+	public abstract fun decorate (Landroidx/compose/ui/text/LinkAnnotation;IILandroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/AnnotatedString$Builder;)Landroidx/compose/ui/text/LinkAnnotation;
+	public abstract fun decorate (Landroidx/compose/ui/text/SpanStyle;IILandroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/AnnotatedString$Builder;)Landroidx/compose/ui/text/SpanStyle;
+	public abstract fun drawInstructionsFor-0Yiz4hI (Landroidx/compose/ui/text/TextLayoutResult;Landroidx/compose/ui/graphics/Color;)Lcom/mikepenz/markdown/compose/extendedspans/SpanDrawInstructions;
+	public static synthetic fun drawInstructionsFor-0Yiz4hI$default (Lcom/mikepenz/markdown/compose/extendedspans/ExtendedSpanPainter;Landroidx/compose/ui/text/TextLayoutResult;Landroidx/compose/ui/graphics/Color;ILjava/lang/Object;)Lcom/mikepenz/markdown/compose/extendedspans/SpanDrawInstructions;
+	protected final fun getBoundingBoxes (Landroidx/compose/ui/text/TextLayoutResult;IIZ)Ljava/util/List;
+	public static synthetic fun getBoundingBoxes$default (Lcom/mikepenz/markdown/compose/extendedspans/ExtendedSpanPainter;Landroidx/compose/ui/text/TextLayoutResult;IIZILjava/lang/Object;)Ljava/util/List;
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/ExtendedSpans {
+	public static final field $stable I
+	public static final field Companion Lcom/mikepenz/markdown/compose/extendedspans/ExtendedSpans$Companion;
+	public fun <init> ([Lcom/mikepenz/markdown/compose/extendedspans/ExtendedSpanPainter;)V
+	public final fun extend (Landroidx/compose/ui/text/AnnotatedString;)Landroidx/compose/ui/text/AnnotatedString;
+	public final fun onTextLayout-0Yiz4hI (Landroidx/compose/ui/text/TextLayoutResult;Landroidx/compose/ui/graphics/Color;)V
+	public static synthetic fun onTextLayout-0Yiz4hI$default (Lcom/mikepenz/markdown/compose/extendedspans/ExtendedSpans;Landroidx/compose/ui/text/TextLayoutResult;Landroidx/compose/ui/graphics/Color;ILjava/lang/Object;)V
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/ExtendedSpans$Companion {
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/ExtendedSpansKt {
+	public static final fun drawBehind (Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/compose/extendedspans/ExtendedSpans;)Landroidx/compose/ui/Modifier;
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter : com/mikepenz/markdown/compose/extendedspans/ExtendedSpanPainter {
+	public static final field $stable I
+	public static final field Companion Lcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$Companion;
+	public synthetic fun <init> (JLcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$Stroke;Lcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$TextPaddingValues;JJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JLcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$Stroke;Lcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$TextPaddingValues;JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun decorate (Landroidx/compose/ui/text/LinkAnnotation;IILandroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/AnnotatedString$Builder;)Landroidx/compose/ui/text/LinkAnnotation;
+	public fun decorate (Landroidx/compose/ui/text/SpanStyle;IILandroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/AnnotatedString$Builder;)Landroidx/compose/ui/text/SpanStyle;
+	public fun drawInstructionsFor-0Yiz4hI (Landroidx/compose/ui/text/TextLayoutResult;Landroidx/compose/ui/graphics/Color;)Lcom/mikepenz/markdown/compose/extendedspans/SpanDrawInstructions;
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$Companion {
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$Stroke {
+	public static final field $stable I
+	public synthetic fun <init> (JJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function1;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function1;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lkotlin/jvm/functions/Function1;
+	public final fun component2-XSAIIZE ()J
+	public final fun copy-mpE4wyQ (Lkotlin/jvm/functions/Function1;J)Lcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$Stroke;
+	public static synthetic fun copy-mpE4wyQ$default (Lcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$Stroke;Lkotlin/jvm/functions/Function1;JILjava/lang/Object;)Lcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$Stroke;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColor ()Lkotlin/jvm/functions/Function1;
+	public final fun getWidth-XSAIIZE ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$TextPaddingValues {
+	public static final field $stable I
+	public synthetic fun <init> (JJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-XSAIIZE ()J
+	public final fun component2-XSAIIZE ()J
+	public final fun copy-NB67dxo (JJ)Lcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$TextPaddingValues;
+	public static synthetic fun copy-NB67dxo$default (Lcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$TextPaddingValues;JJILjava/lang/Object;)Lcom/mikepenz/markdown/compose/extendedspans/RoundedCornerSpanPainter$TextPaddingValues;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHorizontal-XSAIIZE ()J
+	public final fun getVertical-XSAIIZE ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/mikepenz/markdown/compose/extendedspans/SpanDrawInstructions {
+	public abstract fun draw (Landroidx/compose/ui/graphics/drawscope/DrawScope;)V
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineAnimator {
+	public static final field $stable I
+	public static final field Companion Lcom/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineAnimator$Companion;
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineAnimator$Companion {
+	public final fun getNoOp ()Lcom/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineAnimator;
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineSpanPainter : com/mikepenz/markdown/compose/extendedspans/ExtendedSpanPainter {
+	public static final field $stable I
+	public static final field Companion Lcom/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineSpanPainter$Companion;
+	public synthetic fun <init> (JJJJLcom/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineAnimator;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJLcom/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineAnimator;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun decorate (Landroidx/compose/ui/text/LinkAnnotation;IILandroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/AnnotatedString$Builder;)Landroidx/compose/ui/text/LinkAnnotation;
+	public fun decorate (Landroidx/compose/ui/text/SpanStyle;IILandroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/AnnotatedString$Builder;)Landroidx/compose/ui/text/SpanStyle;
+	public fun drawInstructionsFor-0Yiz4hI (Landroidx/compose/ui/text/TextLayoutResult;Landroidx/compose/ui/graphics/Color;)Lcom/mikepenz/markdown/compose/extendedspans/SpanDrawInstructions;
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineSpanPainter$Companion {
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineSpanPainterKt {
+	public static final fun rememberSquigglyUnderlineAnimator-rnQQ1Ag (JLandroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/compose/extendedspans/SquigglyUnderlineAnimator;
+}
+
+public final class com/mikepenz/markdown/compose/extendedspans/internal/TextLinkStylesKt {
+	public static final fun update (Landroidx/compose/ui/text/TextLinkStyles;Lkotlin/jvm/functions/Function1;)Landroidx/compose/ui/text/TextLinkStyles;
+}
+
+public abstract interface class com/mikepenz/markdown/model/BulletHandler {
+	public abstract fun transform (Lorg/intellij/markdown/IElementType;Ljava/lang/CharSequence;I)Ljava/lang/String;
+}
+
+public final class com/mikepenz/markdown/model/DefaultMarkdownAnimation : com/mikepenz/markdown/model/MarkdownAnimations {
+	public static final field $stable I
+	public fun <init> (Lkotlin/jvm/functions/Function1;)V
+	public fun getAnimateTextSize ()Lkotlin/jvm/functions/Function1;
+}
+
+public final class com/mikepenz/markdown/model/DefaultMarkdownAnnotator : com/mikepenz/markdown/model/MarkdownAnnotator {
+	public static final field $stable I
+	public fun <init> (Lkotlin/jvm/functions/Function3;)V
+	public fun getAnnotate ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/mikepenz/markdown/model/DefaultMarkdownColors : com/mikepenz/markdown/model/MarkdownColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getCodeBackground-0d7_KjU ()J
+	public fun getCodeText-0d7_KjU ()J
+	public fun getDividerColor-0d7_KjU ()J
+	public fun getInlineCodeBackground-0d7_KjU ()J
+	public fun getInlineCodeText-0d7_KjU ()J
+	public fun getLinkText-0d7_KjU ()J
+	public fun getTableBackground-0d7_KjU ()J
+	public fun getTableText-0d7_KjU ()J
+	public fun getText-0d7_KjU ()J
+}
+
+public final class com/mikepenz/markdown/model/DefaultMarkdownExtendedSpans : com/mikepenz/markdown/model/MarkdownExtendedSpans {
+	public static final field $stable I
+	public fun <init> (Lkotlin/jvm/functions/Function2;)V
+	public fun getExtendedSpans ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/mikepenz/markdown/model/DefaultMarkdownTypography : com/mikepenz/markdown/model/MarkdownTypography {
+	public static final field $stable I
+	public fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;)V
+	public fun getBullet ()Landroidx/compose/ui/text/TextStyle;
+	public fun getCode ()Landroidx/compose/ui/text/TextStyle;
+	public fun getH1 ()Landroidx/compose/ui/text/TextStyle;
+	public fun getH2 ()Landroidx/compose/ui/text/TextStyle;
+	public fun getH3 ()Landroidx/compose/ui/text/TextStyle;
+	public fun getH4 ()Landroidx/compose/ui/text/TextStyle;
+	public fun getH5 ()Landroidx/compose/ui/text/TextStyle;
+	public fun getH6 ()Landroidx/compose/ui/text/TextStyle;
+	public fun getInlineCode ()Landroidx/compose/ui/text/TextStyle;
+	public fun getLink ()Landroidx/compose/ui/text/TextStyle;
+	public fun getList ()Landroidx/compose/ui/text/TextStyle;
+	public fun getOrdered ()Landroidx/compose/ui/text/TextStyle;
+	public fun getParagraph ()Landroidx/compose/ui/text/TextStyle;
+	public fun getQuote ()Landroidx/compose/ui/text/TextStyle;
+	public fun getText ()Landroidx/compose/ui/text/TextStyle;
+	public fun getTextLink ()Landroidx/compose/ui/text/TextLinkStyles;
+}
+
+public final class com/mikepenz/markdown/model/ImageData {
+	public static final field $stable I
+	public fun <init> (Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/Alignment;Landroidx/compose/ui/layout/ContentScale;FLandroidx/compose/ui/graphics/ColorFilter;)V
+	public synthetic fun <init> (Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/Alignment;Landroidx/compose/ui/layout/ContentScale;FLandroidx/compose/ui/graphics/ColorFilter;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Landroidx/compose/ui/graphics/painter/Painter;
+	public final fun component2 ()Landroidx/compose/ui/Modifier;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Landroidx/compose/ui/Alignment;
+	public final fun component5 ()Landroidx/compose/ui/layout/ContentScale;
+	public final fun component6 ()F
+	public final fun component7 ()Landroidx/compose/ui/graphics/ColorFilter;
+	public final fun copy (Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/Alignment;Landroidx/compose/ui/layout/ContentScale;FLandroidx/compose/ui/graphics/ColorFilter;)Lcom/mikepenz/markdown/model/ImageData;
+	public static synthetic fun copy$default (Lcom/mikepenz/markdown/model/ImageData;Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/Alignment;Landroidx/compose/ui/layout/ContentScale;FLandroidx/compose/ui/graphics/ColorFilter;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/ImageData;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlignment ()Landroidx/compose/ui/Alignment;
+	public final fun getAlpha ()F
+	public final fun getColorFilter ()Landroidx/compose/ui/graphics/ColorFilter;
+	public final fun getContentDescription ()Ljava/lang/String;
+	public final fun getContentScale ()Landroidx/compose/ui/layout/ContentScale;
+	public final fun getModifier ()Landroidx/compose/ui/Modifier;
+	public final fun getPainter ()Landroidx/compose/ui/graphics/painter/Painter;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/mikepenz/markdown/model/ImageTransformer {
+	public abstract fun intrinsicSize-bSu-EZI (Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/runtime/Composer;I)J
+	public abstract fun placeholderConfig-PO73lzk (Landroidx/compose/ui/unit/Density;JJ)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+	public abstract fun transform (Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Lcom/mikepenz/markdown/model/ImageData;
+}
+
+public final class com/mikepenz/markdown/model/ImageTransformer$DefaultImpls {
+	public static fun intrinsicSize-bSu-EZI (Lcom/mikepenz/markdown/model/ImageTransformer;Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/runtime/Composer;I)J
+	public static fun placeholderConfig-PO73lzk (Lcom/mikepenz/markdown/model/ImageTransformer;Landroidx/compose/ui/unit/Density;JJ)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownAnimations {
+	public abstract fun getAnimateTextSize ()Lkotlin/jvm/functions/Function1;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAnimationsKt {
+	public static final fun markdownAnimations (Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownAnimations;
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownAnnotator {
+	public abstract fun getAnnotate ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAnnotatorKt {
+	public static final fun markdownAnnotator (Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownAnnotator;
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownColors {
+	public abstract fun getCodeBackground-0d7_KjU ()J
+	public abstract fun getCodeText-0d7_KjU ()J
+	public abstract fun getDividerColor-0d7_KjU ()J
+	public abstract fun getInlineCodeBackground-0d7_KjU ()J
+	public abstract fun getInlineCodeText-0d7_KjU ()J
+	public abstract fun getLinkText-0d7_KjU ()J
+	public abstract fun getTableBackground-0d7_KjU ()J
+	public abstract fun getTableText-0d7_KjU ()J
+	public abstract fun getText-0d7_KjU ()J
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownDimens {
+	public abstract fun getBlockQuoteThickness-D9Ej5fM ()F
+	public abstract fun getCodeBackgroundCornerSize-D9Ej5fM ()F
+	public abstract fun getDividerThickness-D9Ej5fM ()F
+	public abstract fun getTableCellPadding-D9Ej5fM ()F
+	public abstract fun getTableCellWidth-D9Ej5fM ()F
+	public abstract fun getTableCornerSize-D9Ej5fM ()F
+	public abstract fun getTableMaxWidth-D9Ej5fM ()F
+}
+
+public final class com/mikepenz/markdown/model/MarkdownDimensKt {
+	public static final fun markdownDimens-nIG9oN8 (FFFFFFFLandroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownDimens;
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownExtendedSpans {
+	public abstract fun getExtendedSpans ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownExtendedSpansKt {
+	public static final fun markdownExtendedSpans (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownImageState {
+	public abstract fun getContainerSize-NH-jbRc ()J
+	public abstract fun getDensity ()Landroidx/compose/ui/unit/Density;
+	public abstract fun getIntrinsicImageSize-NH-jbRc ()J
+	public abstract fun setContainerSize-ozmzZPI (J)V
+	public abstract fun setImageSize-uvyYCjk (J)V
+	public abstract fun updateContainerSize-uvyYCjk (J)V
+	public abstract fun updateImageSize-uvyYCjk (J)V
+}
+
+public final class com/mikepenz/markdown/model/MarkdownImageState$DefaultImpls {
+	public static fun updateContainerSize-uvyYCjk (Lcom/mikepenz/markdown/model/MarkdownImageState;J)V
+	public static fun updateImageSize-uvyYCjk (Lcom/mikepenz/markdown/model/MarkdownImageState;J)V
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownPadding {
+	public abstract fun getBlock-D9Ej5fM ()F
+	public abstract fun getBlockQuote ()Landroidx/compose/foundation/layout/PaddingValues;
+	public abstract fun getBlockQuoteBar ()Landroidx/compose/foundation/layout/PaddingValues$Absolute;
+	public abstract fun getBlockQuoteText ()Landroidx/compose/foundation/layout/PaddingValues;
+	public abstract fun getCodeBlock ()Landroidx/compose/foundation/layout/PaddingValues;
+	public abstract fun getList-D9Ej5fM ()F
+	public abstract fun getListIndent-D9Ej5fM ()F
+	public abstract fun getListItemBottom-D9Ej5fM ()F
+	public abstract fun getListItemTop-D9Ej5fM ()F
+}
+
+public final class com/mikepenz/markdown/model/MarkdownPaddingKt {
+	public static final fun markdownPadding-hBH8OFI (FFFFLandroidx/compose/ui/unit/Dp;FLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues$Absolute;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownPadding;
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownTypography {
+	public abstract fun getBullet ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getCode ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getH1 ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getH2 ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getH3 ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getH4 ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getH5 ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getH6 ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getInlineCode ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getLink ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getList ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getOrdered ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getParagraph ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getQuote ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getText ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getTextLink ()Landroidx/compose/ui/text/TextLinkStyles;
+}
+
+public final class com/mikepenz/markdown/model/NoOpImageTransformerImpl : com/mikepenz/markdown/model/ImageTransformer {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun intrinsicSize-bSu-EZI (Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/runtime/Composer;I)J
+	public fun placeholderConfig-PO73lzk (Landroidx/compose/ui/unit/Density;JJ)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+	public fun transform (Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Lcom/mikepenz/markdown/model/ImageData;
+}
+
+public final class com/mikepenz/markdown/model/PlaceholderConfig {
+	public static final field $stable I
+	public synthetic fun <init> (JIZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JIZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-NH-jbRc ()J
+	public final fun component2-J6kI3mc ()I
+	public final fun component3 ()Z
+	public final fun copy-SodKFfM (JIZ)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+	public static synthetic fun copy-SodKFfM$default (Lcom/mikepenz/markdown/model/PlaceholderConfig;JIZILjava/lang/Object;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnimate ()Z
+	public final fun getSize-NH-jbRc ()J
+	public final fun getVerticalAlign-J6kI3mc ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/mikepenz/markdown/model/ReferenceLinkHandler {
+	public abstract fun find (Ljava/lang/String;)Ljava/lang/String;
+	public abstract fun store (Ljava/lang/String;Ljava/lang/String;)V
+}
+
+public final class com/mikepenz/markdown/model/ReferenceLinkHandlerImpl : com/mikepenz/markdown/model/ReferenceLinkHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun find (Ljava/lang/String;)Ljava/lang/String;
+	public fun store (Ljava/lang/String;Ljava/lang/String;)V
+}
+
+public final class com/mikepenz/markdown/utils/EntityConverter {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/mikepenz/markdown/utils/EntityConverter;
+	public final fun replaceEntities (Ljava/lang/CharSequence;ZZ)Ljava/lang/String;
+}
+
+public final class com/mikepenz/markdown/utils/ExtensionsKt {
+	public static final field MARKDOWN_TAG_IMAGE_URL Ljava/lang/String;
+	public static final fun getCodeSpanStyle (Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/SpanStyle;
+	public static final fun getUnescapedTextInNode (Lorg/intellij/markdown/ast/ASTNode;Ljava/lang/CharSequence;)Ljava/lang/String;
+}
+
