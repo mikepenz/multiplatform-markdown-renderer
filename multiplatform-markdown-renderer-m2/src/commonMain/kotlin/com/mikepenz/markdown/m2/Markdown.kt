@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
+import com.mikepenz.markdown.m2.elements.MarkdownCheckBox
 import com.mikepenz.markdown.model.*
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
@@ -21,7 +22,9 @@ fun Markdown(
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
-    components: MarkdownComponents = markdownComponents(),
+    components: MarkdownComponents = markdownComponents(
+        checkbox = { checked -> MarkdownCheckBox(checked) },
+    ),
     animations: MarkdownAnimations = markdownAnimations(),
 ) = com.mikepenz.markdown.compose.Markdown(
     content = content,
