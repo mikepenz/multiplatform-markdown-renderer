@@ -141,6 +141,15 @@ This is an unordered list with asterisks:
 * Item 2
 * Item 3
 
+This is an ordered list with task list items:
+1. [ ] foo
+2. [x] bar
+
+
+This is an unordered list with task list items:
+- [ ] foo
+- [x] bar
+
 -------- 
 
 # Random
