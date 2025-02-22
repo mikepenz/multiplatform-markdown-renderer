@@ -1,8 +1,9 @@
-package com.mikepenz.markdown.ui
+package com.mikepenz.markdown.ui.m2
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import com.mikepenz.markdown.m2.Markdown
+import com.mikepenz.markdown.ui.SampleTheme
 import com.mikepenz.markdown.ui.annotation.DarkLightPreview
 
 /**
@@ -83,6 +84,22 @@ class ElementsInListsTests {
                 - Indented item
                 - Indented item
             4. Fourth item
+            """.trimIndent()
+        )
+    }
+
+    @DarkLightPreview
+    @Composable
+    fun CheckBoxInListTest() = SampleTheme(isSystemInDarkTheme()) {
+        Markdown(
+            """
+            This is an ordered list with task list items:
+            1. [ ] foo
+            2. [x] bar
+            
+            This is an unordered list with task list items:
+            - [ ] foo
+            - [x] bar
             """.trimIndent()
         )
     }
