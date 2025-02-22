@@ -561,5 +561,7 @@ public final class com/mikepenz/markdown/utils/ExtensionsKt {
 	public static final field MARKDOWN_TAG_IMAGE_URL Ljava/lang/String;
 	public static final fun getCodeSpanStyle (Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/SpanStyle;
 	public static final fun getUnescapedTextInNode (Lorg/intellij/markdown/ast/ASTNode;Ljava/lang/CharSequence;)Ljava/lang/String;
+	public static final fun mapAutoLinkToType (Ljava/util/List;Lorg/intellij/markdown/IElementType;)Ljava/util/List;
+	public static synthetic fun mapAutoLinkToType$default (Ljava/util/List;Lorg/intellij/markdown/IElementType;ILjava/lang/Object;)Ljava/util/List;
 }
 
