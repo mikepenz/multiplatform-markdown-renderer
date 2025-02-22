@@ -13,6 +13,7 @@ import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalOrderedListHandler
+import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.handleElement
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
@@ -23,7 +24,6 @@ import org.intellij.markdown.MarkdownTokenTypes.Companion.LIST_BULLET
 import org.intellij.markdown.MarkdownTokenTypes.Companion.LIST_NUMBER
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
-import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes.CHECK_BOX
 
 @Composable
@@ -59,9 +59,15 @@ fun MarkdownListItems(
                     }
 
                     Row(Modifier.fillMaxWidth().padding(top = listItemPaddingDp, bottom = listItemBottom)) {
-                        if (node.type == UNORDERED_LIST && checkboxNode != null) {
-                            val checked = checkboxNode.getTextInNode(content) == "[x] "
-                            markdownComponents.checkbox(this@Row, checked)
+                        if (checkboxNode != null) {
+                            Column {
+                                val model = MarkdownComponentModel(
+                                    content = content,
+                                    node = checkboxNode,
+                                    typography = LocalMarkdownTypography.current,
+                                )
+                                markdownComponents.checkbox.invoke(this, model)
+                            }
                         } else {
                             bullet(index, listIndicator)
                         }

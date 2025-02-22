@@ -1,22 +1,21 @@
 package com.mikepenz.markdown.m2.elements
 
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Checkbox
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.AnnotatedString
-import com.mikepenz.markdown.compose.LocalMarkdownColors
-import com.mikepenz.markdown.compose.LocalMarkdownTypography
-import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
+import androidx.compose.ui.text.TextStyle
+import com.mikepenz.markdown.compose.elements.MarkdownCheckBox
+import org.intellij.markdown.ast.ASTNode
 
 @Composable
-fun MarkdownCheckBox(checked: Boolean) {
-    Row {
-        Checkbox(checked = checked, onCheckedChange = null)
-        // Add a space at the end to separate it from subsequent text.
-        MarkdownBasicText(
-            text = AnnotatedString(" "),
-            style = LocalMarkdownTypography.current.bullet,
-            color = LocalMarkdownColors.current.text,
-        )
-    }
-}
+fun MarkdownCheckBox(
+    content: String,
+    node: ASTNode,
+    style: TextStyle,
+) = MarkdownCheckBox(
+    content = content,
+    node = node,
+    style = style,
+    checkedIndicator = { checked, modifier ->
+        Checkbox(checked = checked, onCheckedChange = null, modifier = modifier)
+    },
+)

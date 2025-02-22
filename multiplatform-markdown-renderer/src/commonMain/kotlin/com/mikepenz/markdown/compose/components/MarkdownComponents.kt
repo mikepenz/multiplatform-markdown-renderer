@@ -2,7 +2,6 @@ package com.mikepenz.markdown.compose.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -10,6 +9,7 @@ import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
 import com.mikepenz.markdown.compose.elements.MarkdownBulletList
+import com.mikepenz.markdown.compose.elements.MarkdownCheckBox
 import com.mikepenz.markdown.compose.elements.MarkdownCodeBlock
 import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
 import com.mikepenz.markdown.compose.elements.MarkdownDivider
@@ -63,7 +63,7 @@ fun markdownComponents(
     linkDefinition: MarkdownComponent = CurrentComponentsBridge.linkDefinition,
     horizontalRule: MarkdownComponent = CurrentComponentsBridge.horizontalRule,
     table: MarkdownComponent = CurrentComponentsBridge.table,
-    checkbox: @Composable (Boolean) -> Unit = CurrentComponentsBridge.checkbox,
+    checkbox: MarkdownComponent = CurrentComponentsBridge.checkbox,
     custom: CustomMarkdownComponent? = CurrentComponentsBridge.custom,
 ): MarkdownComponents = DefaultMarkdownComponents(
     text = text,
@@ -115,7 +115,7 @@ interface MarkdownComponents {
     val linkDefinition: MarkdownComponent
     val horizontalRule: MarkdownComponent
     val table: MarkdownComponent
-    val checkbox: @Composable (Boolean) -> Unit
+    val checkbox: MarkdownComponent
     val custom: CustomMarkdownComponent?
 }
 
@@ -140,7 +140,7 @@ private class DefaultMarkdownComponents(
     override val linkDefinition: MarkdownComponent,
     override val horizontalRule: MarkdownComponent,
     override val table: MarkdownComponent,
-    override val checkbox: @Composable (Boolean) -> Unit,
+    override val checkbox: MarkdownComponent,
     override val custom: CustomMarkdownComponent?,
 ) : MarkdownComponents
 
@@ -214,8 +214,8 @@ object CurrentComponentsBridge {
     val table: MarkdownComponent = {
         MarkdownTable(it.content, it.node, style = it.typography.text)
     }
-    val checkbox: @Composable (Boolean) -> Unit = { checked ->
-        MarkdownText("[${if (checked) "x" else " "}] ")
+    val checkbox: MarkdownComponent = {
+        MarkdownCheckBox(it.content, it.node, style = it.typography.text)
     }
     val custom: CustomMarkdownComponent? = null
 }
