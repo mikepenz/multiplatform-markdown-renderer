@@ -1,4 +1,4 @@
-package com.mikepenz.markdown.ui
+package com.mikepenz.markdown.ui.m2
 
 import android.content.res.Configuration
 import android.graphics.Color
@@ -6,6 +6,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mikepenz.markdown.m2.Markdown
+import com.mikepenz.markdown.ui.SampleTheme
 
 class SnapshotTests {
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1750)

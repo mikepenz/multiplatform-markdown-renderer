@@ -1,9 +1,10 @@
-package com.mikepenz.markdown.ui
+package com.mikepenz.markdown.ui.m3
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import com.mikepenz.markdown.m2.Markdown
+import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.ui.annotation.DarkLightPreview
+import com.mikepenz.markdown.ui.m3.theme.SampleTheme
 
 /**
  * Covers blockquote behavior as documented
