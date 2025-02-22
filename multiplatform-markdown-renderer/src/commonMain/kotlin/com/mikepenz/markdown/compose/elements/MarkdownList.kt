@@ -13,6 +13,7 @@ import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalOrderedListHandler
+import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.handleElement
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
@@ -23,6 +24,7 @@ import org.intellij.markdown.MarkdownTokenTypes.Companion.LIST_BULLET
 import org.intellij.markdown.MarkdownTokenTypes.Companion.LIST_NUMBER
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
+import org.intellij.markdown.flavours.gfm.GFMTokenTypes.CHECK_BOX
 
 @Composable
 fun MarkdownListItems(
@@ -36,6 +38,7 @@ fun MarkdownListItems(
     val indentListDp = LocalMarkdownPadding.current.listIndent
     val listItemPaddingDp = LocalMarkdownPadding.current.listItemTop
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
+    val markdownComponents = LocalMarkdownComponents.current
     Column(
         modifier = Modifier.padding(
             start = (indentListDp) * level,
@@ -47,6 +50,8 @@ fun MarkdownListItems(
         node.children.forEach { child ->
             when (child.type) {
                 MarkdownElementTypes.LIST_ITEM -> {
+                    // LIST_NUMBER/LIST_BULLET, CHECK_BOX, PARAGRAPH
+                    val checkboxNode = child.children.getOrNull(1)?.takeIf { it.type == CHECK_BOX }
                     val listIndicator = when (node.type) {
                         ORDERED_LIST -> child.findChildOfType(LIST_NUMBER)
                         UNORDERED_LIST -> child.findChildOfType(LIST_BULLET)
@@ -54,7 +59,18 @@ fun MarkdownListItems(
                     }
 
                     Row(Modifier.fillMaxWidth().padding(top = listItemPaddingDp, bottom = listItemBottom)) {
-                        bullet(index, listIndicator)
+                        if (checkboxNode != null) {
+                            Column {
+                                val model = MarkdownComponentModel(
+                                    content = content,
+                                    node = checkboxNode,
+                                    typography = LocalMarkdownTypography.current,
+                                )
+                                markdownComponents.checkbox.invoke(this, model)
+                            }
+                        } else {
+                            bullet(index, listIndicator)
+                        }
 
                         Column {
                             child.children.onEach { nestedChild ->
@@ -64,7 +80,7 @@ fun MarkdownListItems(
                                     else -> {
                                         handleElement(
                                             node = nestedChild,
-                                            components = LocalMarkdownComponents.current,
+                                            components = markdownComponents,
                                             content = content,
                                             includeSpacer = false
                                         )

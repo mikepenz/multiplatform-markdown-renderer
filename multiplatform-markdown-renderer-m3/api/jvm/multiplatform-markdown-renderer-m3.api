@@ -1,3 +1,9 @@
+public final class com/mikepenz/markdown/m3/ComposableSingletons$MarkdownKt {
+	public static final field INSTANCE Lcom/mikepenz/markdown/m3/ComposableSingletons$MarkdownKt;
+	public fun <init> ()V
+	public final fun getLambda-1$multiplatform_markdown_renderer_m3 ()Lkotlin/jvm/functions/Function4;
+}
+
 public final class com/mikepenz/markdown/m3/MarkdownColorsKt {
 	public static final fun markdownColor-J08w3-E (JJJJJJJJJLandroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownColors;
 }
@@ -8,5 +14,15 @@ public final class com/mikepenz/markdown/m3/MarkdownKt {
 
 public final class com/mikepenz/markdown/m3/MarkdownTypographyKt {
 	public static final fun markdownTypography (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/runtime/Composer;III)Lcom/mikepenz/markdown/model/MarkdownTypography;
+}
+
+public final class com/mikepenz/markdown/m3/elements/ComposableSingletons$MarkdownCheckBoxKt {
+	public static final field INSTANCE Lcom/mikepenz/markdown/m3/elements/ComposableSingletons$MarkdownCheckBoxKt;
+	public fun <init> ()V
+	public final fun getLambda-1$multiplatform_markdown_renderer_m3 ()Lkotlin/jvm/functions/Function4;
+}
+
+public final class com/mikepenz/markdown/m3/elements/MarkdownCheckBoxKt {
+	public static final fun MarkdownCheckBox (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;I)V
 }
 

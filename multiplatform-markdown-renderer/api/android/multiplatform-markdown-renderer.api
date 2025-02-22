@@ -70,6 +70,7 @@ public final class com/mikepenz/markdown/compose/components/ComposableSingletons
 	public final fun getLambda-19$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda-2$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda-20$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-21$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda-3$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda-4$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
 	public final fun getLambda-5$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function4;
@@ -83,6 +84,7 @@ public final class com/mikepenz/markdown/compose/components/CurrentComponentsBri
 	public static final field $stable I
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/components/CurrentComponentsBridge;
 	public final fun getBlockQuote ()Lkotlin/jvm/functions/Function4;
+	public final fun getCheckbox ()Lkotlin/jvm/functions/Function4;
 	public final fun getCodeBlock ()Lkotlin/jvm/functions/Function4;
 	public final fun getCodeFence ()Lkotlin/jvm/functions/Function4;
 	public final fun getCustom ()Lkotlin/jvm/functions/Function5;
@@ -123,6 +125,7 @@ public final class com/mikepenz/markdown/compose/components/MarkdownComponentMod
 
 public abstract interface class com/mikepenz/markdown/compose/components/MarkdownComponents {
 	public abstract fun getBlockQuote ()Lkotlin/jvm/functions/Function4;
+	public abstract fun getCheckbox ()Lkotlin/jvm/functions/Function4;
 	public abstract fun getCodeBlock ()Lkotlin/jvm/functions/Function4;
 	public abstract fun getCodeFence ()Lkotlin/jvm/functions/Function4;
 	public abstract fun getCustom ()Lkotlin/jvm/functions/Function5;
@@ -146,8 +149,8 @@ public abstract interface class com/mikepenz/markdown/compose/components/Markdow
 }
 
 public final class com/mikepenz/markdown/compose/components/MarkdownComponentsKt {
-	public static final fun markdownComponents (Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function5;)Lcom/mikepenz/markdown/compose/components/MarkdownComponents;
-	public static synthetic fun markdownComponents$default (Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function5;ILjava/lang/Object;)Lcom/mikepenz/markdown/compose/components/MarkdownComponents;
+	public static final fun markdownComponents (Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function5;)Lcom/mikepenz/markdown/compose/components/MarkdownComponents;
+	public static synthetic fun markdownComponents$default (Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function5;ILjava/lang/Object;)Lcom/mikepenz/markdown/compose/components/MarkdownComponents;
 }
 
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt {
@@ -166,6 +169,10 @@ public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$M
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownBlockQuoteKt {
 	public static final fun MarkdownBlockQuote (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownCheckBoxKt {
+	public static final fun MarkdownCheckBox (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownCodeKt {
