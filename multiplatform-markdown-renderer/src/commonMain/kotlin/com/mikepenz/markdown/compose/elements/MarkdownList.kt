@@ -110,7 +110,8 @@ fun MarkdownOrderedList(
             text = orderedListHandler.transform(
                 LIST_NUMBER,
                 child?.getUnescapedTextInNode(content),
-                index
+                index,
+                level
             ),
             style = style,
             color = LocalMarkdownColors.current.text,
@@ -132,7 +133,8 @@ fun MarkdownBulletList(
             bulletHandler.transform(
                 LIST_BULLET,
                 child?.getUnescapedTextInNode(content),
-                index
+                index,
+                level
             ),
             style = style,
             color = LocalMarkdownColors.current.text,
