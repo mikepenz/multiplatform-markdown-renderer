@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.conventionPlugin)
+    alias(baseLibs.plugins.conventionPlugin)
 
     // this is necessary to avoid the plugins to be loaded multiple times in each subproject's classloader
     alias(baseLibs.plugins.androidApplication) apply false
@@ -10,6 +10,7 @@ plugins {
     alias(baseLibs.plugins.dokka)
     alias(baseLibs.plugins.aboutLibraries) apply false
     alias(baseLibs.plugins.mavenPublish) apply false
+    alias(baseLibs.plugins.binaryCompatiblityValidator) apply false
 }
 
 allprojects {

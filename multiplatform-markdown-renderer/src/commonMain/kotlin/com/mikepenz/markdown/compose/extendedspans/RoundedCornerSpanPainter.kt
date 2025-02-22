@@ -11,14 +11,16 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.isUnspecified
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.util.fastForEachIndexed
 import com.mikepenz.markdown.compose.extendedspans.internal.deserializeToColor
-import com.mikepenz.markdown.compose.extendedspans.internal.fastForEach
-import com.mikepenz.markdown.compose.extendedspans.internal.fastForEachIndexed
 import com.mikepenz.markdown.compose.extendedspans.internal.serialize
+import com.mikepenz.markdown.compose.extendedspans.internal.update
 
 /**
  * Draws round rectangles behind text annotated using `SpanStyle(background = …)`.
@@ -41,22 +43,38 @@ class RoundedCornerSpanPainter(
         start: Int,
         end: Int,
         text: AnnotatedString,
-        builder: AnnotatedString.Builder
+        builder: AnnotatedString.Builder,
     ): SpanStyle {
         return if (span.background.isUnspecified) {
             span
         } else {
-            builder.addStringAnnotation(
-                TAG,
-                annotation = span.background.serialize(),
-                start = start,
-                end = end
-            )
+            builder.addStringAnnotation(TAG, annotation = span.background.serialize(), start = start, end = end)
             span.copy(background = Color.Unspecified)
         }
     }
 
-    override fun drawInstructionsFor(layoutResult: TextLayoutResult): SpanDrawInstructions {
+    override fun decorate(
+        linkAnnotation: LinkAnnotation,
+        start: Int,
+        end: Int,
+        text: AnnotatedString,
+        builder: AnnotatedString.Builder,
+    ): LinkAnnotation {
+        val defaultStyle = linkAnnotation.styles?.style
+        // return fast if background is not set
+        if (defaultStyle == null || defaultStyle.background.isUnspecified == true) return linkAnnotation
+        builder.addStringAnnotation(TAG, annotation = defaultStyle.background.serialize(), start = start, end = end)
+        val updatedTextLinkStyles = linkAnnotation.styles?.update { copy(background = Color.Unspecified) }
+        return if (linkAnnotation is LinkAnnotation.Url) {
+            LinkAnnotation.Url(linkAnnotation.url, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
+        } else if (linkAnnotation is LinkAnnotation.Clickable) {
+            LinkAnnotation.Clickable(linkAnnotation.tag, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
+        } else {
+            throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
+        }
+    }
+
+    override fun drawInstructionsFor(layoutResult: TextLayoutResult, color: Color?): SpanDrawInstructions {
         val text = layoutResult.layoutInput.text
         val annotations = text.getStringAnnotations(TAG, start = 0, end = text.length)
 
@@ -107,7 +125,7 @@ class RoundedCornerSpanPainter(
 
     data class Stroke(
         val color: (background: Color) -> Color,
-        val width: TextUnit = 1.sp
+        val width: TextUnit = 1.sp,
     ) {
         constructor(color: Color, width: TextUnit = 1.sp) : this(
             color = { color },
@@ -117,7 +135,7 @@ class RoundedCornerSpanPainter(
 
     data class TextPaddingValues(
         val horizontal: TextUnit = 0.sp,
-        val vertical: TextUnit = 0.sp
+        val vertical: TextUnit = 0.sp,
     )
 
     companion object {

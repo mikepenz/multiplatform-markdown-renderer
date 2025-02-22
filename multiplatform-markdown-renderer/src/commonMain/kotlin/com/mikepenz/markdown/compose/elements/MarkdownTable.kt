@@ -2,7 +2,15 @@ package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -16,10 +24,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.times
+import com.mikepenz.markdown.annotator.annotatorSettings
+import com.mikepenz.markdown.annotator.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
-import com.mikepenz.markdown.utils.buildMarkdownAnnotatedString
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.flavours.gfm.GFMElementTypes.HEADER
@@ -32,12 +41,29 @@ fun MarkdownTable(
     content: String,
     node: ASTNode,
     style: TextStyle,
+    headerBlock: @Composable (String, ASTNode, Dp, TextStyle) -> Unit = { content, header, tableWidth, style ->
+        MarkdownTableHeader(
+            content = content,
+            header = header,
+            tableWidth = tableWidth,
+            style = style
+        )
+    },
+    rowBlock: @Composable (String, ASTNode, Dp, TextStyle) -> Unit = { content, header, tableWidth, style ->
+        MarkdownTableRow(
+            content = content,
+            header = header,
+            tableWidth = tableWidth,
+            style = style
+        )
+    },
 ) {
     val tableMaxWidth = LocalMarkdownDimens.current.tableMaxWidth
     val tableCellWidth = LocalMarkdownDimens.current.tableCellWidth
     val tableCornerSize = LocalMarkdownDimens.current.tableCornerSize
 
-    val columnsCount = remember { node.findChildOfType(HEADER)?.children?.count { it.type == CELL } ?: 0 }
+    val columnsCount =
+        remember { node.findChildOfType(HEADER)?.children?.count { it.type == CELL } ?: 0 }
     val tableWidth by derivedStateOf { columnsCount * tableCellWidth }
 
     val backgroundCodeColor = LocalMarkdownColors.current.tableBackground
@@ -54,8 +80,8 @@ fun MarkdownTable(
         ) {
             node.children.forEach {
                 when (it.type) {
-                    HEADER -> MarkdownTableHeader(content = content, header = it, tableWidth = tableWidth, style = style)
-                    ROW -> MarkdownTableRow(content = content, header = it, tableWidth = tableWidth, style = style)
+                    HEADER -> headerBlock(content, it, tableWidth, style)
+                    ROW -> rowBlock(content, it, tableWidth, style)
                     TABLE_SEPARATOR -> MarkdownDivider()
                 }
             }
@@ -64,27 +90,35 @@ fun MarkdownTable(
 }
 
 @Composable
-internal fun MarkdownTableHeader(
+fun MarkdownTableHeader(
     content: String,
     header: ASTNode,
     tableWidth: Dp,
     style: TextStyle,
+    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    maxLines: Int = 1,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     val tableCellPadding = LocalMarkdownDimens.current.tableCellPadding
+    val annotatorSettings = annotatorSettings()
     Row(
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = verticalAlignment,
         modifier = Modifier.widthIn(tableWidth).height(IntrinsicSize.Max)
     ) {
         header.children.forEach {
             when (it.type) {
                 CELL -> {
                     MarkdownBasicText(
-                        text = content.buildMarkdownAnnotatedString(it, style.copy(fontWeight = FontWeight.Bold)),
+                        text = content.buildMarkdownAnnotatedString(
+                            textNode = it,
+                            style = style.copy(fontWeight = FontWeight.Bold),
+                            annotatorSettings = annotatorSettings,
+                        ),
                         style = style.copy(fontWeight = FontWeight.Bold),
                         color = LocalMarkdownColors.current.tableText,
                         modifier = Modifier.padding(tableCellPadding).weight(1f),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        maxLines = maxLines,
+                        overflow = overflow,
                     )
                 }
             }
@@ -93,25 +127,33 @@ internal fun MarkdownTableHeader(
 }
 
 @Composable
-internal fun MarkdownTableRow(
+fun MarkdownTableRow(
     content: String,
     header: ASTNode,
     tableWidth: Dp,
     style: TextStyle,
+    verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
+    maxLines: Int = 1,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     val tableCellPadding = LocalMarkdownDimens.current.tableCellPadding
+    val annotatorSettings = annotatorSettings()
     Row(
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = verticalAlignment,
         modifier = Modifier.widthIn(tableWidth)
     ) {
         header.children.filter { it.type == CELL }.forEach { cell ->
             MarkdownBasicText(
-                text = content.buildMarkdownAnnotatedString(cell, style),
+                text = content.buildMarkdownAnnotatedString(
+                    textNode = cell,
+                    style = style,
+                    annotatorSettings = annotatorSettings,
+                ),
                 style = style,
                 color = LocalMarkdownColors.current.tableText,
                 modifier = Modifier.padding(tableCellPadding).weight(1f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                maxLines = maxLines,
+                overflow = overflow,
             )
         }
     }

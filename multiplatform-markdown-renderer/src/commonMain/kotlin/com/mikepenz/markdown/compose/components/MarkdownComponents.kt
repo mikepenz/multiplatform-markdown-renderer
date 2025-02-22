@@ -7,7 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
-import com.mikepenz.markdown.compose.elements.*
+import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
+import com.mikepenz.markdown.compose.elements.MarkdownBulletList
+import com.mikepenz.markdown.compose.elements.MarkdownCheckBox
+import com.mikepenz.markdown.compose.elements.MarkdownCodeBlock
+import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
+import com.mikepenz.markdown.compose.elements.MarkdownDivider
+import com.mikepenz.markdown.compose.elements.MarkdownHeader
+import com.mikepenz.markdown.compose.elements.MarkdownImage
+import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
+import com.mikepenz.markdown.compose.elements.MarkdownParagraph
+import com.mikepenz.markdown.compose.elements.MarkdownTable
+import com.mikepenz.markdown.compose.elements.MarkdownText
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import org.intellij.markdown.IElementType
@@ -52,6 +63,7 @@ fun markdownComponents(
     linkDefinition: MarkdownComponent = CurrentComponentsBridge.linkDefinition,
     horizontalRule: MarkdownComponent = CurrentComponentsBridge.horizontalRule,
     table: MarkdownComponent = CurrentComponentsBridge.table,
+    checkbox: MarkdownComponent = CurrentComponentsBridge.checkbox,
     custom: CustomMarkdownComponent? = CurrentComponentsBridge.custom,
 ): MarkdownComponents = DefaultMarkdownComponents(
     text = text,
@@ -74,6 +86,7 @@ fun markdownComponents(
     linkDefinition = linkDefinition,
     horizontalRule = horizontalRule,
     table = table,
+    checkbox = checkbox,
     custom = custom,
 )
 
@@ -102,6 +115,7 @@ interface MarkdownComponents {
     val linkDefinition: MarkdownComponent
     val horizontalRule: MarkdownComponent
     val table: MarkdownComponent
+    val checkbox: MarkdownComponent
     val custom: CustomMarkdownComponent?
 }
 
@@ -126,6 +140,7 @@ private class DefaultMarkdownComponents(
     override val linkDefinition: MarkdownComponent,
     override val horizontalRule: MarkdownComponent,
     override val table: MarkdownComponent,
+    override val checkbox: MarkdownComponent,
     override val custom: CustomMarkdownComponent?,
 ) : MarkdownComponents
 
@@ -187,11 +202,9 @@ object CurrentComponentsBridge {
         MarkdownImage(it.content, it.node)
     }
     val linkDefinition: MarkdownComponent = {
-        val linkLabel =
-            it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(it.content)
+        val linkLabel = it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(it.content)
         if (linkLabel != null) {
-            val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)
-                ?.getUnescapedTextInNode(it.content)
+            val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(it.content)
             LocalReferenceLinkHandler.current.store(linkLabel, destination)
         }
     }
@@ -200,6 +213,9 @@ object CurrentComponentsBridge {
     }
     val table: MarkdownComponent = {
         MarkdownTable(it.content, it.node, style = it.typography.text)
+    }
+    val checkbox: MarkdownComponent = {
+        MarkdownCheckBox(it.content, it.node, style = it.typography.text)
     }
     val custom: CustomMarkdownComponent? = null
 }

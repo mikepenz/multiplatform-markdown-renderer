@@ -8,17 +8,19 @@ package com.mikepenz.markdown.compose.extendedspans
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.buildAnnotatedString
-import com.mikepenz.markdown.compose.extendedspans.internal.fastFold
-import com.mikepenz.markdown.compose.extendedspans.internal.fastForEach
-import com.mikepenz.markdown.compose.extendedspans.internal.fastMap
+import androidx.compose.ui.util.fastFold
+import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.util.fastMap
 
 @Stable
 class ExtendedSpans(
-    vararg painters: ExtendedSpanPainter
+    vararg painters: ExtendedSpanPainter,
 ) {
     private val painters = painters.toList()
     internal var drawInstructions = emptyList<SpanDrawInstructions>()
@@ -60,13 +62,27 @@ class ExtendedSpans(
             text.getTtsAnnotations(start = 0, end = text.length).fastForEach {
                 addTtsAnnotation(it.item, it.start, it.end)
             }
+            @Suppress("DEPRECATION")
+            text.getUrlAnnotations(start = 0, end = text.length).fastForEach {
+                addUrlAnnotation(it.item, it.start, it.end)
+            }
+            text.getLinkAnnotations(start = 0, end = text.length).fastForEach { range ->
+                val decorated = painters.fastFold(initial = range.item) { updated, painter ->
+                    painter.decorate(updated, range.start, range.end, text = text, builder = this)
+                }
+
+                when (val item = decorated) {
+                    is LinkAnnotation.Url -> addLink(item, range.start, range.end)
+                    is LinkAnnotation.Clickable -> addLink(item, range.start, range.end)
+                }
+            }
         }
     }
 
-    fun onTextLayout(layoutResult: TextLayoutResult) {
+    fun onTextLayout(layoutResult: TextLayoutResult, color: Color? = null) {
         layoutResult.checkIfExtendWasCalled()
         drawInstructions = painters.fastMap {
-            it.drawInstructionsFor(layoutResult)
+            it.drawInstructionsFor(layoutResult, color)
         }
     }
 

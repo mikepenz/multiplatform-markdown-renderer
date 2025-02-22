@@ -4,8 +4,10 @@
 package com.mikepenz.markdown.compose.extendedspans
 
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.ResolvedTextDirection.Ltr
@@ -20,11 +22,23 @@ abstract class ExtendedSpanPainter {
         start: Int,
         end: Int,
         text: AnnotatedString,
-        builder: AnnotatedString.Builder
+        builder: AnnotatedString.Builder,
     ): SpanStyle
 
+    /**
+     * Can be used for removing any existing text link styles from [text] so that they can be drawn manually.
+     */
+    abstract fun decorate(
+        linkAnnotation: LinkAnnotation,
+        start: Int,
+        end: Int,
+        text: AnnotatedString,
+        builder: AnnotatedString.Builder,
+    ): LinkAnnotation
+
     abstract fun drawInstructionsFor(
-        layoutResult: TextLayoutResult
+        layoutResult: TextLayoutResult,
+        color: Color? = null,
     ): SpanDrawInstructions
 
     /**
@@ -38,7 +52,7 @@ abstract class ExtendedSpanPainter {
     protected fun TextLayoutResult.getBoundingBoxes(
         startOffset: Int,
         endOffset: Int,
-        flattenForFullParagraphs: Boolean = false
+        flattenForFullParagraphs: Boolean = false,
     ): List<Rect> {
         if (startOffset == endOffset) {
             return emptyList()

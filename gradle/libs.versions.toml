@@ -1,11 +1,10 @@
 [versions]
-conventionPlugin = "0.1.4"
-androidx-activityCompose = "1.9.3"
+androidx-activityCompose = "1.10.0"
 androidx-material = "1.12.0"
-coil = "3.0.4"
+coil = "3.1.0"
 coil2 = "2.7.0"
 markdown = "0.7.3"
-ktor = "3.0.3"
+ktor = "3.1.0"
 highlights = "1.0.0"
 
 [libraries]
@@ -21,9 +20,6 @@ markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 highlights = { module = "dev.snipme:highlights", version.ref = "highlights" }
-
-[plugins]
-conventionPlugin = { id = "com.mikepenz.convention.root", version.ref = "conventionPlugin" }
 
 [bundles]
 coil = ["coil-core", "coil-network-okhttp"]

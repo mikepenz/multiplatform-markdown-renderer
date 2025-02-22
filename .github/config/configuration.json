@@ -25,5 +25,6 @@
         "dependencies"
       ]
     }
-  ]
+  ],
+  "template": "#{{CHANGELOG}}\n## Contributors:\n- #{{CONTRIBUTORS}}"
 }

@@ -16,6 +16,4 @@ class DefaultMarkdownExtendedSpans(
 @Composable
 fun markdownExtendedSpans(
     extendedSpans: (@Composable () -> ExtendedSpans)? = null
-): MarkdownExtendedSpans = DefaultMarkdownExtendedSpans(
-    extendedSpans
-)
+): MarkdownExtendedSpans = DefaultMarkdownExtendedSpans(extendedSpans)

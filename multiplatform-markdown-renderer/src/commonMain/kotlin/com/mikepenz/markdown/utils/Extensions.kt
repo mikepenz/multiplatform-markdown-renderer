@@ -5,13 +5,13 @@ import androidx.compose.ui.text.SpanStyle
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.model.MarkdownTypography
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.CompositeASTNode
+import org.intellij.markdown.ast.LeafASTNode
 import org.intellij.markdown.ast.getTextInNode
-
-/**
- * Tag used to indicate an url for inline content. Required for click handling.
- */
-const val MARKDOWN_TAG_URL = "MARKDOWN_URL"
+import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 
 /**
  * Tag used to indicate an image url for inline content. Required for rendering.
@@ -61,12 +61,30 @@ fun ASTNode.getUnescapedTextInNode(allFileText: CharSequence): String {
 }
 
 /**
- * Extension property to get the `SpanStyle` for link text.
- * This style is defined by the `link` typography and the current markdown colors.
+ * Extension function to map auto-link nodes to a specified target type.
+ *
+ * This function iterates over a list of `ASTNode` objects and replaces any
+ * auto-link nodes (either `GFM_AUTOLINK` or `AUTOLINK`) with a new `LeafASTNode`
+ * of the specified target type. Other nodes remain unchanged.
+ *
+ * @param targetType The target type to map auto-link nodes to. Defaults to `MarkdownTokenTypes.TEXT`.
+ * @return A new list of `ASTNode` objects with auto-link nodes mapped to the target type.
  */
-val MarkdownTypography.linkTextSpanStyle: SpanStyle
-    @Composable
-    get() = link.copy(color = LocalMarkdownColors.current.linkText).toSpanStyle()
+fun List<ASTNode>.mapAutoLinkToType(targetType: IElementType = MarkdownTokenTypes.TEXT): List<ASTNode> {
+    return map {
+        if (it is LeafASTNode) {
+            if (it.type == GFMTokenTypes.GFM_AUTOLINK || it.type == MarkdownElementTypes.AUTOLINK) {
+                LeafASTNode(targetType, it.startOffset, it.endOffset)
+            } else {
+                it
+            }
+        } else if (it is CompositeASTNode) {
+            CompositeASTNode(it.type, it.children.mapAutoLinkToType(targetType))
+        } else {
+            it
+        }
+    }
+}
 
 /**
  * Extension property to get the `SpanStyle` for inline code text.
