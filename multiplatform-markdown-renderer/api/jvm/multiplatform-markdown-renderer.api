@@ -329,7 +329,7 @@ public final class com/mikepenz/markdown/compose/extendedspans/internal/TextLink
 }
 
 public abstract interface class com/mikepenz/markdown/model/BulletHandler {
-	public abstract fun transform (Lorg/intellij/markdown/IElementType;Ljava/lang/CharSequence;I)Ljava/lang/String;
+	public abstract fun transform (Lorg/intellij/markdown/IElementType;Ljava/lang/CharSequence;II)Ljava/lang/String;
 }
 
 public final class com/mikepenz/markdown/model/DefaultMarkdownAnimation : com/mikepenz/markdown/model/MarkdownAnimations {
