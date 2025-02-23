@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.utils
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.model.MarkdownTypography
@@ -90,9 +91,16 @@ fun List<ASTNode>.mapAutoLinkToType(targetType: IElementType = MarkdownTokenType
  * Extension property to get the `SpanStyle` for inline code text.
  * This style is defined by the `inlineCode` typography and the current markdown colors.
  */
+@Suppress("DEPRECATION")
 val MarkdownTypography.codeSpanStyle: SpanStyle
     @Composable
-    get() = inlineCode.copy(
-        color = LocalMarkdownColors.current.inlineCodeText,
-        background = LocalMarkdownColors.current.inlineCodeBackground
-    ).toSpanStyle()
+    get() = if (LocalMarkdownColors.current.inlineCodeText != Color.Unspecified) {
+        inlineCode.copy(
+            color = LocalMarkdownColors.current.inlineCodeText,
+            background = LocalMarkdownColors.current.inlineCodeBackground
+        )
+    } else {
+        inlineCode.copy(
+            background = LocalMarkdownColors.current.inlineCodeBackground
+        )
+    }.toSpanStyle()

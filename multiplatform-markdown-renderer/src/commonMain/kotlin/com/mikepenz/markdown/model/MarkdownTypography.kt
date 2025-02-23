@@ -23,6 +23,7 @@ interface MarkdownTypography {
     @Deprecated("Use textLink instead", ReplaceWith("textLink"))
     val link: TextStyle
     val textLink: TextLinkStyles
+    val table: TextStyle
 }
 
 @Immutable
@@ -44,4 +45,5 @@ class DefaultMarkdownTypography(
     @Deprecated("Use textLink instead", replaceWith = ReplaceWith("textLink"))
     override val link: TextStyle,
     override val textLink: TextLinkStyles,
+    override val table: TextStyle,
 ) : MarkdownTypography

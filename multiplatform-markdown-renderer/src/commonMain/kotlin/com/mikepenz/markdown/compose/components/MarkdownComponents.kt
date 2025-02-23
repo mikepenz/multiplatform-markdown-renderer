@@ -212,7 +212,7 @@ object CurrentComponentsBridge {
         MarkdownDivider(Modifier.fillMaxWidth())
     }
     val table: MarkdownComponent = {
-        MarkdownTable(it.content, it.node, style = it.typography.text)
+        MarkdownTable(it.content, it.node, style = it.typography.table)
     }
     val checkbox: MarkdownComponent = {
         MarkdownCheckBox(it.content, it.node, style = it.typography.text)

@@ -41,10 +41,16 @@ private fun MarkdownCode(
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
     val codeBlockPadding = LocalMarkdownPadding.current.codeBlock
     MarkdownCodeBackground(
-        color = backgroundCodeColor, shape = RoundedCornerShape(codeBackgroundCornerSize), modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+        color = backgroundCodeColor,
+        shape = RoundedCornerShape(codeBackgroundCornerSize),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
     ) {
+        @Suppress("DEPRECATION")
         MarkdownBasicText(
-            code, color = LocalMarkdownColors.current.codeText, modifier = Modifier.horizontalScroll(rememberScrollState()).padding(codeBlockPadding), style = style
+            text = code,
+            color = LocalMarkdownColors.current.codeText,
+            style = style,
+            modifier = Modifier.horizontalScroll(rememberScrollState()).padding(codeBlockPadding),
         )
     }
 }
@@ -92,9 +98,9 @@ fun MarkdownCodeBackground(
 ) {
     Box(
         modifier = modifier.shadow(elevation, shape, clip = false).then(if (border != null) Modifier.border(border, shape) else Modifier).background(color = color, shape = shape)
-        .clip(shape).semantics(mergeDescendants = false) {
-            isTraversalGroup = true
-        }.pointerInput(Unit) {}, propagateMinConstraints = true
+            .clip(shape).semantics(mergeDescendants = false) {
+                isTraversalGroup = true
+            }.pointerInput(Unit) {}, propagateMinConstraints = true
     ) {
         content()
     }

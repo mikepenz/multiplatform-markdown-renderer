@@ -143,7 +143,6 @@ fun MarkdownText(
                 if (placeholderState.animate) animations.animateTextSize(it) else it
             },
         style = style,
-        color = baseColor,
         inlineContent = mapOf(
             MARKDOWN_TAG_IMAGE_URL to createImageInlineTextContent(
                 placeholderState,
@@ -162,7 +161,7 @@ fun MarkdownText(
 fun createImageInlineTextContent(
     placeholderState: PlaceholderConfig,
     transformer: ImageTransformer,
-    imageState: MarkdownImageState
+    imageState: MarkdownImageState,
 ): InlineTextContent {
     return InlineTextContent(
         Placeholder(

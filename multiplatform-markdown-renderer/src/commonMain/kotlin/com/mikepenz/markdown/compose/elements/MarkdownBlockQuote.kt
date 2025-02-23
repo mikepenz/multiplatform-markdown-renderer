@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -28,7 +29,11 @@ fun MarkdownBlockQuote(
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.quote,
 ) {
-    val blockQuoteColor = LocalMarkdownColors.current.text
+    val blockQuoteColor = if (style.color.isSpecified) {
+        style.color
+    } else {
+        LocalMarkdownColors.current.text
+    }
     val blockQuoteThickness = LocalMarkdownDimens.current.blockQuoteThickness
     val blockQuote = LocalMarkdownPadding.current.blockQuote
     val blockQuoteText = LocalMarkdownPadding.current.blockQuoteText
