@@ -1,31 +1,17 @@
 package com.mikepenz.markdown.compose
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
-import com.mikepenz.markdown.model.ImageTransformer
-import com.mikepenz.markdown.model.MarkdownAnimations
-import com.mikepenz.markdown.model.MarkdownAnnotator
-import com.mikepenz.markdown.model.MarkdownColors
-import com.mikepenz.markdown.model.MarkdownDimens
-import com.mikepenz.markdown.model.MarkdownExtendedSpans
-import com.mikepenz.markdown.model.MarkdownPadding
-import com.mikepenz.markdown.model.MarkdownTypography
-import com.mikepenz.markdown.model.NoOpImageTransformerImpl
-import com.mikepenz.markdown.model.ReferenceLinkHandlerImpl
-import com.mikepenz.markdown.model.markdownAnimations
-import com.mikepenz.markdown.model.markdownAnnotator
-import com.mikepenz.markdown.model.markdownDimens
-import com.mikepenz.markdown.model.markdownExtendedSpans
-import com.mikepenz.markdown.model.markdownPadding
+import com.mikepenz.markdown.model.*
 import org.intellij.markdown.MarkdownElementTypes.ATX_1
 import org.intellij.markdown.MarkdownElementTypes.ATX_2
 import org.intellij.markdown.MarkdownElementTypes.ATX_3
@@ -92,7 +78,55 @@ fun Markdown(
 }
 
 @Composable
-internal fun ColumnScope.handleElement(
+fun LazyMarkdown(
+    content: String,
+    colors: MarkdownColors,
+    typography: MarkdownTypography,
+    modifier: Modifier = Modifier.fillMaxSize(),
+    state: LazyListState = rememberLazyListState(),
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    padding: MarkdownPadding = markdownPadding(),
+    dimens: MarkdownDimens = markdownDimens(),
+    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
+    annotator: MarkdownAnnotator = markdownAnnotator(),
+    extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    components: MarkdownComponents = markdownComponents(),
+    animations: MarkdownAnimations = markdownAnimations(),
+) {
+    CompositionLocalProvider(
+        LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl(),
+        LocalMarkdownPadding provides padding,
+        LocalMarkdownDimens provides dimens,
+        LocalMarkdownColors provides colors,
+        LocalMarkdownTypography provides typography,
+        LocalImageTransformer provides imageTransformer,
+        LocalMarkdownAnnotator provides annotator,
+        LocalMarkdownExtendedSpans provides extendedSpans,
+        LocalMarkdownComponents provides components,
+        LocalMarkdownAnimations provides animations,
+    ) {
+        LazyColumn(
+            modifier = modifier,
+            state = state,
+            contentPadding = contentPadding,
+        ) {
+            val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
+            parsedTree.children.forEach { node ->
+                item {
+                    if (!handleElement(node, components, content)) {
+                        node.children.forEach { child ->
+                            handleElement(child, components, content)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+internal fun handleElement(
     node: ASTNode,
     components: MarkdownComponents,
     content: String,
@@ -106,28 +140,28 @@ internal fun ColumnScope.handleElement(
     var handled = true
     if (includeSpacer) Spacer(Modifier.height(LocalMarkdownPadding.current.block))
     when (node.type) {
-        TEXT -> components.text(this@handleElement, model)
-        EOL -> components.eol(this@handleElement, model)
-        CODE_FENCE -> components.codeFence(this@handleElement, model)
-        CODE_BLOCK -> components.codeBlock(this@handleElement, model)
-        ATX_1 -> components.heading1(this@handleElement, model)
-        ATX_2 -> components.heading2(this@handleElement, model)
-        ATX_3 -> components.heading3(this@handleElement, model)
-        ATX_4 -> components.heading4(this@handleElement, model)
-        ATX_5 -> components.heading5(this@handleElement, model)
-        ATX_6 -> components.heading6(this@handleElement, model)
-        SETEXT_1 -> components.setextHeading1(this@handleElement, model)
-        SETEXT_2 -> components.setextHeading2(this@handleElement, model)
-        BLOCK_QUOTE -> components.blockQuote(this@handleElement, model)
-        PARAGRAPH -> components.paragraph(this@handleElement, model)
-        ORDERED_LIST -> components.orderedList(this@handleElement, model)
-        UNORDERED_LIST -> components.unorderedList(this@handleElement, model)
-        IMAGE -> components.image(this@handleElement, model)
-        LINK_DEFINITION -> components.linkDefinition(this@handleElement, model)
-        HORIZONTAL_RULE -> components.horizontalRule(this@handleElement, model)
-        TABLE -> components.table(this@handleElement, model)
+        TEXT -> components.text(model)
+        EOL -> components.eol(model)
+        CODE_FENCE -> components.codeFence(model)
+        CODE_BLOCK -> components.codeBlock(model)
+        ATX_1 -> components.heading1(model)
+        ATX_2 -> components.heading2(model)
+        ATX_3 -> components.heading3(model)
+        ATX_4 -> components.heading4(model)
+        ATX_5 -> components.heading5(model)
+        ATX_6 -> components.heading6(model)
+        SETEXT_1 -> components.setextHeading1(model)
+        SETEXT_2 -> components.setextHeading2(model)
+        BLOCK_QUOTE -> components.blockQuote(model)
+        PARAGRAPH -> components.paragraph(model)
+        ORDERED_LIST -> components.orderedList(model)
+        UNORDERED_LIST -> components.unorderedList(model)
+        IMAGE -> components.image(model)
+        LINK_DEFINITION -> components.linkDefinition(model)
+        HORIZONTAL_RULE -> components.horizontalRule(model)
+        TABLE -> components.table(model)
         else -> {
-            handled = components.custom?.invoke(this@handleElement, node.type, model) != null
+            handled = components.custom?.invoke(node.type, model) != null
         }
     }
 
