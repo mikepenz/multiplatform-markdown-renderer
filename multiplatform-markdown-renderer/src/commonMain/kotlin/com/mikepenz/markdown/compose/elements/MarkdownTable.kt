@@ -22,7 +22,7 @@ import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.handleElement
-import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
+import org.intellij.markdown.MarkdownElementTypes.IMAGE
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.flavours.gfm.GFMElementTypes.HEADER
@@ -91,25 +91,21 @@ fun MarkdownTableHeader(
     Row(
         verticalAlignment = verticalAlignment, modifier = Modifier.widthIn(tableWidth).height(IntrinsicSize.Max)
     ) {
-        header.children.forEach {
-            when (it.type) {
-                CELL -> {
-                    Column(
-                        modifier = Modifier.padding(tableCellPadding).weight(1f),
-                    ) {
-                        if (it.children.count() == 1 && it.children.first().type == TEXT) {
-                            MarkdownTableBasicText(
-                                content = content,
-                                cell = it,
-                                style = style.copy(fontWeight = FontWeight.Bold),
-                                maxLines = maxLines,
-                                overflow = overflow,
-                                annotatorSettings = annotatorSettings
-                            )
-                        } else {
-                            handleElement(node = it, components = markdownComponents, content = content, includeSpacer = false)
-                        }
-                    }
+        header.children.filter { it.type == CELL }.forEach { cell ->
+            Column(
+                modifier = Modifier.padding(tableCellPadding).weight(1f),
+            ) {
+                if (cell.children.any { it.type == IMAGE }) {
+                    handleElement(node = cell, components = markdownComponents, content = content, includeSpacer = false)
+                } else {
+                    MarkdownTableBasicText(
+                        content = content,
+                        cell = cell,
+                        style = style.copy(fontWeight = FontWeight.Bold),
+                        maxLines = maxLines,
+                        overflow = overflow,
+                        annotatorSettings = annotatorSettings
+                    )
                 }
             }
         }
@@ -136,10 +132,10 @@ fun MarkdownTableRow(
             Column(
                 modifier = Modifier.padding(tableCellPadding).weight(1f),
             ) {
-                if (cell.children.count() == 1 && cell.children.first().type == TEXT) {
-                    MarkdownTableBasicText(content = content, cell = cell, style = style, maxLines = maxLines, overflow = overflow, annotatorSettings = annotatorSettings)
-                } else {
+                if (cell.children.any { it.type == IMAGE }) {
                     handleElement(node = cell, components = markdownComponents, content = content, includeSpacer = false)
+                } else {
+                    MarkdownTableBasicText(content = content, cell = cell, style = style, maxLines = maxLines, overflow = overflow, annotatorSettings = annotatorSettings)
                 }
             }
         }
