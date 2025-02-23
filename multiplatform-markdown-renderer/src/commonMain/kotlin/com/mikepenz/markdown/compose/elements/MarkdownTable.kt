@@ -106,6 +106,7 @@ fun MarkdownTableHeader(
         header.children.forEach {
             when (it.type) {
                 CELL -> {
+                    @Suppress("DEPRECATION")
                     MarkdownBasicText(
                         text = content.buildMarkdownAnnotatedString(
                             textNode = it,
@@ -141,6 +142,7 @@ fun MarkdownTableRow(
         modifier = Modifier.widthIn(tableWidth)
     ) {
         header.children.filter { it.type == CELL }.forEach { cell ->
+            @Suppress("DEPRECATION")
             MarkdownBasicText(
                 text = content.buildMarkdownAnnotatedString(
                     textNode = cell,

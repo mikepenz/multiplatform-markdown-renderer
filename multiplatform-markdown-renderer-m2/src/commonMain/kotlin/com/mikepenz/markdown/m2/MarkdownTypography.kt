@@ -32,6 +32,7 @@ fun markdownTypography(
         fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline
     ),
     textLink: TextLinkStyles = TextLinkStyles(style = link.toSpanStyle()),
+    table: TextStyle = text,
 ): MarkdownTypography = DefaultMarkdownTypography(
     h1 = h1,
     h2 = h2,
@@ -48,5 +49,6 @@ fun markdownTypography(
     bullet = bullet,
     list = list,
     link = link,
-    textLink = textLink
+    textLink = textLink,
+    table = table,
 )
