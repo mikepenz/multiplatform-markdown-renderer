@@ -6,19 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisallowComposableCalls
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
@@ -34,23 +26,24 @@ import dev.snipme.highlights.model.SyntaxThemes
 import org.intellij.markdown.ast.ASTNode
 
 /** Default definition for the [MarkdownHighlightedCodeFence]. Uses default theme, attempts to apply language from markdown. */
-val highlightedCodeFence: MarkdownComponent = { MarkdownHighlightedCodeFence(it.content, it.node) }
+val highlightedCodeFence: MarkdownComponent = { MarkdownHighlightedCodeFence(content = it.content, node = it.node, style = it.typography.code) }
 
 /** Default definition for the [MarkdownHighlightedCodeBlock]. Uses default theme, attempts to apply language from markdown. */
-val highlightedCodeBlock: MarkdownComponent = { MarkdownHighlightedCodeBlock(it.content, it.node) }
+val highlightedCodeBlock: MarkdownComponent = { MarkdownHighlightedCodeBlock(content = it.content, node = it.node, style = it.typography.code) }
 
 @Composable
 fun MarkdownHighlightedCodeFence(
     content: String,
     node: ASTNode,
+    style: TextStyle = LocalMarkdownTypography.current.code,
     highlights: Highlights.Builder = Highlights.Builder(
         theme = SyntaxThemes.default(
             darkMode = isSystemInDarkTheme()
         )
     ),
 ) {
-    MarkdownCodeFence(content, node) { code, language ->
-        MarkdownHighlightedCode(code, language, highlights)
+    MarkdownCodeFence(content, node, style) { code, language, style ->
+        MarkdownHighlightedCode(code = code, language = language, highlights = highlights, style = style)
     }
 }
 
@@ -58,14 +51,15 @@ fun MarkdownHighlightedCodeFence(
 fun MarkdownHighlightedCodeBlock(
     content: String,
     node: ASTNode,
+    style: TextStyle = LocalMarkdownTypography.current.code,
     highlights: Highlights.Builder = Highlights.Builder(
         theme = SyntaxThemes.default(
             darkMode = isSystemInDarkTheme()
         )
     ),
 ) {
-    MarkdownCodeBlock(content, node) { code, language ->
-        MarkdownHighlightedCode(code, language, highlights)
+    MarkdownCodeBlock(content, node, style) { code, language, style ->
+        MarkdownHighlightedCode(code = code, language = language, highlights = highlights, style = style)
     }
 }
 
