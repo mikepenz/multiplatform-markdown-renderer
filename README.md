@@ -366,8 +366,20 @@ val highlightsBuilder = remember(isDarkTheme) {
 Markdown(
     MARKDOWN,
     components = markdownComponents(
-        codeBlock = { MarkdownHighlightedCodeBlock(it.content, it.node, highlightsBuilder) },
-        codeFence = { MarkdownHighlightedCodeFence(it.content, it.node, highlightsBuilder) },
+        codeBlock = {
+            MarkdownHighlightedCodeBlock(
+                content = it.content,
+                node = it.node,
+                highlights = highlightsBuilder
+            )
+        },
+        codeFence = {
+            MarkdownHighlightedCodeFence(
+                content = it.content,
+                node = it.node,
+                highlights = highlightsBuilder
+            )
+        },
     )
 )
 ```

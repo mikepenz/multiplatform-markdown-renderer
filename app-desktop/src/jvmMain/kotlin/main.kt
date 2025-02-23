@@ -4,18 +4,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.contentColorFor
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
@@ -101,10 +91,10 @@ fun main() = application {
 
                     SelectionContainer {
                         Markdown(
-                            MARKDOWN,
+                            content = MARKDOWN,
                             components = markdownComponents(
-                                codeBlock = { MarkdownHighlightedCodeBlock(it.content, it.node, highlightsBuilder) },
-                                codeFence = { MarkdownHighlightedCodeFence(it.content, it.node, highlightsBuilder) },
+                                codeBlock = { MarkdownHighlightedCodeBlock(content = it.content, node = it.node, highlights = highlightsBuilder) },
+                                codeFence = { MarkdownHighlightedCodeFence(content = it.content, node = it.node, highlights = highlightsBuilder) },
                             ),
                             imageTransformer = Coil3ImageTransformerImpl,
                             extendedSpans = markdownExtendedSpans {

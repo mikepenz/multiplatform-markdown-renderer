@@ -156,8 +156,8 @@ public final class com/mikepenz/markdown/compose/components/MarkdownComponentsKt
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt;
 	public fun <init> ()V
-	public final fun getLambda-1$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-2$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-1$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda-2$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
 }
 
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownTableKt {
@@ -177,8 +177,8 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownCheckBoxKt {
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownCodeKt {
 	public static final fun MarkdownCodeBackground-xzXfpvY (JLandroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/BorderStroke;FLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownCodeBlock (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownCodeFence (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownCodeBlock (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownCodeFence (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownDividerKt {
@@ -206,8 +206,9 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownParagraphKt {
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownTableKt {
 	public static final fun MarkdownTable (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function6;Lkotlin/jvm/functions/Function6;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownTableHeader-5QDCva0 (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILandroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownTableRow-5QDCva0 (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILandroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownTableBasicText-kKmfEb0 (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;IILcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownTableHeader-OniuKJc (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownTableRow-OniuKJc (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownTextKt {
