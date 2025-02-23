@@ -1,9 +1,7 @@
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -26,7 +24,7 @@ import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.RoundedCornerSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.rememberSquigglyUnderlineAnimator
-import com.mikepenz.markdown.m2.Markdown
+import com.mikepenz.markdown.m2.LazyMarkdown
 import com.mikepenz.markdown.model.markdownExtendedSpans
 import dev.snipme.highlights.Highlights
 import dev.snipme.highlights.model.SyntaxThemes
@@ -35,7 +33,6 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @OptIn(ExperimentalResourceApi::class)
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "Markdown Sample") {
-        val scrollState = rememberScrollState()
         val isDarkTheme = isSystemInDarkTheme()
         val uriHandler = LocalUriHandler.current
         var showLicenses by remember { mutableStateOf(false) }
@@ -63,7 +60,7 @@ fun main() = application {
                         }
                     )
                 }
-            ) { padding ->
+            ) { contentPadding ->
                 if (showLicenses) {
                     var libs by remember { mutableStateOf<Libs?>(null) }
                     LaunchedEffect("aboutlibraries.json") {
@@ -82,7 +79,7 @@ fun main() = application {
                             badgeContentColor = contentColorFor(MaterialTheme.colors.background),
                             dialogConfirmButtonColor = MaterialTheme.colors.primary,
                         ),
-                        contentPadding = padding
+                        contentPadding = contentPadding
                     )
                 } else {
                     val highlightsBuilder = remember(isDarkTheme) {
@@ -90,7 +87,7 @@ fun main() = application {
                     }
 
                     SelectionContainer {
-                        Markdown(
+                        LazyMarkdown(
                             content = MARKDOWN,
                             components = markdownComponents(
                                 codeBlock = { MarkdownHighlightedCodeBlock(content = it.content, node = it.node, highlights = highlightsBuilder) },
@@ -106,7 +103,12 @@ fun main() = application {
                                     )
                                 }
                             },
-                            modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(16.dp)
+                            contentPadding = PaddingValues(
+                                top = contentPadding.calculateTopPadding() + 16.dp,
+                                end = 16.dp,
+                                bottom = contentPadding.calculateBottomPadding() + 16.dp,
+                                start = 16.dp
+                            ),
                         )
                     }
                 }
