@@ -153,7 +153,7 @@ fun AnnotatedString.Builder.appendMarkdownLink(
  *
  * @param content The content string.
  * @param node The AST node representing the auto link.
- * @param linkTextStyle The style to apply to the link text.
+ * @param annotatorSettings The style to apply to the link text.
  */
 fun AnnotatedString.Builder.appendAutoLink(
     content: String,

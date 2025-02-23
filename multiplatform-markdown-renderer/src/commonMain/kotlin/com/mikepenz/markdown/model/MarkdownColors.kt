@@ -3,6 +3,7 @@ package com.mikepenz.markdown.model
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.Color
+import com.mikepenz.markdown.compose.Markdown
 
 @Stable
 interface MarkdownColors {
