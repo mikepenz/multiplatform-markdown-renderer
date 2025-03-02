@@ -58,14 +58,16 @@ fun MarkdownCodeFence(
     style: TextStyle = LocalMarkdownTypography.current.code,
     block: @Composable (String, String?, TextStyle) -> Unit = { code, _, style -> MarkdownCode(code = code, style = style) },
 ) {
-    // CODE_FENCE_START, FENCE_LANG, {content // CODE_FENCE_CONTENT // x-times}, CODE_FENCE_END
+    // CODE_FENCE_START, FENCE_LANG, EOL, {content // CODE_FENCE_CONTENT // x-times}, CODE_FENCE_END
     // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}, EOL
     // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}
+    // CODE_FENCE_START, FENCE_LANG, EOL, {content // CODE_FENCE_CONTENT // x-times}
 
     val language = node.findChildOfType(MarkdownTokenTypes.FENCE_LANG)?.getTextInNode(content)?.toString()
     if (node.children.size >= 3) {
         val start = node.children[2].startOffset
-        val end = node.children[(node.children.size - 2).coerceAtLeast(2)].endOffset
+        val minCodeFenceCount = if (language != null) 3 else 2
+        val end = node.children[(node.children.size - 2).coerceAtLeast(minCodeFenceCount)].endOffset
         block(content.subSequence(start, end).toString().replaceIndent(), language, style)
     } else {
         // invalid code block, skipping
