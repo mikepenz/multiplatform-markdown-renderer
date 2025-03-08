@@ -66,7 +66,7 @@ fun MarkdownCodeFence(
     val language = node.findChildOfType(MarkdownTokenTypes.FENCE_LANG)?.getTextInNode(content)?.toString()
     if (node.children.size >= 3) {
         val start = node.children[2].startOffset
-        val minCodeFenceCount = if (language != null) 3 else 2
+        val minCodeFenceCount = if (language != null && node.children.size > 3) 3 else 2
         val end = node.children[(node.children.size - 2).coerceAtLeast(minCodeFenceCount)].endOffset
         block(content.subSequence(start, end).toString().replaceIndent(), language, style)
     } else {
