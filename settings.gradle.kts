@@ -36,6 +36,5 @@ include(":multiplatform-markdown-renderer-coil2")
 include(":multiplatform-markdown-renderer-coil3")
 include(":multiplatform-markdown-renderer-code")
 
-include(":app")
-include(":app-desktop")
-include(":app-wasm")
+include(":sample")
+include(":test")
