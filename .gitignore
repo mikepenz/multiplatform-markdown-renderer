@@ -43,3 +43,6 @@ captures/
 # Generated podspec
 *.podspec
 /.kotlin/
+
+## User settings
+xcuserdata/
