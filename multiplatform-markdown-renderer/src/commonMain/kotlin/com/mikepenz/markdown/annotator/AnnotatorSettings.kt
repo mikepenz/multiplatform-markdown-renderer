@@ -9,7 +9,6 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.LinkInteractionListener
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.TextStyle
 import com.mikepenz.markdown.compose.LocalMarkdownAnnotator
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
@@ -33,6 +32,9 @@ interface AnnotatorSettings {
 
     /** Represents the [LinkInteractionListener] used for links in this annotated string */
     val linkInteractionListener: LinkInteractionListener?
+
+    /** Defines if a EOL should be treated as a new line */
+    val eolAsNewLine: Boolean
 }
 
 @Immutable
@@ -42,16 +44,8 @@ class DefaultAnnotatorSettings(
     override val annotator: MarkdownAnnotator? = null,
     override val referenceLinkHandler: ReferenceLinkHandler? = null,
     override val linkInteractionListener: LinkInteractionListener? = null,
-) : AnnotatorSettings {
-    constructor(
-        style: TextStyle,
-        linkTextSpanStyle: TextLinkStyles = TextLinkStyles(style = style.toSpanStyle()),
-        codeSpanStyle: SpanStyle = style.toSpanStyle(),
-        annotator: MarkdownAnnotator? = null,
-        referenceLinkHandler: ReferenceLinkHandler? = null,
-        linkInteractionListener: LinkInteractionListener? = null,
-    ) : this(linkTextSpanStyle, codeSpanStyle, annotator, referenceLinkHandler, linkInteractionListener)
-}
+    override val eolAsNewLine: Boolean = false,
+) : AnnotatorSettings
 
 @Composable
 fun annotatorSettings(
@@ -72,10 +66,12 @@ fun annotatorSettings(
             }
         }
     },
+    eolAsNewLine: Boolean = false,
 ): AnnotatorSettings = DefaultAnnotatorSettings(
     linkTextSpanStyle = linkTextSpanStyle,
     codeSpanStyle = codeSpanStyle,
     annotator = annotator,
     referenceLinkHandler = referenceLinkHandler,
     linkInteractionListener = linkInteractionListener,
+    eolAsNewLine = eolAsNewLine,
 )
