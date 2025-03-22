@@ -1,7 +1,7 @@
 public final class com/mikepenz/markdown/m3/ComposableSingletons$MarkdownKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/m3/ComposableSingletons$MarkdownKt;
 	public fun <init> ()V
-	public final fun getLambda-1$multiplatform_markdown_renderer_m3 ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-101019897$multiplatform_markdown_renderer_m3 ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/mikepenz/markdown/m3/MarkdownColorsKt {
@@ -20,7 +20,7 @@ public final class com/mikepenz/markdown/m3/MarkdownTypographyKt {
 public final class com/mikepenz/markdown/m3/elements/ComposableSingletons$MarkdownCheckBoxKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/m3/elements/ComposableSingletons$MarkdownCheckBoxKt;
 	public fun <init> ()V
-	public final fun getLambda-1$multiplatform_markdown_renderer_m3 ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$697710124$multiplatform_markdown_renderer_m3 ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/mikepenz/markdown/m3/elements/MarkdownCheckBoxKt {
