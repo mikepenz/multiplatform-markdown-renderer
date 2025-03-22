@@ -57,27 +57,27 @@ public final class com/mikepenz/markdown/compose/MarkdownKt {
 public final class com/mikepenz/markdown/compose/components/ComposableSingletons$MarkdownComponentsKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/components/ComposableSingletons$MarkdownComponentsKt;
 	public fun <init> ()V
-	public final fun getLambda-1$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-10$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-11$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-12$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-13$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-14$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-15$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-16$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-17$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-18$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-19$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-2$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-20$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-21$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-3$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-4$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-5$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-6$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-7$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-8$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-9$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-1478371100$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-1737749337$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-1885828013$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-656260867$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-755041388$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-79716805$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-946352889$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-955232085$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-983220592$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1278352658$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1284396449$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1414250708$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$147566033$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1557954832$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1847464025$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1959655216$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$359038158$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$375745237$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$828868591$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$843364644$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$87748494$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/mikepenz/markdown/compose/components/CurrentComponentsBridge {
@@ -156,15 +156,15 @@ public final class com/mikepenz/markdown/compose/components/MarkdownComponentsKt
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt;
 	public fun <init> ()V
-	public final fun getLambda-1$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
-	public final fun getLambda-2$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-449689539$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$591785369$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
 }
 
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownTableKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownTableKt;
 	public fun <init> ()V
-	public final fun getLambda-1$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function6;
-	public final fun getLambda-2$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function6;
+	public final fun getLambda$-908040320$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function6;
+	public final fun getLambda$485547761$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function6;
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownBlockQuoteKt {

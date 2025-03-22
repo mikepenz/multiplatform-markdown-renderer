@@ -1,8 +1,8 @@
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownHighlightedCodeKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownHighlightedCodeKt;
 	public fun <init> ()V
-	public final fun getLambda-1$multiplatform_markdown_renderer_code_release ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-2$multiplatform_markdown_renderer_code_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-818373765$multiplatform_markdown_renderer_code_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$789943711$multiplatform_markdown_renderer_code_release ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownHighlightedCodeKt {
