@@ -273,7 +273,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     }
 
                     MarkdownTokenTypes.EMPH -> if (parentType != MarkdownElementTypes.EMPH && parentType != MarkdownElementTypes.STRONG) append('*')
-                    MarkdownTokenTypes.EOL -> append('\n')
+                    MarkdownTokenTypes.EOL -> append(' ')
                     MarkdownTokenTypes.WHITE_SPACE -> if (length > 0) append(' ')
                     MarkdownTokenTypes.BLOCK_QUOTE -> {
                         skipIfNext = MarkdownTokenTypes.WHITE_SPACE
