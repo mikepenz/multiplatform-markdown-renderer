@@ -7,18 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
-import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
-import com.mikepenz.markdown.compose.elements.MarkdownBulletList
-import com.mikepenz.markdown.compose.elements.MarkdownCheckBox
-import com.mikepenz.markdown.compose.elements.MarkdownCodeBlock
-import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
-import com.mikepenz.markdown.compose.elements.MarkdownDivider
-import com.mikepenz.markdown.compose.elements.MarkdownHeader
-import com.mikepenz.markdown.compose.elements.MarkdownImage
-import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
-import com.mikepenz.markdown.compose.elements.MarkdownParagraph
-import com.mikepenz.markdown.compose.elements.MarkdownTable
-import com.mikepenz.markdown.compose.elements.MarkdownText
+import com.mikepenz.markdown.compose.elements.*
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import org.intellij.markdown.IElementType
@@ -149,41 +138,41 @@ private class DefaultMarkdownComponents(
  */
 object CurrentComponentsBridge {
     val text: MarkdownComponent = {
-        MarkdownText(it.getUnescapedTextInNode())
+        MarkdownText(it.getUnescapedTextInNode(), style = it.typography.text)
     }
     val eol: MarkdownComponent = { }
     val codeFence: MarkdownComponent = {
-        MarkdownCodeFence(it.content, it.node)
+        MarkdownCodeFence(it.content, it.node, style = it.typography.code)
     }
     val codeBlock: MarkdownComponent = {
-        MarkdownCodeBlock(it.content, it.node)
+        MarkdownCodeBlock(it.content, it.node, style = it.typography.code)
     }
     val heading1: MarkdownComponent = {
-        MarkdownHeader(it.content, it.node, it.typography.h1)
+        MarkdownHeader(it.content, it.node, style = it.typography.h1)
     }
     val heading2: MarkdownComponent = {
-        MarkdownHeader(it.content, it.node, it.typography.h2)
+        MarkdownHeader(it.content, it.node, style = it.typography.h2)
     }
     val heading3: MarkdownComponent = {
-        MarkdownHeader(it.content, it.node, it.typography.h3)
+        MarkdownHeader(it.content, it.node, style = it.typography.h3)
     }
     val heading4: MarkdownComponent = {
-        MarkdownHeader(it.content, it.node, it.typography.h4)
+        MarkdownHeader(it.content, it.node, style = it.typography.h4)
     }
     val heading5: MarkdownComponent = {
-        MarkdownHeader(it.content, it.node, it.typography.h5)
+        MarkdownHeader(it.content, it.node, style = it.typography.h5)
     }
     val heading6: MarkdownComponent = {
-        MarkdownHeader(it.content, it.node, it.typography.h6)
+        MarkdownHeader(it.content, it.node, style = it.typography.h6)
     }
     val setextHeading1: MarkdownComponent = {
-        MarkdownHeader(it.content, it.node, it.typography.h1, MarkdownTokenTypes.SETEXT_CONTENT)
+        MarkdownHeader(it.content, it.node, style = it.typography.h1, contentChildType = MarkdownTokenTypes.SETEXT_CONTENT)
     }
     val setextHeading2: MarkdownComponent = {
-        MarkdownHeader(it.content, it.node, it.typography.h2, MarkdownTokenTypes.SETEXT_CONTENT)
+        MarkdownHeader(it.content, it.node, style = it.typography.h2, contentChildType = MarkdownTokenTypes.SETEXT_CONTENT)
     }
     val blockQuote: MarkdownComponent = {
-        MarkdownBlockQuote(it.content, it.node)
+        MarkdownBlockQuote(it.content, it.node, style = it.typography.quote)
     }
     val paragraph: MarkdownComponent = {
         MarkdownParagraph(it.content, it.node, style = it.typography.paragraph)
@@ -212,10 +201,10 @@ object CurrentComponentsBridge {
         MarkdownDivider(Modifier.fillMaxWidth())
     }
     val table: MarkdownComponent = {
-        MarkdownTable(it.content, it.node, style = it.typography.text)
+        MarkdownTable(it.content, it.node, style = it.typography.table)
     }
     val checkbox: MarkdownComponent = {
-        MarkdownCheckBox(it.content, it.node, style = it.typography.text)
+        MarkdownCheckBox(it.content, it.node, style = it.typography.table)
     }
     val custom: CustomMarkdownComponent? = null
 }

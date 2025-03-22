@@ -101,10 +101,10 @@ fun main() = application {
 
                     SelectionContainer {
                         Markdown(
-                            MARKDOWN,
+                            content = MARKDOWN,
                             components = markdownComponents(
-                                codeBlock = { MarkdownHighlightedCodeBlock(it.content, it.node, highlightsBuilder) },
-                                codeFence = { MarkdownHighlightedCodeFence(it.content, it.node, highlightsBuilder) },
+                                codeBlock = { MarkdownHighlightedCodeBlock(content = it.content, node = it.node, highlights = highlightsBuilder) },
+                                codeFence = { MarkdownHighlightedCodeFence(content = it.content, node = it.node, highlights = highlightsBuilder) },
                             ),
                             imageTransformer = Coil3ImageTransformerImpl,
                             extendedSpans = markdownExtendedSpans {
@@ -226,8 +226,8 @@ Title 1
 Title 2
 ------
               
-[https://mikepenz.dev](https://mikepenz.dev)
-[https://github.com/mikepenz](https://github.com/mikepenz)
-[Mike Penz's Blog](https://blog.mikepenz.dev/)
-<https://blog.mikepenz.dev/>
+[https://mikepenz.dev](https://mikepenz.dev)  
+[https://github.com/mikepenz](https://github.com/mikepenz)  
+[Mike Penz's Blog](https://blog.mikepenz.dev/)  
+<https://blog.mikepenz.dev/>  
 """

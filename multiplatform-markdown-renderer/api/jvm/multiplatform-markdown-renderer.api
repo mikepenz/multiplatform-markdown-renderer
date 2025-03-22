@@ -13,23 +13,23 @@ public final class com/mikepenz/markdown/annotator/AnnotatedStringKtxKt {
 public abstract interface class com/mikepenz/markdown/annotator/AnnotatorSettings {
 	public abstract fun getAnnotator ()Lcom/mikepenz/markdown/model/MarkdownAnnotator;
 	public abstract fun getCodeSpanStyle ()Landroidx/compose/ui/text/SpanStyle;
+	public abstract fun getEolAsNewLine ()Z
 	public abstract fun getLinkInteractionListener ()Landroidx/compose/ui/text/LinkInteractionListener;
 	public abstract fun getLinkTextSpanStyle ()Landroidx/compose/ui/text/TextLinkStyles;
 	public abstract fun getReferenceLinkHandler ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
 }
 
 public final class com/mikepenz/markdown/annotator/AnnotatorSettingsKt {
-	public static final fun annotatorSettings (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/platform/UriHandler;Landroidx/compose/ui/text/LinkInteractionListener;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/annotator/AnnotatorSettings;
+	public static final fun annotatorSettings (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/platform/UriHandler;Landroidx/compose/ui/text/LinkInteractionListener;ZLandroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/annotator/AnnotatorSettings;
 }
 
 public final class com/mikepenz/markdown/annotator/DefaultAnnotatorSettings : com/mikepenz/markdown/annotator/AnnotatorSettings {
 	public static final field $stable I
-	public fun <init> (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;)V
-	public synthetic fun <init> (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;)V
-	public synthetic fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;Z)V
+	public synthetic fun <init> (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getAnnotator ()Lcom/mikepenz/markdown/model/MarkdownAnnotator;
 	public fun getCodeSpanStyle ()Landroidx/compose/ui/text/SpanStyle;
+	public fun getEolAsNewLine ()Z
 	public fun getLinkInteractionListener ()Landroidx/compose/ui/text/LinkInteractionListener;
 	public fun getLinkTextSpanStyle ()Landroidx/compose/ui/text/TextLinkStyles;
 	public fun getReferenceLinkHandler ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
@@ -156,8 +156,8 @@ public final class com/mikepenz/markdown/compose/components/MarkdownComponentsKt
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt;
 	public fun <init> ()V
-	public final fun getLambda-1$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-2$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-1$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda-2$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
 }
 
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownTableKt {
@@ -177,8 +177,8 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownCheckBoxKt {
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownCodeKt {
 	public static final fun MarkdownCodeBackground-xzXfpvY (JLandroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/BorderStroke;FLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownCodeBlock (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownCodeFence (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownCodeBlock (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownCodeFence (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownDividerKt {
@@ -206,8 +206,9 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownParagraphKt {
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownTableKt {
 	public static final fun MarkdownTable (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function6;Lkotlin/jvm/functions/Function6;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownTableHeader-5QDCva0 (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILandroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownTableRow-5QDCva0 (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILandroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownTableBasicText-kKmfEb0 (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;IILcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownTableHeader-OniuKJc (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownTableRow-OniuKJc (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownTextKt {
@@ -329,7 +330,7 @@ public final class com/mikepenz/markdown/compose/extendedspans/internal/TextLink
 }
 
 public abstract interface class com/mikepenz/markdown/model/BulletHandler {
-	public abstract fun transform (Lorg/intellij/markdown/IElementType;Ljava/lang/CharSequence;I)Ljava/lang/String;
+	public abstract fun transform (Lorg/intellij/markdown/IElementType;Ljava/lang/CharSequence;II)Ljava/lang/String;
 }
 
 public final class com/mikepenz/markdown/model/DefaultMarkdownAnimation : com/mikepenz/markdown/model/MarkdownAnimations {
@@ -366,7 +367,7 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownExtendedSpans : co
 
 public final class com/mikepenz/markdown/model/DefaultMarkdownTypography : com/mikepenz/markdown/model/MarkdownTypography {
 	public static final field $stable I
-	public fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;)V
+	public fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;)V
 	public fun getBullet ()Landroidx/compose/ui/text/TextStyle;
 	public fun getCode ()Landroidx/compose/ui/text/TextStyle;
 	public fun getH1 ()Landroidx/compose/ui/text/TextStyle;
@@ -381,6 +382,7 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownTypography : com/m
 	public fun getOrdered ()Landroidx/compose/ui/text/TextStyle;
 	public fun getParagraph ()Landroidx/compose/ui/text/TextStyle;
 	public fun getQuote ()Landroidx/compose/ui/text/TextStyle;
+	public fun getTable ()Landroidx/compose/ui/text/TextStyle;
 	public fun getText ()Landroidx/compose/ui/text/TextStyle;
 	public fun getTextLink ()Landroidx/compose/ui/text/TextLinkStyles;
 }
@@ -517,6 +519,7 @@ public abstract interface class com/mikepenz/markdown/model/MarkdownTypography {
 	public abstract fun getOrdered ()Landroidx/compose/ui/text/TextStyle;
 	public abstract fun getParagraph ()Landroidx/compose/ui/text/TextStyle;
 	public abstract fun getQuote ()Landroidx/compose/ui/text/TextStyle;
+	public abstract fun getTable ()Landroidx/compose/ui/text/TextStyle;
 	public abstract fun getText ()Landroidx/compose/ui/text/TextStyle;
 	public abstract fun getTextLink ()Landroidx/compose/ui/text/TextLinkStyles;
 }

@@ -7,9 +7,12 @@
 </p>
 
 <div align="center">
-  <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/actions">
+    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/actions">
 		<img src="https://github.com/mikepenz/multiplatform-markdown-renderer/workflows/CI/badge.svg"/>
 	</a>
+    <a href="https://central.sonatype.com/artifact/com.mikepenz/multiplatform-markdown-renderer">
+        <img src="https://img.shields.io/maven-central/v/com.mikepenz/multiplatform-markdown-renderer?style=flat-square&color=%231B4897"/>
+    </a>
 </div>
 <br />
 
@@ -130,7 +133,10 @@ By default, the `MarkdownText` animates size changes (if images are loaded).
 Markdown(
     content,
     animations = markdownAnimations(
-        animateTextSize = { this /** No animation */ }
+        animateTextSize = {
+            this
+            /** No animation */
+        }
     ),
 }
 ```
@@ -139,7 +145,7 @@ Markdown(
 
 Starting with 0.16.0 the library includes support
 for [extended-spans](https://github.com/saket/extended-spans).
-> The library was integrated to make it multiplatform-compatible. 
+> The library was integrated to make it multiplatform-compatible.
 > All credits for its functionality go to [Saket Narayan](https://github.com/saket).
 
 It is not enabled by default, however you can enable it quickly by configuring the `extendedSpans`
@@ -266,7 +272,8 @@ Markdown(
 
 ### Table Support
 
-Starting with 0.30.0, the library includes support for rendering tables in markdown. The `Markdown` composable will automatically handle table elements in your markdown content.
+Starting with 0.30.0, the library includes support for rendering tables in markdown. The `Markdown`
+composable will automatically handle table elements in your markdown content.
 
 ```kotlin
 val markdown = """
@@ -303,7 +310,8 @@ Markdown(
 ```
 
 > [!NOTE]
-> 0.21.0 adds JVM support for this dependency via `HTTPUrlConnection` -> however this is expected to be removed in the
+> 0.21.0 adds JVM support for this dependency via `HTTPUrlConnection` -> however this is expected to
+> be removed in the
 > future.
 
 > [!NOTE]  
@@ -330,14 +338,15 @@ Markdown(
 
 The library (introduced with 0.27.0) offers optional support for syntax highlighting via
 the [Highlights](https://github.com/SnipMeDev/Highlights) project.
-This support is not included in the core, and can be enabled by adding the `multiplatform-markdown-renderer-code`
+This support is not included in the core, and can be enabled by adding the
+`multiplatform-markdown-renderer-code`
 dependency.
 
 ```groovy
 implementation("com.mikepenz:multiplatform-markdown-renderer-code:${version}")
 ```
 
-Once added, the `Markdown` has to be configured to use the alternative code highlighter. 
+Once added, the `Markdown` has to be configured to use the alternative code highlighter.
 
 ```kotlin
 // Use default color scheme
@@ -357,8 +366,20 @@ val highlightsBuilder = remember(isDarkTheme) {
 Markdown(
     MARKDOWN,
     components = markdownComponents(
-        codeBlock = { MarkdownHighlightedCodeBlock(it.content, it.node, highlightsBuilder) },
-        codeFence = { MarkdownHighlightedCodeFence(it.content, it.node, highlightsBuilder) },
+        codeBlock = {
+            MarkdownHighlightedCodeBlock(
+                content = it.content,
+                node = it.node,
+                highlights = highlightsBuilder
+            )
+        },
+        codeFence = {
+            MarkdownHighlightedCodeFence(
+                content = it.content,
+                node = it.node,
+                highlights = highlightsBuilder
+            )
+        },
     )
 )
 ```

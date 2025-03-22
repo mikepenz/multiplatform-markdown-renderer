@@ -26,23 +26,24 @@ import dev.snipme.highlights.model.SyntaxThemes
 import org.intellij.markdown.ast.ASTNode
 
 /** Default definition for the [MarkdownHighlightedCodeFence]. Uses default theme, attempts to apply language from markdown. */
-val highlightedCodeFence: MarkdownComponent = { MarkdownHighlightedCodeFence(it.content, it.node) }
+val highlightedCodeFence: MarkdownComponent = { MarkdownHighlightedCodeFence(content = it.content, node = it.node, style = it.typography.code) }
 
 /** Default definition for the [MarkdownHighlightedCodeBlock]. Uses default theme, attempts to apply language from markdown. */
-val highlightedCodeBlock: MarkdownComponent = { MarkdownHighlightedCodeBlock(it.content, it.node) }
+val highlightedCodeBlock: MarkdownComponent = { MarkdownHighlightedCodeBlock(content = it.content, node = it.node, style = it.typography.code) }
 
 @Composable
 fun MarkdownHighlightedCodeFence(
     content: String,
     node: ASTNode,
+    style: TextStyle = LocalMarkdownTypography.current.code,
     highlights: Highlights.Builder = Highlights.Builder(
         theme = SyntaxThemes.default(
             darkMode = isSystemInDarkTheme()
         )
     ),
 ) {
-    MarkdownCodeFence(content, node) { code, language ->
-        MarkdownHighlightedCode(code, language, highlights)
+    MarkdownCodeFence(content, node, style) { code, language, style ->
+        MarkdownHighlightedCode(code = code, language = language, highlights = highlights, style = style)
     }
 }
 
@@ -50,14 +51,15 @@ fun MarkdownHighlightedCodeFence(
 fun MarkdownHighlightedCodeBlock(
     content: String,
     node: ASTNode,
+    style: TextStyle = LocalMarkdownTypography.current.code,
     highlights: Highlights.Builder = Highlights.Builder(
         theme = SyntaxThemes.default(
             darkMode = isSystemInDarkTheme()
         )
     ),
 ) {
-    MarkdownCodeBlock(content, node) { code, language ->
-        MarkdownHighlightedCode(code, language, highlights)
+    MarkdownCodeBlock(content, node, style) { code, language, style ->
+        MarkdownHighlightedCode(code = code, language = language, highlights = highlights, style = style)
     }
 }
 
@@ -87,8 +89,9 @@ fun MarkdownHighlightedCode(
         shape = RoundedCornerShape(codeBackgroundCornerSize),
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
     ) {
+        @Suppress("DEPRECATION")
         MarkdownBasicText(
-            buildAnnotatedString {
+            text = buildAnnotatedString {
                 text(codeHighlights.getCode())
                 codeHighlights.getHighlights()
                     .filterIsInstance<ColorHighlight>()

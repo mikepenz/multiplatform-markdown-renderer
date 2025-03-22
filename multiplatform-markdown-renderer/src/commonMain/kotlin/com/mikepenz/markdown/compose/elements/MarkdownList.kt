@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import com.mikepenz.markdown.compose.LocalBulletListHandler
-import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
@@ -110,10 +109,10 @@ fun MarkdownOrderedList(
             text = orderedListHandler.transform(
                 LIST_NUMBER,
                 child?.getUnescapedTextInNode(content),
-                index
+                index,
+                level
             ),
             style = style,
-            color = LocalMarkdownColors.current.text,
         )
     }
 }
@@ -129,13 +128,13 @@ fun MarkdownBulletList(
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
     MarkdownListItems(content, node, style, level) { index, child ->
         MarkdownBasicText(
-            bulletHandler.transform(
+            text = bulletHandler.transform(
                 LIST_BULLET,
                 child?.getUnescapedTextInNode(content),
-                index
+                index,
+                level
             ),
             style = style,
-            color = LocalMarkdownColors.current.text,
             modifier = Modifier.padding(bottom = listItemBottom)
         )
     }

@@ -153,7 +153,7 @@ fun AnnotatedString.Builder.appendMarkdownLink(
  *
  * @param content The content string.
  * @param node The AST node representing the auto link.
- * @param linkTextStyle The style to apply to the link text.
+ * @param annotatorSettings The style to apply to the link text.
  */
 fun AnnotatedString.Builder.appendAutoLink(
     content: String,
@@ -205,6 +205,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
     annotatorSettings: AnnotatorSettings,
 ) {
     val annotate = annotatorSettings.annotator?.annotate
+    val eolAsNewLine = annotatorSettings.eolAsNewLine
     var skipIfNext: Any? = null
     children.forEach { child ->
         if (skipIfNext == null || skipIfNext != child.type) {
@@ -273,7 +274,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     }
 
                     MarkdownTokenTypes.EMPH -> if (parentType != MarkdownElementTypes.EMPH && parentType != MarkdownElementTypes.STRONG) append('*')
-                    MarkdownTokenTypes.EOL -> append('\n')
+                    MarkdownTokenTypes.EOL -> if (eolAsNewLine) append('\n') else append(' ')
                     MarkdownTokenTypes.WHITE_SPACE -> if (length > 0) append(' ')
                     MarkdownTokenTypes.BLOCK_QUOTE -> {
                         skipIfNext = MarkdownTokenTypes.WHITE_SPACE
