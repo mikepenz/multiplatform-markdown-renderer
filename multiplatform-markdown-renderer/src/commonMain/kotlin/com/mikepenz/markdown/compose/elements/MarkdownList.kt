@@ -29,8 +29,7 @@ import org.intellij.markdown.flavours.gfm.GFMTokenTypes.CHECK_BOX
 fun MarkdownListItems(
     content: String,
     node: ASTNode,
-    style: TextStyle = LocalMarkdownTypography.current.list,
-    level: Int = 0,
+    depth: Int = 0,
     bullet: @Composable (index: Int, child: ASTNode?) -> Unit,
 ) {
     val listDp = LocalMarkdownPadding.current.list
@@ -38,9 +37,10 @@ fun MarkdownListItems(
     val listItemPaddingDp = LocalMarkdownPadding.current.listItemTop
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
     val markdownComponents = LocalMarkdownComponents.current
+    val markdownTypography = LocalMarkdownTypography.current
     Column(
         modifier = Modifier.padding(
-            start = (indentListDp) * level,
+            start = (indentListDp) * depth,
             top = listDp,
             bottom = listDp
         )
@@ -63,7 +63,8 @@ fun MarkdownListItems(
                                 val model = MarkdownComponentModel(
                                     content = content,
                                     node = checkboxNode,
-                                    typography = LocalMarkdownTypography.current,
+                                    typography = markdownTypography,
+                                    extra = mapOf(ORDERED_LIST to depth + 1)
                                 )
                                 markdownComponents.checkbox.invoke(this, model)
                             }
@@ -74,8 +75,24 @@ fun MarkdownListItems(
                         Column {
                             child.children.onEach { nestedChild ->
                                 when (nestedChild.type) {
-                                    ORDERED_LIST -> MarkdownOrderedList(content, nestedChild, style, level + 1)
-                                    UNORDERED_LIST -> MarkdownBulletList(content, nestedChild, style, level + 1)
+                                    ORDERED_LIST -> {
+                                        val model = MarkdownComponentModel(
+                                            content = content,
+                                            node = nestedChild,
+                                            typography = markdownTypography,
+                                            extra = mapOf(ORDERED_LIST to depth + 1)
+                                        )
+                                        markdownComponents.orderedList.invoke(this, model)
+                                    }
+                                    UNORDERED_LIST -> {
+                                        val model = MarkdownComponentModel(
+                                            content = content,
+                                            node = nestedChild,
+                                            typography = markdownTypography,
+                                            extra = mapOf(UNORDERED_LIST to depth + 1)
+                                        )
+                                        markdownComponents.unorderedList.invoke(this, model)
+                                    }
                                     else -> {
                                         handleElement(
                                             node = nestedChild,
@@ -101,16 +118,16 @@ fun MarkdownOrderedList(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.ordered,
-    level: Int = 0,
+    depth: Int = 0,
 ) {
     val orderedListHandler = LocalOrderedListHandler.current
-    MarkdownListItems(content, node, style, level) { index, child ->
+    MarkdownListItems(content, node, depth) { index, child ->
         MarkdownBasicText(
             text = orderedListHandler.transform(
                 LIST_NUMBER,
                 child?.getUnescapedTextInNode(content),
                 index,
-                level
+                depth
             ),
             style = style,
         )
@@ -122,17 +139,17 @@ fun MarkdownBulletList(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.bullet,
-    level: Int = 0,
+    depth: Int = 0,
 ) {
     val bulletHandler = LocalBulletListHandler.current
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
-    MarkdownListItems(content, node, style, level) { index, child ->
+    MarkdownListItems(content, node, depth) { index, child ->
         MarkdownBasicText(
             text = bulletHandler.transform(
                 LIST_BULLET,
                 child?.getUnescapedTextInNode(content),
                 index,
-                level
+                depth
             ),
             style = style,
             modifier = Modifier.padding(bottom = listItemBottom)
