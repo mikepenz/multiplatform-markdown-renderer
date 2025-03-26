@@ -7,7 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
-import com.mikepenz.markdown.compose.elements.*
+import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
+import com.mikepenz.markdown.compose.elements.MarkdownBulletList
+import com.mikepenz.markdown.compose.elements.MarkdownCheckBox
+import com.mikepenz.markdown.compose.elements.MarkdownCodeBlock
+import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
+import com.mikepenz.markdown.compose.elements.MarkdownDivider
+import com.mikepenz.markdown.compose.elements.MarkdownHeader
+import com.mikepenz.markdown.compose.elements.MarkdownImage
+import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
+import com.mikepenz.markdown.compose.elements.MarkdownParagraph
+import com.mikepenz.markdown.compose.elements.MarkdownTable
+import com.mikepenz.markdown.compose.elements.MarkdownText
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import org.intellij.markdown.IElementType
@@ -204,7 +215,7 @@ object CurrentComponentsBridge {
         MarkdownTable(it.content, it.node, style = it.typography.table)
     }
     val checkbox: MarkdownComponent = {
-        MarkdownCheckBox(it.content, it.node, style = it.typography.table)
+        MarkdownCheckBox(it.content, it.node, style = it.typography.text)
     }
     val custom: CustomMarkdownComponent? = null
 }
