@@ -4,11 +4,11 @@ androidx-material = "1.12.0"
 coil = "3.1.0"
 coil2 = "2.7.0"
 markdown = "0.7.3"
-ktor = "3.1.1"
+ktor = "3.1.2"
 highlights = "1.0.0"
 
 [libraries]
-androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
+androidx-material = { module = "com.google.android.material:material", version.ref = "androidx-material" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 coil-core = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
@@ -22,5 +22,10 @@ ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 highlights = { module = "dev.snipme:highlights", version.ref = "highlights" }
 
 [bundles]
-coil = ["coil-core", "coil-network-okhttp"]
-coil2 = ["coil-core"]
+coil = [
+    "coil-core",
+    "coil-network-okhttp",
+]
+coil2 = [
+    "coil-core",
+]
