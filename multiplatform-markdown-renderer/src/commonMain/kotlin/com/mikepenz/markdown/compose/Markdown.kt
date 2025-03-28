@@ -140,9 +140,9 @@ fun MarkdownSuccess(
     val skipLinkDefinition = false
     Column(modifier) {
         node.children.forEach { node ->
-            if (!handleElement(node, components, content, skipLinkDefinition)) {
+            if (!handleElement(node, components, content, skipLinkDefinition = skipLinkDefinition)) {
                 node.children.forEach { child ->
-                    handleElement(child, components, content, skipLinkDefinition)
+                    handleElement(child, components, content, skipLinkDefinition = skipLinkDefinition)
                 }
             }
         }
