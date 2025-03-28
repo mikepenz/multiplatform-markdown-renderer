@@ -9,7 +9,7 @@ plugins {
 kotlin {
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        moduleName = "markdown"
+        outputModuleName = "markdown"
         browser {
             commonWebpackConfig {
                 outputFileName = "composeApp.js"
@@ -19,7 +19,7 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
+        val commonMain by getting {
             dependencies {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
