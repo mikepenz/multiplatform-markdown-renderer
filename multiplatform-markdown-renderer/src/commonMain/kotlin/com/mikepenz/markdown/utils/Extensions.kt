@@ -5,12 +5,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.model.ReferenceLinkHandler
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.CompositeASTNode
 import org.intellij.markdown.ast.LeafASTNode
+import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 
@@ -86,6 +88,31 @@ fun List<ASTNode>.mapAutoLinkToType(targetType: IElementType = MarkdownTokenType
         }
     }
 }
+
+/**
+ * Helper function to handle link definitions in the parsed markdown tree.
+ */
+internal fun handleLinkDefinition(
+    node: ASTNode,
+    content: String,
+    referenceLinkHandler: ReferenceLinkHandler,
+    recursive: Boolean = true,
+) {
+    if (node.type == MarkdownElementTypes.LINK_DEFINITION) {
+        val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(content)
+        if (linkLabel != null) {
+            val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(content)
+            referenceLinkHandler.store(linkLabel, destination)
+        }
+    }
+
+    if (recursive) {
+        node.children.forEach {
+            handleLinkDefinition(it, content, referenceLinkHandler)
+        }
+    }
+}
+
 
 /**
  * Extension property to get the `SpanStyle` for inline code text.

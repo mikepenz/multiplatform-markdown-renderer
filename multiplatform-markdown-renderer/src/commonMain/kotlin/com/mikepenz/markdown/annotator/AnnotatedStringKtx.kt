@@ -149,6 +149,44 @@ fun AnnotatedString.Builder.appendMarkdownLink(
 }
 
 /**
+ * Appends a Markdown reference to the `AnnotatedString.Builder`.
+ *
+ * @param content The content string.
+ * @param node The AST node representing the link.
+ * @param annotatorSettings Settings object to adjust different behavior of this annotated string.
+ */
+fun AnnotatedString.Builder.appendMarkdownReference(
+    content: String,
+    node: ASTNode,
+    annotatorSettings: AnnotatorSettings,
+) {
+    val full = node.type == MarkdownElementTypes.FULL_REFERENCE_LINK
+    val labelNode = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)
+    val linkText = if (full) {
+        node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.children?.innerList()
+    } else {
+        labelNode?.children?.innerList()
+    }
+
+    if (linkText == null || labelNode == null) {
+        append(node.getUnescapedTextInNode(content))
+        return
+    }
+
+    val label = labelNode.getUnescapedTextInNode(content)
+    val url = annotatorSettings.referenceLinkHandler?.find(label)?.takeIf { it.isNotEmpty() }
+
+    if (url != null) {
+        withLink(LinkAnnotation.Url(url, annotatorSettings.linkTextSpanStyle, annotatorSettings.linkInteractionListener)) {
+            buildMarkdownAnnotatedString(content, linkText.mapAutoLinkToType(), annotatorSettings)
+        }
+    } else {
+        // if no reference is found, reference links are just rendered as normal text.
+        append(node.getUnescapedTextInNode(content))
+    }
+}
+
+/**
  * Appends an auto-detected link to the `AnnotatedString.Builder`.
  *
  * @param content The content string.
@@ -248,8 +286,8 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
 
                     MarkdownElementTypes.AUTOLINK -> appendAutoLink(content, child, annotatorSettings)
                     MarkdownElementTypes.INLINE_LINK -> appendMarkdownLink(content, child, annotatorSettings)
-                    MarkdownElementTypes.SHORT_REFERENCE_LINK -> appendMarkdownLink(content, child, annotatorSettings)
-                    MarkdownElementTypes.FULL_REFERENCE_LINK -> appendMarkdownLink(content, child, annotatorSettings)
+                    MarkdownElementTypes.SHORT_REFERENCE_LINK -> appendMarkdownReference(content, child, annotatorSettings)
+                    MarkdownElementTypes.FULL_REFERENCE_LINK -> appendMarkdownReference(content, child, annotatorSettings)
 
                     // Token Types
                     MarkdownTokenTypes.TEXT -> append(child.getUnescapedTextInNode(content))
