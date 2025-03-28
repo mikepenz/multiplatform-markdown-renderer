@@ -38,6 +38,7 @@ import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.rememberSquigglyUnderlineAnimator
 import com.mikepenz.markdown.m2.Markdown
 import com.mikepenz.markdown.model.markdownExtendedSpans
+import com.mikepenz.markdown.model.rememberMarkdownState
 import dev.snipme.highlights.Highlights
 import dev.snipme.highlights.model.SyntaxThemes
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -48,7 +49,9 @@ fun main() = application {
         val scrollState = rememberScrollState()
         val isDarkTheme = isSystemInDarkTheme()
         val uriHandler = LocalUriHandler.current
+
         var showLicenses by remember { mutableStateOf(false) }
+        val markdownState = rememberMarkdownState(MARKDOWN)
 
         SampleTheme {
             Scaffold(
@@ -101,7 +104,7 @@ fun main() = application {
 
                     SelectionContainer {
                         Markdown(
-                            content = MARKDOWN,
+                            state = markdownState,
                             components = markdownComponents(
                                 codeBlock = { MarkdownHighlightedCodeBlock(content = it.content, node = it.node, highlights = highlightsBuilder) },
                                 codeFence = { MarkdownHighlightedCodeFence(content = it.content, node = it.node, highlights = highlightsBuilder) },
