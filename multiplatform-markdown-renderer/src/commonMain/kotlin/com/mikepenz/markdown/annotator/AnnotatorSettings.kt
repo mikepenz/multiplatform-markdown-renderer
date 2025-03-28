@@ -57,7 +57,7 @@ fun annotatorSettings(
     linkInteractionListener: LinkInteractionListener? = LinkInteractionListener { link ->
         val annotationUrl = (link as? LinkAnnotation.Url)?.url
         if (annotationUrl != null) {
-            val foundReference = referenceLinkHandler?.find(annotationUrl) ?: annotationUrl
+            val foundReference = referenceLinkHandler?.find(annotationUrl)?.takeIf { it.isNotEmpty() } ?: annotationUrl
             // wait for finger up to navigate to the link
             try {
                 uriHandler.openUri(foundReference)
