@@ -120,7 +120,6 @@ fun Markdown(
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
     components: MarkdownComponents = markdownComponents(checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }),
     animations: MarkdownAnimations = markdownAnimations(),
-    referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
 ) = com.mikepenz.markdown.compose.Markdown(
