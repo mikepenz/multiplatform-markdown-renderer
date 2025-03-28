@@ -51,7 +51,9 @@ public final class com/mikepenz/markdown/compose/ComposeLocalKt {
 }
 
 public final class com/mikepenz/markdown/compose/MarkdownKt {
-	public static final fun Markdown (Ljava/lang/String;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Markdown (Ljava/lang/String;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;ZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+	public static final fun MarkdownSuccess (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun parseMarkdown (Ljava/lang/String;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Landroidx/compose/runtime/Composer;II)Landroidx/compose/runtime/State;
 }
 
 public final class com/mikepenz/markdown/compose/components/ComposableSingletons$MarkdownComponentsKt {
@@ -502,6 +504,26 @@ public abstract interface class com/mikepenz/markdown/model/MarkdownPadding {
 
 public final class com/mikepenz/markdown/model/MarkdownPaddingKt {
 	public static final fun markdownPadding-hBH8OFI (FFFFLandroidx/compose/ui/unit/Dp;FLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues$Absolute;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownPadding;
+}
+
+public abstract class com/mikepenz/markdown/model/MarkdownResult {
+	public static final field $stable I
+}
+
+public final class com/mikepenz/markdown/model/MarkdownResult$Error : com/mikepenz/markdown/model/MarkdownResult {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/mikepenz/markdown/model/MarkdownResult$Error;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownResult$Loading : com/mikepenz/markdown/model/MarkdownResult {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/mikepenz/markdown/model/MarkdownResult$Loading;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownResult$Success : com/mikepenz/markdown/model/MarkdownResult {
+	public static final field $stable I
+	public fun <init> (Lorg/intellij/markdown/ast/ASTNode;)V
+	public final fun getResult ()Lorg/intellij/markdown/ast/ASTNode;
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownTypography {
