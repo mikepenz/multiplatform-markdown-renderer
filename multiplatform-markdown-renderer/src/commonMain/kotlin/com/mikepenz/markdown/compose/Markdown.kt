@@ -11,6 +11,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.components.MarkdownComponents
@@ -65,12 +66,14 @@ import org.intellij.markdown.parser.MarkdownParser
  * @param modifier The modifier to be applied to the container.
  * @param padding The padding to be applied to the container.
  * @param dimens The dimensions to be used for rendering.
- * @param flavour The flavour descriptor for parsing the markdown.
+ * @param flavour The flavour descriptor for parsing the markdown. By default uses GFM flavour.
+ * @param parser The parser to be used for parsing the markdown. By default uses the flavour supplied.
  * @param imageTransformer The image transformer to be used for rendering images.
  * @param annotator The annotator to be used for rendering annotations.
  * @param extendedSpans The extended spans to be used for rendering.
  * @param components The components to be used for rendering.
  * @param animations The animations to be used for rendering.
+ * @param immediate If true, the content will be parsed immediately. Otherwise, it will be parsed asynchronously, and show a loading and error state.
  * @param loading A composable function to be displayed while loading the content.
  * @param error A composable function to be displayed in case of an error. Only really possible if assertions are enabled on the parser)
  */
@@ -83,11 +86,13 @@ fun Markdown(
     padding: MarkdownPadding = markdownPadding(),
     dimens: MarkdownDimens = markdownDimens(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    parser: MarkdownParser = MarkdownParser(flavour),
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
     components: MarkdownComponents = markdownComponents(),
     animations: MarkdownAnimations = markdownAnimations(),
+    immediate: Boolean = false,
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
 ) {
@@ -103,9 +108,13 @@ fun Markdown(
         LocalMarkdownComponents provides components,
         LocalMarkdownAnimations provides animations,
     ) {
-        val markdownResult by parseMarkdown(content = content, flavour = flavour)
+        val result = if (immediate) {
+            remember(content, flavour, parser) { MarkdownResult.Success(parser.buildMarkdownTreeFromString(content)) }
+        } else {
+            val markdownResult by parseMarkdown(content = content, flavour = flavour)
+            markdownResult
+        }
 
-        val result = markdownResult
         when (result) {
             is MarkdownResult.Error -> error(modifier)
             is MarkdownResult.Loading -> loading(modifier)
@@ -223,13 +232,14 @@ internal fun ColumnScope.handleLinkDefinition(
 fun parseMarkdown(
     content: String,
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    parser: MarkdownParser = MarkdownParser(flavour),
 ): State<MarkdownResult> {
     // Creates a State<T> with Result.Loading as initial value
     // If content or flavour changes, the running producer will cancel and re-launch.
-    return produceState<MarkdownResult>(initialValue = MarkdownResult.Loading, content, flavour) {
+    return produceState<MarkdownResult>(initialValue = MarkdownResult.Loading, content, flavour, parser) {
         // Update State with either an Error or Success result. This will trigger a recomposition where this State is read
         value = try {
-            MarkdownResult.Success(MarkdownParser(flavour).buildMarkdownTreeFromString(content))
+            MarkdownResult.Success(parser.buildMarkdownTreeFromString(content))
         } catch (_: Throwable) {
             MarkdownResult.Error
         }

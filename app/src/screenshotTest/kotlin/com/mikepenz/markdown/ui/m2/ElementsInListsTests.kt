@@ -22,7 +22,7 @@ class ElementsInListsTests {
                 I need to add another paragraph below the second list item.
             
             * And here's the third list item.
-            """.trimIndent()
+            """.trimIndent(), immediate = true
         )
     }
 
@@ -37,7 +37,7 @@ class ElementsInListsTests {
                 > A blockquote would look great below the second list item.
             
             * And here's the third list item.
-            """.trimIndent()
+            """.trimIndent(), immediate = true
         )
     }
 
@@ -54,7 +54,7 @@ class ElementsInListsTests {
                       </head>
             
             3. Update the title to match the name of your website.
-            """.trimIndent()
+            """.trimIndent(), immediate = true
         )
     }
 
@@ -69,7 +69,7 @@ class ElementsInListsTests {
                 ![Image](https://avatars.githubusercontent.com/u/1476232?u=3db0792ad9649618b182c9e24170c9be8ad9e32f&v=4&size=80)
             
             3. Close the file.
-            """.trimIndent()
+            """.trimIndent(), immediate = true
         )
     }
 
@@ -84,7 +84,7 @@ class ElementsInListsTests {
                 - Indented item
                 - Indented item
             4. Fourth item
-            """.trimIndent()
+            """.trimIndent(), immediate = true
         )
     }
 
@@ -100,7 +100,7 @@ class ElementsInListsTests {
             This is an unordered list with task list items:
             - [ ] foo
             - [x] bar
-            """.trimIndent()
+            """.trimIndent(), immediate = true
         )
     }
 }

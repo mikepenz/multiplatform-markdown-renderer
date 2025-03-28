@@ -17,7 +17,7 @@ class BlockquotesTests {
         Markdown(
             """
             > Dorothy followed her through many of the beautiful rooms in her castle.
-            """.trimIndent()
+            """.trimIndent(), immediate = true
         )
     }
 
@@ -29,7 +29,7 @@ class BlockquotesTests {
             > Dorothy followed her through many of the beautiful rooms in her castle.
             >
             > The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-            """.trimIndent()
+            """.trimIndent(), immediate = true
         )
     }
 
@@ -42,7 +42,7 @@ class BlockquotesTests {
             > Dorothy followed her through many of the beautiful rooms in her castle.
             >
             >> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-            """.trimIndent()
+            """.trimIndent(), immediate = true
         )
     }
 
@@ -57,7 +57,7 @@ class BlockquotesTests {
             > - Profits were higher than ever.
             >
             > *Everything* is going according to **plan**.
-            """.trimIndent()
+            """.trimIndent(), immediate = true
         )
     }
 }

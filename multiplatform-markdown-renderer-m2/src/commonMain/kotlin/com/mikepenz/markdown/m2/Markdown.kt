@@ -1,5 +1,6 @@
 package com.mikepenz.markdown.m2
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import com.mikepenz.markdown.model.markdownExtendedSpans
 import com.mikepenz.markdown.model.markdownPadding
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
+import org.intellij.markdown.parser.MarkdownParser
 
 @Composable
 fun Markdown(
@@ -32,11 +34,15 @@ fun Markdown(
     padding: MarkdownPadding = markdownPadding(),
     dimens: MarkdownDimens = markdownDimens(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    parser: MarkdownParser = MarkdownParser(flavour),
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
     components: MarkdownComponents = markdownComponents(checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }),
     animations: MarkdownAnimations = markdownAnimations(),
+    immediate: Boolean = false,
+    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
 ) = com.mikepenz.markdown.compose.Markdown(
     content = content,
     colors = colors,
@@ -45,9 +51,13 @@ fun Markdown(
     padding = padding,
     dimens = dimens,
     flavour = flavour,
+    parser = parser,
     imageTransformer = imageTransformer,
     annotator = annotator,
     extendedSpans = extendedSpans,
     components = components,
     animations = animations,
+    immediate = immediate,
+    loading = loading,
+    error = error,
 )

@@ -13,35 +13,35 @@ class SnapshotTests {
     @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1750, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
     fun DefaultTest() = SampleTheme(isSystemInDarkTheme()) {
-        Markdown(MARKDOWN_DEFAULT)
+        Markdown(MARKDOWN_DEFAULT, immediate = true)
     }
 
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1000)
     @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1000, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
     fun RandomTest() = SampleTheme(isSystemInDarkTheme()) {
-        Markdown(MARKDOWN_RANDOM)
+        Markdown(MARKDOWN_RANDOM, immediate = true)
     }
 
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 380)
     @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 380, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
     fun ListCodeBlockTest() = SampleTheme(isSystemInDarkTheme()) {
-        Markdown(MARKDOWN_LIST_CODE_BLOCK)
+        Markdown(MARKDOWN_LIST_CODE_BLOCK, immediate = true)
     }
 
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1250)
     @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1250, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
     fun ListTest() = SampleTheme(isSystemInDarkTheme()) {
-        Markdown(MARKDOWN_LIST)
+        Markdown(MARKDOWN_LIST, immediate = true)
     }
 
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
     @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
     fun TableTest() = SampleTheme(isSystemInDarkTheme()) {
-        Markdown(MARKDOWN_TABLE)
+        Markdown(MARKDOWN_TABLE, immediate = true)
     }
 }
 
