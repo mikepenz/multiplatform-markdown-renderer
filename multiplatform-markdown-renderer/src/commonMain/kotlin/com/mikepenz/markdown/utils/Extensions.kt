@@ -5,7 +5,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.model.MarkdownTypography
-import com.mikepenz.markdown.model.ReferenceLinkHandler
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
@@ -90,25 +89,39 @@ fun List<ASTNode>.mapAutoLinkToType(targetType: IElementType = MarkdownTokenType
 }
 
 /**
- * Helper function to handle link definitions in the parsed markdown tree.
+ * Helper function to lookup link definitions in the parsed markdown tree.
  */
-internal fun handleLinkDefinition(
+internal fun lookupLinkDefinition(
+    store: MutableMap<String, String?>,
     node: ASTNode,
     content: String,
-    referenceLinkHandler: ReferenceLinkHandler,
     recursive: Boolean = true,
+    onlyDefinitions: Boolean = false,
 ) {
-    if (node.type == MarkdownElementTypes.LINK_DEFINITION) {
-        val linkLabel = node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(content)
-        if (linkLabel != null) {
-            val destination = node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(content)
-            referenceLinkHandler.store(linkLabel, destination)
+    var linkOnly = false
+    val linkLabel = if (node.type == MarkdownElementTypes.LINK_DEFINITION) {
+        node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(content)
+    } else if (!onlyDefinitions && node.type == MarkdownElementTypes.INLINE_LINK) {
+        node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.getUnescapedTextInNode(content)
+    } else if (!onlyDefinitions && node.type == MarkdownElementTypes.AUTOLINK) {
+        linkOnly = true
+        (node.children.firstOrNull { it.type.name == MarkdownElementTypes.AUTOLINK.name } ?: node).getUnescapedTextInNode(content)
+    } else {
+        null
+    }
+
+    if (linkLabel != null) {
+        val destination = if (linkOnly) {
+            linkLabel
+        } else {
+            node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(content)
         }
+        store.put(linkLabel, destination)
     }
 
     if (recursive) {
         node.children.forEach {
-            handleLinkDefinition(it, content, referenceLinkHandler)
+            lookupLinkDefinition(store, it, content)
         }
     }
 }

@@ -21,10 +21,11 @@ import com.mikepenz.markdown.compose.elements.MarkdownTable
 import com.mikepenz.markdown.compose.elements.MarkdownText
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
-import com.mikepenz.markdown.utils.handleLinkDefinition
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.findChildOfType
 
 typealias MarkdownComponent = @Composable ColumnScope.(MarkdownComponentModel) -> Unit
 
@@ -59,7 +60,10 @@ fun markdownComponents(
     orderedList: MarkdownComponent = CurrentComponentsBridge.orderedList,
     unorderedList: MarkdownComponent = CurrentComponentsBridge.unorderedList,
     image: MarkdownComponent = CurrentComponentsBridge.image,
-    linkDefinition: MarkdownComponent = CurrentComponentsBridge.linkDefinition,
+    linkDefinition: MarkdownComponent = {
+        @Suppress("DEPRECATION")
+        CurrentComponentsBridge.linkDefinition
+    },
     horizontalRule: MarkdownComponent = CurrentComponentsBridge.horizontalRule,
     table: MarkdownComponent = CurrentComponentsBridge.table,
     checkbox: MarkdownComponent = CurrentComponentsBridge.checkbox,
@@ -111,6 +115,8 @@ interface MarkdownComponents {
     val orderedList: MarkdownComponent
     val unorderedList: MarkdownComponent
     val image: MarkdownComponent
+
+    @Deprecated("The lookup of link definitions is now handled by the parser. It is advised to use the new API. This will be removed in a future version.")
     val linkDefinition: MarkdownComponent
     val horizontalRule: MarkdownComponent
     val table: MarkdownComponent
@@ -136,6 +142,7 @@ private class DefaultMarkdownComponents(
     override val orderedList: MarkdownComponent,
     override val unorderedList: MarkdownComponent,
     override val image: MarkdownComponent,
+    @Deprecated("The lookup of link definitions is now handled by the parser. It is advised to use the new API. This will be removed in a future version.")
     override val linkDefinition: MarkdownComponent,
     override val horizontalRule: MarkdownComponent,
     override val table: MarkdownComponent,
@@ -200,9 +207,16 @@ object CurrentComponentsBridge {
     val image: MarkdownComponent = {
         MarkdownImage(it.content, it.node)
     }
+
+    @Deprecated("The lookup of link definitions is now handled by the parser. It is advised to use the new API. This will be removed in a future version.")
     val linkDefinition: MarkdownComponent = {
-        handleLinkDefinition(it.node, it.content, LocalReferenceLinkHandler.current, false)
+        val linkLabel = it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(it.content)
+        if (linkLabel != null) {
+            val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(it.content)
+            LocalReferenceLinkHandler.current.store(linkLabel, destination)
+        }
     }
+
     val horizontalRule: MarkdownComponent = {
         MarkdownDivider(Modifier.fillMaxWidth())
     }
