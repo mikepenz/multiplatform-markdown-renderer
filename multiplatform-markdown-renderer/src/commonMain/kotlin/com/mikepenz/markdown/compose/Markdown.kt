@@ -26,12 +26,14 @@ import com.mikepenz.markdown.model.MarkdownPadding
 import com.mikepenz.markdown.model.MarkdownResult
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.model.NoOpImageTransformerImpl
+import com.mikepenz.markdown.model.ReferenceLinkHandler
 import com.mikepenz.markdown.model.ReferenceLinkHandlerImpl
 import com.mikepenz.markdown.model.markdownAnimations
 import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.model.markdownDimens
 import com.mikepenz.markdown.model.markdownExtendedSpans
 import com.mikepenz.markdown.model.markdownPadding
+import com.mikepenz.markdown.utils.handleLinkDefinition
 import org.intellij.markdown.MarkdownElementTypes.ATX_1
 import org.intellij.markdown.MarkdownElementTypes.ATX_2
 import org.intellij.markdown.MarkdownElementTypes.ATX_3
@@ -74,6 +76,7 @@ import org.intellij.markdown.parser.MarkdownParser
  * @param components The components to be used for rendering.
  * @param animations The animations to be used for rendering.
  * @param immediate If true, the content will be parsed immediately. Otherwise, it will be parsed asynchronously, and show a loading and error state.
+ * @param preloadLinks If true, link definitions will be loaded first, to ensure proper link handling. (specifically required for link references)
  * @param loading A composable function to be displayed while loading the content.
  * @param error A composable function to be displayed in case of an error. Only really possible if assertions are enabled on the parser)
  */
@@ -92,12 +95,15 @@ fun Markdown(
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
     components: MarkdownComponents = markdownComponents(),
     animations: MarkdownAnimations = markdownAnimations(),
+    referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     immediate: Boolean = false,
+    preloadLinks: Boolean = true,
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
 ) {
+
     CompositionLocalProvider(
-        LocalReferenceLinkHandler provides ReferenceLinkHandlerImpl(),
+        LocalReferenceLinkHandler provides referenceLinkHandler,
         LocalMarkdownPadding provides padding,
         LocalMarkdownDimens provides dimens,
         LocalMarkdownColors provides colors,
@@ -109,7 +115,11 @@ fun Markdown(
         LocalMarkdownAnimations provides animations,
     ) {
         val result = if (immediate) {
-            remember(content, flavour, parser) { MarkdownResult.Success(parser.buildMarkdownTreeFromString(content)) }
+            remember(content, flavour, parser) {
+                val parsedResult = parser.buildMarkdownTreeFromString(content)
+                if (preloadLinks) handleLinkDefinition(parsedResult, content, referenceLinkHandler, recursive = true)
+                MarkdownResult.Success(parsedResult)
+            }
         } else {
             val markdownResult by parseMarkdown(content = content, flavour = flavour)
             markdownResult
@@ -118,7 +128,13 @@ fun Markdown(
         when (result) {
             is MarkdownResult.Error -> error(modifier)
             is MarkdownResult.Loading -> loading(modifier)
-            is MarkdownResult.Success -> MarkdownSuccess(content = content, node = result.result, components = components, modifier = modifier)
+            is MarkdownResult.Success -> MarkdownSuccess(
+                content = content,
+                node = result.result,
+                components = components,
+                modifier = modifier,
+                skipLinkDefinition = preloadLinks,
+            )
         }
     }
 }
@@ -129,6 +145,8 @@ fun Markdown(
  * @param content The original markdown content.
  * @param node The ASTNode representing the parsed markdown.
  * @param components The MarkdownComponents instance containing the components to use.
+ * @param modifier The modifier to be applied to the container.
+ * @param skipLinkDefinition If true, link definitions will be skipped when handling the markdown nodes.
  */
 @Composable
 fun MarkdownSuccess(
@@ -136,8 +154,8 @@ fun MarkdownSuccess(
     node: ASTNode,
     components: MarkdownComponents,
     modifier: Modifier = Modifier,
+    skipLinkDefinition: Boolean = true,
 ) {
-    val skipLinkDefinition = false
     Column(modifier) {
         node.children.forEach { node ->
             if (!handleElement(node, components, content, skipLinkDefinition = skipLinkDefinition)) {
@@ -200,32 +218,6 @@ internal fun ColumnScope.handleElement(
 }
 
 /**
- * Handles the link definition node.
- * This is a recursive function that traverses the AST tree and runs the link definition component.
- *
- * @param node The ASTNode representing the link definition.
- * @param components The MarkdownComponents instance containing the components to use.
- * @param content The original markdown content.
- */
-@Composable
-internal fun ColumnScope.handleLinkDefinition(
-    node: ASTNode,
-    components: MarkdownComponents,
-    content: String,
-) {
-    val model = MarkdownComponentModel(
-        content = content,
-        node = node,
-        typography = LocalMarkdownTypography.current,
-    )
-    if (node.type == LINK_DEFINITION) {
-        components.linkDefinition(this@handleLinkDefinition, model)
-    } else {
-        node.children.forEach { child -> handleLinkDefinition(child, components, content) }
-    }
-}
-
-/**
  * Parses the given markdown content and returns a [State] of [MarkdownResult].
  */
 @Composable
@@ -233,13 +225,17 @@ fun parseMarkdown(
     content: String,
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
     parser: MarkdownParser = MarkdownParser(flavour),
+    referenceLinkHandler: ReferenceLinkHandler = LocalReferenceLinkHandler.current,
+    preloadLinks: Boolean = true,
 ): State<MarkdownResult> {
     // Creates a State<T> with Result.Loading as initial value
     // If content or flavour changes, the running producer will cancel and re-launch.
     return produceState<MarkdownResult>(initialValue = MarkdownResult.Loading, content, flavour, parser) {
         // Update State with either an Error or Success result. This will trigger a recomposition where this State is read
         value = try {
-            MarkdownResult.Success(parser.buildMarkdownTreeFromString(content))
+            val parsedResult = parser.buildMarkdownTreeFromString(content)
+            if (preloadLinks) handleLinkDefinition(parsedResult, content, referenceLinkHandler, recursive = true)
+            MarkdownResult.Success(parsedResult)
         } catch (_: Throwable) {
             MarkdownResult.Error
         }

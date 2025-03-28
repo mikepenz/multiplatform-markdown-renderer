@@ -21,11 +21,10 @@ import com.mikepenz.markdown.compose.elements.MarkdownTable
 import com.mikepenz.markdown.compose.elements.MarkdownText
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
+import com.mikepenz.markdown.utils.handleLinkDefinition
 import org.intellij.markdown.IElementType
-import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
-import org.intellij.markdown.ast.findChildOfType
 
 typealias MarkdownComponent = @Composable ColumnScope.(MarkdownComponentModel) -> Unit
 
@@ -202,11 +201,7 @@ object CurrentComponentsBridge {
         MarkdownImage(it.content, it.node)
     }
     val linkDefinition: MarkdownComponent = {
-        val linkLabel = it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(it.content)
-        if (linkLabel != null) {
-            val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(it.content)
-            LocalReferenceLinkHandler.current.store(linkLabel, destination)
-        }
+        handleLinkDefinition(it.node, it.content, LocalReferenceLinkHandler.current, false)
     }
     val horizontalRule: MarkdownComponent = {
         MarkdownDivider(Modifier.fillMaxWidth())
