@@ -176,6 +176,14 @@ public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$M
 	public final fun getLambda$591785369$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
 }
 
+public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownListKt {
+	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownListKt;
+	public fun <init> ()V
+	public final fun getLambda$1541600254$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1547486736$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$2044463131$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function4;
+}
+
 public final class com/mikepenz/markdown/compose/elements/MarkdownBlockQuoteKt {
 	public static final fun MarkdownBlockQuote (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
 }
@@ -204,9 +212,9 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownImageKt {
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownListKt {
-	public static final fun MarkdownBulletList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILandroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownListItems (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;ILkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownOrderedList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILandroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownBulletList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownListItems (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;ILkotlin/jvm/functions/Function4;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownOrderedList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getListDepth (Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;)I
 }
 
