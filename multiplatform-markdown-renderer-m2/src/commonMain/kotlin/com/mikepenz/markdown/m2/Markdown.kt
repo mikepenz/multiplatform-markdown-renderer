@@ -103,8 +103,6 @@ fun Markdown(
  * @param modifier The [Modifier] to apply to the component.
  * @param padding The [MarkdownPadding] to use for padding.
  * @param dimens The [MarkdownDimens] to use for dimensions.
- * @param flavour The [MarkdownFlavourDescriptor] to use for parsing.
- * @param parser The [MarkdownParser] to use for parsing.
  * @param imageTransformer The [ImageTransformer] to use for transforming images.
  * @param annotator The [MarkdownAnnotator] to use for annotating links.
  * @param extendedSpans The [MarkdownExtendedSpans] to use for extended spans.
@@ -122,8 +120,6 @@ fun Markdown(
     modifier: Modifier = Modifier.fillMaxSize(),
     padding: MarkdownPadding = markdownPadding(),
     dimens: MarkdownDimens = markdownDimens(),
-    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    parser: MarkdownParser = MarkdownParser(flavour),
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
@@ -141,8 +137,6 @@ fun Markdown(
     modifier = modifier,
     padding = padding,
     dimens = dimens,
-    flavour = flavour,
-    parser = parser,
     imageTransformer = imageTransformer,
     annotator = annotator,
     extendedSpans = extendedSpans,
