@@ -291,31 +291,14 @@ Markdown(markdown)
 
 ### Image Loading
 
-Starting with 0.21.0 the library does not include image loading by default, however exposes 2
-modules for either coil2 or coil3 dependencies.
-The chosen image transformer implementation has to be passed to the `Markdown` API.
-
-#### coil2
-
-```groovy
-// Offers coil2 (Coil2ImageTransformerImpl)
-implementation("com.mikepenz:multiplatform-markdown-renderer-coil2:${version}")
-```
-
-```kotlin
-Markdown(
-    MARKDOWN,
-    imageTransformer = Coil2ImageTransformerImpl,
-)
-```
-
-> [!NOTE]
-> 0.21.0 adds JVM support for this dependency via `HTTPUrlConnection` -> however this is expected to
-> be removed in the
-> future.
+To configure image loading, the library offers different implementations, to offer great flexibility
+for the respective integration.
+After adding the dependency, the chosen image transformer implementation has to be passed to the
+`Markdown` API.
 
 > [!NOTE]  
-> Please refer to the official coil2 documentation on how to adjust the `ImageLoader`
+> Please refer to the official documentation for the specific image loading integration you are using (e.g., coil3) on how to adjust its
+> behavior.
 
 #### coil3
 
@@ -331,8 +314,19 @@ Markdown(
 )
 ```
 
-> [!NOTE]  
-> Please refer to the official coil3 documentation on how to adjust the `SingletonImageLoader`
+#### coil2
+
+```groovy
+// Offers coil2 (Coil2ImageTransformerImpl)
+implementation("com.mikepenz:multiplatform-markdown-renderer-coil2:${version}")
+```
+
+```kotlin
+Markdown(
+    MARKDOWN,
+    imageTransformer = Coil2ImageTransformerImpl,
+)
+```
 
 ### Syntax Highlighting
 
@@ -422,7 +416,7 @@ Version 2.0.
 
 ## License
 
-    Copyright 2024 Mike Penz
+    Copyright 2025 Mike Penz
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
