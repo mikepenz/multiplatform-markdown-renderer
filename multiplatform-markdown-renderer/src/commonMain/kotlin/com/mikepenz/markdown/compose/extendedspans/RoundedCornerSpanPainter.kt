@@ -62,15 +62,17 @@ class RoundedCornerSpanPainter(
     ): LinkAnnotation {
         val defaultStyle = linkAnnotation.styles?.style
         // return fast if background is not set
-        if (defaultStyle == null || defaultStyle.background.isUnspecified == true) return linkAnnotation
+        if (defaultStyle == null || defaultStyle.background.isUnspecified) return linkAnnotation
         builder.addStringAnnotation(TAG, annotation = defaultStyle.background.serialize(), start = start, end = end)
         val updatedTextLinkStyles = linkAnnotation.styles?.update { copy(background = Color.Unspecified) }
-        return if (linkAnnotation is LinkAnnotation.Url) {
-            LinkAnnotation.Url(linkAnnotation.url, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
-        } else if (linkAnnotation is LinkAnnotation.Clickable) {
-            LinkAnnotation.Clickable(linkAnnotation.tag, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
-        } else {
-            throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
+        return when (linkAnnotation) {
+            is LinkAnnotation.Url -> {
+                LinkAnnotation.Url(linkAnnotation.url, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
+            }
+            is LinkAnnotation.Clickable -> {
+                LinkAnnotation.Clickable(linkAnnotation.tag, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
+            }
+            else -> throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
         }
     }
 

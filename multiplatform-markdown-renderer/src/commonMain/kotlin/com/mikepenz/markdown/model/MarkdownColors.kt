@@ -7,7 +7,7 @@ import com.mikepenz.markdown.compose.Markdown
 
 @Stable
 interface MarkdownColors {
-    /** Represents the color used for the text of this [com.mikepenz.markdown.compose.Markdown] component. */
+    /** Represents the color used for the text of this [Markdown] component. */
     val text: Color
 
     /** Represents the color used for the text of code. */

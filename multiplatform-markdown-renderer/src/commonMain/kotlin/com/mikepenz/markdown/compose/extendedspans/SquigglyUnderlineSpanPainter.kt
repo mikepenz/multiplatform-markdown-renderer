@@ -1,5 +1,3 @@
-@file:Suppress("NAME_SHADOWING")
-
 // Copyright 2023, Saket Narayan
 // SPDX-License-Identifier: Apache-2.0
 // https://github.com/saket/extended-spans
@@ -121,12 +119,14 @@ class SquigglyUnderlineSpanPainter(
         builder.addStringAnnotation(TAG, annotation = textColor.serialize(), start = start, end = end)
 
         val updatedTextLinkStyles = linkAnnotation.styles?.update { copy(textDecoration = if (LineThrough in textDecoration) LineThrough else None) }
-        return if (linkAnnotation is LinkAnnotation.Url) {
-            LinkAnnotation.Url(linkAnnotation.url, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
-        } else if (linkAnnotation is LinkAnnotation.Clickable) {
-            LinkAnnotation.Clickable(linkAnnotation.tag, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
-        } else {
-            throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
+        return when (linkAnnotation) {
+            is LinkAnnotation.Url -> {
+                LinkAnnotation.Url(linkAnnotation.url, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
+            }
+            is LinkAnnotation.Clickable -> {
+                LinkAnnotation.Clickable(linkAnnotation.tag, updatedTextLinkStyles, linkAnnotation.linkInteractionListener)
+            }
+            else -> throw IllegalStateException("Unsupported LinkAnnotation type: $linkAnnotation")
         }
     }
 
