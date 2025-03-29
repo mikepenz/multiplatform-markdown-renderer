@@ -1,5 +1,4 @@
 import org.gradle.kotlin.dsl.sourceSets
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.mikepenz.convention.kotlin-multiplatform")
@@ -9,11 +8,7 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
+    androidTarget()
 
     listOf(
         iosX64(),
@@ -57,11 +52,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.mikepenz.markdown.sample"
+    namespace = "com.mikepenz.markdown.sample.shared"
 }
 
 compose.resources {
-    packageOfResClass = "com.mikepenz.markdown.sample.resources"
+    packageOfResClass = "com.mikepenz.markdown.sample.shared.resources"
 }
 
 aboutLibraries {

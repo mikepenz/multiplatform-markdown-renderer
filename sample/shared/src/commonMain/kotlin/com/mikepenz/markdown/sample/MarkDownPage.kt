@@ -25,7 +25,7 @@ import com.mikepenz.markdown.m2.Markdown
 import com.mikepenz.markdown.m2.elements.MarkdownCheckBox
 import com.mikepenz.markdown.model.markdownExtendedSpans
 import com.mikepenz.markdown.model.rememberMarkdownState
-import com.mikepenz.markdown.sample.resources.Res
+import com.mikepenz.markdown.sample.shared.resources.Res
 import dev.snipme.highlights.Highlights
 import dev.snipme.highlights.model.SyntaxThemes
 import org.jetbrains.compose.resources.ExperimentalResourceApi
