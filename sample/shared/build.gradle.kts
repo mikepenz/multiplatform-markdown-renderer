@@ -47,7 +47,7 @@ kotlin {
             implementation(libs.coil.svg)
 
             // about libs
-            implementation(baseLibs.bundles.aboutlibs)
+            api(baseLibs.bundles.aboutlibs)
         }
 
         iosMain.dependencies {

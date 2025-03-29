@@ -1,12 +1,19 @@
 package com.mikepenz.markdown
 
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
+import com.mikepenz.aboutlibraries.ui.compose.m3.rememberLibraries
 import com.mikepenz.markdown.sample.App
+import com.mikepenz.markdown.sample.web.resources.Res
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalResourceApi::class)
 fun main() {
     CanvasBasedWindow("Markdown Sample", canvasElementId = "markdownCanvas") {
-        App()
+        val libraries by rememberLibraries {
+            Res.readBytes("files/aboutlibraries.json").decodeToString()
+        }
+        App(libraries)
     }
 }

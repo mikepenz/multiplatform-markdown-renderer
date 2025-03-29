@@ -4,12 +4,16 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     id("com.mikepenz.convention.kotlin-multiplatform")
     id("com.mikepenz.convention.compose")
+    id("com.mikepenz.aboutlibraries.plugin")
 }
 
 kotlin {
     sourceSets {
-        jvmMain.dependencies {
+        commonMain.dependencies {
             implementation(project(":sample:shared"))
+            implementation(compose.components.resources)
+        }
+        jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.java)
         }
@@ -26,4 +30,13 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "com.mikepenz.markdown.sample.desktop.resources"
+}
+
+aboutLibraries {
+    registerAndroidTasks = false
+    duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
 }

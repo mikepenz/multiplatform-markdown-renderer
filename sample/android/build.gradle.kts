@@ -2,6 +2,7 @@ plugins {
     id("com.mikepenz.convention.android-application")
     id("com.mikepenz.convention.kotlin")
     id("com.mikepenz.convention.compose")
+    id("com.mikepenz.aboutlibraries.plugin")
     alias(baseLibs.plugins.screenshot)
 }
 
@@ -26,4 +27,8 @@ dependencies {
     implementation(libs.ktor.client.okhttp)
     debugImplementation(compose.uiTooling)
     "screenshotTestImplementation"(compose.uiTooling)
+}
+
+aboutLibraries {
+    duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
 }

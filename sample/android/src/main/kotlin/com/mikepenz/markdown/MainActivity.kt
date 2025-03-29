@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.ui.Modifier
+import com.mikepenz.aboutlibraries.Libs
+import com.mikepenz.aboutlibraries.util.withContext
 import com.mikepenz.markdown.sample.App
 
 class MainActivity : ComponentActivity() {
@@ -16,7 +18,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            App(Modifier.windowInsetsPadding(WindowInsets.safeDrawing))
+            App(
+                libraries = Libs.Builder().withContext(this).build(),
+                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing)
+            )
         }
     }
 }

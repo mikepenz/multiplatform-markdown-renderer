@@ -20,10 +20,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.markdown.sample.theme.SampleTheme
 
 @Composable
 fun App(
+    libraries: Libs?,
     modifier: Modifier = Modifier
 ) {
     val isSystemInDarkMode = isSystemInDarkTheme()
@@ -37,7 +39,7 @@ fun App(
             modifier = modifier
         ) { padding ->
             if (showLicenses) {
-                LicensesPage(padding = padding)
+                LicensesPage(libraries = libraries, padding = padding)
             } else {
                 Column(modifier.verticalScroll(rememberScrollState())) {
                     Row(
