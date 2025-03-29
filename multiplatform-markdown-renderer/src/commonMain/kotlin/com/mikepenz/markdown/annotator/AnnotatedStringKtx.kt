@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.ReferenceLinkHandler
+import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
 import com.mikepenz.markdown.utils.findChildOfTypeRecursive
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
@@ -51,7 +52,7 @@ fun String.buildMarkdownAnnotatedString(
     linkTextSpanStyle: SpanStyle = style.toSpanStyle(),
     codeSpanStyle: SpanStyle = style.toSpanStyle(),
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    annotator: MarkdownAnnotator? = null,
+    annotator: MarkdownAnnotator = markdownAnnotator(),
     referenceLinkHandler: ReferenceLinkHandler? = null,
     linkInteractionListener: LinkInteractionListener? = null,
 ) = buildMarkdownAnnotatedString(
@@ -242,8 +243,8 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
     children: List<ASTNode>,
     annotatorSettings: AnnotatorSettings,
 ) {
-    val annotate = annotatorSettings.annotator?.annotate
-    val eolAsNewLine = annotatorSettings.eolAsNewLine
+    val annotate = annotatorSettings.annotator.annotate
+    val eolAsNewLine = annotatorSettings.annotator.config.eolAsNewLine
     var skipIfNext: Any? = null
     children.forEach { child ->
         if (skipIfNext == null || skipIfNext != child.type) {

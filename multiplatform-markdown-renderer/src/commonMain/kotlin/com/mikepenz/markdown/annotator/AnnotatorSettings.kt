@@ -25,33 +25,29 @@ interface AnnotatorSettings {
     val codeSpanStyle: SpanStyle
 
     /** Provides custom interception logic for building this annotated string */
-    val annotator: MarkdownAnnotator?
+    val annotator: MarkdownAnnotator
 
     /** Represents the [ReferenceLinkHandler] used to store and find links when clicks on links occur. */
     val referenceLinkHandler: ReferenceLinkHandler?
 
     /** Represents the [LinkInteractionListener] used for links in this annotated string */
     val linkInteractionListener: LinkInteractionListener?
-
-    /** Defines if a EOL should be treated as a new line */
-    val eolAsNewLine: Boolean
 }
 
 @Immutable
 class DefaultAnnotatorSettings(
     override val linkTextSpanStyle: TextLinkStyles,
     override val codeSpanStyle: SpanStyle,
-    override val annotator: MarkdownAnnotator? = null,
+    override val annotator: MarkdownAnnotator,
     override val referenceLinkHandler: ReferenceLinkHandler? = null,
     override val linkInteractionListener: LinkInteractionListener? = null,
-    override val eolAsNewLine: Boolean = false,
 ) : AnnotatorSettings
 
 @Composable
 fun annotatorSettings(
     linkTextSpanStyle: TextLinkStyles = LocalMarkdownTypography.current.textLink,
     codeSpanStyle: SpanStyle = LocalMarkdownTypography.current.codeSpanStyle,
-    annotator: MarkdownAnnotator? = LocalMarkdownAnnotator.current,
+    annotator: MarkdownAnnotator = LocalMarkdownAnnotator.current,
     referenceLinkHandler: ReferenceLinkHandler? = LocalReferenceLinkHandler.current,
     uriHandler: UriHandler = LocalUriHandler.current,
     linkInteractionListener: LinkInteractionListener? = LinkInteractionListener { link ->
@@ -66,12 +62,10 @@ fun annotatorSettings(
             }
         }
     },
-    eolAsNewLine: Boolean = false,
 ): AnnotatorSettings = DefaultAnnotatorSettings(
     linkTextSpanStyle = linkTextSpanStyle,
     codeSpanStyle = codeSpanStyle,
     annotator = annotator,
     referenceLinkHandler = referenceLinkHandler,
     linkInteractionListener = linkInteractionListener,
-    eolAsNewLine = eolAsNewLine,
 )
