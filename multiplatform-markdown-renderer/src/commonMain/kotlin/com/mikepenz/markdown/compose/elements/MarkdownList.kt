@@ -26,6 +26,9 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes.CHECK_BOX
 
+/** key used to store the current depth in the [MarkdownComponentModel.extra] */
+private const val MARKDOWN_LIST_DEPTH_KEY = "markdown_list_depth"
+
 @Composable
 fun MarkdownListItems(
     content: String,
@@ -65,7 +68,7 @@ fun MarkdownListItems(
                                     content = content,
                                     node = checkboxNode,
                                     typography = markdownTypography,
-                                    extra = persistentMapOf(ORDERED_LIST to depth + 1)
+                                    extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
                                 )
                                 markdownComponents.checkbox.invoke(model)
                             }
@@ -81,7 +84,7 @@ fun MarkdownListItems(
                                             content = content,
                                             node = nestedChild,
                                             typography = markdownTypography,
-                                            extra = persistentMapOf(ORDERED_LIST to depth + 1)
+                                            extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
                                         )
                                         markdownComponents.orderedList.invoke(model)
                                     }
@@ -91,7 +94,7 @@ fun MarkdownListItems(
                                             content = content,
                                             node = nestedChild,
                                             typography = markdownTypography,
-                                            extra = persistentMapOf(UNORDERED_LIST to depth + 1)
+                                            extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
                                         )
                                         markdownComponents.unorderedList.invoke(model)
                                     }
@@ -159,3 +162,9 @@ fun MarkdownBulletList(
         )
     }
 }
+
+/**
+ * Retrieve the current list depth from the [MarkdownComponentModel]
+ */
+val MarkdownComponentModel.listDepth: Int
+    get() = (extra[MARKDOWN_LIST_DEPTH_KEY] as? Int) ?: 0

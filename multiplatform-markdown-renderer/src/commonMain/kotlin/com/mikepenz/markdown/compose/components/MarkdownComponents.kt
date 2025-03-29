@@ -17,14 +17,13 @@ import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
 import com.mikepenz.markdown.compose.elements.MarkdownParagraph
 import com.mikepenz.markdown.compose.elements.MarkdownTable
 import com.mikepenz.markdown.compose.elements.MarkdownText
+import com.mikepenz.markdown.compose.elements.listDepth
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
-import org.intellij.markdown.MarkdownElementTypes.ORDERED_LIST
-import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
@@ -41,7 +40,7 @@ data class MarkdownComponentModel(
     val content: String,
     val node: ASTNode,
     val typography: MarkdownTypography,
-    val extra: ImmutableMap<IElementType, Any> = persistentMapOf(),
+    val extra: ImmutableMap<String, Any> = persistentMapOf(),
 )
 
 private fun MarkdownComponentModel.getUnescapedTextInNode() = node.getUnescapedTextInNode(content)
@@ -199,12 +198,10 @@ object CurrentComponentsBridge {
         MarkdownParagraph(it.content, it.node, style = it.typography.paragraph)
     }
     val orderedList: MarkdownComponent = {
-        val depth = it.extra[ORDERED_LIST] as? Int ?: 0
-        MarkdownOrderedList(it.content, it.node, style = it.typography.ordered, depth)
+        MarkdownOrderedList(it.content, it.node, style = it.typography.ordered, it.listDepth)
     }
     val unorderedList: MarkdownComponent = {
-        val depth = it.extra[UNORDERED_LIST] as? Int ?: 0
-        MarkdownBulletList(it.content, it.node, style = it.typography.bullet, depth)
+        MarkdownBulletList(it.content, it.node, style = it.typography.bullet, it.listDepth)
     }
     val image: MarkdownComponent = {
         MarkdownImage(it.content, it.node)
