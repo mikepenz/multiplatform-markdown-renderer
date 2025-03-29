@@ -91,8 +91,6 @@ fun Markdown(
         modifier = modifier,
         padding = padding,
         dimens = dimens,
-        flavour = flavour,
-        parser = parser,
         imageTransformer = imageTransformer,
         annotator = annotator,
         extendedSpans = extendedSpans,
@@ -113,8 +111,6 @@ fun Markdown(
  * @param modifier The modifier to be applied to the container.
  * @param padding The padding to be applied to the container.
  * @param dimens The dimensions to be used for rendering.
- * @param flavour The flavour descriptor for parsing the markdown. By default uses GFM flavour.
- * @param parser The parser to be used for parsing the markdown. By default uses the flavour supplied.
  * @param imageTransformer The image transformer to be used for rendering images.
  * @param annotator The annotator to be used for rendering annotations.
  * @param extendedSpans The extended spans to be used for rendering.
@@ -132,8 +128,6 @@ fun Markdown(
     modifier: Modifier = Modifier.fillMaxSize(),
     padding: MarkdownPadding = markdownPadding(),
     dimens: MarkdownDimens = markdownDimens(),
-    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    parser: MarkdownParser = MarkdownParser(flavour),
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
@@ -158,8 +152,7 @@ fun Markdown(
         LocalMarkdownComponents provides components,
         LocalMarkdownAnimations provides animations,
     ) {
-        val markdown = markdownState
-        when (markdown) {
+        when (val markdown = markdownState) {
             is State.Error -> error(modifier)
             is State.Loading -> loading(modifier)
             is State.Success -> success(markdown, components, modifier)
