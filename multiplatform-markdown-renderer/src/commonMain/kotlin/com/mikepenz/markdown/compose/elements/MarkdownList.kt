@@ -67,7 +67,7 @@ fun MarkdownListItems(
                                     typography = markdownTypography,
                                     extra = persistentMapOf(ORDERED_LIST to depth + 1)
                                 )
-                                markdownComponents.checkbox.invoke(this, model)
+                                markdownComponents.checkbox.invoke(model)
                             }
                         } else {
                             bullet(index, listIndicator)
@@ -83,7 +83,7 @@ fun MarkdownListItems(
                                             typography = markdownTypography,
                                             extra = persistentMapOf(ORDERED_LIST to depth + 1)
                                         )
-                                        markdownComponents.orderedList.invoke(this, model)
+                                        markdownComponents.orderedList.invoke(model)
                                     }
 
                                     UNORDERED_LIST -> {
@@ -93,7 +93,7 @@ fun MarkdownListItems(
                                             typography = markdownTypography,
                                             extra = persistentMapOf(UNORDERED_LIST to depth + 1)
                                         )
-                                        markdownComponents.unorderedList.invoke(this, model)
+                                        markdownComponents.unorderedList.invoke(model)
                                     }
 
                                     else -> {

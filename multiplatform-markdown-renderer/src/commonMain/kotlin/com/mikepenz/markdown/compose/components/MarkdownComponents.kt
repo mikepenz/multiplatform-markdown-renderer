@@ -1,6 +1,5 @@
 package com.mikepenz.markdown.compose.components
 
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -30,9 +29,9 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 
-typealias MarkdownComponent = @Composable ColumnScope.(MarkdownComponentModel) -> Unit
+typealias MarkdownComponent = @Composable (MarkdownComponentModel) -> Unit
 
-typealias CustomMarkdownComponent = @Composable ColumnScope.(IElementType, MarkdownComponentModel) -> Unit
+typealias CustomMarkdownComponent = @Composable (IElementType, MarkdownComponentModel) -> Unit
 
 /**
  * Model holding data relevant for a component
