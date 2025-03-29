@@ -1,9 +1,11 @@
 package com.mikepenz.markdown.m2
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.mikepenz.markdown.compose.MarkdownSuccess
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.m2.elements.MarkdownCheckBox
@@ -19,6 +21,7 @@ import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.model.NoOpImageTransformerImpl
 import com.mikepenz.markdown.model.ReferenceLinkHandler
 import com.mikepenz.markdown.model.ReferenceLinkHandlerImpl
+import com.mikepenz.markdown.model.State
 import com.mikepenz.markdown.model.markdownAnimations
 import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.model.markdownDimens
@@ -47,6 +50,7 @@ import org.intellij.markdown.parser.MarkdownParser
  * @param animations The [MarkdownAnimations] to use for animations.
  * @param referenceLinkHandler The reference link handler to be used for handling links.
  * @param loading Composable function to display while loading.
+ * @param success A composable function to be displayed with the markdown content. It receives the modifier, state and components as parameters. By default this is a [Column].
  * @param error Composable function to display on error.
  */
 @Composable
@@ -66,6 +70,9 @@ fun Markdown(
     animations: MarkdownAnimations = markdownAnimations(),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
+        MarkdownSuccess(state = state, components = components, modifier = modifier)
+    },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
 ) = com.mikepenz.markdown.compose.Markdown(
     content = content,
@@ -83,6 +90,7 @@ fun Markdown(
     animations = animations,
     referenceLinkHandler = referenceLinkHandler,
     loading = loading,
+    success = success,
     error = error,
 )
 
@@ -103,6 +111,7 @@ fun Markdown(
  * @param components The [MarkdownComponents] to use for custom components.
  * @param animations The [MarkdownAnimations] to use for animations.
  * @param loading Composable function to display while loading.
+ * @param success A composable function to be displayed with the markdown content. It receives the modifier, state and components as parameters. By default this is a [Column].
  * @param error Composable function to display on error.
  */
 @Composable
@@ -121,6 +130,9 @@ fun Markdown(
     components: MarkdownComponents = markdownComponents(checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }),
     animations: MarkdownAnimations = markdownAnimations(),
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
+        MarkdownSuccess(state = state, components = components, modifier = modifier)
+    },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
 ) = com.mikepenz.markdown.compose.Markdown(
     state = state,
@@ -137,5 +149,6 @@ fun Markdown(
     components = components,
     animations = animations,
     loading = loading,
+    success = success,
     error = error,
 )

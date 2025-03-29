@@ -2,16 +2,12 @@ package com.mikepenz.markdown.compose
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.model.ImageTransformer
@@ -33,28 +29,7 @@ import com.mikepenz.markdown.model.markdownDimens
 import com.mikepenz.markdown.model.markdownExtendedSpans
 import com.mikepenz.markdown.model.markdownPadding
 import com.mikepenz.markdown.model.rememberMarkdownState
-import org.intellij.markdown.MarkdownElementTypes.ATX_1
-import org.intellij.markdown.MarkdownElementTypes.ATX_2
-import org.intellij.markdown.MarkdownElementTypes.ATX_3
-import org.intellij.markdown.MarkdownElementTypes.ATX_4
-import org.intellij.markdown.MarkdownElementTypes.ATX_5
-import org.intellij.markdown.MarkdownElementTypes.ATX_6
-import org.intellij.markdown.MarkdownElementTypes.BLOCK_QUOTE
-import org.intellij.markdown.MarkdownElementTypes.CODE_BLOCK
-import org.intellij.markdown.MarkdownElementTypes.CODE_FENCE
-import org.intellij.markdown.MarkdownElementTypes.IMAGE
-import org.intellij.markdown.MarkdownElementTypes.LINK_DEFINITION
-import org.intellij.markdown.MarkdownElementTypes.ORDERED_LIST
-import org.intellij.markdown.MarkdownElementTypes.PARAGRAPH
-import org.intellij.markdown.MarkdownElementTypes.SETEXT_1
-import org.intellij.markdown.MarkdownElementTypes.SETEXT_2
-import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
-import org.intellij.markdown.MarkdownTokenTypes.Companion.EOL
-import org.intellij.markdown.MarkdownTokenTypes.Companion.HORIZONTAL_RULE
-import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
-import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
-import org.intellij.markdown.flavours.gfm.GFMElementTypes.TABLE
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
 
@@ -77,6 +52,7 @@ import org.intellij.markdown.parser.MarkdownParser
  * @param referenceLinkHandler The reference link handler to be used for handling links.
  * @param animations The animations to be used for rendering.
  * @param loading A composable function to be displayed while loading the content.
+ * @param success A composable function to be displayed with the markdown content. It receives the modifier, state and components as parameters. By default this is a [Column].
  * @param error A composable function to be displayed in case of an error. Only really possible if assertions are enabled on the parser)
  */
 @Composable
@@ -96,6 +72,9 @@ fun Markdown(
     animations: MarkdownAnimations = markdownAnimations(),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
+        MarkdownSuccess(state = state, components = components, modifier = modifier)
+    },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
 ) {
     val state = rememberMarkdownState(
@@ -120,6 +99,7 @@ fun Markdown(
         components = components,
         animations = animations,
         loading = loading,
+        success = success,
         error = error
     )
 }
@@ -141,6 +121,7 @@ fun Markdown(
  * @param components The components to be used for rendering.
  * @param animations The animations to be used for rendering.
  * @param loading A composable function to be displayed while loading the content.
+ * @param success A composable function to be displayed with the markdown content. It receives the modifier, state and components as parameters. By default this is a [Column].
  * @param error A composable function to be displayed in case of an error. Only really possible if assertions are enabled on the parser)
  */
 @Composable
@@ -159,6 +140,9 @@ fun Markdown(
     components: MarkdownComponents = markdownComponents(),
     animations: MarkdownAnimations = markdownAnimations(),
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
+        MarkdownSuccess(state = state, components = components, modifier = modifier)
+    },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
 ) {
     val markdownState by state.state.collectAsState()
@@ -178,13 +162,7 @@ fun Markdown(
         when (markdown) {
             is State.Error -> error(modifier)
             is State.Loading -> loading(modifier)
-            is State.Success -> MarkdownSuccess(
-                content = markdown.content,
-                node = markdown.node,
-                components = components,
-                modifier = modifier,
-                skipLinkDefinition = markdown.linksLookedUp,
-            )
+            is State.Success -> success(markdown, components, modifier)
         }
     }
 }
@@ -192,81 +170,23 @@ fun Markdown(
 /**
  * Renders the parsed markdown content.
  *
- * @param content The original markdown content.
- * @param node The ASTNode representing the parsed markdown.
+ * @param state The success markdown state.
  * @param components The MarkdownComponents instance containing the components to use.
  * @param modifier The modifier to be applied to the container.
- * @param skipLinkDefinition If true, link definitions will be skipped when handling the markdown nodes.
  */
 @Composable
 fun MarkdownSuccess(
-    content: String,
-    node: ASTNode,
+    state: State.Success,
     components: MarkdownComponents,
     modifier: Modifier = Modifier,
-    skipLinkDefinition: Boolean = true,
 ) {
     Column(modifier) {
-        node.children.forEach { node ->
-            if (!handleElement(node, components, content, skipLinkDefinition = skipLinkDefinition)) {
+        state.node.children.forEach { node ->
+            if (!handleElement(node, components, state.content, skipLinkDefinition = state.linksLookedUp)) {
                 node.children.forEach { child ->
-                    handleElement(child, components, content, skipLinkDefinition = skipLinkDefinition)
+                    handleElement(child, components, state.content, skipLinkDefinition = state.linksLookedUp)
                 }
             }
         }
     }
-}
-
-@Composable
-internal fun ColumnScope.handleElement(
-    node: ASTNode,
-    components: MarkdownComponents,
-    content: String,
-    includeSpacer: Boolean = true,
-    skipLinkDefinition: Boolean = true,
-): Boolean {
-    val model = MarkdownComponentModel(
-        content = content,
-        node = node,
-        typography = LocalMarkdownTypography.current,
-    )
-    var handled = true
-    if (includeSpacer) Spacer(Modifier.height(LocalMarkdownPadding.current.block))
-    when (node.type) {
-        TEXT -> components.text(this@handleElement, model)
-        EOL -> components.eol(this@handleElement, model)
-        CODE_FENCE -> components.codeFence(this@handleElement, model)
-        CODE_BLOCK -> components.codeBlock(this@handleElement, model)
-        ATX_1 -> components.heading1(this@handleElement, model)
-        ATX_2 -> components.heading2(this@handleElement, model)
-        ATX_3 -> components.heading3(this@handleElement, model)
-        ATX_4 -> components.heading4(this@handleElement, model)
-        ATX_5 -> components.heading5(this@handleElement, model)
-        ATX_6 -> components.heading6(this@handleElement, model)
-        SETEXT_1 -> components.setextHeading1(this@handleElement, model)
-        SETEXT_2 -> components.setextHeading2(this@handleElement, model)
-        BLOCK_QUOTE -> components.blockQuote(this@handleElement, model)
-        PARAGRAPH -> components.paragraph(this@handleElement, model)
-        ORDERED_LIST -> components.orderedList(this@handleElement, model)
-        UNORDERED_LIST -> components.unorderedList(this@handleElement, model)
-        IMAGE -> components.image(this@handleElement, model)
-        LINK_DEFINITION -> {
-            @Suppress("DEPRECATION")
-            if (!skipLinkDefinition) components.linkDefinition(this@handleElement, model)
-        }
-
-        HORIZONTAL_RULE -> components.horizontalRule(this@handleElement, model)
-        TABLE -> components.table(this@handleElement, model)
-        else -> {
-            handled = components.custom?.invoke(this@handleElement, node.type, model) != null
-        }
-    }
-
-    if (!handled) {
-        node.children.forEach { child ->
-            handleElement(child, components, content, includeSpacer, skipLinkDefinition)
-        }
-    }
-
-    return handled
 }
