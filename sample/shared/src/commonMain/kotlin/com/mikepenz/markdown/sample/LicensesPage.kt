@@ -12,12 +12,12 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @Composable
 internal fun LicensesPage(
     libraries: Libs?,
-    padding: PaddingValues,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     LibrariesContainer(
         libraries = libraries,
         modifier = modifier.fillMaxSize(),
-        contentPadding = padding
+        contentPadding = contentPadding
     )
 }
