@@ -71,9 +71,9 @@ class ExtendedSpans(
                     painter.decorate(updated, range.start, range.end, text = text, builder = this)
                 }
 
-                when (val item = decorated) {
-                    is LinkAnnotation.Url -> addLink(item, range.start, range.end)
-                    is LinkAnnotation.Clickable -> addLink(item, range.start, range.end)
+                when (decorated) {
+                    is LinkAnnotation.Url -> addLink(decorated, range.start, range.end)
+                    is LinkAnnotation.Clickable -> addLink(decorated, range.start, range.end)
                 }
             }
         }

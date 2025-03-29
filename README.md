@@ -138,7 +138,7 @@ Markdown(
             /** No animation */
         }
     ),
-}
+)
 ```
 
 ### Extended spans

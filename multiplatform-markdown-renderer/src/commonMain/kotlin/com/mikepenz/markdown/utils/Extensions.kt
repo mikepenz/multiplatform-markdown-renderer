@@ -116,7 +116,7 @@ internal fun lookupLinkDefinition(
         } else {
             node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(content)
         }
-        store.put(linkLabel, destination)
+        store[linkLabel] = destination
     }
 
     if (recursive) {
