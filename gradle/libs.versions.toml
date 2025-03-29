@@ -1,6 +1,5 @@
 [versions]
 androidx-activityCompose = "1.10.1"
-androidx-material = "1.12.0"
 coil = "3.1.0"
 coil2 = "2.7.0"
 markdown = "0.7.3"
@@ -8,24 +7,21 @@ ktor = "3.1.2"
 highlights = "1.0.0"
 
 [libraries]
-androidx-material = { module = "com.google.android.material:material", version.ref = "androidx-material" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 coil-core = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 coil2-core = { module = "io.coil-kt:coil-compose", version.ref = "coil2" }
-coil2-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil2" }
 markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 highlights = { module = "dev.snipme:highlights", version.ref = "highlights" }
 
 [bundles]
 coil = [
     "coil-core",
     "coil-network-okhttp",
-]
-coil2 = [
-    "coil-core",
 ]
