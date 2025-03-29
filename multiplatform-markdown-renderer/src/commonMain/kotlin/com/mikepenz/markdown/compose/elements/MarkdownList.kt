@@ -1,7 +1,9 @@
 package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -34,6 +36,7 @@ fun MarkdownListItems(
     content: String,
     node: ASTNode,
     depth: Int = 0,
+    listItemBlock: @Composable RowScope.(@Composable ColumnScope.() -> Unit) -> Unit = { content -> Column { content() } },
     bullet: @Composable (index: Int, child: ASTNode?) -> Unit,
 ) {
     val listDp = LocalMarkdownPadding.current.list
@@ -76,7 +79,7 @@ fun MarkdownListItems(
                             bullet(index, listIndicator)
                         }
 
-                        Column {
+                        listItemBlock {
                             child.children.onEach { nestedChild ->
                                 when (nestedChild.type) {
                                     ORDERED_LIST -> {
@@ -125,9 +128,10 @@ fun MarkdownOrderedList(
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.ordered,
     depth: Int = 0,
+    listItemBlock: @Composable RowScope.(@Composable ColumnScope.() -> Unit) -> Unit = { content -> Column { content() } },
 ) {
     val orderedListHandler = LocalOrderedListHandler.current
-    MarkdownListItems(content, node, depth) { index, child ->
+    MarkdownListItems(content = content, node = node, depth = depth, listItemBlock = listItemBlock) { index, child ->
         MarkdownBasicText(
             text = orderedListHandler.transform(
                 type = LIST_NUMBER,
@@ -146,10 +150,11 @@ fun MarkdownBulletList(
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.bullet,
     depth: Int = 0,
+    listItemBlock: @Composable RowScope.(@Composable ColumnScope.() -> Unit) -> Unit = { content -> Column { content() } },
 ) {
     val bulletHandler = LocalBulletListHandler.current
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
-    MarkdownListItems(content, node, depth) { index, child ->
+    MarkdownListItems(content = content, node = node, depth = depth, listItemBlock = listItemBlock) { index, child ->
         MarkdownBasicText(
             text = bulletHandler.transform(
                 type = LIST_BULLET,
