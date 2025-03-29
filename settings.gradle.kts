@@ -24,18 +24,21 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("baseLibs") {
-            from("com.mikepenz:version-catalog:0.2.2")
+            from("com.mikepenz:version-catalog:0.2.3")
         }
     }
 }
 
-include(":multiplatform-markdown-renderer")
-include(":multiplatform-markdown-renderer-m2")
-include(":multiplatform-markdown-renderer-m3")
-include(":multiplatform-markdown-renderer-coil2")
-include(":multiplatform-markdown-renderer-coil3")
-include(":multiplatform-markdown-renderer-code")
+include(
+    ":multiplatform-markdown-renderer",
+    ":multiplatform-markdown-renderer-m2",
+    ":multiplatform-markdown-renderer-m3",
+    ":multiplatform-markdown-renderer-coil2",
+    ":multiplatform-markdown-renderer-coil3",
+    ":multiplatform-markdown-renderer-code",
 
-include(":app")
-include(":app-desktop")
-include(":app-wasm")
+    ":sample:shared",
+    ":sample:android",
+    ":sample:desktop",
+    ":sample:web",
+)
