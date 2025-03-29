@@ -297,7 +297,7 @@ After adding the dependency, the chosen image transformer implementation has to 
 `Markdown` API.
 
 > [!NOTE]  
-> Please refer to the official documentation from the chosen integration on how to adjust its
+> Please refer to the official documentation for the specific image loading integration you are using (e.g., coil3) on how to adjust its
 > behavior.
 
 #### coil3
