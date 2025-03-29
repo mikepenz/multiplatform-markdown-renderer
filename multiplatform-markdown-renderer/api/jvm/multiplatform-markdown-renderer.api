@@ -111,14 +111,17 @@ public final class com/mikepenz/markdown/compose/components/CurrentComponentsBri
 
 public final class com/mikepenz/markdown/compose/components/MarkdownComponentModel {
 	public static final field $stable I
-	public fun <init> (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownTypography;)V
+	public fun <init> (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownTypography;Lkotlinx/collections/immutable/ImmutableMap;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownTypography;Lkotlinx/collections/immutable/ImmutableMap;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Lorg/intellij/markdown/ast/ASTNode;
 	public final fun component3 ()Lcom/mikepenz/markdown/model/MarkdownTypography;
-	public final fun copy (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownTypography;)Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;
-	public static synthetic fun copy$default (Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownTypography;ILjava/lang/Object;)Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;
+	public final fun component4 ()Lkotlinx/collections/immutable/ImmutableMap;
+	public final fun copy (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownTypography;Lkotlinx/collections/immutable/ImmutableMap;)Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;
+	public static synthetic fun copy$default (Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownTypography;Lkotlinx/collections/immutable/ImmutableMap;ILjava/lang/Object;)Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getContent ()Ljava/lang/String;
+	public final fun getExtra ()Lkotlinx/collections/immutable/ImmutableMap;
 	public final fun getNode ()Lorg/intellij/markdown/ast/ASTNode;
 	public final fun getTypography ()Lcom/mikepenz/markdown/model/MarkdownTypography;
 	public fun hashCode ()I
@@ -191,7 +194,7 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownImageKt {
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownListKt {
 	public static final fun MarkdownBulletList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILandroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownListItems (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownListItems (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;ILkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
 	public static final fun MarkdownOrderedList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILandroidx/compose/runtime/Composer;II)V
 }
 
