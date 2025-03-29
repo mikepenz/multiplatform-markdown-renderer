@@ -6,6 +6,7 @@ import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.model.BulletHandler
 import com.mikepenz.markdown.model.DefaultMarkdownAnnotator
+import com.mikepenz.markdown.model.DefaultMarkdownAnnotatorConfig
 import com.mikepenz.markdown.model.DefaultMarkdownExtendedSpans
 import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.MarkdownAnimations
@@ -77,7 +78,7 @@ val LocalImageTransformer = staticCompositionLocalOf<ImageTransformer> {
  * Local [MarkdownAnnotator] provider
  */
 val LocalMarkdownAnnotator = compositionLocalOf<MarkdownAnnotator> {
-    return@compositionLocalOf DefaultMarkdownAnnotator(null)
+    return@compositionLocalOf DefaultMarkdownAnnotator(null, DefaultMarkdownAnnotatorConfig())
 }
 
 /**

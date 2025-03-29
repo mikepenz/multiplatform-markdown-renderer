@@ -19,6 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import com.mikepenz.markdown.annotator.AnnotatorSettings
 import com.mikepenz.markdown.annotator.annotatorSettings
 import com.mikepenz.markdown.annotator.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.compose.LocalImageTransformer
@@ -55,10 +56,9 @@ fun MarkdownText(
     style: TextStyle,
     modifier: Modifier = Modifier,
     contentChildType: IElementType? = null,
+    annotatorSettings: AnnotatorSettings = annotatorSettings(),
 ) {
-    val annotatorSettings = annotatorSettings()
     val childNode = contentChildType?.run(node::findChildOfType) ?: node
-
     val styledText = buildAnnotatedString {
         pushStyle(style.toSpanStyle())
         buildMarkdownAnnotatedString(
