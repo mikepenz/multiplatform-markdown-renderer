@@ -16,6 +16,7 @@ import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.handleElement
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
+import kotlinx.collections.immutable.persistentMapOf
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownElementTypes.ORDERED_LIST
 import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
@@ -64,7 +65,7 @@ fun MarkdownListItems(
                                     content = content,
                                     node = checkboxNode,
                                     typography = markdownTypography,
-                                    extra = mapOf(ORDERED_LIST to depth + 1)
+                                    extra = persistentMapOf(ORDERED_LIST to depth + 1)
                                 )
                                 markdownComponents.checkbox.invoke(this, model)
                             }
@@ -80,19 +81,21 @@ fun MarkdownListItems(
                                             content = content,
                                             node = nestedChild,
                                             typography = markdownTypography,
-                                            extra = mapOf(ORDERED_LIST to depth + 1)
+                                            extra = persistentMapOf(ORDERED_LIST to depth + 1)
                                         )
                                         markdownComponents.orderedList.invoke(this, model)
                                     }
+
                                     UNORDERED_LIST -> {
                                         val model = MarkdownComponentModel(
                                             content = content,
                                             node = nestedChild,
                                             typography = markdownTypography,
-                                            extra = mapOf(UNORDERED_LIST to depth + 1)
+                                            extra = persistentMapOf(UNORDERED_LIST to depth + 1)
                                         )
                                         markdownComponents.unorderedList.invoke(this, model)
                                     }
+
                                     else -> {
                                         handleElement(
                                             node = nestedChild,
@@ -124,10 +127,10 @@ fun MarkdownOrderedList(
     MarkdownListItems(content, node, depth) { index, child ->
         MarkdownBasicText(
             text = orderedListHandler.transform(
-                LIST_NUMBER,
-                child?.getUnescapedTextInNode(content),
-                index,
-                depth
+                type = LIST_NUMBER,
+                bullet = child?.getUnescapedTextInNode(content),
+                index = index,
+                depth = depth
             ),
             style = style,
         )
@@ -146,10 +149,10 @@ fun MarkdownBulletList(
     MarkdownListItems(content, node, depth) { index, child ->
         MarkdownBasicText(
             text = bulletHandler.transform(
-                LIST_BULLET,
-                child?.getUnescapedTextInNode(content),
-                index,
-                depth
+                type = LIST_BULLET,
+                bullet = child?.getUnescapedTextInNode(content),
+                index = index,
+                depth = depth
             ),
             style = style,
             modifier = Modifier.padding(bottom = listItemBottom)

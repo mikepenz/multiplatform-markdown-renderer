@@ -11,6 +11,8 @@ android {
 
 dependencies {
     commonMainApi(libs.markdown)
+    commonMainApi(baseLibs.kotlinx.collections.immutable)
+
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.ui)
     commonMainCompileOnly(compose.foundation)

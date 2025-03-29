@@ -20,6 +20,8 @@ import com.mikepenz.markdown.compose.elements.MarkdownTable
 import com.mikepenz.markdown.compose.elements.MarkdownText
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownElementTypes.ORDERED_LIST
@@ -35,11 +37,12 @@ typealias CustomMarkdownComponent = @Composable ColumnScope.(IElementType, Markd
 /**
  * Model holding data relevant for a component
  */
+@Stable
 data class MarkdownComponentModel(
     val content: String,
     val node: ASTNode,
     val typography: MarkdownTypography,
-    val extra: Map<IElementType, Any> = emptyMap()
+    val extra: ImmutableMap<IElementType, Any> = persistentMapOf(),
 )
 
 private fun MarkdownComponentModel.getUnescapedTextInNode() = node.getUnescapedTextInNode(content)
@@ -196,15 +199,13 @@ object CurrentComponentsBridge {
     val paragraph: MarkdownComponent = {
         MarkdownParagraph(it.content, it.node, style = it.typography.paragraph)
     }
-    val orderedList: MarkdownComponent = { model ->
-        val (content, node, typography, extra) = model
-        val depth = extra[ORDERED_LIST] as? Int ?: 0
-        MarkdownOrderedList(content, node, style = typography.ordered, depth)
+    val orderedList: MarkdownComponent = {
+        val depth = it.extra[ORDERED_LIST] as? Int ?: 0
+        MarkdownOrderedList(it.content, it.node, style = it.typography.ordered, depth)
     }
-    val unorderedList: MarkdownComponent = { model ->
-        val (content, node, typography, extra) = model
-        val depth = extra[UNORDERED_LIST] as? Int ?: 0
-        MarkdownBulletList(content, node, style = typography.bullet, depth)
+    val unorderedList: MarkdownComponent = {
+        val depth = it.extra[UNORDERED_LIST] as? Int ?: 0
+        MarkdownBulletList(it.content, it.node, style = it.typography.bullet, depth)
     }
     val image: MarkdownComponent = {
         MarkdownImage(it.content, it.node)
