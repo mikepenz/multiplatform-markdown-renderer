@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +26,7 @@ import com.mikepenz.markdown.sample.theme.SampleTheme
 @Composable
 fun App(
     libraries: Libs?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val isSystemInDarkMode = isSystemInDarkTheme()
     var darkMode by remember { mutableStateOf(isSystemInDarkMode) }
@@ -34,7 +34,7 @@ fun App(
     SampleTheme(darkMode) {
         Scaffold(
             topBar = {
-                TopAppBar(onClick = { showLicenses = !showLicenses})
+                TopAppBar(onClick = { showLicenses = !showLicenses })
             },
             modifier = modifier
         ) { padding ->
@@ -49,7 +49,7 @@ fun App(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "Dark mode enabled", color = MaterialTheme.colors.onBackground)
+                        Text(text = "Dark mode enabled", color = MaterialTheme.colorScheme.onBackground)
                         Switch(checked = darkMode, onCheckedChange = { darkMode = !darkMode })
                     }
                     MarkDownPage()

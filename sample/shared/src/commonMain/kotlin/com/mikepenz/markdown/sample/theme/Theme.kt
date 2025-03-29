@@ -1,27 +1,24 @@
 package com.mikepenz.markdown.sample.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
-    primary = SampleGreen,
-    primaryVariant = SampleGreenDark,
+private val DarkColorScheme = darkColorScheme(
+    primary = Primary,
     onPrimary = Color.White,
-    secondary = SampleGreen,
+    secondary = Primary,
     onSecondary = Color.White,
     error = Red200
 )
 
-private val LightColorPalette = lightColors(
-    primary = SampleGreen,
-    primaryVariant = SampleGreenDark,
+private val LightColorScheme = lightColorScheme(
+    primary = Primary,
     onPrimary = Color.White,
-    secondary = SampleGreen,
-    secondaryVariant = SampleGreenDark,
+    secondary = Primary,
     onSecondary = Color.White,
     error = Red800
 )
@@ -29,16 +26,16 @@ private val LightColorPalette = lightColors(
 @Composable
 fun SampleTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
+    val colorScheme = if (darkTheme) {
+        DarkColorScheme
     } else {
-        LightColorPalette
+        LightColorScheme
     }
 
     MaterialTheme(
-        colors = colors,
+        colorScheme = colorScheme,
         content = content
     )
 }
