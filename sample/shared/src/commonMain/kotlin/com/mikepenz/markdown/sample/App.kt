@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.sample
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,7 +34,7 @@ fun App(
             if (showLicenses) {
                 LicensesPage(libraries = libraries, contentPadding = contentPadding)
             } else {
-                MarkDownPage()
+                MarkDownPage(modifier = Modifier.padding(contentPadding))
             }
         }
     }
