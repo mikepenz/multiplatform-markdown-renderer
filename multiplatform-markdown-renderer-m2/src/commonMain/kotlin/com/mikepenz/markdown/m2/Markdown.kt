@@ -69,11 +69,11 @@ fun Markdown(
     components: MarkdownComponents = markdownComponents(checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }),
     animations: MarkdownAnimations = markdownAnimations(),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
-    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
     success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
         MarkdownSuccess(state = state, components = components, modifier = modifier)
     },
-    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
 ) = com.mikepenz.markdown.compose.Markdown(
     content = content,
     colors = colors,
@@ -125,11 +125,11 @@ fun Markdown(
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
     components: MarkdownComponents = markdownComponents(checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }),
     animations: MarkdownAnimations = markdownAnimations(),
-    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
     success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
         MarkdownSuccess(state = state, components = components, modifier = modifier)
     },
-    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
 ) = com.mikepenz.markdown.compose.Markdown(
     state = state,
     colors = colors,

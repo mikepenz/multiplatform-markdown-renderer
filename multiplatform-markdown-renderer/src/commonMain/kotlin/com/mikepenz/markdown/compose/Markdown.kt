@@ -71,11 +71,11 @@ fun Markdown(
     components: MarkdownComponents = markdownComponents(),
     animations: MarkdownAnimations = markdownAnimations(),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
-    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
     success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
         MarkdownSuccess(state = state, components = components, modifier = modifier)
     },
-    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
 ) {
     val state = rememberMarkdownState(
         content = content,
@@ -133,11 +133,11 @@ fun Markdown(
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
     components: MarkdownComponents = markdownComponents(),
     animations: MarkdownAnimations = markdownAnimations(),
-    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
     success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
         MarkdownSuccess(state = state, components = components, modifier = modifier)
     },
-    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) {} },
+    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
 ) {
     val markdownState by state.state.collectAsState()
     CompositionLocalProvider(
@@ -175,11 +175,7 @@ fun MarkdownSuccess(
 ) {
     Column(modifier) {
         state.node.children.forEach { node ->
-            if (!handleElement(node, components, state.content, skipLinkDefinition = state.linksLookedUp)) {
-                node.children.forEach { child ->
-                    handleElement(child, components, state.content, skipLinkDefinition = state.linksLookedUp)
-                }
-            }
+            handleElement(node, components, state.content, skipLinkDefinition = state.linksLookedUp)
         }
     }
 }

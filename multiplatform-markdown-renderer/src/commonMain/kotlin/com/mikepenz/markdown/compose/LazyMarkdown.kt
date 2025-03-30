@@ -29,11 +29,7 @@ fun LazyMarkdownSuccess(
         contentPadding = contentPadding,
     ) {
         items(state.node.children) { node ->
-            if (!handleElement(node, components, state.content, skipLinkDefinition = state.linksLookedUp)) {
-                node.children.forEach { child ->
-                    handleElement(child, components, state.content, skipLinkDefinition = state.linksLookedUp)
-                }
-            }
+            handleElement(node, components, state.content, skipLinkDefinition = state.linksLookedUp)
         }
     }
 }
