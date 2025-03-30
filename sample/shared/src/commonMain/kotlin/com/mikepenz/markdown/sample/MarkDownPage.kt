@@ -76,8 +76,8 @@ internal fun MarkDownPage(modifier: Modifier = Modifier) {
             },
             modifier = modifier
                 .fillMaxSize()
-                .padding(16.dp)
                 .verticalScroll(rememberScrollState())
+                .padding(16.dp)
         )
     }
 }
