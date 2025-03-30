@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
+import com.mikepenz.markdown.compose.elements.MarkdownText
 
 interface MarkdownAnimations {
     /**
