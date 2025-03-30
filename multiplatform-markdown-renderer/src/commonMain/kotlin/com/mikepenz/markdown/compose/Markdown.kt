@@ -175,11 +175,7 @@ fun MarkdownSuccess(
 ) {
     Column(modifier) {
         state.node.children.forEach { node ->
-            if (!handleElement(node, components, state.content, skipLinkDefinition = state.linksLookedUp)) {
-                node.children.forEach { child ->
-                    handleElement(child, components, state.content, skipLinkDefinition = state.linksLookedUp)
-                }
-            }
+            handleElement(node, components, state.content, skipLinkDefinition = state.linksLookedUp)
         }
     }
 }
