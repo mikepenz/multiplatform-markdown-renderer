@@ -54,6 +54,11 @@ Markdown(
     - As a result the component spec now needs to handle depth.
       See [Source](https://github.com/keta1/multiplatform-markdown-renderer/blob/develop/multiplatform-markdown-renderer/src/commonMain/kotlin/com/mikepenz/markdown/compose/components/MarkdownComponents.kt#L201-L208)
       for details.
+- **Breaking Change**: The `MarkdownListItems` component now takes 2 optional lambdas
+    - These lambdas offer the ability to provide custom `Modifier`s for the marker and the list
+      content.
+    - This can be helpful for example to adjust the baseline.
+      See: https://github.com/mikepenz/multiplatform-markdown-renderer/issues/329
 
 - **Behavior Change**: To account for the behavior change introduced in v0.32.0 on EOL handling a
   new API was introduced to bring back prior behavior

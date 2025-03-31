@@ -204,9 +204,9 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownImageKt {
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownListKt {
-	public static final fun MarkdownBulletList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILandroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownListItems (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;ILkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownOrderedList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILandroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownBulletList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownListItems (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownOrderedList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getListDepth (Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;)I
 }
 
