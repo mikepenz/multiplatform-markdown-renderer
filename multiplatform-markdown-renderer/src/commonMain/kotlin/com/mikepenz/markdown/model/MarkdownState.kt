@@ -114,6 +114,7 @@ data class Input(
 /**
  * The current state of the [MarkdownState].
  */
+@Stable
 sealed interface State {
 
     /** The [ReferenceLinkHandler] to store links in. */
