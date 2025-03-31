@@ -1,7 +1,9 @@
 package com.mikepenz.markdown.compose.elements
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -34,6 +36,8 @@ fun MarkdownListItems(
     content: String,
     node: ASTNode,
     depth: Int = 0,
+    markerModifier: RowScope.() -> Modifier = { Modifier },
+    listModifier: RowScope.() -> Modifier = { Modifier },
     bullet: @Composable (index: Int, child: ASTNode?) -> Unit,
 ) {
     val listDp = LocalMarkdownPadding.current.list
@@ -61,9 +65,9 @@ fun MarkdownListItems(
                         else -> null
                     }
 
-                    Row(Modifier.fillMaxWidth().padding(top = listItemPaddingDp, bottom = listItemBottom)) {
-                        if (checkboxNode != null) {
-                            Column {
+                    Row(modifier = Modifier.fillMaxWidth().padding(top = listItemPaddingDp, bottom = listItemBottom)) {
+                        Box(modifier = markerModifier()) {
+                            if (checkboxNode != null) {
                                 val model = MarkdownComponentModel(
                                     content = content,
                                     node = checkboxNode,
@@ -71,12 +75,11 @@ fun MarkdownListItems(
                                     extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
                                 )
                                 markdownComponents.checkbox.invoke(model)
+                            } else {
+                                bullet(index, listIndicator)
                             }
-                        } else {
-                            bullet(index, listIndicator)
                         }
-
-                        Column {
+                        Column(modifier = listModifier()) {
                             child.children.onEach { nestedChild ->
                                 when (nestedChild.type) {
                                     ORDERED_LIST -> {
@@ -125,9 +128,11 @@ fun MarkdownOrderedList(
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.ordered,
     depth: Int = 0,
+    markerModifier: RowScope.() -> Modifier = { Modifier },
+    listModifier: RowScope.() -> Modifier = { Modifier },
 ) {
     val orderedListHandler = LocalOrderedListHandler.current
-    MarkdownListItems(content, node, depth) { index, child ->
+    MarkdownListItems(content, node, depth, markerModifier, listModifier) { index, child ->
         MarkdownBasicText(
             text = orderedListHandler.transform(
                 type = LIST_NUMBER,
@@ -146,10 +151,12 @@ fun MarkdownBulletList(
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.bullet,
     depth: Int = 0,
+    markerModifier: RowScope.() -> Modifier = { Modifier },
+    listModifier: RowScope.() -> Modifier = { Modifier },
 ) {
     val bulletHandler = LocalBulletListHandler.current
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
-    MarkdownListItems(content, node, depth) { index, child ->
+    MarkdownListItems(content, node, depth, markerModifier, listModifier) { index, child ->
         MarkdownBasicText(
             text = bulletHandler.transform(
                 type = LIST_BULLET,
