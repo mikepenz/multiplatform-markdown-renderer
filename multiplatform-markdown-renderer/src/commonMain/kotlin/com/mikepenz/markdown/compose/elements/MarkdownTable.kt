@@ -64,7 +64,9 @@ fun MarkdownTable(
 
     val backgroundCodeColor = LocalMarkdownColors.current.tableBackground
     BoxWithConstraints(
-        modifier = Modifier.background(backgroundCodeColor, RoundedCornerShape(tableCornerSize)).widthIn(max = tableMaxWidth)
+        modifier = Modifier
+            .background(backgroundCodeColor, RoundedCornerShape(tableCornerSize))
+            .widthIn(max = tableMaxWidth)
     ) {
         val scrollable = maxWidth <= tableWidth
         Column(
@@ -160,7 +162,8 @@ fun MarkdownTableBasicText(
     overflow: TextOverflow = TextOverflow.Ellipsis,
     annotatorSettings: AnnotatorSettings = annotatorSettings(),
 ) {
-    @Suppress("DEPRECATION") MarkdownBasicText(
+    @Suppress("DEPRECATION")
+    MarkdownBasicText(
         text = content.buildMarkdownAnnotatedString(
             textNode = cell,
             style = style,
