@@ -15,8 +15,11 @@ import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalOrderedListHandler
 import com.mikepenz.markdown.compose.components.MarkdownComponentModel
+import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.handleElement
+import com.mikepenz.markdown.model.MarkdownPadding
+import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import kotlinx.collections.immutable.persistentMapOf
 import org.intellij.markdown.MarkdownElementTypes
@@ -40,84 +43,135 @@ fun MarkdownListItems(
     listModifier: RowScope.() -> Modifier = { Modifier },
     bullet: @Composable (index: Int, child: ASTNode?) -> Unit,
 ) {
-    val listDp = LocalMarkdownPadding.current.list
-    val indentListDp = LocalMarkdownPadding.current.listIndent
-    val listItemPaddingDp = LocalMarkdownPadding.current.listItemTop
-    val listItemBottom = LocalMarkdownPadding.current.listItemBottom
+    val padding = LocalMarkdownPadding.current
     val markdownComponents = LocalMarkdownComponents.current
     val markdownTypography = LocalMarkdownTypography.current
+    
     Column(
         modifier = Modifier.padding(
-            start = (indentListDp) * depth,
-            top = listDp,
-            bottom = listDp
+            start = padding.listIndent * depth,
+            top = padding.list,
+            bottom = padding.list
         )
     ) {
         var index = 0
         node.children.forEach { child ->
-            when (child.type) {
-                MarkdownElementTypes.LIST_ITEM -> {
-                    // LIST_NUMBER/LIST_BULLET, CHECK_BOX, PARAGRAPH
-                    val checkboxNode = child.children.getOrNull(1)?.takeIf { it.type == CHECK_BOX }
-                    val listIndicator = when (node.type) {
-                        ORDERED_LIST -> child.findChildOfType(LIST_NUMBER)
-                        UNORDERED_LIST -> child.findChildOfType(LIST_BULLET)
-                        else -> null
-                    }
-
-                    Row(modifier = Modifier.fillMaxWidth().padding(top = listItemPaddingDp, bottom = listItemBottom)) {
-                        Box(modifier = markerModifier()) {
-                            if (checkboxNode != null) {
-                                val model = MarkdownComponentModel(
-                                    content = content,
-                                    node = checkboxNode,
-                                    typography = markdownTypography,
-                                    extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
-                                )
-                                markdownComponents.checkbox.invoke(model)
-                            } else {
-                                bullet(index, listIndicator)
-                            }
-                        }
-                        Column(modifier = listModifier()) {
-                            child.children.onEach { nestedChild ->
-                                when (nestedChild.type) {
-                                    ORDERED_LIST -> {
-                                        val model = MarkdownComponentModel(
-                                            content = content,
-                                            node = nestedChild,
-                                            typography = markdownTypography,
-                                            extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
-                                        )
-                                        markdownComponents.orderedList.invoke(model)
-                                    }
-
-                                    UNORDERED_LIST -> {
-                                        val model = MarkdownComponentModel(
-                                            content = content,
-                                            node = nestedChild,
-                                            typography = markdownTypography,
-                                            extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
-                                        )
-                                        markdownComponents.unorderedList.invoke(model)
-                                    }
-
-                                    else -> {
-                                        handleElement(
-                                            node = nestedChild,
-                                            components = markdownComponents,
-                                            content = content,
-                                            includeSpacer = false
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    index++
-                }
+            if (child.type == MarkdownElementTypes.LIST_ITEM) {
+                MarkdownListItem(
+                    content = content,
+                    child = child,
+                    node = node,
+                    index = index,
+                    depth = depth,
+                    markdownComponents = markdownComponents,
+                    markdownTypography = markdownTypography,
+                    padding = padding,
+                    markerModifier = markerModifier,
+                    listModifier = listModifier,
+                    bullet = bullet
+                )
+                index++
             }
+        }
+    }
+}
+
+/**
+ * Renders a single list item
+ */
+@Composable
+private fun MarkdownListItem(
+    content: String,
+    child: ASTNode,
+    node: ASTNode,
+    index: Int,
+    depth: Int,
+    markdownComponents: MarkdownComponents,
+    markdownTypography: MarkdownTypography,
+    padding: MarkdownPadding,
+    markerModifier: RowScope.() -> Modifier,
+    listModifier: RowScope.() -> Modifier,
+    bullet: @Composable (index: Int, child: ASTNode?) -> Unit
+) {
+    val checkboxNode = child.children.getOrNull(1)?.takeIf { it.type == CHECK_BOX }
+    val listIndicator = when (node.type) {
+        ORDERED_LIST -> child.findChildOfType(LIST_NUMBER)
+        UNORDERED_LIST -> child.findChildOfType(LIST_BULLET)
+        else -> null
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = padding.listItemTop, bottom = padding.listItemBottom)
+    ) {
+        // Render marker symbol (checkbox or bullet)
+        Box(modifier = markerModifier()) {
+            if (checkboxNode != null) {
+                val model = MarkdownComponentModel(
+                    content = content,
+                    node = checkboxNode,
+                    typography = markdownTypography,
+                    extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
+                )
+                markdownComponents.checkbox.invoke(model)
+            } else {
+                bullet(index, listIndicator)
+            }
+        }
+
+        // Render list item content
+        Column(modifier = listModifier()) {
+            child.children.forEach { nestedChild ->
+                MarkdownNestedListItem(
+                    nestedChild = nestedChild,
+                    content = content,
+                    depth = depth,
+                    markdownComponents = markdownComponents,
+                    markdownTypography = markdownTypography
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Renders nested list item content
+ */
+@Composable
+private fun MarkdownNestedListItem(
+    nestedChild: ASTNode,
+    content: String,
+    depth: Int,
+    markdownComponents: MarkdownComponents,
+    markdownTypography: MarkdownTypography
+) {
+    when (nestedChild.type) {
+        ORDERED_LIST -> {
+            val model = MarkdownComponentModel(
+                content = content,
+                node = nestedChild,
+                typography = markdownTypography,
+                extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
+            )
+            markdownComponents.orderedList.invoke(model)
+        }
+        UNORDERED_LIST -> {
+            val model = MarkdownComponentModel(
+                content = content,
+                node = nestedChild,
+                typography = markdownTypography,
+                extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
+            )
+            markdownComponents.unorderedList.invoke(model)
+        }
+        else -> {
+            handleElement(
+                node = nestedChild,
+                components = markdownComponents,
+                content = content,
+                includeSpacer = false
+            )
         }
     }
 }
