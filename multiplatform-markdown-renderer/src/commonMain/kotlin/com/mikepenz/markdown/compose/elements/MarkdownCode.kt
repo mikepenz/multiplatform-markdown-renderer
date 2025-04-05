@@ -39,14 +39,18 @@ private fun MarkdownCode(
     MarkdownCodeBackground(
         color = backgroundCodeColor,
         shape = RoundedCornerShape(codeBackgroundCornerSize),
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
     ) {
         @Suppress("DEPRECATION")
         MarkdownBasicText(
             text = code,
             color = LocalMarkdownColors.current.codeText,
             style = style,
-            modifier = Modifier.horizontalScroll(rememberScrollState()).padding(codeBlockPadding),
+            modifier = Modifier
+                .horizontalScroll(rememberScrollState())
+                .padding(codeBlockPadding),
         )
     }
 }
@@ -97,10 +101,16 @@ fun MarkdownCodeBackground(
     content: @Composable () -> Unit,
 ) {
     Box(
-        modifier = modifier.shadow(elevation, shape, clip = false).then(if (border != null) Modifier.border(border, shape) else Modifier).background(color = color, shape = shape)
-            .clip(shape).semantics(mergeDescendants = false) {
+        modifier = modifier
+            .shadow(elevation, shape, clip = false)
+            .then(if (border != null) Modifier.border(border, shape) else Modifier)
+            .background(color = color, shape = shape)
+            .clip(shape)
+            .semantics(mergeDescendants = false) {
                 isTraversalGroup = true
-            }.pointerInput(Unit) {}, propagateMinConstraints = true
+            }
+            .pointerInput(Unit) {},
+        propagateMinConstraints = true
     ) {
         content()
     }
