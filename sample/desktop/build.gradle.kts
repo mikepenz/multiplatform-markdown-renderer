@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.sourceSets
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -37,6 +36,10 @@ compose.resources {
 }
 
 aboutLibraries {
-    registerAndroidTasks = false
-    duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+    android {
+        registerAndroidTasks = false
+    }
+    library {
+        duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+    }
 }

@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.sourceSets
-
 plugins {
     id("com.mikepenz.convention.kotlin-multiplatform")
     id("com.mikepenz.convention.android-library")
@@ -60,6 +58,10 @@ compose.resources {
 }
 
 aboutLibraries {
-    registerAndroidTasks = false
-    duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+    android {
+        registerAndroidTasks = false
+    }
+    library {
+        duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+    }
 }
