@@ -30,5 +30,7 @@ dependencies {
 }
 
 aboutLibraries {
-    duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+    library {
+        duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+    }
 }
