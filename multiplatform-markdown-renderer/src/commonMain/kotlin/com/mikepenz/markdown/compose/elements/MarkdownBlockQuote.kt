@@ -1,6 +1,10 @@
 package com.mikepenz.markdown.compose.elements
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -9,7 +13,12 @@ import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.mikepenz.markdown.compose.*
+import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.compose.LocalMarkdownComponents
+import com.mikepenz.markdown.compose.LocalMarkdownDimens
+import com.mikepenz.markdown.compose.LocalMarkdownPadding
+import com.mikepenz.markdown.compose.LocalMarkdownTypography
+import com.mikepenz.markdown.compose.MarkdownElement
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
@@ -49,7 +58,7 @@ fun MarkdownBlockQuote(
         if (nonBlockquotes.isNotEmpty()) {
             Column(modifier = Modifier.padding(blockQuoteText)) {
                 nonBlockquotes.onEach { quote ->
-                    handleElement(node = quote, components = markdownComponents, content = content, includeSpacer = false)
+                    MarkdownElement(node = quote, components = markdownComponents, content = content, includeSpacer = false)
                 }
             }
 

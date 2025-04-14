@@ -28,8 +28,8 @@ import com.mikepenz.markdown.annotator.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
+import com.mikepenz.markdown.compose.MarkdownElement
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
-import com.mikepenz.markdown.compose.handleElement
 import org.intellij.markdown.MarkdownElementTypes.IMAGE
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
@@ -106,7 +106,7 @@ fun MarkdownTableHeader(
                 modifier = Modifier.padding(tableCellPadding).weight(1f),
             ) {
                 if (cell.children.any { it.type == IMAGE }) {
-                    handleElement(node = cell, components = markdownComponents, content = content, includeSpacer = false)
+                    MarkdownElement(node = cell, components = markdownComponents, content = content, includeSpacer = false)
                 } else {
                     MarkdownTableBasicText(
                         content = content,
@@ -143,7 +143,7 @@ fun MarkdownTableRow(
                 modifier = Modifier.padding(tableCellPadding).weight(1f),
             ) {
                 if (cell.children.any { it.type == IMAGE }) {
-                    handleElement(node = cell, components = markdownComponents, content = content, includeSpacer = false)
+                    MarkdownElement(node = cell, components = markdownComponents, content = content, includeSpacer = false)
                 } else {
                     MarkdownTableBasicText(content = content, cell = cell, style = style, maxLines = maxLines, overflow = overflow, annotatorSettings = annotatorSettings)
                 }
