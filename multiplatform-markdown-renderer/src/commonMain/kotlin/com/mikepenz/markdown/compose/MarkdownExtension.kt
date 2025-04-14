@@ -28,8 +28,20 @@ import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.gfm.GFMElementTypes.TABLE
 
+/**
+ * Handles the rendering of a markdown element based on its [ASTNode.type].
+ *
+ * This function is responsible for determining the appropriate component to use for rendering
+ * It does handle rendering of children recursively.
+ *
+ * @param node The ASTNode representing the markdown element.
+ * @param components The [MarkdownComponents] instance containing the components to use.
+ * @param content The original markdown content string.
+ * @param includeSpacer Whether to include a spacer before rendering the element.
+ * @param skipLinkDefinition Whether to skip rendering link definitions.
+ */
 @Composable
-internal fun handleElement(
+fun MarkdownElement(
     node: ASTNode,
     components: MarkdownComponents,
     content: String,
@@ -75,7 +87,7 @@ internal fun handleElement(
 
     if (!handled) {
         node.children.forEach { child ->
-            handleElement(child, components, content, includeSpacer, skipLinkDefinition)
+            MarkdownElement(child, components, content, includeSpacer, skipLinkDefinition)
         }
     }
 

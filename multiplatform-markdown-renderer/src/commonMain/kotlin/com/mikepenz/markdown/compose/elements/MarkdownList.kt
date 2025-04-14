@@ -14,10 +14,10 @@ import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalOrderedListHandler
+import com.mikepenz.markdown.compose.MarkdownElement
 import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
-import com.mikepenz.markdown.compose.handleElement
 import com.mikepenz.markdown.model.MarkdownPadding
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
@@ -46,7 +46,7 @@ fun MarkdownListItems(
     val padding = LocalMarkdownPadding.current
     val markdownComponents = LocalMarkdownComponents.current
     val markdownTypography = LocalMarkdownTypography.current
-    
+
     Column(
         modifier = Modifier.padding(
             start = padding.listIndent * depth,
@@ -91,7 +91,7 @@ private fun MarkdownListItem(
     padding: MarkdownPadding,
     markerModifier: RowScope.() -> Modifier,
     listModifier: RowScope.() -> Modifier,
-    bullet: @Composable (index: Int, child: ASTNode?) -> Unit
+    bullet: @Composable (index: Int, child: ASTNode?) -> Unit,
 ) {
     val checkboxNode = child.children.getOrNull(1)?.takeIf { it.type == CHECK_BOX }
     val listIndicator = when (node.type) {
@@ -144,7 +144,7 @@ private fun MarkdownNestedListItem(
     content: String,
     depth: Int,
     markdownComponents: MarkdownComponents,
-    markdownTypography: MarkdownTypography
+    markdownTypography: MarkdownTypography,
 ) {
     when (nestedChild.type) {
         ORDERED_LIST -> {
@@ -156,6 +156,7 @@ private fun MarkdownNestedListItem(
             )
             markdownComponents.orderedList.invoke(model)
         }
+
         UNORDERED_LIST -> {
             val model = MarkdownComponentModel(
                 content = content,
@@ -165,8 +166,9 @@ private fun MarkdownNestedListItem(
             )
             markdownComponents.unorderedList.invoke(model)
         }
+
         else -> {
-            handleElement(
+            MarkdownElement(
                 node = nestedChild,
                 components = markdownComponents,
                 content = content,
