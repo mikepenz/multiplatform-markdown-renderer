@@ -29,7 +29,7 @@ val LocalBulletListHandler = staticCompositionLocalOf {
  * The CompositionLocal to provide functionality related to transforming the bullet of an ordered list
  */
 val LocalOrderedListHandler = staticCompositionLocalOf {
-    return@staticCompositionLocalOf BulletHandler { _, _, index, _ -> "${index + 1}. " }
+    return@staticCompositionLocalOf BulletHandler { _, _, number, _ -> "$number. " }
 }
 
 /**

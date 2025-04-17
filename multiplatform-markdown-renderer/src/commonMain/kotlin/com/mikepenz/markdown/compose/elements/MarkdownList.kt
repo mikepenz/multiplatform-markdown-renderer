@@ -41,7 +41,7 @@ fun MarkdownListItems(
     depth: Int = 0,
     markerModifier: RowScope.() -> Modifier = { Modifier },
     listModifier: RowScope.() -> Modifier = { Modifier },
-    bullet: @Composable (index: Int, child: ASTNode?) -> Unit,
+    bullet: @Composable (number: Int, child: ASTNode?) -> Unit,
 ) {
     val padding = LocalMarkdownPadding.current
     val markdownComponents = LocalMarkdownComponents.current
@@ -54,14 +54,20 @@ fun MarkdownListItems(
             bottom = padding.list
         )
     ) {
-        var index = 0
+        var number = node.children.firstOrNull { child ->
+            child.type == MarkdownElementTypes.LIST_ITEM
+        }
+            ?.getUnescapedTextInNode(content)
+            ?.takeWhile(Char::isDigit)
+            ?.toIntOrNull()
+            ?: 0
         node.children.forEach { child ->
             if (child.type == MarkdownElementTypes.LIST_ITEM) {
                 MarkdownListItem(
                     content = content,
                     child = child,
                     node = node,
-                    index = index,
+                    number = number,
                     depth = depth,
                     markdownComponents = markdownComponents,
                     markdownTypography = markdownTypography,
@@ -70,7 +76,7 @@ fun MarkdownListItems(
                     listModifier = listModifier,
                     bullet = bullet
                 )
-                index++
+                number++
             }
         }
     }
@@ -84,14 +90,14 @@ private fun MarkdownListItem(
     content: String,
     child: ASTNode,
     node: ASTNode,
-    index: Int,
+    number: Int,
     depth: Int,
     markdownComponents: MarkdownComponents,
     markdownTypography: MarkdownTypography,
     padding: MarkdownPadding,
     markerModifier: RowScope.() -> Modifier,
     listModifier: RowScope.() -> Modifier,
-    bullet: @Composable (index: Int, child: ASTNode?) -> Unit,
+    bullet: @Composable (number: Int, child: ASTNode?) -> Unit,
 ) {
     val checkboxNode = child.children.getOrNull(1)?.takeIf { it.type == CHECK_BOX }
     val listIndicator = when (node.type) {
@@ -116,7 +122,7 @@ private fun MarkdownListItem(
                 )
                 markdownComponents.checkbox.invoke(model)
             } else {
-                bullet(index, listIndicator)
+                bullet(number, listIndicator)
             }
         }
 
@@ -188,12 +194,12 @@ fun MarkdownOrderedList(
     listModifier: RowScope.() -> Modifier = { Modifier },
 ) {
     val orderedListHandler = LocalOrderedListHandler.current
-    MarkdownListItems(content, node, depth, markerModifier, listModifier) { index, child ->
+    MarkdownListItems(content, node, depth, markerModifier, listModifier) { number, child ->
         MarkdownBasicText(
             text = orderedListHandler.transform(
                 type = LIST_NUMBER,
                 bullet = child?.getUnescapedTextInNode(content),
-                index = index,
+                number = number,
                 depth = depth
             ),
             style = style,
@@ -212,12 +218,12 @@ fun MarkdownBulletList(
 ) {
     val bulletHandler = LocalBulletListHandler.current
     val listItemBottom = LocalMarkdownPadding.current.listItemBottom
-    MarkdownListItems(content, node, depth, markerModifier, listModifier) { index, child ->
+    MarkdownListItems(content, node, depth, markerModifier, listModifier) { number, child ->
         MarkdownBasicText(
             text = bulletHandler.transform(
                 type = LIST_BULLET,
                 bullet = child?.getUnescapedTextInNode(content),
-                index = index,
+                number = number,
                 depth = depth
             ),
             style = style,
