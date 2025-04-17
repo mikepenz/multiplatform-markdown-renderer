@@ -250,7 +250,7 @@ Another example to of a custom component is changing the rendering of an unorder
 // Define a custom component for rendering unordered list items in Markdown
 val customUnorderedListComponent: MarkdownComponent = {
     // Use the MarkdownListItems composable to render the list items
-    MarkdownListItems(it.content, it.node, level = 0) { index, child ->
+    MarkdownListItems(it.content, it.node, level = 0) { number, child ->
         // Render an icon for the bullet point with a green tint
         Icon(
             imageVector = icon,
