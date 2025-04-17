@@ -54,9 +54,7 @@ fun MarkdownListItems(
             bottom = padding.list
         )
     ) {
-        var number = node.children.firstOrNull { child ->
-            child.type == MarkdownElementTypes.LIST_ITEM
-        }
+        var number = node.findChildOfType(MarkdownElementTypes.LIST_ITEM)
             ?.getUnescapedTextInNode(content)
             ?.takeWhile(Char::isDigit)
             ?.toIntOrNull()
