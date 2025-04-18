@@ -134,7 +134,7 @@ val markdownFlow = parseMarkdownFlow("# Markdown")
     .stateIn(lifecycleScope, SharingStarted.Eagerly, State.Loading())
 
 // In the Composable use the flow
-val state by markdownFlow.collectAsStateWithLifecycle(State.Loading())
+val state by markdownFlow.collectAsStateWithLifecycle()
 Markdown(state)
 ```
 
