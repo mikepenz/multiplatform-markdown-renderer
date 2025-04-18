@@ -45,7 +45,7 @@ jobs:
             gradle-${{ runner.os }}-
 
       - name: Publish the macOS artifacts
-        if: matrix.os == 'macos-14'
+        if: matrix.os == 'macos-latest'
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.NEXUS_PASSWORD }}
