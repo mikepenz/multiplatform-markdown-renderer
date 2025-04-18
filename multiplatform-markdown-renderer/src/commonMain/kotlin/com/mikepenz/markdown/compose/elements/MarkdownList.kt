@@ -54,11 +54,13 @@ fun MarkdownListItems(
             bottom = padding.list
         )
     ) {
+        // Retrieve initial list number to determine the starting number for ordered lists
+        // https://spec.commonmark.org/0.31.2/#start-number
         val initialListNumber = node.findChildOfType(MarkdownElementTypes.LIST_ITEM)
             ?.getUnescapedTextInNode(content)
             ?.takeWhile(Char::isDigit)
             ?.toIntOrNull()
-            ?: 0
+            ?: 1
 
         var index = 0
         node.children.forEach { child ->

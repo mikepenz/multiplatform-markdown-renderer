@@ -89,4 +89,21 @@ class ElementsInListsTests {
         - [x] bar
         """.trimIndent()
     )
+
+    /**
+     * Initial number dictates number of remaining list items.
+     * https://spec.commonmark.org/0.31.2/#start-number
+     */
+    @DarkLightPreview
+    @Composable
+    fun OrderedListRandomStartTest() = TestMarkdown(
+        """
+        7. First item
+        2. Second item
+        3. Third item
+            - Indented item
+            - Indented item
+        4. Fourth item
+        """.trimIndent()
+    )
 }
