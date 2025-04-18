@@ -24,7 +24,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("baseLibs") {
-            from("com.mikepenz:version-catalog:0.1.7")
+            from("com.mikepenz:version-catalog:0.2.9")
         }
     }
 }
@@ -36,6 +36,7 @@ include(":multiplatform-markdown-renderer-coil2")
 include(":multiplatform-markdown-renderer-coil3")
 include(":multiplatform-markdown-renderer-code")
 
-include(":app")
-include(":app-desktop")
-include(":app-wasm")
+include(":sample:shared")
+include(":sample:android")
+include(":sample:desktop")
+include(":sample:web")

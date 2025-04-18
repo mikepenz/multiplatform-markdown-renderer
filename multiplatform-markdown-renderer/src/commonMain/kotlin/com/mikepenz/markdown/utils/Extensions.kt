@@ -11,6 +11,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.CompositeASTNode
 import org.intellij.markdown.ast.LeafASTNode
+import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 
@@ -86,6 +87,45 @@ fun List<ASTNode>.mapAutoLinkToType(targetType: IElementType = MarkdownTokenType
         }
     }
 }
+
+/**
+ * Helper function to lookup link definitions in the parsed markdown tree.
+ */
+internal fun lookupLinkDefinition(
+    store: MutableMap<String, String?>,
+    node: ASTNode,
+    content: String,
+    recursive: Boolean = true,
+    onlyDefinitions: Boolean = false,
+) {
+    var linkOnly = false
+    val linkLabel = if (node.type == MarkdownElementTypes.LINK_DEFINITION) {
+        node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(content)
+    } else if (!onlyDefinitions && node.type == MarkdownElementTypes.INLINE_LINK) {
+        node.findChildOfType(MarkdownElementTypes.LINK_TEXT)?.getUnescapedTextInNode(content)
+    } else if (!onlyDefinitions && node.type == MarkdownElementTypes.AUTOLINK) {
+        linkOnly = true
+        (node.children.firstOrNull { it.type.name == MarkdownElementTypes.AUTOLINK.name } ?: node).getUnescapedTextInNode(content)
+    } else {
+        null
+    }
+
+    if (linkLabel != null) {
+        val destination = if (linkOnly) {
+            linkLabel
+        } else {
+            node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(content)
+        }
+        store[linkLabel] = destination
+    }
+
+    if (recursive) {
+        node.children.forEach {
+            lookupLinkDefinition(store, it, content)
+        }
+    }
+}
+
 
 /**
  * Extension property to get the `SpanStyle` for inline code text.

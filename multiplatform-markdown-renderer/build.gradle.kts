@@ -9,8 +9,14 @@ android {
     namespace = "com.mikepenz.markdown"
 }
 
+composeCompiler {
+    stabilityConfigurationFiles.add(project.layout.projectDirectory.file("stability_config.conf"))
+}
+
 dependencies {
     commonMainApi(libs.markdown)
+    commonMainApi(baseLibs.kotlinx.collections.immutable)
+
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.ui)
     commonMainCompileOnly(compose.foundation)

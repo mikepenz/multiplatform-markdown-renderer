@@ -1,2 +1,2 @@
-Multiplatform Markdown Renderer contributors (sorted alphabeticaly)
+Multiplatform Markdown Renderer contributors (sorted alphabetically)
 ============================================

@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ macos-14 ]
+        os: [ macos-latest ]
 
     runs-on: ${{matrix.os}}
 
@@ -62,7 +62,7 @@ jobs:
 
   build:
     name: Build
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -86,17 +86,17 @@ jobs:
       - name: Build Debug
         run: |
           ./gradlew clean || true
-          ./gradlew app:assembleDebug --stacktrace
+          ./gradlew sample:android:assembleDebug --stacktrace
 
       - name: Run Tests
         run: |
-          ./gradlew app:validateDebugScreenshotTest
+          ./gradlew sample:android:validateDebugScreenshotTest
 
       - name: Publish Test Report
         if: (failure() || success()) && github.event_name == 'pull_request'
         uses: mikepenz/action-junit-report@v5
         with:
-          report_paths: '**/app/build/test-results/validateDebugScreenshotTest/TEST-*.xml'
+          report_paths: '**/sample/android/build/test-results/validateDebugScreenshotTest/TEST-*.xml'
           github_token: ${{ secrets.GITHUB_TOKEN }}
           fail_on_failure: true
           annotate_only: true
@@ -106,9 +106,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "Test-Artifacts"
-          path: "app/build/reports/screenshotTest/preview/debug/"
+          path: "sample/android/build/reports/screenshotTest/preview/debug/"
 
-      - name: Aoi Check
+      - name: Api Check
         if: github.event_name  == 'pull_request'
         run: ./gradlew apiCheck
 
@@ -135,11 +135,11 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           echo "${{ secrets.KEYSTORE }}" > opensource.jks.asc
-          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSPHRASE }}" --batch "opensource.jks.asc" > "app/opensource.jks"
+          gpg -d --passphrase "${{ secrets.KEYSTORE_PASSPHRASE }}" --batch "opensource.jks.asc" > "sample/android/opensource.jks"
 
       - name: Build Release App
         if: startsWith(github.ref, 'refs/tags/')
-        run: ./gradlew app:assembleRelease app:bundleRelease -P"com.mikepenz.android.signing.enabled"="true" -P"com.mikepenz.android.signing.storeFile"="opensource.jks" -P"com.mikepenz.android.signing.storePassword"="${{ secrets.STORE_PASSWORD }}" -P"com.mikepenz.android.signing.keyAlias"="${{ secrets.KEY_ALIAS }}" -P"com.mikepenz.android.signing.keyPassword"="${{ secrets.KEY_PASSWORD }}"
+        run: ./gradlew sample:android:assembleRelease sample:android:bundleRelease -P"com.mikepenz.android.signing.enabled"="true" -P"com.mikepenz.android.signing.storeFile"="opensource.jks" -P"com.mikepenz.android.signing.storePassword"="${{ secrets.STORE_PASSWORD }}" -P"com.mikepenz.android.signing.keyAlias"="${{ secrets.KEY_ALIAS }}" -P"com.mikepenz.android.signing.keyPassword"="${{ secrets.KEY_PASSWORD }}"
 
       - name: Collect artifacts
         if: startsWith(github.ref, 'refs/tags/')
