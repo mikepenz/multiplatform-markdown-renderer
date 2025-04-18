@@ -17,7 +17,7 @@
 
 ```kotlin
 val markdownState = rememberMarkdownState(MARKDOWN)
-Markdown(state = markdownState)
+Markdown(markdownState = markdownState)
 
 // exposes the general state:
 markdownState.state
@@ -39,7 +39,7 @@ markdownState.links
 
 ```kotlin
 Markdown(
-    state = markdownState,
+    markdownState = markdownState,
     success = { state, components, modifier ->
         LazyMarkdownSuccess(state, components, modifier, contentPadding = PaddingValues(16.dp))
     },

@@ -113,6 +113,24 @@ Markdown(markdown)
 <details><summary><b>Advanced Usage</b></summary>
 <p>
 
+### `rememberMarkdownState`
+
+```kotlin
+val markdownState = rememberMarkdownState(markdown)
+Markdown(markdownState)
+```
+
+### Parse Markdown in VM
+
+```kotlin
+// In the VM setup the flow to parse the markdown
+val markdownFlow = parseMarkdownFlow("# Markdown")
+
+// In the Composable use the flow
+val state by markdownFlow.collectAsStateWithLifecycle(State.Loading())
+Markdown(state)
+```
+
 The library offers the ability to modify different behaviour when rendering the markdown.
 
 ### Provided custom style
@@ -297,7 +315,8 @@ After adding the dependency, the chosen image transformer implementation has to 
 `Markdown` API.
 
 > [!NOTE]  
-> Please refer to the official documentation for the specific image loading integration you are using (e.g., coil3) on how to adjust its
+> Please refer to the official documentation for the specific image loading integration you are
+> using (e.g., coil3) on how to adjust its
 > behavior.
 
 #### coil3

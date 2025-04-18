@@ -97,7 +97,7 @@ fun Markdown(
 /**
  * Renders the markdown content using Material 2 styles.
  *
- * @param state The [MarkdownState] to use for parsing.
+ * @param markdownState The [MarkdownState] to use for parsing.
  * @param colors The [MarkdownColors] to use for styling.
  * @param typography The [MarkdownTypography] to use for text styles.
  * @param modifier The [Modifier] to apply to the component.
@@ -114,7 +114,60 @@ fun Markdown(
  */
 @Composable
 fun Markdown(
-    state: MarkdownState,
+    markdownState: MarkdownState,
+    colors: MarkdownColors = markdownColor(),
+    typography: MarkdownTypography = markdownTypography(),
+    modifier: Modifier = Modifier.fillMaxSize(),
+    padding: MarkdownPadding = markdownPadding(),
+    dimens: MarkdownDimens = markdownDimens(),
+    imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
+    annotator: MarkdownAnnotator = markdownAnnotator(),
+    extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    components: MarkdownComponents = markdownComponents(checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }),
+    animations: MarkdownAnimations = markdownAnimations(),
+    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
+    success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
+        MarkdownSuccess(state = state, components = components, modifier = modifier)
+    },
+    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
+) = com.mikepenz.markdown.compose.Markdown(
+    markdownState = markdownState,
+    colors = colors,
+    typography = typography,
+    modifier = modifier,
+    padding = padding,
+    dimens = dimens,
+    imageTransformer = imageTransformer,
+    annotator = annotator,
+    extendedSpans = extendedSpans,
+    components = components,
+    animations = animations,
+    loading = loading,
+    success = success,
+    error = error,
+)
+
+/**
+ * Renders the markdown content using Material 2 styles.
+ *
+ * @param state The [State] to use for parsing.
+ * @param colors The [MarkdownColors] to use for styling.
+ * @param typography The [MarkdownTypography] to use for text styles.
+ * @param modifier The [Modifier] to apply to the component.
+ * @param padding The [MarkdownPadding] to use for padding.
+ * @param dimens The [MarkdownDimens] to use for dimensions.
+ * @param imageTransformer The [ImageTransformer] to use for transforming images.
+ * @param annotator The [MarkdownAnnotator] to use for annotating links.
+ * @param extendedSpans The [MarkdownExtendedSpans] to use for extended spans.
+ * @param components The [MarkdownComponents] to use for custom components.
+ * @param animations The [MarkdownAnimations] to use for animations.
+ * @param loading Composable function to display while loading.
+ * @param success A composable function to be displayed with the markdown content. It receives the modifier, state and components as parameters. By default this is a [Column].
+ * @param error Composable function to display on error.
+ */
+@Composable
+fun Markdown(
+    state: State,
     colors: MarkdownColors = markdownColor(),
     typography: MarkdownTypography = markdownTypography(),
     modifier: Modifier = Modifier.fillMaxSize(),

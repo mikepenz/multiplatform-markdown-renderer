@@ -37,6 +37,7 @@ public final class com/mikepenz/markdown/annotator/DefaultAnnotatorSettings : co
 public final class com/mikepenz/markdown/compose/ComposableSingletons$MarkdownKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/ComposableSingletons$MarkdownKt;
 	public fun <init> ()V
+	public final fun getLambda$1182242454$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function5;
 	public final fun getLambda$2080817252$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function5;
 	public final fun getLambda$873873637$multiplatform_markdown_renderer_release ()Lkotlin/jvm/functions/Function5;
 }
@@ -66,6 +67,7 @@ public final class com/mikepenz/markdown/compose/MarkdownExtensionKt {
 
 public final class com/mikepenz/markdown/compose/MarkdownKt {
 	public static final fun Markdown (Lcom/mikepenz/markdown/model/MarkdownState;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Markdown (Lcom/mikepenz/markdown/model/State;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
 	public static final fun Markdown (Ljava/lang/String;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
 	public static final fun MarkdownSuccess (Lcom/mikepenz/markdown/model/State$Success;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
@@ -560,6 +562,7 @@ public final class com/mikepenz/markdown/model/MarkdownPaddingKt {
 
 public final class com/mikepenz/markdown/model/MarkdownState {
 	public static final field $stable I
+	public fun <init> (Lcom/mikepenz/markdown/model/Input;)V
 	public final fun getInput ()Lcom/mikepenz/markdown/model/Input;
 	public final fun getLinks ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getState ()Lkotlinx/coroutines/flow/StateFlow;
@@ -567,6 +570,8 @@ public final class com/mikepenz/markdown/model/MarkdownState {
 }
 
 public final class com/mikepenz/markdown/model/MarkdownStateKt {
+	public static final fun parseMarkdownFlow (Ljava/lang/String;ZLorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun parseMarkdownFlow$default (Ljava/lang/String;ZLorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun rememberMarkdownState (Ljava/lang/String;ZLorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;ZLandroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownState;
 }
 
@@ -634,6 +639,7 @@ public abstract interface class com/mikepenz/markdown/model/State {
 public final class com/mikepenz/markdown/model/State$Error : com/mikepenz/markdown/model/State {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/Throwable;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;)V
+	public synthetic fun <init> (Ljava/lang/Throwable;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/Throwable;
 	public final fun component2 ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
 	public final fun copy (Ljava/lang/Throwable;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;)Lcom/mikepenz/markdown/model/State$Error;
@@ -647,7 +653,9 @@ public final class com/mikepenz/markdown/model/State$Error : com/mikepenz/markdo
 
 public final class com/mikepenz/markdown/model/State$Loading : com/mikepenz/markdown/model/State {
 	public static final field $stable I
+	public fun <init> ()V
 	public fun <init> (Lcom/mikepenz/markdown/model/ReferenceLinkHandler;)V
+	public synthetic fun <init> (Lcom/mikepenz/markdown/model/ReferenceLinkHandler;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
 	public final fun copy (Lcom/mikepenz/markdown/model/ReferenceLinkHandler;)Lcom/mikepenz/markdown/model/State$Loading;
 	public static synthetic fun copy$default (Lcom/mikepenz/markdown/model/State$Loading;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/State$Loading;
@@ -660,6 +668,7 @@ public final class com/mikepenz/markdown/model/State$Loading : com/mikepenz/mark
 public final class com/mikepenz/markdown/model/State$Success : com/mikepenz/markdown/model/State {
 	public static final field $stable I
 	public fun <init> (Lorg/intellij/markdown/ast/ASTNode;Ljava/lang/String;ZLcom/mikepenz/markdown/model/ReferenceLinkHandler;)V
+	public synthetic fun <init> (Lorg/intellij/markdown/ast/ASTNode;Ljava/lang/String;ZLcom/mikepenz/markdown/model/ReferenceLinkHandler;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lorg/intellij/markdown/ast/ASTNode;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Z

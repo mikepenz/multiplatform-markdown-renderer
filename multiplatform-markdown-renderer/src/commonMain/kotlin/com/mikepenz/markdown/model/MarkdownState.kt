@@ -9,6 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
@@ -56,7 +58,7 @@ fun rememberMarkdownState(
  * A [MarkdownState] that that executes the parsing of the markdown content with the [MarkdownParser] asynchronously.
  */
 @Stable
-class MarkdownState internal constructor(
+class MarkdownState(
     val input: Input,
 ) {
     private val stateFlow: MutableStateFlow<State> = MutableStateFlow(State.Loading(input.referenceLinkHandler))
@@ -95,6 +97,39 @@ class MarkdownState internal constructor(
 }
 
 /**
+ * Creates a [kotlinx.coroutines.flow.Flow] of [State] for use in non-composable contexts like view models.
+ * As soon as the flow is collected, it will start parsing the content, and emit the state once ready.
+ *
+ * @param content The markdown content to parse.
+ * @param lookupLinks Whether to lookup links in the parsed tree or not.
+ * @param flavour The [MarkdownFlavourDescriptor] to use for parsing.
+ * @param parser The [MarkdownParser] to use for parsing.
+ * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
+ *
+ * @return A [kotlinx.coroutines.flow.Flow] of [State] that will emit the parsing state.
+ */
+fun parseMarkdownFlow(
+    content: String,
+    lookupLinks: Boolean = true,
+    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    parser: MarkdownParser = MarkdownParser(flavour),
+    referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
+) = flow {
+    emit(State.Loading(referenceLinkHandler))
+    val markdownState = MarkdownState(
+        Input(
+            content = content,
+            lookupLinks = lookupLinks,
+            flavour = flavour,
+            parser = parser,
+            referenceLinkHandler = referenceLinkHandler,
+        )
+    )
+    markdownState.parse()
+    emitAll(markdownState.state)
+}
+
+/**
  * The input for the [MarkdownState].
  *
  * @param content The markdown content to parse.
@@ -122,7 +157,7 @@ sealed interface State {
 
     /** The parsing is in-progress. */
     data class Loading(
-        override val referenceLinkHandler: ReferenceLinkHandler,
+        override val referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     ) : State
 
     /** The parsing was successful. */
@@ -130,12 +165,12 @@ sealed interface State {
         val node: ASTNode,
         val content: String,
         val linksLookedUp: Boolean,
-        override val referenceLinkHandler: ReferenceLinkHandler,
+        override val referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     ) : State
 
     /** The parsing failed due to [Throwable]. */
     data class Error(
         val result: Throwable,
-        override val referenceLinkHandler: ReferenceLinkHandler,
+        override val referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     ) : State
 }
