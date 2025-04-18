@@ -46,7 +46,7 @@ internal fun MarkDownPage(modifier: Modifier = Modifier) {
 
     SelectionContainer {
         Markdown(
-            state = rememberMarkdownState(markdown),
+            markdownState = rememberMarkdownState(markdown),
             components = markdownComponents(
                 codeBlock = {
                     MarkdownHighlightedCodeBlock(
