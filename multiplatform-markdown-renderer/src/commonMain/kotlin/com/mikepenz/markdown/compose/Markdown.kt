@@ -77,13 +77,69 @@ fun Markdown(
     },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
 ) {
-    val state = rememberMarkdownState(
+    val markdownState = rememberMarkdownState(
         content = content,
         flavour = flavour,
         parser = parser,
         referenceLinkHandler = referenceLinkHandler,
     )
 
+    Markdown(
+        markdownState = markdownState,
+        colors = colors,
+        typography = typography,
+        modifier = modifier,
+        padding = padding,
+        dimens = dimens,
+        imageTransformer = imageTransformer,
+        annotator = annotator,
+        extendedSpans = extendedSpans,
+        components = components,
+        animations = animations,
+        loading = loading,
+        success = success,
+        error = error
+    )
+}
+
+/**
+ * Renders the markdown content.
+ *
+ * @param markdownState The markdown state to be rendered.
+ * @param colors The colors to be used for rendering.
+ * @param typography The typography to be used for rendering.
+ * @param modifier The modifier to be applied to the container.
+ * @param padding The padding to be applied to the container.
+ * @param dimens The dimensions to be used for rendering.
+ * @param imageTransformer The image transformer to be used for rendering images.
+ * @param annotator The annotator to be used for rendering annotations.
+ * @param extendedSpans The extended spans to be used for rendering.
+ * @param components The components to be used for rendering.
+ * @param animations The animations to be used for rendering.
+ * @param loading A composable function to be displayed while loading the content.
+ * @param success A composable function to be displayed with the markdown content. It receives the modifier, state and components as parameters. By default this is a [Column].
+ * @param error A composable function to be displayed in case of an error. Only really possible if assertions are enabled on the parser)
+ */
+@Composable
+fun Markdown(
+    markdownState: MarkdownState,
+    colors: MarkdownColors,
+    typography: MarkdownTypography,
+    modifier: Modifier = Modifier.fillMaxSize(),
+    padding: MarkdownPadding = markdownPadding(),
+    dimens: MarkdownDimens = markdownDimens(),
+    imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
+    annotator: MarkdownAnnotator = markdownAnnotator(),
+    extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    components: MarkdownComponents = markdownComponents(),
+    animations: MarkdownAnimations = markdownAnimations(),
+    loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
+    success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
+        MarkdownSuccess(state = state, components = components, modifier = modifier)
+    },
+    error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
+) {
+    val state by markdownState.state.collectAsState()
     Markdown(
         state = state,
         colors = colors,
@@ -101,6 +157,7 @@ fun Markdown(
         error = error
     )
 }
+
 
 /**
  * Renders the markdown content.
@@ -122,7 +179,7 @@ fun Markdown(
  */
 @Composable
 fun Markdown(
-    state: MarkdownState,
+    state: State,
     colors: MarkdownColors,
     typography: MarkdownTypography,
     modifier: Modifier = Modifier.fillMaxSize(),
@@ -139,9 +196,8 @@ fun Markdown(
     },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
 ) {
-    val markdownState by state.state.collectAsState()
     CompositionLocalProvider(
-        LocalReferenceLinkHandler provides markdownState.referenceLinkHandler,
+        LocalReferenceLinkHandler provides state.referenceLinkHandler,
         LocalMarkdownPadding provides padding,
         LocalMarkdownDimens provides dimens,
         LocalMarkdownColors provides colors,
@@ -152,7 +208,7 @@ fun Markdown(
         LocalMarkdownComponents provides components,
         LocalMarkdownAnimations provides animations,
     ) {
-        when (val markdown = markdownState) {
+        when (val markdown = state) {
             is State.Error -> error(modifier)
             is State.Loading -> loading(modifier)
             is State.Success -> success(markdown, components, modifier)
