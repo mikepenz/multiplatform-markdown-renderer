@@ -122,9 +122,16 @@ Markdown(markdownState)
 
 ### Parse Markdown in VM
 
+> [!NOTE]  
+> This approach is also advised if you want to retain scroll position even when navigating away
+> See: https://github.com/mikepenz/multiplatform-markdown-renderer/issues/374
+> Retaining state in the VM ensures parsing will not have to be done again, and the component can be
+> immediately filled.
+
 ```kotlin
 // In the VM setup the flow to parse the markdown
 val markdownFlow = parseMarkdownFlow("# Markdown")
+    .stateIn(lifecycleScope, SharingStarted.Eagerly, State.Loading())
 
 // In the Composable use the flow
 val state by markdownFlow.collectAsStateWithLifecycle(State.Loading())
