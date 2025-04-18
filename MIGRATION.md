@@ -59,6 +59,11 @@ Markdown(
       content.
     - This can be helpful for example to adjust the baseline.
       See: https://github.com/mikepenz/multiplatform-markdown-renderer/issues/329
+- **Breaking Change**: The `BulletHandler` adds a new argument in the function `listNumber: Int`.
+    - This was introduced to allow for more flexibility in the rendering of the bullet points.
+    - But also specifically to enable list rendering according to spec:
+        - https://spec.commonmark.org/0.31.2/#start-number
+    - The `index` argument was retained to allow custom implementations adjust this behavior.
 
 - **Behavior Change**: To account for the behavior change introduced in v0.32.0 on EOL handling a
   new API was introduced to bring back prior behavior
