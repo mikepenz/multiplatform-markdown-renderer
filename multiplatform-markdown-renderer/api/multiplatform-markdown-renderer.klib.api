@@ -11,7 +11,7 @@ abstract fun interface com.mikepenz.markdown.compose.extendedspans/SpanDrawInstr
 }
 
 abstract fun interface com.mikepenz.markdown.model/BulletHandler { // com.mikepenz.markdown.model/BulletHandler|null[0]
-    abstract fun transform(org.intellij.markdown/IElementType, kotlin/CharSequence?, kotlin/Int, kotlin/Int): kotlin/String // com.mikepenz.markdown.model/BulletHandler.transform|transform(org.intellij.markdown.IElementType;kotlin.CharSequence?;kotlin.Int;kotlin.Int){}[0]
+    abstract fun transform(org.intellij.markdown/IElementType, kotlin/CharSequence?, kotlin/Int, kotlin/Int, kotlin/Int): kotlin/String // com.mikepenz.markdown.model/BulletHandler.transform|transform(org.intellij.markdown.IElementType;kotlin.CharSequence?;kotlin.Int;kotlin.Int;kotlin.Int){}[0]
 }
 
 abstract interface com.mikepenz.markdown.annotator/AnnotatorSettings { // com.mikepenz.markdown.annotator/AnnotatorSettings|null[0]
