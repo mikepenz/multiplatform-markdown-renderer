@@ -211,7 +211,7 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownImageKt {
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownListKt {
 	public static final fun MarkdownBulletList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownListItems (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownListItems (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;II)V
 	public static final fun MarkdownOrderedList (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getListDepth (Lcom/mikepenz/markdown/compose/components/MarkdownComponentModel;)I
 }
@@ -346,7 +346,7 @@ public final class com/mikepenz/markdown/compose/extendedspans/internal/TextLink
 }
 
 public abstract interface class com/mikepenz/markdown/model/BulletHandler {
-	public abstract fun transform (Lorg/intellij/markdown/IElementType;Ljava/lang/CharSequence;II)Ljava/lang/String;
+	public abstract fun transform (Lorg/intellij/markdown/IElementType;Ljava/lang/CharSequence;III)Ljava/lang/String;
 }
 
 public final class com/mikepenz/markdown/model/DefaultMarkdownAnimation : com/mikepenz/markdown/model/MarkdownAnimations {

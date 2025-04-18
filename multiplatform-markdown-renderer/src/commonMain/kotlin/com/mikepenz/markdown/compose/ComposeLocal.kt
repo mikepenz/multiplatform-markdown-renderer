@@ -22,14 +22,14 @@ import com.mikepenz.markdown.model.ReferenceLinkHandler
  * The CompositionLocal to provide functionality related to transforming the bullet of an ordered list
  */
 val LocalBulletListHandler = staticCompositionLocalOf {
-    return@staticCompositionLocalOf BulletHandler { _, _, _, _ -> "• " }
+    return@staticCompositionLocalOf BulletHandler { _, _, _, _, _ -> "• " }
 }
 
 /**
  * The CompositionLocal to provide functionality related to transforming the bullet of an ordered list
  */
 val LocalOrderedListHandler = staticCompositionLocalOf {
-    return@staticCompositionLocalOf BulletHandler { _, _, index, _ -> "${index + 1}. " }
+    return@staticCompositionLocalOf BulletHandler { _, _, index, listNumber, _ -> "${listNumber + index}. " }
 }
 
 /**
