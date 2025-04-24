@@ -1,5 +1,9 @@
 ### Upgrade Notes
 
+#### Version 0.34.0
+
+- **Dependency Upgrade**: Compose 1.8.0 / Compose Multiplatform 1.8.0
+
 #### Version 0.33.0
 
 - **Dependency Upgrade**: Kotlin 2.1.20
