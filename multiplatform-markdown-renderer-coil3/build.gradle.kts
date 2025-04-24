@@ -11,6 +11,8 @@ android {
 
 dependencies {
     commonMainApi(projects.multiplatformMarkdownRenderer)
-    commonMainApi(libs.coil.core)
+    commonMainApi(libs.coil.core) {
+        exclude(group = "org.jetbrains.compose.runtime")
+    }
     commonMainCompileOnly(compose.runtime)
 }
