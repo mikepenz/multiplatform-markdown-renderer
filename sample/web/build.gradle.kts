@@ -35,6 +35,9 @@ aboutLibraries {
     android {
         registerAndroidTasks = false
     }
+    export {
+        exportVariant = "wasmJs"
+    }
     library {
         duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
     }
