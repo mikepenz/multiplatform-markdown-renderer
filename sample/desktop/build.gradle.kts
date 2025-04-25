@@ -39,6 +39,9 @@ aboutLibraries {
     android {
         registerAndroidTasks = false
     }
+    export {
+        exportVariant = "jvmMain"
+    }
     library {
         duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
     }
