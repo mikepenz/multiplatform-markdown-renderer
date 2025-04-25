@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalInspectionMode
 import com.mikepenz.markdown.utils.lookupLinkDefinition
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +35,7 @@ fun rememberMarkdownState(
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
     parser: MarkdownParser = MarkdownParser(flavour),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
-    immediate: Boolean = false,
+    immediate: Boolean = LocalInspectionMode.current,
 ): MarkdownState {
     val input = Input(
         content = content,
