@@ -203,12 +203,15 @@ ones.
 ```kotlin
 Markdown(
     content,
-    annotator = markdownAnnotator { content, child ->
-        if (child.type == GFMElementTypes.STRIKETHROUGH) {
-            append("Replaced you :)")
-            true // return true to consume this ASTNode child
-        } else false
-    }
+    annotator = markdownAnnotator(
+        config = markdownAnnotatorConfig(),
+        annotate = { content, child ->
+            if (child.type == GFMElementTypes.STRIKETHROUGH) {
+                append("Replaced you :)")
+                true // return true to consume this ASTNode child
+            } else false
+        }
+    )
 )
 ```
 
