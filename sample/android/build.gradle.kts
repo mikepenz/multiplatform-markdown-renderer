@@ -33,4 +33,7 @@ aboutLibraries {
     library {
         duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
     }
+    export {
+        exportVariant = "release"
+    }
 }
