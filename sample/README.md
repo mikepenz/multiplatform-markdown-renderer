@@ -3,9 +3,9 @@
 ### Generate Dependency Information
 
 ```bash
-./gradlew :sample:shared:exportLibraryDefinitions -PaboutLibraries.exportPath=src/commonMain/composeResources/files/
-./gradlew :sample:desktop:exportLibraryDefinitions -PaboutLibraries.exportPath=src/commonMain/composeResources/files/
-./gradlew :sample:web:exportLibraryDefinitions -PaboutLibraries.exportPath=src/commonMain/composeResources/files/
+./gradlew :sample:shared:exportLibraryDefinitions
+./gradlew :sample:desktop:exportLibraryDefinitions
+./gradlew :sample:web:exportLibraryDefinitions
 
 ```
 
