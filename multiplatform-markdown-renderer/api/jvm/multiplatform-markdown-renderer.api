@@ -491,8 +491,8 @@ public final class com/mikepenz/markdown/model/MarkdownAnnotatorConfigKt {
 }
 
 public final class com/mikepenz/markdown/model/MarkdownAnnotatorKt {
-	public static final fun markdownAnnotator (Lkotlin/jvm/functions/Function3;Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;)Lcom/mikepenz/markdown/model/MarkdownAnnotator;
-	public static synthetic fun markdownAnnotator$default (Lkotlin/jvm/functions/Function3;Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAnnotator;
+	public static final fun markdownAnnotator (Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;Lkotlin/jvm/functions/Function3;)Lcom/mikepenz/markdown/model/MarkdownAnnotator;
+	public static synthetic fun markdownAnnotator$default (Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAnnotator;
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownColors {
