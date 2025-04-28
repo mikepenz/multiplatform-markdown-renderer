@@ -26,6 +26,7 @@ import com.mikepenz.markdown.compose.LocalImageTransformer
 import com.mikepenz.markdown.compose.LocalMarkdownAnimations
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownExtendedSpans
+import com.mikepenz.markdown.compose.LocalMarkdownInlineContent
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
@@ -115,6 +116,7 @@ fun MarkdownText(
     val baseColor = LocalMarkdownColors.current.text
     val animations = LocalMarkdownAnimations.current
     val transformer = LocalImageTransformer.current
+    val inlineContent = LocalMarkdownInlineContent.current
 
     val layoutResult: MutableState<TextLayoutResult?> = remember { mutableStateOf(null) }
     val imageState = rememberMarkdownImageState()
@@ -143,7 +145,7 @@ fun MarkdownText(
                 if (placeholderState.animate) animations.animateTextSize(it) else it
             },
         style = style,
-        inlineContent = mapOf(
+        inlineContent = inlineContent.inlineContent + mapOf(
             MARKDOWN_TAG_IMAGE_URL to createImageInlineTextContent(
                 placeholderState,
                 transformer,
