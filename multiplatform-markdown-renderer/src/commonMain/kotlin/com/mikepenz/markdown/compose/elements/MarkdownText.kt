@@ -145,13 +145,15 @@ fun MarkdownText(
                 if (placeholderState.animate) animations.animateTextSize(it) else it
             },
         style = style,
-        inlineContent = inlineContent.inlineContent + mapOf(
-            MARKDOWN_TAG_IMAGE_URL to createImageInlineTextContent(
-                placeholderState,
-                transformer,
-                imageState
+        inlineContent = remember {
+            inlineContent.inlineContent + mapOf(
+                MARKDOWN_TAG_IMAGE_URL to createImageInlineTextContent(
+                    placeholderState,
+                    transformer,
+                    imageState
+                )
             )
-        ),
+        },
         onTextLayout = {
             layoutResult.value = it
             onTextLayout?.invoke(it, baseColor)
