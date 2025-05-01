@@ -54,7 +54,7 @@ fun MarkdownBlockQuote(
     ) {
         var priorNestedQuote = false
         node.children.onEachIndexed { index, child ->
-            if (child == MarkdownElementTypes.BLOCK_QUOTE) {
+            if (child.type == MarkdownElementTypes.BLOCK_QUOTE) {
                 // if block quote is nested, and comes after non block quote, add padding
                 if (!priorNestedQuote && index != 0) Spacer(Modifier.height(blockQuoteText.calculateBottomPadding()))
                 MarkdownBlockQuote(content = content, node = child, style = style)
