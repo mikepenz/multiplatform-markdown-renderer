@@ -8,12 +8,14 @@ import com.mikepenz.markdown.model.BulletHandler
 import com.mikepenz.markdown.model.DefaultMarkdownAnnotator
 import com.mikepenz.markdown.model.DefaultMarkdownAnnotatorConfig
 import com.mikepenz.markdown.model.DefaultMarkdownExtendedSpans
+import com.mikepenz.markdown.model.DefaultMarkdownInlineContent
 import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.MarkdownAnimations
 import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.MarkdownColors
 import com.mikepenz.markdown.model.MarkdownDimens
 import com.mikepenz.markdown.model.MarkdownExtendedSpans
+import com.mikepenz.markdown.model.MarkdownInlineContent
 import com.mikepenz.markdown.model.MarkdownPadding
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.model.ReferenceLinkHandler
@@ -72,6 +74,13 @@ val LocalMarkdownDimens = compositionLocalOf<MarkdownDimens> {
  */
 val LocalImageTransformer = staticCompositionLocalOf<ImageTransformer> {
     error("No local ImageTransformer")
+}
+
+/**
+ * Local [MarkdownInlineContent] provider
+ */
+val LocalMarkdownInlineContent = staticCompositionLocalOf<MarkdownInlineContent> {
+    return@staticCompositionLocalOf DefaultMarkdownInlineContent(mapOf())
 }
 
 /**

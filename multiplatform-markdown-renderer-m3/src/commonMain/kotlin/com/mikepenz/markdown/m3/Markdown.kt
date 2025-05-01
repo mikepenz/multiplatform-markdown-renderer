@@ -15,6 +15,7 @@ import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.MarkdownColors
 import com.mikepenz.markdown.model.MarkdownDimens
 import com.mikepenz.markdown.model.MarkdownExtendedSpans
+import com.mikepenz.markdown.model.MarkdownInlineContent
 import com.mikepenz.markdown.model.MarkdownPadding
 import com.mikepenz.markdown.model.MarkdownState
 import com.mikepenz.markdown.model.MarkdownTypography
@@ -26,6 +27,7 @@ import com.mikepenz.markdown.model.markdownAnimations
 import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.model.markdownDimens
 import com.mikepenz.markdown.model.markdownExtendedSpans
+import com.mikepenz.markdown.model.markdownInlineContent
 import com.mikepenz.markdown.model.markdownPadding
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
@@ -46,6 +48,7 @@ import org.intellij.markdown.parser.MarkdownParser
  * @param imageTransformer The [ImageTransformer] to use for transforming images.
  * @param annotator The [MarkdownAnnotator] to use for annotating links.
  * @param extendedSpans The [MarkdownExtendedSpans] to use for extended spans.
+ * @param inlineContent The [MarkdownInlineContent] to use for inline content.
  * @param components The [MarkdownComponents] to use for custom components.
  * @param animations The [MarkdownAnimations] to use for animations.
  * @param referenceLinkHandler The reference link handler to be used for handling links.
@@ -66,6 +69,7 @@ fun Markdown(
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    inlineContent: MarkdownInlineContent = markdownInlineContent(),
     components: MarkdownComponents = markdownComponents(checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }),
     animations: MarkdownAnimations = markdownAnimations(),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
@@ -86,6 +90,7 @@ fun Markdown(
     imageTransformer = imageTransformer,
     annotator = annotator,
     extendedSpans = extendedSpans,
+    inlineContent = inlineContent,
     components = components,
     animations = animations,
     referenceLinkHandler = referenceLinkHandler,
@@ -106,6 +111,7 @@ fun Markdown(
  * @param imageTransformer The [ImageTransformer] to use for transforming images.
  * @param annotator The [MarkdownAnnotator] to use for annotating links.
  * @param extendedSpans The [MarkdownExtendedSpans] to use for extended spans.
+ * @param inlineContent The [MarkdownInlineContent] to use for inline content.
  * @param components The [MarkdownComponents] to use for custom components.
  * @param animations The [MarkdownAnimations] to use for animations.
  * @param loading Composable function to display while loading.
@@ -123,6 +129,7 @@ fun Markdown(
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    inlineContent: MarkdownInlineContent = markdownInlineContent(),
     components: MarkdownComponents = markdownComponents(checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }),
     animations: MarkdownAnimations = markdownAnimations(),
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
@@ -140,6 +147,7 @@ fun Markdown(
     imageTransformer = imageTransformer,
     annotator = annotator,
     extendedSpans = extendedSpans,
+    inlineContent = inlineContent,
     components = components,
     animations = animations,
     loading = loading,
@@ -159,6 +167,7 @@ fun Markdown(
  * @param imageTransformer The [ImageTransformer] to use for transforming images.
  * @param annotator The [MarkdownAnnotator] to use for annotating links.
  * @param extendedSpans The [MarkdownExtendedSpans] to use for extended spans.
+ * @param inlineContent The [MarkdownInlineContent] to use for inline content.
  * @param components The [MarkdownComponents] to use for custom components.
  * @param animations The [MarkdownAnimations] to use for animations.
  * @param loading Composable function to display while loading.
@@ -176,6 +185,7 @@ fun Markdown(
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    inlineContent: MarkdownInlineContent = markdownInlineContent(),
     components: MarkdownComponents = markdownComponents(checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }),
     animations: MarkdownAnimations = markdownAnimations(),
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
@@ -193,6 +203,7 @@ fun Markdown(
     imageTransformer = imageTransformer,
     annotator = annotator,
     extendedSpans = extendedSpans,
+    inlineContent = inlineContent,
     components = components,
     animations = animations,
     loading = loading,

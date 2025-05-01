@@ -16,6 +16,7 @@ import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.MarkdownColors
 import com.mikepenz.markdown.model.MarkdownDimens
 import com.mikepenz.markdown.model.MarkdownExtendedSpans
+import com.mikepenz.markdown.model.MarkdownInlineContent
 import com.mikepenz.markdown.model.MarkdownPadding
 import com.mikepenz.markdown.model.MarkdownState
 import com.mikepenz.markdown.model.MarkdownTypography
@@ -27,6 +28,7 @@ import com.mikepenz.markdown.model.markdownAnimations
 import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.model.markdownDimens
 import com.mikepenz.markdown.model.markdownExtendedSpans
+import com.mikepenz.markdown.model.markdownInlineContent
 import com.mikepenz.markdown.model.markdownPadding
 import com.mikepenz.markdown.model.rememberMarkdownState
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
@@ -48,6 +50,7 @@ import org.intellij.markdown.parser.MarkdownParser
  * @param imageTransformer The image transformer to be used for rendering images.
  * @param annotator The annotator to be used for rendering annotations.
  * @param extendedSpans The extended spans to be used for rendering.
+ * @param inlineContent The inline content to be rendered.
  * @param components The components to be used for rendering.
  * @param referenceLinkHandler The reference link handler to be used for handling links.
  * @param animations The animations to be used for rendering.
@@ -68,6 +71,7 @@ fun Markdown(
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    inlineContent: MarkdownInlineContent = markdownInlineContent(),
     components: MarkdownComponents = markdownComponents(),
     animations: MarkdownAnimations = markdownAnimations(),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
@@ -94,6 +98,7 @@ fun Markdown(
         imageTransformer = imageTransformer,
         annotator = annotator,
         extendedSpans = extendedSpans,
+        inlineContent = inlineContent,
         components = components,
         animations = animations,
         loading = loading,
@@ -114,6 +119,7 @@ fun Markdown(
  * @param imageTransformer The image transformer to be used for rendering images.
  * @param annotator The annotator to be used for rendering annotations.
  * @param extendedSpans The extended spans to be used for rendering.
+ * @param inlineContent The inline content to be rendered.
  * @param components The components to be used for rendering.
  * @param animations The animations to be used for rendering.
  * @param loading A composable function to be displayed while loading the content.
@@ -131,6 +137,7 @@ fun Markdown(
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    inlineContent: MarkdownInlineContent = markdownInlineContent(),
     components: MarkdownComponents = markdownComponents(),
     animations: MarkdownAnimations = markdownAnimations(),
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
@@ -150,6 +157,7 @@ fun Markdown(
         imageTransformer = imageTransformer,
         annotator = annotator,
         extendedSpans = extendedSpans,
+        inlineContent = inlineContent,
         components = components,
         animations = animations,
         loading = loading,
@@ -171,6 +179,7 @@ fun Markdown(
  * @param imageTransformer The image transformer to be used for rendering images.
  * @param annotator The annotator to be used for rendering annotations.
  * @param extendedSpans The extended spans to be used for rendering.
+ * @param inlineContent The inline content to be rendered.
  * @param components The components to be used for rendering.
  * @param animations The animations to be used for rendering.
  * @param loading A composable function to be displayed while loading the content.
@@ -188,6 +197,7 @@ fun Markdown(
     imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
     annotator: MarkdownAnnotator = markdownAnnotator(),
     extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    inlineContent: MarkdownInlineContent = markdownInlineContent(),
     components: MarkdownComponents = markdownComponents(),
     animations: MarkdownAnimations = markdownAnimations(),
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
@@ -205,6 +215,7 @@ fun Markdown(
         LocalImageTransformer provides imageTransformer,
         LocalMarkdownAnnotator provides annotator,
         LocalMarkdownExtendedSpans provides extendedSpans,
+        LocalMarkdownInlineContent provides inlineContent,
         LocalMarkdownComponents provides components,
         LocalMarkdownAnimations provides animations,
     ) {
