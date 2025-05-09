@@ -8,5 +8,5 @@ import com.mikepenz.markdown.ui.m3.theme.SampleTheme
 
 @Composable
 fun TestMarkdown(content: String) = SampleTheme(isSystemInDarkTheme()) {
-    Markdown(rememberMarkdownState(content, immediate = true))
+    Markdown(rememberMarkdownState(content))
 }

@@ -1,5 +1,11 @@
 ### Upgrade Notes
 
+#### Version 0.34.0
+
+- **Dependency Upgrade**: Compose 1.8.0 / Compose Multiplatform 1.8.0
+- **Breaking Change**: Reordered arguments for `markdownAnnotator` to improve backwards comp.
+- **Behavior Change**: Handle empty lines in block quotes. (Using block quote text size as height)
+
 #### Version 0.33.0
 
 - **Dependency Upgrade**: Kotlin 2.1.20

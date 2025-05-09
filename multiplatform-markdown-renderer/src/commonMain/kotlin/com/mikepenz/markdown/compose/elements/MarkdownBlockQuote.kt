@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.isSpecified
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
@@ -20,8 +20,8 @@ import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.MarkdownElement
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownTokenTypes.Companion.EOL
 import org.intellij.markdown.ast.ASTNode
-import org.intellij.markdown.ast.findChildOfType
 
 @Composable
 fun MarkdownBlockQuote(
@@ -52,25 +52,30 @@ fun MarkdownBlockQuote(
             }
             .padding(blockQuote)
     ) {
-        val nonBlockquotes = node.children.filter { it.type != MarkdownElementTypes.BLOCK_QUOTE }
-        val nestedQuote = node.findChildOfType(MarkdownElementTypes.BLOCK_QUOTE)
-
-        if (nonBlockquotes.isNotEmpty()) {
-            Column(modifier = Modifier.padding(blockQuoteText)) {
-                nonBlockquotes.onEach { quote ->
-                    MarkdownElement(node = quote, components = markdownComponents, content = content, includeSpacer = false)
-                }
+        val blockQuoteLineHeightInDp = with(LocalDensity.current) { LocalMarkdownTypography.current.quote.fontSize.toDp() }
+        var priorNestedQuote = false
+        node.children.onEachIndexed { index, child ->
+            if (child.type == MarkdownElementTypes.BLOCK_QUOTE) {
+                // if block quote is nested, and comes after non block quote, add padding
+                if (!priorNestedQuote && index != 0) Spacer(Modifier.height(blockQuoteText.calculateBottomPadding()))
+                MarkdownBlockQuote(content = content, node = child, style = style)
+                priorNestedQuote = true
+            } else if (child.type == EOL) {
+                Spacer(Modifier.height(blockQuoteLineHeightInDp))
+            } else {
+                // if first item either completely, or after a nested quote, add top padding
+                if (index == 0 || priorNestedQuote) Spacer(Modifier.height(blockQuoteText.calculateTopPadding()))
+                priorNestedQuote = false
+                MarkdownElement(
+                    node = child,
+                    components = markdownComponents,
+                    content = content,
+                    includeSpacer = false,
+                    skipLinkDefinition = true
+                )
+                // if last item, add bottom padding
+                if (index == node.children.lastIndex) Spacer(Modifier.height(blockQuoteText.calculateBottomPadding()))
             }
-
-            if (nestedQuote != null) Spacer(Modifier.height(8.dp))
-        }
-
-        if (nestedQuote != null) {
-            MarkdownBlockQuote(
-                content = content,
-                node = nestedQuote,
-                style = style
-            )
         }
     }
 }

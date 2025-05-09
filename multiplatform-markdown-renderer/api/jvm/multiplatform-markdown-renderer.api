@@ -37,9 +37,9 @@ public final class com/mikepenz/markdown/annotator/DefaultAnnotatorSettings : co
 public final class com/mikepenz/markdown/compose/ComposableSingletons$MarkdownKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/ComposableSingletons$MarkdownKt;
 	public fun <init> ()V
-	public final fun getLambda$1182242454$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
-	public final fun getLambda$2080817252$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
-	public final fun getLambda$873873637$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-1129650913$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-2063790006$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-322200773$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
 }
 
 public final class com/mikepenz/markdown/compose/ComposeLocalKt {
@@ -51,6 +51,7 @@ public final class com/mikepenz/markdown/compose/ComposeLocalKt {
 	public static final fun getLocalMarkdownComponents ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownDimens ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownExtendedSpans ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownInlineContent ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownPadding ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownTypography ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalOrderedListHandler ()Landroidx/compose/runtime/ProvidableCompositionLocal;
@@ -66,9 +67,9 @@ public final class com/mikepenz/markdown/compose/MarkdownExtensionKt {
 }
 
 public final class com/mikepenz/markdown/compose/MarkdownKt {
-	public static final fun Markdown (Lcom/mikepenz/markdown/model/MarkdownState;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
-	public static final fun Markdown (Lcom/mikepenz/markdown/model/State;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
-	public static final fun Markdown (Ljava/lang/String;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Markdown (Lcom/mikepenz/markdown/model/MarkdownState;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/model/MarkdownInlineContent;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Markdown (Lcom/mikepenz/markdown/model/State;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/model/MarkdownInlineContent;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Markdown (Ljava/lang/String;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/model/MarkdownInlineContent;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
 	public static final fun MarkdownSuccess (Lcom/mikepenz/markdown/model/State$Success;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
@@ -390,6 +391,12 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownExtendedSpans : co
 	public fun getExtendedSpans ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/mikepenz/markdown/model/DefaultMarkdownInlineContent : com/mikepenz/markdown/model/MarkdownInlineContent {
+	public static final field $stable I
+	public fun <init> (Ljava/util/Map;)V
+	public fun getInlineContent ()Ljava/util/Map;
+}
+
 public final class com/mikepenz/markdown/model/DefaultMarkdownTypography : com/mikepenz/markdown/model/MarkdownTypography {
 	public static final field $stable I
 	public fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;)V
@@ -491,8 +498,8 @@ public final class com/mikepenz/markdown/model/MarkdownAnnotatorConfigKt {
 }
 
 public final class com/mikepenz/markdown/model/MarkdownAnnotatorKt {
-	public static final fun markdownAnnotator (Lkotlin/jvm/functions/Function3;Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;)Lcom/mikepenz/markdown/model/MarkdownAnnotator;
-	public static synthetic fun markdownAnnotator$default (Lkotlin/jvm/functions/Function3;Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAnnotator;
+	public static final fun markdownAnnotator (Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;Lkotlin/jvm/functions/Function3;)Lcom/mikepenz/markdown/model/MarkdownAnnotator;
+	public static synthetic fun markdownAnnotator$default (Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAnnotator;
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownColors {
@@ -542,6 +549,14 @@ public abstract interface class com/mikepenz/markdown/model/MarkdownImageState {
 public final class com/mikepenz/markdown/model/MarkdownImageState$DefaultImpls {
 	public static fun updateContainerSize-uvyYCjk (Lcom/mikepenz/markdown/model/MarkdownImageState;J)V
 	public static fun updateImageSize-uvyYCjk (Lcom/mikepenz/markdown/model/MarkdownImageState;J)V
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownInlineContent {
+	public abstract fun getInlineContent ()Ljava/util/Map;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownInlineContentKt {
+	public static final fun markdownInlineContent (Ljava/util/Map;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownInlineContent;
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownPadding {

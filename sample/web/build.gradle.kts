@@ -9,7 +9,7 @@ plugins {
 kotlin {
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        moduleName = "markdown"
+        outputModuleName = "markdown"
         browser {
             commonWebpackConfig {
                 outputFileName = "composeApp.js"
@@ -34,6 +34,10 @@ compose.resources {
 aboutLibraries {
     android {
         registerAndroidTasks = false
+    }
+    export {
+        exportVariant = "wasmJs"
+        outputPath = file("src/commonMain/composeResources/files/aboutlibraries.json")
     }
     library {
         duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE

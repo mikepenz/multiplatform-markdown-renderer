@@ -19,6 +19,17 @@ class BlockquotesTests {
 
     @DarkLightPreview
     @Composable
+    fun BlockquoteWithMultipleLinesTest() = TestMarkdown(
+        """
+        > first line
+        >
+        > third line  
+        > fourth line
+        """.trimIndent()
+    )
+
+    @DarkLightPreview
+    @Composable
     fun BlockquoteWithMultipleParagraphsTest() = TestMarkdown(
         """
         > Dorothy followed her through many of the beautiful rooms in her castle.
@@ -34,6 +45,8 @@ class BlockquotesTests {
         > Dorothy followed her through many of the beautiful rooms in her castle.
         >
         >> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
+        >
+        > Dorothy followed her through many of the beautiful rooms in her castle.
         """.trimIndent()
     )
 

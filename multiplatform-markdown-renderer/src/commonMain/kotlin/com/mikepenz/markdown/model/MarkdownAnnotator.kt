@@ -25,8 +25,8 @@ class DefaultMarkdownAnnotator(
 ) : MarkdownAnnotator
 
 fun markdownAnnotator(
-    annotate: (AnnotatedString.Builder.(content: String, child: ASTNode) -> Boolean)? = null,
     config: MarkdownAnnotatorConfig = markdownAnnotatorConfig(),
+    annotate: (AnnotatedString.Builder.(content: String, child: ASTNode) -> Boolean)? = null,
 ): MarkdownAnnotator = DefaultMarkdownAnnotator(
     annotate = annotate,
     config = config

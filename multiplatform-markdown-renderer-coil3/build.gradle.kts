@@ -11,6 +11,12 @@ android {
 
 dependencies {
     commonMainApi(projects.multiplatformMarkdownRenderer)
-    commonMainApi(libs.coil.core)
+
+    // TODO reverse once coil3 was released based on compose 1.8.0
+    commonMainApi(libs.coil.core) {
+        exclude(group = "org.jetbrains.compose.runtime")
+    }
     commonMainCompileOnly(compose.runtime)
+    commonMainCompileOnly(compose.runtimeSaveable)
+    commonMainCompileOnly("org.jetbrains.compose.ui:ui-backhandler:1.8.0-rc01")
 }
