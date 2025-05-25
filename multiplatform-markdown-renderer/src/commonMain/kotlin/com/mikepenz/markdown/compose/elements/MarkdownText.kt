@@ -145,7 +145,7 @@ fun MarkdownText(
                 if (placeholderState.animate) animations.animateTextSize(it) else it
             },
         style = style,
-        inlineContent = remember(inlineContent.inlineContent, placeholderState, transformer) {
+        inlineContent = remember(inlineContent.inlineContent, placeholderState, transformer, imageState) {
             inlineContent.inlineContent + mapOf(
                 MARKDOWN_TAG_IMAGE_URL to createImageInlineTextContent(
                     placeholderState,
