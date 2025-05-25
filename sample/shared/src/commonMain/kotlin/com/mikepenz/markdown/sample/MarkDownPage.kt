@@ -1,18 +1,16 @@
 package com.mikepenz.markdown.sample
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.coil3.Coil3ImageTransformerImpl
@@ -39,14 +37,12 @@ internal fun MarkDownPage(modifier: Modifier = Modifier) {
     val highlightsBuilder = remember(isDarkTheme) {
         Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isDarkTheme))
     }
-    var markdown by rememberSaveable(Unit) { mutableStateOf("") }
-    LaunchedEffect(Unit) {
-        markdown = Res.readBytes("files/sample.md").decodeToString()
-    }
 
     SelectionContainer {
         Markdown(
-            markdownState = rememberMarkdownState(markdown),
+            markdownState = rememberMarkdownState {
+                Res.readBytes("files/sample.md").decodeToString()
+            },
             components = markdownComponents(
                 codeBlock = {
                     MarkdownHighlightedCodeBlock(
@@ -72,6 +68,14 @@ internal fun MarkDownPage(modifier: Modifier = Modifier) {
                         RoundedCornerSpanPainter(),
                         SquigglyUnderlineSpanPainter(animator = animator)
                     )
+                }
+            },
+            loading = {
+                Box(
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
             },
             modifier = modifier
