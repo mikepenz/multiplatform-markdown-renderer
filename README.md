@@ -29,9 +29,15 @@
 
 ### What's included 🚀
 
-- Super simple setup
-- Cross-platform ready
-- Lightweight
+- **Cross-platform Markdown Rendering** - Works on Android, iOS, Desktop, and Web
+- **Material Design Integration** - Seamless integration with Material 2 and Material 3 themes
+- **Rich Markdown Support** - Renders headings, lists, code blocks, tables, images, and more
+- **Syntax Highlighting** - Optional code syntax highlighting for various programming languages
+- **Image Loading** - Flexible image loading with Coil2 and Coil3 integration
+- **Customization Options** - Extensive customization for colors, typography, components, and more
+- **Performance Optimized** - Efficient rendering with lazy loading support for large documents
+- **Extended Text Spans** - Support for advanced text styling with extended spans
+- **Lightweight** - Minimal dependencies and optimized for performance
 
 -------
 
