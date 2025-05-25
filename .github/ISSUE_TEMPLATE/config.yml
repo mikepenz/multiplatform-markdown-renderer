@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/README.md
+    about: Check out the project documentation for answers to common questions.
