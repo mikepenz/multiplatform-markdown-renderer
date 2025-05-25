@@ -63,7 +63,7 @@ public final class com/mikepenz/markdown/compose/LazyMarkdownKt {
 }
 
 public final class com/mikepenz/markdown/compose/MarkdownExtensionKt {
-	public static final fun MarkdownElement (Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Ljava/lang/String;ZZLandroidx/compose/runtime/Composer;II)Z
+	public static final fun MarkdownElement (Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Ljava/lang/String;ZZLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/mikepenz/markdown/compose/MarkdownKt {
@@ -575,19 +575,17 @@ public final class com/mikepenz/markdown/model/MarkdownPaddingKt {
 	public static final fun markdownPadding-hBH8OFI (FFFFLandroidx/compose/ui/unit/Dp;FLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues$Absolute;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownPadding;
 }
 
-public final class com/mikepenz/markdown/model/MarkdownState {
-	public static final field $stable I
-	public fun <init> (Lcom/mikepenz/markdown/model/Input;)V
-	public final fun getInput ()Lcom/mikepenz/markdown/model/Input;
-	public final fun getLinks ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getState ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun parse (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+public abstract interface class com/mikepenz/markdown/model/MarkdownState {
+	public abstract fun getLinks ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun getState ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun parse (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/mikepenz/markdown/model/MarkdownStateKt {
 	public static final fun parseMarkdownFlow (Ljava/lang/String;ZLorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;)Lkotlinx/coroutines/flow/Flow;
 	public static synthetic fun parseMarkdownFlow$default (Ljava/lang/String;ZLorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;ILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun rememberMarkdownState (Ljava/lang/String;ZLorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;ZLandroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownState;
+	public static final fun rememberMarkdownState (ZLorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownState;
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownTypography {

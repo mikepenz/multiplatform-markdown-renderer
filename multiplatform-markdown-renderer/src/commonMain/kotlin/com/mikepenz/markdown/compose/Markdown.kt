@@ -37,26 +37,48 @@ import org.intellij.markdown.parser.MarkdownParser
 
 
 /**
- * Renders the markdown content.
+ * Renders the provided markdown content string using Jetpack Compose.
  *
- * @param content The markdown content to be rendered.
- * @param colors The colors to be used for rendering.
- * @param typography The typography to be used for rendering.
- * @param modifier The modifier to be applied to the container.
- * @param padding The padding to be applied to the container.
- * @param dimens The dimensions to be used for rendering.
- * @param flavour The flavour descriptor for parsing the markdown. By default uses GFM flavour.
- * @param parser The parser to be used for parsing the markdown. By default uses the flavour supplied.
- * @param imageTransformer The image transformer to be used for rendering images.
- * @param annotator The annotator to be used for rendering annotations.
- * @param extendedSpans The extended spans to be used for rendering.
- * @param inlineContent The inline content to be rendered.
- * @param components The components to be used for rendering.
- * @param referenceLinkHandler The reference link handler to be used for handling links.
- * @param animations The animations to be used for rendering.
- * @param loading A composable function to be displayed while loading the content.
- * @param success A composable function to be displayed with the markdown content. It receives the modifier, state and components as parameters. By default this is a [Column].
- * @param error A composable function to be displayed in case of an error. Only really possible if assertions are enabled on the parser)
+ * This is the primary entry point for rendering markdown content in your application.
+ * It handles parsing the markdown string, applying styling, and rendering the content
+ * with appropriate components.
+ *
+ * The rendering process follows these steps:
+ * 1. Parse the markdown content using the provided parser
+ * 2. Create a state object to manage the rendering process
+ * 3. Apply styling and customization options
+ * 4. Render the content using the appropriate components
+ *
+ * Example usage:
+ * ```
+ * Markdown(
+ *     content = "# Hello World\n\nThis is a **bold** statement.",
+ *     colors = markdownColor(),
+ *     typography = markdownTypography()
+ * )
+ * ```
+ *
+ * @param content The markdown content string to be rendered.
+ * @param colors The color scheme to be used for rendering different markdown elements.
+ * @param typography The typography settings to be used for text rendering.
+ * @param modifier The modifier to be applied to the container. Defaults to [Modifier.fillMaxSize].
+ * @param padding The padding configuration to be applied to different markdown elements.
+ * @param dimens The dimension settings for spacing and sizing of markdown elements.
+ * @param flavour The markdown flavor descriptor for parsing. By default uses GitHub Flavored Markdown (GFM).
+ * @param parser The parser instance to be used for parsing the markdown. By default creates a new parser with the provided flavor.
+ * @param imageTransformer The transformer for handling and loading images within markdown content.
+ * @param annotator The annotator for adding custom annotations to the rendered content.
+ * @param extendedSpans The configuration for extended text spans beyond standard markdown.
+ * @param inlineContent The configuration for inline custom content within markdown.
+ * @param components The custom components to be used for rendering different markdown elements.
+ * @param referenceLinkHandler The handler for resolving reference-style links in markdown.
+ * @param animations The animation configurations for interactive elements.
+ * @param loading A composable function to be displayed while the content is being parsed and prepared.
+ * @param success A composable function to be displayed with the successfully parsed markdown content.
+ *                It receives the state, components, and modifier as parameters.
+ *                By default, this renders the content in a [Column].
+ * @param error A composable function to be displayed in case of parsing errors.
+ *              This is only triggered if assertions are enabled on the parser.
  */
 @Composable
 fun Markdown(
@@ -108,23 +130,48 @@ fun Markdown(
 }
 
 /**
- * Renders the markdown content.
+ * Renders markdown content using a pre-created [MarkdownState] object.
  *
- * @param markdownState The markdown state to be rendered.
- * @param colors The colors to be used for rendering.
- * @param typography The typography to be used for rendering.
- * @param modifier The modifier to be applied to the container.
- * @param padding The padding to be applied to the container.
- * @param dimens The dimensions to be used for rendering.
- * @param imageTransformer The image transformer to be used for rendering images.
- * @param annotator The annotator to be used for rendering annotations.
- * @param extendedSpans The extended spans to be used for rendering.
- * @param inlineContent The inline content to be rendered.
- * @param components The components to be used for rendering.
- * @param animations The animations to be used for rendering.
- * @param loading A composable function to be displayed while loading the content.
- * @param success A composable function to be displayed with the markdown content. It receives the modifier, state and components as parameters. By default this is a [Column].
- * @param error A composable function to be displayed in case of an error. Only really possible if assertions are enabled on the parser)
+ * This overload is useful when you need more control over the state management
+ * of your markdown content, such as when you want to:
+ * - Pre-parse markdown content
+ * - Share the same state across multiple composables
+ * - Implement custom state handling logic
+ *
+ * The state object manages the parsing and preparation of the markdown content,
+ * while this function handles the rendering with appropriate styling and components.
+ *
+ * Example usage:
+ * ```
+ * val markdownState = rememberMarkdownState(content = "# Hello World")
+ *
+ * Markdown(
+ *     markdownState = markdownState,
+ *     colors = markdownColor(),
+ *     typography = markdownTypography()
+ * )
+ * ```
+ *
+ * @param markdownState A [MarkdownState] object that manages the parsing and state of the markdown content.
+ * @param colors The color scheme to be used for rendering different markdown elements.
+ * @param typography The typography settings to be used for text rendering.
+ * @param modifier The modifier to be applied to the container. Defaults to [Modifier.fillMaxSize].
+ * @param padding The padding configuration to be applied to different markdown elements.
+ * @param dimens The dimension settings for spacing and sizing of markdown elements.
+ * @param imageTransformer The transformer for handling and loading images within markdown content.
+ * @param annotator The annotator for adding custom annotations to the rendered content.
+ * @param extendedSpans The configuration for extended text spans beyond standard markdown.
+ * @param inlineContent The configuration for inline custom content within markdown.
+ * @param components The custom components to be used for rendering different markdown elements.
+ * @param animations The animation configurations for interactive elements.
+ * @param loading A composable function to be displayed while the content is being parsed and prepared.
+ * @param success A composable function to be displayed with the successfully parsed markdown content.
+ *                It receives the state, components, and modifier as parameters.
+ *                By default, this renders the content in a [Column].
+ * @param error A composable function to be displayed in case of parsing errors.
+ *              This is only triggered if assertions are enabled on the parser.
+ *
+ * @see rememberMarkdownState
  */
 @Composable
 fun Markdown(
@@ -168,23 +215,53 @@ fun Markdown(
 
 
 /**
- * Renders the markdown content.
+ * Renders markdown content using a [State] object directly.
  *
- * @param state The markdown state to be rendered.
- * @param colors The colors to be used for rendering.
- * @param typography The typography to be used for rendering.
- * @param modifier The modifier to be applied to the container.
- * @param padding The padding to be applied to the container.
- * @param dimens The dimensions to be used for rendering.
- * @param imageTransformer The image transformer to be used for rendering images.
- * @param annotator The annotator to be used for rendering annotations.
- * @param extendedSpans The extended spans to be used for rendering.
- * @param inlineContent The inline content to be rendered.
- * @param components The components to be used for rendering.
- * @param animations The animations to be used for rendering.
- * @param loading A composable function to be displayed while loading the content.
- * @param success A composable function to be displayed with the markdown content. It receives the modifier, state and components as parameters. By default this is a [Column].
- * @param error A composable function to be displayed in case of an error. Only really possible if assertions are enabled on the parser)
+ * This is the lowest-level overload of the Markdown composable, providing direct control
+ * over the rendering state. It's primarily used internally by the other overloads but
+ * can be useful for advanced use cases where you need to:
+ * - Implement custom state transitions
+ * - Handle specific loading/error states manually
+ * - Integrate with custom state management systems
+ *
+ * The function handles different states (Loading, Success, Error) and provides
+ * appropriate UI for each state.
+ *
+ * Example usage:
+ * ```
+ * val state: State = ... // Your custom state implementation
+ *
+ * Markdown(
+ *     state = state,
+ *     colors = markdownColor(),
+ *     typography = markdownTypography(),
+ *     loading = { LoadingIndicator() },
+ *     error = { ErrorMessage() }
+ * )
+ * ```
+ *
+ * @param state A [State] object representing the current state of the markdown content (loading, success, or error).
+ * @param colors The color scheme to be used for rendering different markdown elements.
+ * @param typography The typography settings to be used for text rendering.
+ * @param modifier The modifier to be applied to the container. Defaults to [Modifier.fillMaxSize].
+ * @param padding The padding configuration to be applied to different markdown elements.
+ * @param dimens The dimension settings for spacing and sizing of markdown elements.
+ * @param imageTransformer The transformer for handling and loading images within markdown content.
+ * @param annotator The annotator for adding custom annotations to the rendered content.
+ * @param extendedSpans The configuration for extended text spans beyond standard markdown.
+ * @param inlineContent The configuration for inline custom content within markdown.
+ * @param components The custom components to be used for rendering different markdown elements.
+ * @param animations The animation configurations for interactive elements.
+ * @param loading A composable function to be displayed when the state is [State.Loading].
+ * @param success A composable function to be displayed when the state is [State.Success].
+ *                It receives the state, components, and modifier as parameters.
+ *                By default, this renders the content in a [Column].
+ * @param error A composable function to be displayed when the state is [State.Error].
+ *
+ * @see State
+ * @see State.Loading
+ * @see State.Success
+ * @see State.Error
  */
 @Composable
 fun Markdown(
@@ -228,11 +305,35 @@ fun Markdown(
 }
 
 /**
- * Renders the parsed markdown content.
+ * Renders the successfully parsed markdown content in a Column layout.
  *
- * @param state The success markdown state.
- * @param components The MarkdownComponents instance containing the components to use.
- * @param modifier The modifier to be applied to the container.
+ * This function is used internally by the [Markdown] composable when the state is [State.Success].
+ * It iterates through the parsed markdown nodes and renders each element using the appropriate
+ * component from the provided [MarkdownComponents].
+ *
+ * You can use this function directly if you have a custom state management system and
+ * want to render only the success state of markdown content.
+ *
+ * Example usage:
+ * ```
+ * val successState: State.Success = ... // Your parsed markdown state
+ * val components = markdownComponents()
+ *
+ * MarkdownSuccess(
+ *     state = successState,
+ *     components = components,
+ *     modifier = Modifier.padding(16.dp)
+ * )
+ * ```
+ *
+ * @param state The [State.Success] object containing the parsed markdown content and node tree.
+ * @param components The [MarkdownComponents] instance containing the components to use for rendering
+ *                   different markdown elements.
+ * @param modifier The modifier to be applied to the container Column.
+ *
+ * @see State.Success
+ * @see MarkdownComponents
+ * @see MarkdownElement
  */
 @Composable
 fun MarkdownSuccess(
