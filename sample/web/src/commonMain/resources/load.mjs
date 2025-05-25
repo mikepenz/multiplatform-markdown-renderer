@@ -1,4 +1,4 @@
-import { instantiate } from './aboutlibraries.uninstantiated.mjs';
+import { instantiate } from './markdown.uninstantiated.mjs';
 
 await wasmSetup;
 
