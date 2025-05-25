@@ -26,7 +26,8 @@ import org.intellij.markdown.parser.MarkdownParser
  * @param flavour The [MarkdownFlavourDescriptor] to use for parsing.
  * @param parser The [MarkdownParser] to use for parsing.
  * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
- * @param immediate Whether to parse the content immediately or not. (WARNING: This is not advices, as it will block the composition!)
+ * @param immediate Whether to parse the content immediately or not. (WARNING: This is not advised, as it will block the composition!)
+ * @return A [MarkdownState] instance that will parse the content and emit the result to its [MarkdownState.state] flow.
  */
 @Composable
 fun rememberMarkdownState(
@@ -37,42 +38,141 @@ fun rememberMarkdownState(
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     immediate: Boolean = LocalInspectionMode.current,
 ): MarkdownState {
-    val input = Input(
-        content = content,
-        lookupLinks = lookupLinks,
-        flavour = flavour,
-        parser = parser,
-        referenceLinkHandler = referenceLinkHandler,
-    )
-    val state = remember(input) { MarkdownState(input) }
+    val input = remember(content, lookupLinks, flavour, parser, referenceLinkHandler) {
+        Input(
+            content = content,
+            lookupLinks = lookupLinks,
+            flavour = flavour,
+            parser = parser,
+            referenceLinkHandler = referenceLinkHandler,
+        )
+    }
+    val state = remember(input) { MarkdownStateImpl(input) }
+
     if (immediate) {
+        // In immediate mode, parse synchronously but be aware this blocks the UI thread
         state.parseBlocking()
     } else {
+        // Otherwise, parse asynchronously in a coroutine
         LaunchedEffect(state) {
             state.parse()
         }
     }
+
     return state
 }
 
 /**
- * A [MarkdownState] that that executes the parsing of the markdown content with the [MarkdownParser] asynchronously.
+ * A [MarkdownState] that executes the parsing of the markdown content with the [MarkdownParser] asynchronously.
+ * This version accepts a suspend function block that returns the markdown content, allowing for dynamic loading.
+ *
+ * @param block A suspend function that returns the markdown content to parse.
+ * @param lookupLinks Whether to lookup links in the parsed tree or not.
+ * @param flavour The [MarkdownFlavourDescriptor] to use for parsing.
+ * @param parser The [MarkdownParser] to use for parsing.
+ * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
+ * @return A [MarkdownState] instance that will parse the content and emit the result to its [MarkdownState.state] flow.
+ */
+@Composable
+fun rememberMarkdownState(
+    lookupLinks: Boolean = true,
+    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    parser: MarkdownParser = MarkdownParser(flavour),
+    referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
+    block: suspend () -> String,
+): MarkdownState {
+    // Create an initial state with empty content
+    val initialInput = remember(lookupLinks, flavour, parser, referenceLinkHandler) {
+        Input(
+            content = "",
+            lookupLinks = lookupLinks,
+            flavour = flavour,
+            parser = parser,
+            referenceLinkHandler = referenceLinkHandler,
+        )
+    }
+    val state = remember(block, initialInput) {
+        MarkdownStateImpl(initialInput)
+    }
+
+    // Launch a coroutine to fetch the content and update the state
+    LaunchedEffect(state) {
+        try {
+            val content = block()
+            val input = Input(
+                content = content,
+                lookupLinks = lookupLinks,
+                flavour = flavour,
+                parser = parser,
+                referenceLinkHandler = referenceLinkHandler,
+            )
+            state.updateInput(input)
+            state.parse()
+        } catch (e: Throwable) {
+            state.setError(e)
+        }
+    }
+
+    return state
+}
+
+/**
+ * Interface for a state that handles the parsing of markdown content with the [MarkdownParser].
  */
 @Stable
-class MarkdownState(
-    val input: Input,
-) {
-    private val stateFlow: MutableStateFlow<State> = MutableStateFlow(State.Loading(input.referenceLinkHandler))
-    val state: StateFlow<State> = stateFlow.asStateFlow()
+interface MarkdownState {
+    /** The current state of the markdown parsing */
+    val state: StateFlow<State>
 
-    private val linkStateFlow: MutableStateFlow<Map<String, String?>> = MutableStateFlow(emptyMap())
-    val links: StateFlow<Map<String, String?>> = linkStateFlow.asStateFlow()
+    /** The links found in the markdown content */
+    val links: StateFlow<Map<String, String?>>
 
     /**
      * Parses the markdown content asynchronously using the Default dispatcher.
      * When a result is available it will be emitted to the [state] flow.
      */
-    suspend fun parse(): State = withContext(Dispatchers.Default) {
+    suspend fun parse(): State
+}
+
+/**
+ * Implementation of [MarkdownState] that executes the parsing of the markdown content with the [MarkdownParser] asynchronously.
+ */
+@Stable
+internal class MarkdownStateImpl(
+    private var input: Input,
+) : MarkdownState {
+    private val stateFlow: MutableStateFlow<State> = MutableStateFlow(State.Loading(input.referenceLinkHandler))
+    override val state: StateFlow<State> = stateFlow.asStateFlow()
+
+    private val linkStateFlow: MutableStateFlow<Map<String, String?>> = MutableStateFlow(emptyMap())
+    override val links: StateFlow<Map<String, String?>> = linkStateFlow.asStateFlow()
+
+    /**
+     * Updates the input for this markdown state.
+     * This is used when loading content dynamically.
+     *
+     * @param newInput The new input to use for parsing.
+     */
+    internal fun updateInput(newInput: Input) {
+        input = newInput
+        stateFlow.value = State.Loading(input.referenceLinkHandler)
+    }
+
+    /**
+     * Sets an error state for this markdown state.
+     * This is used when an error occurs during dynamic content loading.
+     *
+     * @param error The error that occurred.
+     */
+    internal fun setError(error: Throwable) {
+        stateFlow.value = State.Error(error, input.referenceLinkHandler)
+    }
+
+    /**
+     * Parses the markdown content asynchronously using the Default dispatcher.
+     * When a result is available it will be emitted to the [state] flow.
+     */
+    override suspend fun parse(): State = withContext(Dispatchers.Default) {
         parseBlocking()
     }
 
@@ -117,7 +217,7 @@ fun parseMarkdownFlow(
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
 ) = flow {
     emit(State.Loading(referenceLinkHandler))
-    val markdownState = MarkdownState(
+    val markdownState = MarkdownStateImpl(
         Input(
             content = content,
             lookupLinks = lookupLinks,

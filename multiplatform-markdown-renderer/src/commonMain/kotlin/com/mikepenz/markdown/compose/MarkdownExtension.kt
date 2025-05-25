@@ -3,6 +3,7 @@ package com.mikepenz.markdown.compose
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.components.MarkdownComponents
@@ -47,12 +48,15 @@ fun MarkdownElement(
     content: String,
     includeSpacer: Boolean = true,
     skipLinkDefinition: Boolean = true,
-): Boolean {
-    val model = MarkdownComponentModel(
-        content = content,
-        node = node,
-        typography = LocalMarkdownTypography.current,
-    )
+) {
+    val typography = LocalMarkdownTypography.current
+    val model = remember(node, content, typography) {
+        MarkdownComponentModel(
+            content = content,
+            node = node,
+            typography = typography,
+        )
+    }
     var handled = true
     if (includeSpacer) Spacer(Modifier.height(LocalMarkdownPadding.current.block))
     when (node.type) {
@@ -90,6 +94,4 @@ fun MarkdownElement(
             MarkdownElement(child, components, content, includeSpacer, skipLinkDefinition)
         }
     }
-
-    return handled
 }
