@@ -6,6 +6,7 @@ plugins {
     alias(baseLibs.plugins.androidLibrary) apply false
     alias(baseLibs.plugins.composeMultiplatform) apply false
     alias(baseLibs.plugins.composeCompiler) apply false
+    alias(baseLibs.plugins.composeHotreload) apply false
     alias(baseLibs.plugins.kotlinMultiplatform) apply false
     alias(baseLibs.plugins.dokka)
     alias(baseLibs.plugins.aboutLibraries) apply false
