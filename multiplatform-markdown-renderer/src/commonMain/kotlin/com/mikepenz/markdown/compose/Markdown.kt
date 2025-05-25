@@ -38,7 +38,7 @@ import org.intellij.markdown.parser.MarkdownParser
 
 /**
  * Renders the provided markdown content string using Jetpack Compose.
- * 
+ *
  * This is the primary entry point for rendering markdown content in your application.
  * It handles parsing the markdown string, applying styling, and rendering the content
  * with appropriate components.
@@ -53,8 +53,8 @@ import org.intellij.markdown.parser.MarkdownParser
  * ```
  * Markdown(
  *     content = "# Hello World\n\nThis is a **bold** statement.",
- *     colors = MarkdownDefaults.colors(),
- *     typography = MarkdownDefaults.typography()
+ *     colors = markdownColor(),
+ *     typography = markdownTypography()
  * )
  * ```
  *
@@ -131,7 +131,7 @@ fun Markdown(
 
 /**
  * Renders markdown content using a pre-created [MarkdownState] object.
- * 
+ *
  * This overload is useful when you need more control over the state management
  * of your markdown content, such as when you want to:
  * - Pre-parse markdown content
@@ -144,11 +144,11 @@ fun Markdown(
  * Example usage:
  * ```
  * val markdownState = rememberMarkdownState(content = "# Hello World")
- * 
+ *
  * Markdown(
  *     markdownState = markdownState,
- *     colors = MarkdownDefaults.colors(),
- *     typography = MarkdownDefaults.typography()
+ *     colors = markdownColor(),
+ *     typography = markdownTypography()
  * )
  * ```
  *
@@ -170,7 +170,7 @@ fun Markdown(
  *                By default, this renders the content in a [Column].
  * @param error A composable function to be displayed in case of parsing errors.
  *              This is only triggered if assertions are enabled on the parser.
- * 
+ *
  * @see rememberMarkdownState
  */
 @Composable
@@ -216,7 +216,7 @@ fun Markdown(
 
 /**
  * Renders markdown content using a [State] object directly.
- * 
+ *
  * This is the lowest-level overload of the Markdown composable, providing direct control
  * over the rendering state. It's primarily used internally by the other overloads but
  * can be useful for advanced use cases where you need to:
@@ -230,11 +230,11 @@ fun Markdown(
  * Example usage:
  * ```
  * val state: State = ... // Your custom state implementation
- * 
+ *
  * Markdown(
  *     state = state,
- *     colors = MarkdownDefaults.colors(),
- *     typography = MarkdownDefaults.typography(),
+ *     colors = markdownColor(),
+ *     typography = markdownTypography(),
  *     loading = { LoadingIndicator() },
  *     error = { ErrorMessage() }
  * )
@@ -257,7 +257,7 @@ fun Markdown(
  *                It receives the state, components, and modifier as parameters.
  *                By default, this renders the content in a [Column].
  * @param error A composable function to be displayed when the state is [State.Error].
- * 
+ *
  * @see State
  * @see State.Loading
  * @see State.Success
@@ -306,7 +306,7 @@ fun Markdown(
 
 /**
  * Renders the successfully parsed markdown content in a Column layout.
- * 
+ *
  * This function is used internally by the [Markdown] composable when the state is [State.Success].
  * It iterates through the parsed markdown nodes and renders each element using the appropriate
  * component from the provided [MarkdownComponents].
@@ -318,7 +318,7 @@ fun Markdown(
  * ```
  * val successState: State.Success = ... // Your parsed markdown state
  * val components = markdownComponents()
- * 
+ *
  * MarkdownSuccess(
  *     state = successState,
  *     components = components,
@@ -330,7 +330,7 @@ fun Markdown(
  * @param components The [MarkdownComponents] instance containing the components to use for rendering
  *                   different markdown elements.
  * @param modifier The modifier to be applied to the container Column.
- * 
+ *
  * @see State.Success
  * @see MarkdownComponents
  * @see MarkdownElement
