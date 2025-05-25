@@ -51,6 +51,17 @@ internal class MarkdownImageStateImpl(override val density: Density) : MarkdownI
     }
 }
 
+/**
+ * Creates and remembers a [MarkdownImageState] instance.
+ *
+ * This composable function creates a new instance of [MarkdownImageState] using the current
+ * density from [LocalDensity] and remembers it across recompositions as long as the
+ * density doesn't change.
+ *
+ * It's used internally by the markdown renderer to manage image state for inline images.
+ *
+ * @return A remembered instance of [MarkdownImageState].
+ */
 @Composable
 internal fun rememberMarkdownImageState(): MarkdownImageState {
     val density = LocalDensity.current
