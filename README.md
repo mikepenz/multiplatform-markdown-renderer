@@ -246,22 +246,23 @@ offering full flexibility.
 ```kotlin
 // Simple adjusted paragraph with different Modifier.
 val customParagraphComponent: MarkdownComponent = {
-    MarkdownParagraph(it.content, it.node, Modifier.align(Alignment.End))
+    Box(modifier = Modifier.fillMaxWidth()) {
+        MarkdownParagraph(it.content, it.node, Modifier.align(Alignment.CenterEnd))
+    }
 }
 
-// Full custom paragraph example
-val customParagraphComponent: MarkdownComponent = {
+// Full custom paragraph example 
+val customParagraphComponentComplex: MarkdownComponent = {
     // build a styled paragraph. (util function provided by the library)
     val styledText = buildAnnotatedString {
         pushStyle(LocalMarkdownTypography.current.paragraph.toSpanStyle())
-        buildMarkdownAnnotatedString(content, it.node)
+        buildMarkdownAnnotatedString(it.content, it.node)
         pop()
     }
 
     // define the `Text` composable
     Text(
         styledText,
-        modifier = Modifier.align(Alignment.End),
         textAlign = TextAlign.End
     )
 }
@@ -270,7 +271,7 @@ val customParagraphComponent: MarkdownComponent = {
 Markdown(
     content,
     components = markdownComponents(
-        paragraph = customParagraphComponent
+        paragraph = customParagraphComponent // customParagraphComponentComplex
     )
 )
 ```
