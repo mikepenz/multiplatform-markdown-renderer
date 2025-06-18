@@ -256,7 +256,7 @@ val customParagraphComponentComplex: MarkdownComponent = {
     // build a styled paragraph. (util function provided by the library)
     val styledText = buildAnnotatedString {
         pushStyle(LocalMarkdownTypography.current.paragraph.toSpanStyle())
-        buildMarkdownAnnotatedString(it.content, it.node)
+        buildMarkdownAnnotatedString(it.content, it.node, annotatorSettings())
         pop()
     }
 
