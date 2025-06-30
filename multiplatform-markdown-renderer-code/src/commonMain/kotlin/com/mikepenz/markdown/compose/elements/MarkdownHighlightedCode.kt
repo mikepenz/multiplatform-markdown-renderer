@@ -36,11 +36,7 @@ fun MarkdownHighlightedCodeFence(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.code,
-    highlights: Highlights.Builder = Highlights.Builder(
-        theme = SyntaxThemes.default(
-            darkMode = isSystemInDarkTheme()
-        )
-    ),
+    highlights: Highlights.Builder = rememberHighlightsBuilder(),
 ) {
     MarkdownCodeFence(content, node, style) { code, language, style ->
         MarkdownHighlightedCode(code = code, language = language, highlights = highlights, style = style)
@@ -52,11 +48,7 @@ fun MarkdownHighlightedCodeBlock(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.code,
-    highlights: Highlights.Builder = Highlights.Builder(
-        theme = SyntaxThemes.default(
-            darkMode = isSystemInDarkTheme()
-        )
-    ),
+    highlights: Highlights.Builder = rememberHighlightsBuilder(),
 ) {
     MarkdownCodeBlock(content, node, style) { code, language, style ->
         MarkdownHighlightedCode(code = code, language = language, highlights = highlights, style = style)
@@ -67,7 +59,7 @@ fun MarkdownHighlightedCodeBlock(
 fun MarkdownHighlightedCode(
     code: String,
     language: String?,
-    highlights: Highlights.Builder = Highlights.Builder(),
+    highlights: Highlights.Builder = rememberHighlightsBuilder(),
     style: TextStyle = LocalMarkdownTypography.current.code,
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
@@ -115,6 +107,14 @@ fun MarkdownHighlightedCode(
             modifier = Modifier.horizontalScroll(rememberScrollState()).padding(codeBlockPadding),
             style = style
         )
+    }
+}
+
+@Composable
+private fun rememberHighlightsBuilder(): Highlights.Builder {
+    val isDarkTheme = isSystemInDarkTheme()
+    return remember(isDarkTheme) {
+        Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isDarkTheme))
     }
 }
 
