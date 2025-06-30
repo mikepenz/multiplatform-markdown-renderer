@@ -36,10 +36,10 @@ fun MarkdownHighlightedCodeFence(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.code,
-    highlights: Highlights.Builder = rememberHighlightsBuilder(),
+    highlightsBuilder: Highlights.Builder = rememberHighlightsBuilder(),
 ) {
     MarkdownCodeFence(content, node, style) { code, language, style ->
-        MarkdownHighlightedCode(code = code, language = language, highlights = highlights, style = style)
+        MarkdownHighlightedCode(code = code, language = language, highlightsBuilder = highlightsBuilder, style = style)
     }
 }
 
@@ -48,10 +48,10 @@ fun MarkdownHighlightedCodeBlock(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.code,
-    highlights: Highlights.Builder = rememberHighlightsBuilder(),
+    highlightsBuilder: Highlights.Builder = rememberHighlightsBuilder(),
 ) {
     MarkdownCodeBlock(content, node, style) { code, language, style ->
-        MarkdownHighlightedCode(code = code, language = language, highlights = highlights, style = style)
+        MarkdownHighlightedCode(code = code, language = language, highlightsBuilder = highlightsBuilder, style = style)
     }
 }
 
@@ -59,8 +59,8 @@ fun MarkdownHighlightedCodeBlock(
 fun MarkdownHighlightedCode(
     code: String,
     language: String?,
-    highlights: Highlights.Builder = rememberHighlightsBuilder(),
     style: TextStyle = LocalMarkdownTypography.current.code,
+    highlightsBuilder: Highlights.Builder = rememberHighlightsBuilder(),
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
@@ -69,7 +69,7 @@ fun MarkdownHighlightedCode(
 
     val codeHighlights by remembering(code) {
         derivedStateOf {
-            highlights
+            highlightsBuilder
                 .code(code)
                 .let { if (syntaxLanguage != null) it.language(syntaxLanguage) else it }
                 .build()
