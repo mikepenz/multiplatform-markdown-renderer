@@ -104,8 +104,9 @@ fun MarkdownHighlightedCode(
 }
 
 @Composable
-private fun rememberHighlightsBuilder(): Highlights.Builder {
-    val isDarkTheme = isSystemInDarkTheme()
+private fun rememberHighlightsBuilder(
+    isDarkTheme: Boolean = isSystemInDarkTheme()
+): Highlights.Builder {
     return remember(isDarkTheme) {
         Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isDarkTheme))
     }
