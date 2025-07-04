@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.model
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -33,9 +34,9 @@ import org.intellij.markdown.parser.MarkdownParser
 fun rememberMarkdownState(
     content: String,
     lookupLinks: Boolean = true,
-    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    parser: MarkdownParser = MarkdownParser(flavour),
-    referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
+    flavour: MarkdownFlavourDescriptor = remember { GFMFlavourDescriptor() },
+    parser: MarkdownParser = remember(flavour) { MarkdownParser(flavour) },
+    referenceLinkHandler: ReferenceLinkHandler = remember { ReferenceLinkHandlerImpl() },
     immediate: Boolean = LocalInspectionMode.current,
 ): MarkdownState {
     val input = remember(content, lookupLinks, flavour, parser, referenceLinkHandler) {
@@ -47,12 +48,16 @@ fun rememberMarkdownState(
             referenceLinkHandler = referenceLinkHandler,
         )
     }
-    val state = remember(input) { MarkdownStateImpl(input) }
+    val state = remember(input) {
+        MarkdownStateImpl(input).apply {
+            if (immediate) {
+                // In immediate mode, parse synchronously but be aware this blocks the UI thread
+                parseBlocking()
+            }
+        }
+    }
 
-    if (immediate) {
-        // In immediate mode, parse synchronously but be aware this blocks the UI thread
-        state.parseBlocking()
-    } else {
+    if (!immediate) {
         // Otherwise, parse asynchronously in a coroutine
         LaunchedEffect(state) {
             state.parse()
@@ -239,29 +244,56 @@ fun parseMarkdownFlow(
  * @param parser The [MarkdownParser] to use for parsing.
  * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
  */
+@Immutable
 data class Input(
     val content: String,
     val lookupLinks: Boolean,
     val flavour: MarkdownFlavourDescriptor,
     val parser: MarkdownParser,
     val referenceLinkHandler: ReferenceLinkHandler,
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as Input
+
+        if (lookupLinks != other.lookupLinks) return false
+        if (content != other.content) return false
+        if (flavour != other.flavour) return false
+        if (parser != other.parser) return false
+        if (referenceLinkHandler != other.referenceLinkHandler) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = lookupLinks.hashCode()
+        result = 31 * result + content.hashCode()
+        result = 31 * result + flavour.hashCode()
+        result = 31 * result + parser.hashCode()
+        result = 31 * result + referenceLinkHandler.hashCode()
+        return result
+    }
+}
 
 /**
  * The current state of the [MarkdownState].
  */
-@Stable
+@Immutable
 sealed interface State {
 
     /** The [ReferenceLinkHandler] to store links in. */
     val referenceLinkHandler: ReferenceLinkHandler
 
     /** The parsing is in-progress. */
+    @Immutable
     data class Loading(
         override val referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     ) : State
 
     /** The parsing was successful. */
+    @Immutable
     data class Success(
         val node: ASTNode,
         val content: String,
@@ -270,6 +302,7 @@ sealed interface State {
     ) : State
 
     /** The parsing failed due to [Throwable]. */
+    @Immutable
     data class Error(
         val result: Throwable,
         override val referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),

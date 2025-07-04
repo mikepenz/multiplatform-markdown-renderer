@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.AnnotatedString
 import org.intellij.markdown.ast.ASTNode
 
+@Immutable
 interface MarkdownAnnotator {
 
     /**
@@ -22,7 +23,25 @@ interface MarkdownAnnotator {
 class DefaultMarkdownAnnotator(
     override val annotate: (AnnotatedString.Builder.(content: String, child: ASTNode) -> Boolean)?,
     override val config: MarkdownAnnotatorConfig,
-) : MarkdownAnnotator
+) : MarkdownAnnotator {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as DefaultMarkdownAnnotator
+
+        if (annotate != other.annotate) return false
+        if (config != other.config) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = annotate?.hashCode() ?: 0
+        result = 31 * result + config.hashCode()
+        return result
+    }
+}
 
 fun markdownAnnotator(
     config: MarkdownAnnotatorConfig = markdownAnnotatorConfig(),

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+@Immutable
 interface MarkdownDimens {
     val dividerThickness: Dp
     val codeBackgroundCornerSize: Dp
@@ -24,7 +25,35 @@ private class DefaultMarkdownDimens(
     override val tableCellWidth: Dp,
     override val tableCellPadding: Dp,
     override val tableCornerSize: Dp,
-) : MarkdownDimens
+) : MarkdownDimens {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as DefaultMarkdownDimens
+
+        if (dividerThickness != other.dividerThickness) return false
+        if (codeBackgroundCornerSize != other.codeBackgroundCornerSize) return false
+        if (blockQuoteThickness != other.blockQuoteThickness) return false
+        if (tableMaxWidth != other.tableMaxWidth) return false
+        if (tableCellWidth != other.tableCellWidth) return false
+        if (tableCellPadding != other.tableCellPadding) return false
+        if (tableCornerSize != other.tableCornerSize) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = dividerThickness.hashCode()
+        result = 31 * result + codeBackgroundCornerSize.hashCode()
+        result = 31 * result + blockQuoteThickness.hashCode()
+        result = 31 * result + tableMaxWidth.hashCode()
+        result = 31 * result + tableCellWidth.hashCode()
+        result = 31 * result + tableCellPadding.hashCode()
+        result = 31 * result + tableCornerSize.hashCode()
+        return result
+    }
+}
 
 @Composable
 fun markdownDimens(

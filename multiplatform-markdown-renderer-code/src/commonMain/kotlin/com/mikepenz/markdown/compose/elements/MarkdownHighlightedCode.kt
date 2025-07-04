@@ -112,7 +112,6 @@ fun MarkdownHighlightedCode(
                         )
                     }
             },
-            color = LocalMarkdownColors.current.codeText,
             modifier = Modifier.horizontalScroll(rememberScrollState()).padding(codeBlockPadding),
             style = style
         )
