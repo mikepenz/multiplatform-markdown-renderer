@@ -17,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -33,6 +35,7 @@ import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import org.intellij.markdown.MarkdownElementTypes.IMAGE
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
+import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.gfm.GFMElementTypes.HEADER
 import org.intellij.markdown.flavours.gfm.GFMElementTypes.ROW
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes.CELL
@@ -63,10 +66,31 @@ fun MarkdownTable(
     val tableWidth = columnsCount * tableCellWidth
 
     val backgroundCodeColor = LocalMarkdownColors.current.tableBackground
+
+    // Create an accessibility description for the table
+    val headerNode = node.children.find { it.type == HEADER }
+    val rowCount = node.children.count { it.type == ROW }
+    val columnCount = headerNode?.children?.count { it.type == CELL } ?: 0
+
+    // Extract header text for accessibility description
+    val headerTexts = headerNode?.children?.filter { it.type == CELL }?.map { 
+        it.getTextInNode(content).toString().trim() 
+    } ?: emptyList()
+
+    val tableDescription = "Table with $rowCount rows and $columnCount columns. " + 
+        if (headerTexts.isNotEmpty()) {
+            "Headers: ${headerTexts.joinToString(", ")}"
+        } else {
+            ""
+        }
+
     BoxWithConstraints(
         modifier = Modifier
             .background(backgroundCodeColor, RoundedCornerShape(tableCornerSize))
             .widthIn(max = tableMaxWidth)
+            .semantics {
+                contentDescription = tableDescription
+            }
     ) {
         val scrollable = maxWidth <= tableWidth
         Column(

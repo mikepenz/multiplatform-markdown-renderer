@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import com.mikepenz.markdown.compose.LocalBulletListHandler
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
@@ -47,12 +49,29 @@ fun MarkdownListItems(
     val markdownComponents = LocalMarkdownComponents.current
     val markdownTypography = LocalMarkdownTypography.current
 
+    // Count the number of list items for accessibility
+    val itemCount = node.children.count { it.type == MarkdownElementTypes.LIST_ITEM }
+
+    // Determine list type for accessibility
+    val listType = when (node.type) {
+        ORDERED_LIST -> "Ordered list"
+        UNORDERED_LIST -> "Unordered list"
+        else -> "List"
+    }
+
+    // Create accessibility description
+    val accessibilityDescription = "$listType with $itemCount items"
+
     Column(
-        modifier = Modifier.padding(
-            start = padding.listIndent * depth,
-            top = padding.list,
-            bottom = padding.list
-        )
+        modifier = Modifier
+            .semantics {
+                contentDescription = accessibilityDescription
+            }
+            .padding(
+                start = padding.listIndent * depth,
+                top = padding.list,
+                bottom = padding.list
+            )
     ) {
         // Retrieve initial list number to determine the starting number for ordered lists
         // https://spec.commonmark.org/0.31.2/#start-number
@@ -110,9 +129,25 @@ private fun MarkdownListItem(
         else -> null
     }
 
+    // Create accessibility description for the list item
+    val listType = when (node.type) {
+        ORDERED_LIST -> "Item ${index + 1}"
+        else -> "Item"
+    }
+
+    // Extract text content for accessibility
+    val itemText = child.children
+        .filter { it.type != LIST_NUMBER && it.type != LIST_BULLET && it.type != CHECK_BOX }
+        .joinToString("") { it.getUnescapedTextInNode(content).toString().trim() }
+
+    val itemDescription = "$listType: $itemText"
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .semantics {
+                contentDescription = itemDescription
+            }
             .padding(top = padding.listItemTop, bottom = padding.listItemBottom)
     ) {
         // Render marker symbol (checkbox or bullet)

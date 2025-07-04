@@ -12,6 +12,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.TextLayoutResult
@@ -39,6 +41,7 @@ import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
+import org.intellij.markdown.ast.getTextInNode
 
 
 @Composable
@@ -47,7 +50,13 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text,
 ) {
-    MarkdownText(AnnotatedString(content), modifier, style)
+    MarkdownText(
+        AnnotatedString(content), 
+        modifier.semantics { 
+            contentDescription = content 
+        }, 
+        style
+    )
 }
 
 @Composable
@@ -70,7 +79,16 @@ fun MarkdownText(
         pop()
     }
 
-    MarkdownText(styledText, modifier = modifier, style = style)
+    // Extract the plain text from the node for accessibility
+    val plainText = childNode.getTextInNode(content).toString()
+
+    MarkdownText(
+        styledText, 
+        modifier = modifier.semantics { 
+            contentDescription = plainText 
+        }, 
+        style = style
+    )
 }
 
 @Composable
@@ -101,7 +119,12 @@ fun MarkdownText(
         modifier.drawBehind(extendedSpans)
     } else modifier
 
-    MarkdownText(extendedStyledText, extendedModifier, style, onTextLayout)
+    // Add accessibility semantics
+    val accessibilityModifier = extendedModifier.semantics {
+        contentDescription = content.text
+    }
+
+    MarkdownText(extendedStyledText, accessibilityModifier, style, onTextLayout)
 }
 
 @Composable
@@ -129,9 +152,14 @@ fun MarkdownText(
         }
     }
 
+    // Add accessibility semantics
+    val accessibilityModifier = modifier.semantics {
+        contentDescription = content.text
+    }
+
     MarkdownBasicText(
         text = content,
-        modifier = modifier
+        modifier = accessibilityModifier
             .onPlaced {
                 it.parentLayoutCoordinates?.also { coordinates ->
                     imageState.updateContainerSize(coordinates.size.toSize())

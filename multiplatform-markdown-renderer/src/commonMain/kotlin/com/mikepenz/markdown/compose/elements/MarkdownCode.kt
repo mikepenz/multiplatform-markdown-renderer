@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -35,17 +36,27 @@ import org.intellij.markdown.ast.getTextInNode
 @Composable
 private fun MarkdownCode(
     code: String,
+    language: String? = null,
     style: TextStyle = LocalMarkdownTypography.current.code,
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
     val codeBlockPadding = LocalMarkdownPadding.current.codeBlock
+
+    // Create an accessibility description that includes the language if available
+    val accessibilityDescription = if (language != null) {
+        "Code block in $language language: $code"
+    } else {
+        "Code block: $code"
+    }
+
     MarkdownCodeBackground(
         color = backgroundCodeColor,
         shape = RoundedCornerShape(codeBackgroundCornerSize),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 8.dp),
+        accessibilityDescription = accessibilityDescription
     ) {
         MarkdownBasicText(
             text = code,
@@ -62,7 +73,9 @@ fun MarkdownCodeFence(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.code,
-    block: @Composable (String, String?, TextStyle) -> Unit = { code, _, style -> MarkdownCode(code = code, style = style) },
+    block: @Composable (String, String?, TextStyle) -> Unit = { code, language, style -> 
+        MarkdownCode(code = code, language = language, style = style) 
+    },
 ) {
     // CODE_FENCE_START, FENCE_LANG, EOL, {content // CODE_FENCE_CONTENT // x-times}, CODE_FENCE_END
     // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}, EOL
@@ -85,7 +98,9 @@ fun MarkdownCodeBlock(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.code,
-    block: @Composable (String, String?, TextStyle) -> Unit = { code, _, style -> MarkdownCode(code = code, style = style) },
+    block: @Composable (String, String?, TextStyle) -> Unit = { code, language, style -> 
+        MarkdownCode(code = code, language = language, style = style) 
+    },
 ) {
     val start = node.children[0].startOffset
     val end = node.children[node.children.size - 1].endOffset
@@ -100,6 +115,7 @@ fun MarkdownCodeBackground(
     shape: Shape = RectangleShape,
     border: BorderStroke? = null,
     elevation: Dp = 0.dp,
+    accessibilityDescription: String? = null,
     content: @Composable () -> Unit,
 ) {
     Box(
@@ -110,6 +126,9 @@ fun MarkdownCodeBackground(
             .clip(shape)
             .semantics(mergeDescendants = false) {
                 isTraversalGroup = true
+                if (accessibilityDescription != null) {
+                    contentDescription = accessibilityDescription
+                }
             }
             .pointerInput(Unit) {},
         propagateMinConstraints = true
