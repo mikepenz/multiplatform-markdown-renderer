@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-    ... a Kotlin Multiplatform Markdown Renderer. (Android, Desktop, ...) powered by Compose Multiplatform
+    ... a powerful Kotlin Multiplatform Markdown Renderer for Kotlin Multiplatform projects using Compose Multiplatform
 </p>
 
 <div align="center">
@@ -107,23 +107,37 @@ dependencies {
 
 ## Usage
 
-```Kotlin
-val markdown = """
 ### What's included 🚀
 
-- Super simple setup
-- Cross-platform ready
-- Lightweight
-""".trimIndent()
+The most basic usage is to simply pass your markdown string to the `Markdown` composable:
 
-//
-Markdown(markdown)
+```kotlin
+// In your composable (use the appropriate Markdown implementation for your theme)
+Markdown(
+    """
+    # Hello Markdown
+
+    This is a simple markdown example with:
+
+    - Bullet points
+    - **Bold text**
+    - *Italic text*
+
+    [Check out this link](https://github.com/mikepenz/multiplatform-markdown-renderer)
+    """.trimIndent()
+)
 ```
+
+**Note:** Import either `com.mikepenz.markdown.m3.Markdown` for Material 3 or
+`com.mikepenz.markdown.m2.Markdown` for Material 2 themed applications.
 
 <details><summary><b>Advanced Usage</b></summary>
 <p>
 
 ### `rememberMarkdownState`
+
+For better performance, especially with larger markdown content, use `rememberMarkdownState` or move
+the parsing of the markdown into your viewmodel:
 
 ```kotlin
 val markdownState = rememberMarkdownState(markdown)
