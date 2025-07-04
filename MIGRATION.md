@@ -1,5 +1,11 @@
 ### Upgrade Notes
 
+#### Version 0.36.0
+
+- **Dependency Upgrade**: Kotlin 2.2.x / Compose 1.8.3 / Compose Multiplatform 1.8.2
+- **Breaking Change**: Remove all deprecated functions and fields
+- **Behavior Change**: Configuration classes were changed to be now stable
+
 #### Version 0.34.0
 
 - **Dependency Upgrade**: Compose 1.8.0 / Compose Multiplatform 1.8.0

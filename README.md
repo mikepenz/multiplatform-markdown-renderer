@@ -126,6 +126,35 @@ val markdownState = rememberMarkdownState(markdown)
 Markdown(markdownState)
 ```
 
+> [!NOTE]  
+> Since version 0.33.0, markdown content is parsed asynchronously by default, resulting in a loading
+> state being displayed prior to the parsing result. The `rememberMarkdownState` function offers the
+> ability to require immediate parsing with the `immediate` parameter, but this is not advised as it
+> might block the composition of the UI.
+
+```kotlin
+// Default asynchronous parsing (recommended)
+val markdownState = rememberMarkdownState(markdown)
+
+// Force immediate parsing (not recommended)
+val markdownState = rememberMarkdownState(markdown, immediate = true)
+```
+
+### Lazy Loading for Large Documents
+
+Since version 0.33.0, the library supports rendering large markdown documents efficiently using
+`LazyColumn` instead of `Column`. This is particularly useful for very long markdown content.
+
+```kotlin
+Markdown(
+    markdownState = markdownState,
+    success = { state, components, modifier ->
+        LazyMarkdownSuccess(state, components, modifier, contentPadding = PaddingValues(16.dp))
+    },
+    modifier = Modifier.fillMaxSize()
+)
+```
+
 ### Parse Markdown in VM
 
 > [!NOTE]  
@@ -222,12 +251,12 @@ Markdown(
 
 ```kotlin
 // Use the bullet list symbol from the original markdown
-CompositionLocalProvider(LocalBulletListHandler provides { "$it " }) {
+CompositionLocalProvider(LocalBulletListHandler provides { type, bullet, index, listNumber, depth -> "$bullet " }) {
     Markdown(content)
 }
 
 // Replace the ordered list symbol with `A.)` instead.
-CompositionLocalProvider(LocalOrderedListHandler provides { "A.) " }) {
+CompositionLocalProvider(LocalOrderedListHandler provides { type, bullet, index, listNumber, depth -> "A.) " }) {
     Markdown(content, Modifier.fillMaxSize().padding(16.dp).verticalScroll(scrollState))
 }
 ```
