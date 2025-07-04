@@ -44,5 +44,8 @@ captures/
 *.podspec
 /.kotlin/
 
+# Test files
+AccessibilityTest.kt
+
 ## User settings
 xcuserdata/
