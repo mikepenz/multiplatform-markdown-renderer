@@ -32,6 +32,7 @@
 - **Cross-platform Markdown Rendering** - Works on Android, iOS, Desktop, and Web
 - **Material Design Integration** - Seamless integration with Material 2 and Material 3 themes
 - **Rich Markdown Support** - Renders headings, lists, code blocks, tables, images, and more
+- **Accessibility Support** - Full accessibility support with semantic annotations for screen readers
 - **Syntax Highlighting** - Optional code syntax highlighting for various programming languages
 - **Image Loading** - Flexible image loading with Coil2 and Coil3 integration
 - **Customization Options** - Extensive customization for colors, typography, components, and more
@@ -198,6 +199,35 @@ Markdown(
             /** No animation */
         }
     ),
+)
+```
+
+### Accessibility Support
+
+The library provides comprehensive accessibility support with semantic annotations for screen readers and assistive technologies. This ensures compliance with accessibility standards including the European Accessibility Act.
+
+#### Features:
+- **Headings**: Properly marked with `heading()` semantics
+- **Lists**: Use `Role.List` and `Role.ListItem` semantics
+- **Tables**: Support `Role.Table`, `Role.Row`, and `Role.Cell` semantics  
+- **Block Quotes**: Grouped with `Role.Group` semantics
+- **Checkboxes**: Use `Role.Checkbox` with proper state indication
+- **Paragraphs**: Marked with `Role.Paragraph` semantics
+- **Images**: Support proper content descriptions
+
+Accessibility features are enabled by default and require no additional configuration. For detailed information, see [ACCESSIBILITY.md](ACCESSIBILITY.md).
+
+```kotlin
+// Accessibility is automatically applied to all markdown elements
+Markdown(
+    content = """
+    # Accessible Heading
+    
+    - Accessible list item
+    - [ ] Accessible checkbox
+    
+    > Accessible block quote
+    """
 )
 ```
 

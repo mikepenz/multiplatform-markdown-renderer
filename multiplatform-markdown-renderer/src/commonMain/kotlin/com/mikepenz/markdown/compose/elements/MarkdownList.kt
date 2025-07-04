@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import com.mikepenz.markdown.compose.LocalBulletListHandler
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
@@ -48,11 +51,15 @@ fun MarkdownListItems(
     val markdownTypography = LocalMarkdownTypography.current
 
     Column(
-        modifier = Modifier.padding(
-            start = padding.listIndent * depth,
-            top = padding.list,
-            bottom = padding.list
-        )
+        modifier = Modifier
+            .padding(
+                start = padding.listIndent * depth,
+                top = padding.list,
+                bottom = padding.list
+            )
+            .semantics {
+                role = Role.List
+            }
     ) {
         // Retrieve initial list number to determine the starting number for ordered lists
         // https://spec.commonmark.org/0.31.2/#start-number
@@ -114,6 +121,9 @@ private fun MarkdownListItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = padding.listItemTop, bottom = padding.listItemBottom)
+            .semantics {
+                role = Role.ListItem
+            }
     ) {
         // Render marker symbol (checkbox or bullet)
         Box(modifier = markerModifier()) {

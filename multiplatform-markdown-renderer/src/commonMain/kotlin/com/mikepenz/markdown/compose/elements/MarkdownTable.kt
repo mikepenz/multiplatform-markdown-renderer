@@ -17,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -67,6 +70,9 @@ fun MarkdownTable(
         modifier = Modifier
             .background(backgroundCodeColor, RoundedCornerShape(tableCornerSize))
             .widthIn(max = tableMaxWidth)
+            .semantics {
+                role = Role.Table
+            }
     ) {
         val scrollable = maxWidth <= tableWidth
         Column(
@@ -99,11 +105,22 @@ fun MarkdownTableHeader(
     val markdownComponents = LocalMarkdownComponents.current
     val tableCellPadding = LocalMarkdownDimens.current.tableCellPadding
     Row(
-        verticalAlignment = verticalAlignment, modifier = Modifier.widthIn(tableWidth).height(IntrinsicSize.Max)
+        verticalAlignment = verticalAlignment, 
+        modifier = Modifier
+            .widthIn(tableWidth)
+            .height(IntrinsicSize.Max)
+            .semantics {
+                role = Role.Row
+            }
     ) {
         header.children.filter { it.type == CELL }.forEach { cell ->
             Column(
-                modifier = Modifier.padding(tableCellPadding).weight(1f),
+                modifier = Modifier
+                    .padding(tableCellPadding)
+                    .weight(1f)
+                    .semantics {
+                        role = Role.Cell
+                    },
             ) {
                 if (cell.children.any { it.type == IMAGE }) {
                     MarkdownElement(node = cell, components = markdownComponents, content = content, includeSpacer = false)
@@ -136,11 +153,21 @@ fun MarkdownTableRow(
     val markdownComponents = LocalMarkdownComponents.current
     val tableCellPadding = LocalMarkdownDimens.current.tableCellPadding
     Row(
-        verticalAlignment = verticalAlignment, modifier = Modifier.widthIn(tableWidth)
+        verticalAlignment = verticalAlignment, 
+        modifier = Modifier
+            .widthIn(tableWidth)
+            .semantics {
+                role = Role.Row
+            }
     ) {
         header.children.filter { it.type == CELL }.forEach { cell ->
             Column(
-                modifier = Modifier.padding(tableCellPadding).weight(1f),
+                modifier = Modifier
+                    .padding(tableCellPadding)
+                    .weight(1f)
+                    .semantics {
+                        role = Role.Cell
+                    },
             ) {
                 if (cell.children.any { it.type == IMAGE }) {
                     MarkdownElement(node = cell, components = markdownComponents, content = content, includeSpacer = false)

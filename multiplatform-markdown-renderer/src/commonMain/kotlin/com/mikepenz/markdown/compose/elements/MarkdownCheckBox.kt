@@ -4,6 +4,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.toggleableState
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -24,7 +29,12 @@ fun MarkdownCheckBox(
     },
 ) {
     val checked = node.getTextInNode(content).contains("[x]")
-    Row {
+    Row(
+        modifier = Modifier.semantics {
+            role = Role.Checkbox
+            toggleableState = if (checked) ToggleableState.On else ToggleableState.Off
+        }
+    ) {
         checkedIndicator(checked, Modifier.padding(end = 4.dp))
     }
 }

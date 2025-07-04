@@ -11,6 +11,9 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
 import com.mikepenz.markdown.compose.LocalMarkdownColors
@@ -51,6 +54,9 @@ fun MarkdownBlockQuote(
                 )
             }
             .padding(blockQuote)
+            .semantics {
+                role = Role.Group
+            }
     ) {
         val blockQuoteLineHeightInDp = with(LocalDensity.current) { LocalMarkdownTypography.current.quote.fontSize.toDp() }
         var priorNestedQuote = false

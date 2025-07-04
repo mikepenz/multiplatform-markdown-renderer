@@ -2,6 +2,9 @@ package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import com.mikepenz.markdown.annotator.AnnotatorSettings
@@ -26,7 +29,9 @@ fun MarkdownParagraph(
 
     MarkdownText(
         styledText,
-        modifier = modifier,
+        modifier = modifier.semantics {
+            role = Role.Paragraph
+        },
         style = style,
     )
 }
