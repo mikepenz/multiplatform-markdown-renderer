@@ -28,7 +28,7 @@ interface MarkdownPadding {
 }
 
 @Immutable
-private class DefaultMarkdownPadding(
+private data class DefaultMarkdownPadding(
     override val block: Dp,
     override val list: Dp,
     override val listItemTop: Dp,
@@ -38,39 +38,7 @@ private class DefaultMarkdownPadding(
     override val blockQuote: PaddingValues,
     override val blockQuoteText: PaddingValues,
     override val blockQuoteBar: PaddingValues.Absolute,
-) : MarkdownPadding {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as DefaultMarkdownPadding
-
-        if (block != other.block) return false
-        if (list != other.list) return false
-        if (listItemTop != other.listItemTop) return false
-        if (listItemBottom != other.listItemBottom) return false
-        if (listIndent != other.listIndent) return false
-        if (codeBlock != other.codeBlock) return false
-        if (blockQuote != other.blockQuote) return false
-        if (blockQuoteText != other.blockQuoteText) return false
-        if (blockQuoteBar != other.blockQuoteBar) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = block.hashCode()
-        result = 31 * result + list.hashCode()
-        result = 31 * result + listItemTop.hashCode()
-        result = 31 * result + listItemBottom.hashCode()
-        result = 31 * result + listIndent.hashCode()
-        result = 31 * result + codeBlock.hashCode()
-        result = 31 * result + blockQuote.hashCode()
-        result = 31 * result + blockQuoteText.hashCode()
-        result = 31 * result + blockQuoteBar.hashCode()
-        return result
-    }
-}
+) : MarkdownPadding
 
 @Composable
 fun markdownPadding(

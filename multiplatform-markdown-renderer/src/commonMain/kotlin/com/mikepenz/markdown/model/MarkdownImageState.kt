@@ -16,18 +16,10 @@ interface MarkdownImageState {
     val density: Density
     val containerSize: Size
     val intrinsicImageSize: Size
+    
+    fun updateContainerSize(size: Size)
 
-    @Deprecated("Use updateContainerSize instead", ReplaceWith("updateContainerSize(size)"))
-    fun setContainerSize(intSize: IntSize)
-
-    @Deprecated("Use updateImageSize instead", ReplaceWith("updateImageSize(size)"))
-    fun setImageSize(size: Size)
-
-    @Suppress("DEPRECATION")
-    fun updateContainerSize(size: Size) = setContainerSize(size.toIntSize())
-
-    @Suppress("DEPRECATION")
-    fun updateImageSize(size: Size) = setImageSize(size)
+    fun updateImageSize(size: Size)
 }
 
 internal class MarkdownImageStateImpl(override val density: Density) : MarkdownImageState {
@@ -35,12 +27,6 @@ internal class MarkdownImageStateImpl(override val density: Density) : MarkdownI
     override var containerSize by mutableStateOf(Size.Unspecified)
 
     override var intrinsicImageSize by mutableStateOf(Size.Unspecified)
-
-    @Deprecated("Use updateContainerSize instead", replaceWith = ReplaceWith("updateContainerSize(size)"))
-    override fun setContainerSize(intSize: IntSize) = updateContainerSize(intSize.toSize())
-
-    @Deprecated("Use updateImageSize instead", replaceWith = ReplaceWith("updateImageSize(size)"))
-    override fun setImageSize(size: Size) = updateImageSize(size)
 
     override fun updateContainerSize(size: Size) {
         containerSize = size

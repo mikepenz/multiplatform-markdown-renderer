@@ -23,34 +23,10 @@ interface MarkdownColors {
 }
 
 @Immutable
-class DefaultMarkdownColors(
+data class DefaultMarkdownColors(
     override val text: Color,
     override val codeBackground: Color,
     override val inlineCodeBackground: Color,
     override val dividerColor: Color,
     override val tableBackground: Color,
-) : MarkdownColors {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as DefaultMarkdownColors
-
-        if (text != other.text) return false
-        if (codeBackground != other.codeBackground) return false
-        if (inlineCodeBackground != other.inlineCodeBackground) return false
-        if (dividerColor != other.dividerColor) return false
-        if (tableBackground != other.tableBackground) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = text.hashCode()
-        result = 31 * result + codeBackground.hashCode()
-        result = 31 * result + inlineCodeBackground.hashCode()
-        result = 31 * result + dividerColor.hashCode()
-        result = 31 * result + tableBackground.hashCode()
-        return result
-    }
-}
+) : MarkdownColors

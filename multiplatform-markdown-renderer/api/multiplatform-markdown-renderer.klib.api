@@ -138,10 +138,8 @@ abstract interface com.mikepenz.markdown.model/MarkdownImageState { // com.mikep
     abstract val intrinsicImageSize // com.mikepenz.markdown.model/MarkdownImageState.intrinsicImageSize|{}intrinsicImageSize[0]
         abstract fun <get-intrinsicImageSize>(): androidx.compose.ui.geometry/Size // com.mikepenz.markdown.model/MarkdownImageState.intrinsicImageSize.<get-intrinsicImageSize>|<get-intrinsicImageSize>(){}[0]
 
-    abstract fun setContainerSize(androidx.compose.ui.unit/IntSize) // com.mikepenz.markdown.model/MarkdownImageState.setContainerSize|setContainerSize(androidx.compose.ui.unit.IntSize){}[0]
-    abstract fun setImageSize(androidx.compose.ui.geometry/Size) // com.mikepenz.markdown.model/MarkdownImageState.setImageSize|setImageSize(androidx.compose.ui.geometry.Size){}[0]
-    open fun updateContainerSize(androidx.compose.ui.geometry/Size) // com.mikepenz.markdown.model/MarkdownImageState.updateContainerSize|updateContainerSize(androidx.compose.ui.geometry.Size){}[0]
-    open fun updateImageSize(androidx.compose.ui.geometry/Size) // com.mikepenz.markdown.model/MarkdownImageState.updateImageSize|updateImageSize(androidx.compose.ui.geometry.Size){}[0]
+    abstract fun updateContainerSize(androidx.compose.ui.geometry/Size) // com.mikepenz.markdown.model/MarkdownImageState.updateContainerSize|updateContainerSize(androidx.compose.ui.geometry.Size){}[0]
+    abstract fun updateImageSize(androidx.compose.ui.geometry/Size) // com.mikepenz.markdown.model/MarkdownImageState.updateImageSize|updateImageSize(androidx.compose.ui.geometry.Size){}[0]
 }
 
 abstract interface com.mikepenz.markdown.model/MarkdownInlineContent { // com.mikepenz.markdown.model/MarkdownInlineContent|null[0]
@@ -436,8 +434,15 @@ final class com.mikepenz.markdown.model/DefaultMarkdownColors : com.mikepenz.mar
     final val text // com.mikepenz.markdown.model/DefaultMarkdownColors.text|{}text[0]
         final fun <get-text>(): androidx.compose.ui.graphics/Color // com.mikepenz.markdown.model/DefaultMarkdownColors.text.<get-text>|<get-text>(){}[0]
 
+    final fun component1(): androidx.compose.ui.graphics/Color // com.mikepenz.markdown.model/DefaultMarkdownColors.component1|component1(){}[0]
+    final fun component2(): androidx.compose.ui.graphics/Color // com.mikepenz.markdown.model/DefaultMarkdownColors.component2|component2(){}[0]
+    final fun component3(): androidx.compose.ui.graphics/Color // com.mikepenz.markdown.model/DefaultMarkdownColors.component3|component3(){}[0]
+    final fun component4(): androidx.compose.ui.graphics/Color // com.mikepenz.markdown.model/DefaultMarkdownColors.component4|component4(){}[0]
+    final fun component5(): androidx.compose.ui.graphics/Color // com.mikepenz.markdown.model/DefaultMarkdownColors.component5|component5(){}[0]
+    final fun copy(androidx.compose.ui.graphics/Color = ..., androidx.compose.ui.graphics/Color = ..., androidx.compose.ui.graphics/Color = ..., androidx.compose.ui.graphics/Color = ..., androidx.compose.ui.graphics/Color = ...): com.mikepenz.markdown.model/DefaultMarkdownColors // com.mikepenz.markdown.model/DefaultMarkdownColors.copy|copy(androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // com.mikepenz.markdown.model/DefaultMarkdownColors.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // com.mikepenz.markdown.model/DefaultMarkdownColors.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.mikepenz.markdown.model/DefaultMarkdownColors.toString|toString(){}[0]
 }
 
 final class com.mikepenz.markdown.model/DefaultMarkdownExtendedSpans : com.mikepenz.markdown.model/MarkdownExtendedSpans { // com.mikepenz.markdown.model/DefaultMarkdownExtendedSpans|null[0]
@@ -496,8 +501,26 @@ final class com.mikepenz.markdown.model/DefaultMarkdownTypography : com.mikepenz
     final val textLink // com.mikepenz.markdown.model/DefaultMarkdownTypography.textLink|{}textLink[0]
         final fun <get-textLink>(): androidx.compose.ui.text/TextLinkStyles // com.mikepenz.markdown.model/DefaultMarkdownTypography.textLink.<get-textLink>|<get-textLink>(){}[0]
 
+    final fun component1(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component1|component1(){}[0]
+    final fun component10(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component10|component10(){}[0]
+    final fun component11(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component11|component11(){}[0]
+    final fun component12(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component12|component12(){}[0]
+    final fun component13(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component13|component13(){}[0]
+    final fun component14(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component14|component14(){}[0]
+    final fun component15(): androidx.compose.ui.text/TextLinkStyles // com.mikepenz.markdown.model/DefaultMarkdownTypography.component15|component15(){}[0]
+    final fun component16(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component16|component16(){}[0]
+    final fun component2(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component2|component2(){}[0]
+    final fun component3(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component3|component3(){}[0]
+    final fun component4(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component4|component4(){}[0]
+    final fun component5(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component5|component5(){}[0]
+    final fun component6(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component6|component6(){}[0]
+    final fun component7(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component7|component7(){}[0]
+    final fun component8(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component8|component8(){}[0]
+    final fun component9(): androidx.compose.ui.text/TextStyle // com.mikepenz.markdown.model/DefaultMarkdownTypography.component9|component9(){}[0]
+    final fun copy(androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextStyle = ..., androidx.compose.ui.text/TextLinkStyles = ..., androidx.compose.ui.text/TextStyle = ...): com.mikepenz.markdown.model/DefaultMarkdownTypography // com.mikepenz.markdown.model/DefaultMarkdownTypography.copy|copy(androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextStyle;androidx.compose.ui.text.TextLinkStyles;androidx.compose.ui.text.TextStyle){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // com.mikepenz.markdown.model/DefaultMarkdownTypography.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // com.mikepenz.markdown.model/DefaultMarkdownTypography.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.mikepenz.markdown.model/DefaultMarkdownTypography.toString|toString(){}[0]
 }
 
 final class com.mikepenz.markdown.model/ImageData { // com.mikepenz.markdown.model/ImageData|null[0]
