@@ -376,6 +376,13 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownAnnotatorConfig : 
 public final class com/mikepenz/markdown/model/DefaultMarkdownColors : com/mikepenz/markdown/model/MarkdownColors {
 	public static final field $stable I
 	public synthetic fun <init> (JJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun copy-t635Npw (JJJJJ)Lcom/mikepenz/markdown/model/DefaultMarkdownColors;
+	public static synthetic fun copy-t635Npw$default (Lcom/mikepenz/markdown/model/DefaultMarkdownColors;JJJJJILjava/lang/Object;)Lcom/mikepenz/markdown/model/DefaultMarkdownColors;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getCodeBackground-0d7_KjU ()J
 	public fun getDividerColor-0d7_KjU ()J
@@ -383,6 +390,7 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownColors : com/mikep
 	public fun getTableBackground-0d7_KjU ()J
 	public fun getText-0d7_KjU ()J
 	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/mikepenz/markdown/model/DefaultMarkdownExtendedSpans : com/mikepenz/markdown/model/MarkdownExtendedSpans {
@@ -404,6 +412,24 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownInlineContent : co
 public final class com/mikepenz/markdown/model/DefaultMarkdownTypography : com/mikepenz/markdown/model/MarkdownTypography {
 	public static final field $stable I
 	public fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;)V
+	public final fun component1 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component10 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component11 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component12 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component13 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component14 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component15 ()Landroidx/compose/ui/text/TextLinkStyles;
+	public final fun component16 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component2 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component3 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component4 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component5 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component6 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component7 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component8 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component9 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun copy (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;)Lcom/mikepenz/markdown/model/DefaultMarkdownTypography;
+	public static synthetic fun copy$default (Lcom/mikepenz/markdown/model/DefaultMarkdownTypography;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/DefaultMarkdownTypography;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getBullet ()Landroidx/compose/ui/text/TextStyle;
 	public fun getCode ()Landroidx/compose/ui/text/TextStyle;
@@ -422,6 +448,7 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownTypography : com/m
 	public fun getText ()Landroidx/compose/ui/text/TextStyle;
 	public fun getTextLink ()Landroidx/compose/ui/text/TextLinkStyles;
 	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/mikepenz/markdown/model/ImageData {
@@ -541,15 +568,8 @@ public abstract interface class com/mikepenz/markdown/model/MarkdownImageState {
 	public abstract fun getContainerSize-NH-jbRc ()J
 	public abstract fun getDensity ()Landroidx/compose/ui/unit/Density;
 	public abstract fun getIntrinsicImageSize-NH-jbRc ()J
-	public abstract fun setContainerSize-ozmzZPI (J)V
-	public abstract fun setImageSize-uvyYCjk (J)V
-	public fun updateContainerSize-uvyYCjk (J)V
-	public fun updateImageSize-uvyYCjk (J)V
-}
-
-public final class com/mikepenz/markdown/model/MarkdownImageState$DefaultImpls {
-	public static fun updateContainerSize-uvyYCjk (Lcom/mikepenz/markdown/model/MarkdownImageState;J)V
-	public static fun updateImageSize-uvyYCjk (Lcom/mikepenz/markdown/model/MarkdownImageState;J)V
+	public abstract fun updateContainerSize-uvyYCjk (J)V
+	public abstract fun updateImageSize-uvyYCjk (J)V
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownInlineContent {
