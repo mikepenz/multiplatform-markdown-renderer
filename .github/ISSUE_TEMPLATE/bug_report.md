@@ -41,13 +41,8 @@ Add any other context about the problem here.
 
 ## Checklist
 
-- [ ] I have searched
-  for [similar issues](https://github.com/mikepenz/multiplatform-markdown-renderer/issues)
-- [ ] I have checked
-  the [sample application](https://github.com/mikepenz/multiplatform-markdown-renderer/tree/develop/sample)
-- [ ] I have read
-  the [README](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/README.md)
-- [ ] I have checked
-  the [CHANGELOG](https://github.com/mikepenz/multiplatform-markdown-renderer/releases)
-- [ ] I have read
-  the [MIGRATION GUIDE](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/MIGRATION.md)
+- [ ] I have searched for [similar issues](https://github.com/mikepenz/multiplatform-markdown-renderer/issues)
+- [ ] I have checked the [sample application](https://github.com/mikepenz/multiplatform-markdown-renderer/tree/develop/sample)
+- [ ] I have read the [README](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/README.md)
+- [ ] I have checked the [CHANGELOG](https://github.com/mikepenz/multiplatform-markdown-renderer/releases)
+- [ ] I have read the [MIGRATION GUIDE](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/MIGRATION.md)

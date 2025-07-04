@@ -36,10 +36,6 @@ Add any other context or screenshots about the feature request here.
 
 ## Checklist
 
-- [ ] I have searched
-  for [similar feature requests](https://github.com/mikepenz/multiplatform-markdown-renderer/issues)
-- [ ] I have read
-  the [README](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/README.md)
-- [ ] I have checked
-  the [CHANGELOG](https://github.com/mikepenz/multiplatform-markdown-renderer/releases) to see if
-  this feature is already planned
+- [ ] I have searched for [similar feature requests](https://github.com/mikepenz/multiplatform-markdown-renderer/issues)
+- [ ] I have read the [README](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/README.md)
+- [ ] I have checked the [CHANGELOG](https://github.com/mikepenz/multiplatform-markdown-renderer/releases) to see if this feature is already planned
