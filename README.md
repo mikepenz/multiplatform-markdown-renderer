@@ -426,14 +426,14 @@ Markdown(
             MarkdownHighlightedCodeBlock(
                 content = it.content,
                 node = it.node,
-                highlights = highlightsBuilder
+                highlightsBuilder = highlightsBuilder
             )
         },
         codeFence = {
             MarkdownHighlightedCodeFence(
                 content = it.content,
                 node = it.node,
-                highlights = highlightsBuilder
+                highlightsBuilder = highlightsBuilder
             )
         },
     )
