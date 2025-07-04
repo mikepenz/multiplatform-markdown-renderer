@@ -8,7 +8,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -31,8 +31,11 @@ import com.mikepenz.markdown.utils.MarkdownLogger
 fun RecompositionPage(
     modifier: Modifier = Modifier,
 ) {
-    LaunchedEffect(Unit) {
+    DisposableEffect(Unit) {
         MarkdownLogger.enabled = true
+        onDispose {
+            MarkdownLogger.enabled = false
+        }
     }
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
