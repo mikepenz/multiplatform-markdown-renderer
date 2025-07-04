@@ -31,6 +31,7 @@ import com.mikepenz.markdown.model.markdownExtendedSpans
 import com.mikepenz.markdown.model.markdownInlineContent
 import com.mikepenz.markdown.model.markdownPadding
 import com.mikepenz.markdown.model.rememberMarkdownState
+import com.mikepenz.markdown.utils.LogCompositions
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
@@ -283,6 +284,8 @@ fun Markdown(
     },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
 ) {
+    LogCompositions { "Markdown" }
+
     CompositionLocalProvider(
         LocalReferenceLinkHandler provides state.referenceLinkHandler,
         LocalMarkdownPadding provides padding,
