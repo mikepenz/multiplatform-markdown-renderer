@@ -41,7 +41,7 @@ fun LazyMarkdownSuccess(
             // Use the node's start offset as a key for stable item identity
             key = { node -> node.startOffset }
         ) { node ->
-            MarkdownElement(node, components, state.content, skipLinkDefinition = state.linksLookedUp)
+            MarkdownElement(node, components, state.content)
         }
     }
 }

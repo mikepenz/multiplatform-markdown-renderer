@@ -70,8 +70,7 @@ fun MarkdownBlockQuote(
                     node = child,
                     components = markdownComponents,
                     content = content,
-                    includeSpacer = false,
-                    skipLinkDefinition = true
+                    includeSpacer = false
                 )
                 // if last item, add bottom padding
                 if (index == node.children.lastIndex) Spacer(Modifier.height(blockQuoteText.calculateBottomPadding()))

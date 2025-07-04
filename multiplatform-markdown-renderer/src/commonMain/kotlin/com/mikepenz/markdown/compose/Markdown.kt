@@ -346,7 +346,7 @@ fun MarkdownSuccess(
 ) {
     Column(modifier) {
         state.node.children.forEach { node ->
-            MarkdownElement(node, components, state.content, skipLinkDefinition = state.linksLookedUp)
+            MarkdownElement(node, components, state.content)
         }
     }
 }
