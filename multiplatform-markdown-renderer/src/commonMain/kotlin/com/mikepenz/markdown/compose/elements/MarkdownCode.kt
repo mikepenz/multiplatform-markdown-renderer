@@ -47,10 +47,8 @@ private fun MarkdownCode(
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
-        @Suppress("DEPRECATION")
         MarkdownBasicText(
             text = code,
-            color = LocalMarkdownColors.current.codeText,
             style = style,
             modifier = Modifier
                 .horizontalScroll(rememberScrollState())

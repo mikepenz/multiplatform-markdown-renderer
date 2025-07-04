@@ -6,6 +6,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.elements.MarkdownText
 
+@Immutable
 interface MarkdownAnimations {
     /**
      * Modifier used to animate [MarkdownText] size changes.
@@ -17,7 +18,20 @@ interface MarkdownAnimations {
 @Immutable
 class DefaultMarkdownAnimation(
     override val animateTextSize: Modifier.() -> Modifier,
-) : MarkdownAnimations
+) : MarkdownAnimations {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as DefaultMarkdownAnimation
+
+        return animateTextSize == other.animateTextSize
+    }
+
+    override fun hashCode(): Int {
+        return animateTextSize.hashCode()
+    }
+}
 
 @Composable
 fun markdownAnimations(
