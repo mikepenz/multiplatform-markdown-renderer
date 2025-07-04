@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-    ... a Kotlin Multiplatform Markdown Renderer. (Android, Desktop, ...) powered by Compose Multiplatform
+    ... a powerful Kotlin Multiplatform Markdown Renderer for Kotlin Multiplatform projects using Compose Multiplatform
 </p>
 
 <div align="center">
@@ -45,19 +45,24 @@
 
 ### Using Gradle
 
+Choose the appropriate configuration based on your project type:
+
 <details open><summary><b>Multiplatform</b></summary>
 <p>
 
-For multiplatform projects specify this single dependency:
+For multiplatform projects, add these dependencies to your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
+    // Core library
     implementation("com.mikepenz:multiplatform-markdown-renderer:${version}")
 
-    // Offers Material 2 defaults for Material 2 themed apps (com.mikepenz.markdown.m2.Markdown)
+    // Choose ONE of the following based on your Material theme:
+
+    // For Material 2 themed apps
     implementation("com.mikepenz:multiplatform-markdown-renderer-m2:${version}")
 
-    // Offers Material 3 defaults for Material 3 themed apps (com.mikepenz.markdown.m3.Markdown)
+    // OR for Material 3 themed apps
     implementation("com.mikepenz:multiplatform-markdown-renderer-m3:${version}")
 }
 ```
@@ -65,10 +70,10 @@ dependencies {
 </p>
 </details>
 
-<details><summary><b>JVM</b></summary>
+<details><summary><b>JVM (Desktop)</b></summary>
 <p>
 
-To use the library on JVM, you have to include:
+For JVM-only projects, add this dependency:
 
 ```kotlin
 dependencies {
@@ -82,7 +87,7 @@ dependencies {
 <details><summary><b>Android</b></summary>
 <p>
 
-For Android a special dependency is available:
+For Android-only projects, add this dependency:
 
 ```kotlin
 dependencies {
@@ -93,33 +98,46 @@ dependencies {
 </p>
 </details>
 
-> [!TIP]
-> Since 0.13.0 the core library does not depend on a Material theme anymore. Include the `-m2`
-> or `-m3` module to get
-> access to the defaults.
+> [!IMPORTANT]
+> Since version 0.13.0, the core library does not depend on a Material theme. You must include
+> either the `-m2` or `-m3` module to get access to the default styling.
 
 
 -------
 
 ## Usage
 
-```Kotlin
-val markdown = """
 ### What's included 🚀
 
-- Super simple setup
-- Cross-platform ready
-- Lightweight
-""".trimIndent()
+The most basic usage is to simply pass your markdown string to the `Markdown` composable:
 
-//
-Markdown(markdown)
+```kotlin
+// In your composable (use the appropriate Markdown implementation for your theme)
+Markdown(
+    """
+    # Hello Markdown
+
+    This is a simple markdown example with:
+
+    - Bullet points
+    - **Bold text**
+    - *Italic text*
+
+    [Check out this link](https://github.com/mikepenz/multiplatform-markdown-renderer)
+    """.trimIndent()
+)
 ```
+
+**Note:** Import either `com.mikepenz.markdown.m3.Markdown` for Material 3 or
+`com.mikepenz.markdown.m2.Markdown` for Material 2 themed applications.
 
 <details><summary><b>Advanced Usage</b></summary>
 <p>
 
 ### `rememberMarkdownState`
+
+For better performance, especially with larger markdown content, use `rememberMarkdownState` or move
+the parsing of the markdown into your viewmodel:
 
 ```kotlin
 val markdownState = rememberMarkdownState(markdown)
@@ -440,11 +458,17 @@ Markdown(
 )
 ```
 
-## Dependency
+## Dependencies
 
-This project uses JetBrains [markdown](https://github.com/JetBrains/markdown/) Multiplatform
-Markdown processor as
-dependency to parse the markdown content.
+This library uses the following key dependencies:
+
+- [JetBrains Markdown](https://github.com/JetBrains/markdown/) - Multiplatform Markdown processor
+  for parsing markdown content
+- [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform) - For cross-platform
+  UI rendering
+- [Extended Spans](https://github.com/saket/extended-spans) - For advanced text styling (integrated
+  as multiplatform)
+- [Highlights](https://github.com/SnipMeDev/Highlights) - For code syntax highlighting (optional)
 
 ## Developed By
 
@@ -454,9 +478,8 @@ dependency to parse the markdown content.
 
 ## Contributors
 
-This free, open source software was also made possible by a group of volunteers that put many hours
-of hard work into
-it. See the [CONTRIBUTORS.md](CONTRIBUTORS.md) file for details.
+This free, open source software was made possible by a group of volunteers who put many hours of
+hard work into it. See the [CONTRIBUTORS.md](CONTRIBUTORS.md) file for details.
 
 ## Credits
 
@@ -465,16 +488,15 @@ on [Rendering Markdown with Jetpack Compose](https://www.hellsoft.se/rendering-m
 and the related source [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer).
 
 Also huge thanks to [Saket Narayan](https://github.com/saket/) for his great work on
-the [extended-spans](https://github.com/saket/extended-spans) project. Ported into this project to
-make it multiplatform.
+the [extended-spans](https://github.com/saket/extended-spans) project, which was ported into this
+project to make it multiplatform.
 
 ## Fork License
 
 Copyright for portions of the code are held by [Erik Hellman, 2020] as part of
 project [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer) under the MIT license.
-All other copyright
-for project multiplatform-markdown-renderer are held by [Mike Penz, 2023] under the Apache License,
-Version 2.0.
+All other copyright for project multiplatform-markdown-renderer are held by [Mike Penz, 2023] under
+the Apache License, Version 2.0.
 
 ## License
 
