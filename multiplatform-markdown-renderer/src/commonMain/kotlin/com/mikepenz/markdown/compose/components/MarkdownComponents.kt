@@ -2,6 +2,7 @@ package com.mikepenz.markdown.compose.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
@@ -91,7 +92,7 @@ fun markdownComponents(
 /**
  * Interface defining all supported components.
  */
-@Stable
+@Immutable
 interface MarkdownComponents {
     val text: MarkdownComponent
     val eol: MarkdownComponent
@@ -116,7 +117,8 @@ interface MarkdownComponents {
     val custom: CustomMarkdownComponent?
 }
 
-private class DefaultMarkdownComponents(
+@Immutable
+private data class DefaultMarkdownComponents(
     override val text: MarkdownComponent,
     override val eol: MarkdownComponent,
     override val codeFence: MarkdownComponent,
