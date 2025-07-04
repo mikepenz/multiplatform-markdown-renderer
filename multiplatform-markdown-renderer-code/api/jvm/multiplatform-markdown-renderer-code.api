@@ -6,7 +6,7 @@ public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$M
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownHighlightedCodeKt {
-	public static final fun MarkdownHighlightedCode (Ljava/lang/String;Ljava/lang/String;Ldev/snipme/highlights/Highlights$Builder;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownHighlightedCode (Ljava/lang/String;Ljava/lang/String;Landroidx/compose/ui/text/TextStyle;Ldev/snipme/highlights/Highlights$Builder;Landroidx/compose/runtime/Composer;II)V
 	public static final fun MarkdownHighlightedCodeBlock (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Ldev/snipme/highlights/Highlights$Builder;Landroidx/compose/runtime/Composer;II)V
 	public static final fun MarkdownHighlightedCodeFence (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Ldev/snipme/highlights/Highlights$Builder;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getHighlightedCodeBlock ()Lkotlin/jvm/functions/Function3;
