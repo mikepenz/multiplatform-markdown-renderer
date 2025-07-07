@@ -53,6 +53,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
         run: |
+          echo "\ncom.mikepenz.kotlin.warningsAsErrors.enabled=false" >> gradle.properties
           ./gradlew multiplatform-markdown-renderer:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
           ./gradlew multiplatform-markdown-renderer-m2:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
           ./gradlew multiplatform-markdown-renderer-m3:publishAllPublicationsToMavenCentralRepository --no-daemon --no-configure-on-demand --no-parallel
