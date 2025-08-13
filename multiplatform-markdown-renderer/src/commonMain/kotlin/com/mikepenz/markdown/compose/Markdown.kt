@@ -299,10 +299,10 @@ fun Markdown(
         LocalMarkdownComponents provides components,
         LocalMarkdownAnimations provides animations,
     ) {
-        when (val markdown = state) {
+        when (state) {
             is State.Error -> error(modifier)
             is State.Loading -> loading(modifier)
-            is State.Success -> success(markdown, components, modifier)
+            is State.Success -> success(state, components, modifier)
         }
     }
 }
