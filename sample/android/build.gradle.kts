@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.mikepenz.markdown"
-        setProperty("archivesBaseName", "markdown-renderer-sample-v$versionName-c$versionCode")
+        base.archivesName = "markdown-renderer-sample-v$versionName-c$versionCode"
     }
 
     @Suppress("UnstableApiUsage")
