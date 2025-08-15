@@ -170,7 +170,6 @@ fun MarkdownTableBasicText(
             annotatorSettings = annotatorSettings,
         ),
         style = style,
-        color = LocalMarkdownColors.current.tableText,
         maxLines = maxLines,
         overflow = overflow,
     )

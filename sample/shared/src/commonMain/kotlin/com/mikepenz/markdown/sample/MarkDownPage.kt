@@ -48,14 +48,14 @@ internal fun MarkDownPage(modifier: Modifier = Modifier) {
                     MarkdownHighlightedCodeBlock(
                         content = it.content,
                         node = it.node,
-                        highlights = highlightsBuilder
+                        highlightsBuilder = highlightsBuilder
                     )
                 },
                 codeFence = {
                     MarkdownHighlightedCodeFence(
                         content = it.content,
                         node = it.node,
-                        highlights = highlightsBuilder
+                        highlightsBuilder = highlightsBuilder
                     )
                 },
                 checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }

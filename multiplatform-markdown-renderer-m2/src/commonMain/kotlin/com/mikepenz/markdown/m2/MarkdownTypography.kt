@@ -28,10 +28,11 @@ fun markdownTypography(
     ordered: TextStyle = MaterialTheme.typography.body1,
     bullet: TextStyle = MaterialTheme.typography.body1,
     list: TextStyle = MaterialTheme.typography.body1,
-    link: TextStyle = MaterialTheme.typography.body1.copy(
-        fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline
+    textLink: TextLinkStyles = TextLinkStyles(
+        style = MaterialTheme.typography.body1.copy(
+            fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline
+        ).toSpanStyle()
     ),
-    textLink: TextLinkStyles = TextLinkStyles(style = link.toSpanStyle()),
     table: TextStyle = text,
 ): MarkdownTypography = DefaultMarkdownTypography(
     h1 = h1,
@@ -48,7 +49,6 @@ fun markdownTypography(
     ordered = ordered,
     bullet = bullet,
     list = list,
-    link = link,
     textLink = textLink,
     table = table,
 )

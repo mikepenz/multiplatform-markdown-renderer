@@ -2,9 +2,9 @@ package com.mikepenz.markdown.compose.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
 import com.mikepenz.markdown.compose.elements.MarkdownBulletList
 import com.mikepenz.markdown.compose.elements.MarkdownCheckBox
@@ -23,10 +23,8 @@ import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 import org.intellij.markdown.IElementType
-import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
-import org.intellij.markdown.ast.findChildOfType
 
 typealias MarkdownComponent = @Composable (MarkdownComponentModel) -> Unit
 
@@ -63,10 +61,6 @@ fun markdownComponents(
     orderedList: MarkdownComponent = CurrentComponentsBridge.orderedList,
     unorderedList: MarkdownComponent = CurrentComponentsBridge.unorderedList,
     image: MarkdownComponent = CurrentComponentsBridge.image,
-    linkDefinition: MarkdownComponent = {
-        @Suppress("DEPRECATION")
-        CurrentComponentsBridge.linkDefinition
-    },
     horizontalRule: MarkdownComponent = CurrentComponentsBridge.horizontalRule,
     table: MarkdownComponent = CurrentComponentsBridge.table,
     checkbox: MarkdownComponent = CurrentComponentsBridge.checkbox,
@@ -89,7 +83,6 @@ fun markdownComponents(
     orderedList = orderedList,
     unorderedList = unorderedList,
     image = image,
-    linkDefinition = linkDefinition,
     horizontalRule = horizontalRule,
     table = table,
     checkbox = checkbox,
@@ -99,7 +92,7 @@ fun markdownComponents(
 /**
  * Interface defining all supported components.
  */
-@Stable
+@Immutable
 interface MarkdownComponents {
     val text: MarkdownComponent
     val eol: MarkdownComponent
@@ -118,16 +111,14 @@ interface MarkdownComponents {
     val orderedList: MarkdownComponent
     val unorderedList: MarkdownComponent
     val image: MarkdownComponent
-
-    @Deprecated("The lookup of link definitions is now handled by the parser. It is advised to use the new API. This will be removed in a future version.")
-    val linkDefinition: MarkdownComponent
     val horizontalRule: MarkdownComponent
     val table: MarkdownComponent
     val checkbox: MarkdownComponent
     val custom: CustomMarkdownComponent?
 }
 
-private class DefaultMarkdownComponents(
+@Immutable
+private data class DefaultMarkdownComponents(
     override val text: MarkdownComponent,
     override val eol: MarkdownComponent,
     override val codeFence: MarkdownComponent,
@@ -145,8 +136,6 @@ private class DefaultMarkdownComponents(
     override val orderedList: MarkdownComponent,
     override val unorderedList: MarkdownComponent,
     override val image: MarkdownComponent,
-    @Deprecated("The lookup of link definitions is now handled by the parser. It is advised to use the new API. This will be removed in a future version.")
-    override val linkDefinition: MarkdownComponent,
     override val horizontalRule: MarkdownComponent,
     override val table: MarkdownComponent,
     override val checkbox: MarkdownComponent,
@@ -206,16 +195,6 @@ object CurrentComponentsBridge {
     val image: MarkdownComponent = {
         MarkdownImage(it.content, it.node)
     }
-
-    @Deprecated("The lookup of link definitions is now handled by the parser. It is advised to use the new API. This will be removed in a future version.")
-    val linkDefinition: MarkdownComponent = {
-        val linkLabel = it.node.findChildOfType(MarkdownElementTypes.LINK_LABEL)?.getUnescapedTextInNode(it.content)
-        if (linkLabel != null) {
-            val destination = it.node.findChildOfType(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(it.content)
-            LocalReferenceLinkHandler.current.store(linkLabel, destination)
-        }
-    }
-
     val horizontalRule: MarkdownComponent = {
         MarkdownDivider(Modifier.fillMaxWidth())
     }

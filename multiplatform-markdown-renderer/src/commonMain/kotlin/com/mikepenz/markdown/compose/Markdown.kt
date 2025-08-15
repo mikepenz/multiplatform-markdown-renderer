@@ -31,6 +31,7 @@ import com.mikepenz.markdown.model.markdownExtendedSpans
 import com.mikepenz.markdown.model.markdownInlineContent
 import com.mikepenz.markdown.model.markdownPadding
 import com.mikepenz.markdown.model.rememberMarkdownState
+import com.mikepenz.markdown.utils.LogCompositions
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.parser.MarkdownParser
@@ -283,6 +284,8 @@ fun Markdown(
     },
     error: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
 ) {
+    LogCompositions { "Markdown" }
+
     CompositionLocalProvider(
         LocalReferenceLinkHandler provides state.referenceLinkHandler,
         LocalMarkdownPadding provides padding,
@@ -296,10 +299,10 @@ fun Markdown(
         LocalMarkdownComponents provides components,
         LocalMarkdownAnimations provides animations,
     ) {
-        when (val markdown = state) {
+        when (state) {
             is State.Error -> error(modifier)
             is State.Loading -> loading(modifier)
-            is State.Success -> success(markdown, components, modifier)
+            is State.Success -> success(state, components, modifier)
         }
     }
 }
@@ -343,7 +346,7 @@ fun MarkdownSuccess(
 ) {
     Column(modifier) {
         state.node.children.forEach { node ->
-            MarkdownElement(node, components, state.content, skipLinkDefinition = state.linksLookedUp)
+            MarkdownElement(node, components, state.content)
         }
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+@Immutable
 interface MarkdownDimens {
     val dividerThickness: Dp
     val codeBackgroundCornerSize: Dp
@@ -16,7 +17,7 @@ interface MarkdownDimens {
 }
 
 @Immutable
-private class DefaultMarkdownDimens(
+private data class DefaultMarkdownDimens(
     override val dividerThickness: Dp,
     override val codeBackgroundCornerSize: Dp,
     override val blockQuoteThickness: Dp,

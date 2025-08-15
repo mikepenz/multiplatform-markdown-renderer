@@ -17,7 +17,6 @@ import org.intellij.markdown.MarkdownElementTypes.BLOCK_QUOTE
 import org.intellij.markdown.MarkdownElementTypes.CODE_BLOCK
 import org.intellij.markdown.MarkdownElementTypes.CODE_FENCE
 import org.intellij.markdown.MarkdownElementTypes.IMAGE
-import org.intellij.markdown.MarkdownElementTypes.LINK_DEFINITION
 import org.intellij.markdown.MarkdownElementTypes.ORDERED_LIST
 import org.intellij.markdown.MarkdownElementTypes.PARAGRAPH
 import org.intellij.markdown.MarkdownElementTypes.SETEXT_1
@@ -39,7 +38,6 @@ import org.intellij.markdown.flavours.gfm.GFMElementTypes.TABLE
  * @param components The [MarkdownComponents] instance containing the components to use.
  * @param content The original markdown content string.
  * @param includeSpacer Whether to include a spacer before rendering the element.
- * @param skipLinkDefinition Whether to skip rendering link definitions.
  */
 @Composable
 fun MarkdownElement(
@@ -47,7 +45,6 @@ fun MarkdownElement(
     components: MarkdownComponents,
     content: String,
     includeSpacer: Boolean = true,
-    skipLinkDefinition: Boolean = true,
 ) {
     val typography = LocalMarkdownTypography.current
     val model = remember(node, content, typography) {
@@ -77,11 +74,6 @@ fun MarkdownElement(
         ORDERED_LIST -> components.orderedList(model)
         UNORDERED_LIST -> components.unorderedList(model)
         IMAGE -> components.image(model)
-        LINK_DEFINITION -> {
-            @Suppress("DEPRECATION")
-            if (!skipLinkDefinition) components.linkDefinition(model)
-        }
-
         HORIZONTAL_RULE -> components.horizontalRule(model)
         TABLE -> components.table(model)
         else -> {
@@ -91,7 +83,7 @@ fun MarkdownElement(
 
     if (!handled) {
         node.children.forEach { child ->
-            MarkdownElement(child, components, content, includeSpacer, skipLinkDefinition)
+            MarkdownElement(child, components, content, includeSpacer)
         }
     }
 }

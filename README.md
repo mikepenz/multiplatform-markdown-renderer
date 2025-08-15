@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-    ... a Kotlin Multiplatform Markdown Renderer. (Android, Desktop, ...) powered by Compose Multiplatform
+    ... a powerful Kotlin Multiplatform Markdown Renderer for Kotlin Multiplatform projects using Compose Multiplatform
 </p>
 
 <div align="center">
@@ -45,19 +45,24 @@
 
 ### Using Gradle
 
+Choose the appropriate configuration based on your project type:
+
 <details open><summary><b>Multiplatform</b></summary>
 <p>
 
-For multiplatform projects specify this single dependency:
+For multiplatform projects, add these dependencies to your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
+    // Core library
     implementation("com.mikepenz:multiplatform-markdown-renderer:${version}")
 
-    // Offers Material 2 defaults for Material 2 themed apps (com.mikepenz.markdown.m2.Markdown)
+    // Choose ONE of the following based on your Material theme:
+
+    // For Material 2 themed apps
     implementation("com.mikepenz:multiplatform-markdown-renderer-m2:${version}")
 
-    // Offers Material 3 defaults for Material 3 themed apps (com.mikepenz.markdown.m3.Markdown)
+    // OR for Material 3 themed apps
     implementation("com.mikepenz:multiplatform-markdown-renderer-m3:${version}")
 }
 ```
@@ -65,10 +70,10 @@ dependencies {
 </p>
 </details>
 
-<details><summary><b>JVM</b></summary>
+<details><summary><b>JVM (Desktop)</b></summary>
 <p>
 
-To use the library on JVM, you have to include:
+For JVM-only projects, add this dependency:
 
 ```kotlin
 dependencies {
@@ -82,7 +87,7 @@ dependencies {
 <details><summary><b>Android</b></summary>
 <p>
 
-For Android a special dependency is available:
+For Android-only projects, add this dependency:
 
 ```kotlin
 dependencies {
@@ -93,37 +98,79 @@ dependencies {
 </p>
 </details>
 
-> [!TIP]
-> Since 0.13.0 the core library does not depend on a Material theme anymore. Include the `-m2`
-> or `-m3` module to get
-> access to the defaults.
+> [!IMPORTANT]
+> Since version 0.13.0, the core library does not depend on a Material theme. You must include
+> either the `-m2` or `-m3` module to get access to the default styling.
 
 
 -------
 
 ## Usage
 
-```Kotlin
-val markdown = """
 ### What's included 🚀
 
-- Super simple setup
-- Cross-platform ready
-- Lightweight
-""".trimIndent()
+The most basic usage is to simply pass your markdown string to the `Markdown` composable:
 
-//
-Markdown(markdown)
+```kotlin
+// In your composable (use the appropriate Markdown implementation for your theme)
+Markdown(
+    """
+    # Hello Markdown
+
+    This is a simple markdown example with:
+
+    - Bullet points
+    - **Bold text**
+    - *Italic text*
+
+    [Check out this link](https://github.com/mikepenz/multiplatform-markdown-renderer)
+    """.trimIndent()
+)
 ```
+
+**Note:** Import either `com.mikepenz.markdown.m3.Markdown` for Material 3 or
+`com.mikepenz.markdown.m2.Markdown` for Material 2 themed applications.
 
 <details><summary><b>Advanced Usage</b></summary>
 <p>
 
 ### `rememberMarkdownState`
 
+For better performance, especially with larger markdown content, use `rememberMarkdownState` or move
+the parsing of the markdown into your viewmodel:
+
 ```kotlin
 val markdownState = rememberMarkdownState(markdown)
 Markdown(markdownState)
+```
+
+> [!NOTE]  
+> Since version 0.33.0, markdown content is parsed asynchronously by default, resulting in a loading
+> state being displayed prior to the parsing result. The `rememberMarkdownState` function offers the
+> ability to require immediate parsing with the `immediate` parameter, but this is not advised as it
+> might block the composition of the UI.
+
+```kotlin
+// Default asynchronous parsing (recommended)
+val markdownState = rememberMarkdownState(markdown)
+
+// Force immediate parsing (not recommended)
+val markdownState = rememberMarkdownState(markdown, immediate = true)
+```
+
+### Lazy Loading for Large Documents
+
+Since version 0.33.0, the library supports rendering large markdown documents efficiently using
+`LazyColumn` instead of `Column`. This is particularly useful for very long markdown content.
+
+```kotlin
+Markdown(
+    markdownState = markdownState,
+    success = { state, components, modifier ->
+        LazyMarkdownSuccess(state, components, modifier, contentPadding = PaddingValues(16.dp))
+    },
+    modifier = Modifier.fillMaxSize()
+)
 ```
 
 ### Parse Markdown in VM
@@ -222,12 +269,12 @@ Markdown(
 
 ```kotlin
 // Use the bullet list symbol from the original markdown
-CompositionLocalProvider(LocalBulletListHandler provides { "$it " }) {
+CompositionLocalProvider(LocalBulletListHandler provides { type, bullet, index, listNumber, depth -> "$bullet " }) {
     Markdown(content)
 }
 
 // Replace the ordered list symbol with `A.)` instead.
-CompositionLocalProvider(LocalOrderedListHandler provides { "A.) " }) {
+CompositionLocalProvider(LocalOrderedListHandler provides { type, bullet, index, listNumber, depth -> "A.) " }) {
     Markdown(content, Modifier.fillMaxSize().padding(16.dp).verticalScroll(scrollState))
 }
 ```
@@ -246,22 +293,23 @@ offering full flexibility.
 ```kotlin
 // Simple adjusted paragraph with different Modifier.
 val customParagraphComponent: MarkdownComponent = {
-    MarkdownParagraph(it.content, it.node, Modifier.align(Alignment.End))
+    Box(modifier = Modifier.fillMaxWidth()) {
+        MarkdownParagraph(it.content, it.node, Modifier.align(Alignment.CenterEnd))
+    }
 }
 
-// Full custom paragraph example
-val customParagraphComponent: MarkdownComponent = {
+// Full custom paragraph example 
+val customParagraphComponentComplex: MarkdownComponent = {
     // build a styled paragraph. (util function provided by the library)
     val styledText = buildAnnotatedString {
         pushStyle(LocalMarkdownTypography.current.paragraph.toSpanStyle())
-        buildMarkdownAnnotatedString(content, it.node)
+        buildMarkdownAnnotatedString(it.content, it.node, annotatorSettings())
         pop()
     }
 
     // define the `Text` composable
     Text(
         styledText,
-        modifier = Modifier.align(Alignment.End),
         textAlign = TextAlign.End
     )
 }
@@ -270,7 +318,7 @@ val customParagraphComponent: MarkdownComponent = {
 Markdown(
     content,
     components = markdownComponents(
-        paragraph = customParagraphComponent
+        paragraph = customParagraphComponent // customParagraphComponentComplex
     )
 )
 ```
@@ -281,7 +329,7 @@ Another example to of a custom component is changing the rendering of an unorder
 // Define a custom component for rendering unordered list items in Markdown
 val customUnorderedListComponent: MarkdownComponent = {
     // Use the MarkdownListItems composable to render the list items
-    MarkdownListItems(it.content, it.node, level = 0) { startNumber, index, child ->
+    MarkdownListItems(it.content, it.node, depth = 0) { startNumber, index, child ->
         // Render an icon for the bullet point with a green tint
         Icon(
             imageVector = icon,
@@ -396,25 +444,31 @@ Markdown(
             MarkdownHighlightedCodeBlock(
                 content = it.content,
                 node = it.node,
-                highlights = highlightsBuilder
+                highlightsBuilder = highlightsBuilder
             )
         },
         codeFence = {
             MarkdownHighlightedCodeFence(
                 content = it.content,
                 node = it.node,
-                highlights = highlightsBuilder
+                highlightsBuilder = highlightsBuilder
             )
         },
     )
 )
 ```
 
-## Dependency
+## Dependencies
 
-This project uses JetBrains [markdown](https://github.com/JetBrains/markdown/) Multiplatform
-Markdown processor as
-dependency to parse the markdown content.
+This library uses the following key dependencies:
+
+- [JetBrains Markdown](https://github.com/JetBrains/markdown/) - Multiplatform Markdown processor
+  for parsing markdown content
+- [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform) - For cross-platform
+  UI rendering
+- [Extended Spans](https://github.com/saket/extended-spans) - For advanced text styling (integrated
+  as multiplatform)
+- [Highlights](https://github.com/SnipMeDev/Highlights) - For code syntax highlighting (optional)
 
 ## Developed By
 
@@ -424,9 +478,8 @@ dependency to parse the markdown content.
 
 ## Contributors
 
-This free, open source software was also made possible by a group of volunteers that put many hours
-of hard work into
-it. See the [CONTRIBUTORS.md](CONTRIBUTORS.md) file for details.
+This free, open source software was made possible by a group of volunteers who put many hours of
+hard work into it. See the [CONTRIBUTORS.md](CONTRIBUTORS.md) file for details.
 
 ## Credits
 
@@ -435,16 +488,15 @@ on [Rendering Markdown with Jetpack Compose](https://www.hellsoft.se/rendering-m
 and the related source [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer).
 
 Also huge thanks to [Saket Narayan](https://github.com/saket/) for his great work on
-the [extended-spans](https://github.com/saket/extended-spans) project. Ported into this project to
-make it multiplatform.
+the [extended-spans](https://github.com/saket/extended-spans) project, which was ported into this
+project to make it multiplatform.
 
 ## Fork License
 
 Copyright for portions of the code are held by [Erik Hellman, 2020] as part of
 project [MarkdownComposer](https://github.com/ErikHellman/MarkdownComposer) under the MIT license.
-All other copyright
-for project multiplatform-markdown-renderer are held by [Mike Penz, 2023] under the Apache License,
-Version 2.0.
+All other copyright for project multiplatform-markdown-renderer are held by [Mike Penz, 2023] under
+the Apache License, Version 2.0.
 
 ## License
 

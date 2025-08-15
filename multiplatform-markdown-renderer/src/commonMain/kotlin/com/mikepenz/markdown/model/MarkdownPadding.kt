@@ -6,6 +6,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+@Immutable
 interface MarkdownPadding {
     val block: Dp
 
@@ -27,7 +28,7 @@ interface MarkdownPadding {
 }
 
 @Immutable
-private class DefaultMarkdownPadding(
+private data class DefaultMarkdownPadding(
     override val block: Dp,
     override val list: Dp,
     override val listItemTop: Dp,
