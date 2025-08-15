@@ -8,9 +8,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.toIntSize
-import androidx.compose.ui.unit.toSize
 
 interface MarkdownImageState {
     val density: Density
