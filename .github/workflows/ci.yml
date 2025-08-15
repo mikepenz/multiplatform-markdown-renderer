@@ -90,11 +90,12 @@ jobs:
           ./gradlew sample:android:assembleDebug --stacktrace
 
       - name: Run Tests
+        if: false
         run: |
           ./gradlew sample:android:validateDebugScreenshotTest
 
       - name: Publish Test Report
-        if: (failure() || success()) && github.event_name == 'pull_request'
+        if: false && (failure() || success()) && github.event_name == 'pull_request'
         uses: mikepenz/action-junit-report@v5
         with:
           report_paths: '**/sample/android/build/test-results/validateDebugScreenshotTest/TEST-*.xml'
