@@ -99,7 +99,6 @@ fun MarkdownHighlightedCode(
         shape = RoundedCornerShape(codeBackgroundCornerSize),
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
     ) {
-        @Suppress("DEPRECATION")
         MarkdownBasicText(
             text = codeHighlights,
             style = style,
