@@ -46,7 +46,7 @@ jobs:
           ./gradlew sample:web:wasmJsBrowserDistribution --no-configuration-cache
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: 'sample/web/build/dist/wasmJs/productionExecutable'
 
