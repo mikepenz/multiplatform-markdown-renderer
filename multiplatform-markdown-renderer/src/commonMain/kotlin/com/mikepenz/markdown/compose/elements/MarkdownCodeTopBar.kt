@@ -26,9 +26,9 @@ internal fun MarkdownCodeTopBar(
     code: String,
     modifier: Modifier = Modifier,
 ) {
-    val clipboardManager = LocalClipboardManager.current
+    @Suppress("DEPRECATION") val clipboardManager = LocalClipboardManager.current
     val textColor = LocalMarkdownColors.current.text
-    
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -44,7 +44,7 @@ internal fun MarkdownCodeTopBar(
                 color = textColor.copy(alpha = 0.6f)
             )
         )
-        
+
         Box(
             modifier = Modifier
                 .size(24.dp)
