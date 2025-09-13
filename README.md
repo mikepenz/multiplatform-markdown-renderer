@@ -444,14 +444,16 @@ Markdown(
             MarkdownHighlightedCodeBlock(
                 content = it.content,
                 node = it.node,
-                highlightsBuilder = highlightsBuilder
+                highlightsBuilder = highlightsBuilder,
+                showHeader = true, // optional enable header with code language + copy button
             )
         },
         codeFence = {
             MarkdownHighlightedCodeFence(
                 content = it.content,
                 node = it.node,
-                highlightsBuilder = highlightsBuilder
+                highlightsBuilder = highlightsBuilder,
+                showHeader = true, // optional enable header with code language + copy button
             )
         },
     )
