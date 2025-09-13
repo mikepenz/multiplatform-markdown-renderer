@@ -50,6 +50,7 @@ fun MarkdownHighlightedCodeFence(
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.code,
     highlightsBuilder: Highlights.Builder = rememberHighlightsBuilder(),
+    showHeader: Boolean = false,
 ) {
     MarkdownCodeFence(content, node, style) { code, language, style ->
         MarkdownHighlightedCode(
@@ -57,6 +58,7 @@ fun MarkdownHighlightedCodeFence(
             language = language,
             style = style,
             highlightsBuilder = highlightsBuilder,
+            showHeader = showHeader,
         )
     }
 }
@@ -67,6 +69,7 @@ fun MarkdownHighlightedCodeBlock(
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.code,
     highlightsBuilder: Highlights.Builder = rememberHighlightsBuilder(),
+    showHeader: Boolean = false,
 ) {
     MarkdownCodeBlock(content, node, style) { code, language, style ->
         MarkdownHighlightedCode(
@@ -74,6 +77,7 @@ fun MarkdownHighlightedCodeBlock(
             language = language,
             style = style,
             highlightsBuilder = highlightsBuilder,
+            showHeader = showHeader,
         )
     }
 }
@@ -84,6 +88,7 @@ fun MarkdownHighlightedCode(
     language: String?,
     style: TextStyle = LocalMarkdownTypography.current.code,
     highlightsBuilder: Highlights.Builder = rememberHighlightsBuilder(),
+    showHeader: Boolean = false,
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
@@ -97,7 +102,10 @@ fun MarkdownHighlightedCode(
     MarkdownCodeBackground(
         color = backgroundCodeColor,
         shape = RoundedCornerShape(codeBackgroundCornerSize),
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        showHeader = showHeader,
+        language = language,
+        code = code
     ) {
         @Suppress("DEPRECATION")
         MarkdownBasicText(

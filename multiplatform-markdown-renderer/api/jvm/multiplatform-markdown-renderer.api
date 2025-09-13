@@ -188,7 +188,7 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownCheckBoxKt {
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownCodeKt {
-	public static final fun MarkdownCodeBackground-xzXfpvY (JLandroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/BorderStroke;FLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownCodeBackground-ymN66Js (JLandroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;Landroidx/compose/foundation/BorderStroke;FZLjava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun MarkdownCodeBlock (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;II)V
 	public static final fun MarkdownCodeFence (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;II)V
 }
