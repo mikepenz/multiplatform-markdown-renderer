@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -35,6 +36,7 @@ import org.intellij.markdown.ast.getTextInNode
 @Composable
 private fun MarkdownCode(
     code: String,
+    language: String? = null,
     style: TextStyle = LocalMarkdownTypography.current.code,
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
@@ -45,7 +47,10 @@ private fun MarkdownCode(
         shape = RoundedCornerShape(codeBackgroundCornerSize),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 8.dp),
+        showTopBar = true,
+        language = language,
+        code = code
     ) {
         MarkdownBasicText(
             text = code,
@@ -62,7 +67,7 @@ fun MarkdownCodeFence(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.code,
-    block: @Composable (String, String?, TextStyle) -> Unit = { code, _, style -> MarkdownCode(code = code, style = style) },
+    block: @Composable (String, String?, TextStyle) -> Unit = { code, language, style -> MarkdownCode(code = code, language = language, style = style) },
 ) {
     // CODE_FENCE_START, FENCE_LANG, EOL, {content // CODE_FENCE_CONTENT // x-times}, CODE_FENCE_END
     // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}, EOL
@@ -85,7 +90,7 @@ fun MarkdownCodeBlock(
     content: String,
     node: ASTNode,
     style: TextStyle = LocalMarkdownTypography.current.code,
-    block: @Composable (String, String?, TextStyle) -> Unit = { code, _, style -> MarkdownCode(code = code, style = style) },
+    block: @Composable (String, String?, TextStyle) -> Unit = { code, language, style -> MarkdownCode(code = code, language = language, style = style) },
 ) {
     val start = node.children[0].startOffset
     val end = node.children[node.children.size - 1].endOffset
@@ -100,6 +105,9 @@ fun MarkdownCodeBackground(
     shape: Shape = RectangleShape,
     border: BorderStroke? = null,
     elevation: Dp = 0.dp,
+    showTopBar: Boolean = false,
+    language: String? = null,
+    code: String = "",
     content: @Composable () -> Unit,
 ) {
     Box(
@@ -114,6 +122,20 @@ fun MarkdownCodeBackground(
             .pointerInput(Unit) {},
         propagateMinConstraints = true
     ) {
-        content()
+        if (showTopBar) {
+            Column {
+                MarkdownCodeTopBar(
+                    language = language,
+                    code = code
+                )
+                MarkdownDivider(
+                    color = LocalMarkdownColors.current.dividerColor.copy(alpha = 0.3f),
+                    thickness = 0.5.dp
+                )
+                content()
+            }
+        } else {
+            content()
+        }
     }
 }
