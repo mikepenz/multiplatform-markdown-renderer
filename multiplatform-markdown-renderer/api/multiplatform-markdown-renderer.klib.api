@@ -587,10 +587,8 @@ final class com.mikepenz.markdown.model/NoOpImageTransformerImpl : com.mikepenz.
 }
 
 final class com.mikepenz.markdown.model/PlaceholderConfig { // com.mikepenz.markdown.model/PlaceholderConfig|null[0]
-    constructor <init>(androidx.compose.ui.geometry/Size, androidx.compose.ui.text/PlaceholderVerticalAlign = ..., kotlin/Boolean = ...) // com.mikepenz.markdown.model/PlaceholderConfig.<init>|<init>(androidx.compose.ui.geometry.Size;androidx.compose.ui.text.PlaceholderVerticalAlign;kotlin.Boolean){}[0]
+    constructor <init>(androidx.compose.ui.geometry/Size, androidx.compose.ui.text/PlaceholderVerticalAlign = ...) // com.mikepenz.markdown.model/PlaceholderConfig.<init>|<init>(androidx.compose.ui.geometry.Size;androidx.compose.ui.text.PlaceholderVerticalAlign){}[0]
 
-    final val animate // com.mikepenz.markdown.model/PlaceholderConfig.animate|{}animate[0]
-        final fun <get-animate>(): kotlin/Boolean // com.mikepenz.markdown.model/PlaceholderConfig.animate.<get-animate>|<get-animate>(){}[0]
     final val size // com.mikepenz.markdown.model/PlaceholderConfig.size|{}size[0]
         final fun <get-size>(): androidx.compose.ui.geometry/Size // com.mikepenz.markdown.model/PlaceholderConfig.size.<get-size>|<get-size>(){}[0]
     final val verticalAlign // com.mikepenz.markdown.model/PlaceholderConfig.verticalAlign|{}verticalAlign[0]
@@ -598,8 +596,7 @@ final class com.mikepenz.markdown.model/PlaceholderConfig { // com.mikepenz.mark
 
     final fun component1(): androidx.compose.ui.geometry/Size // com.mikepenz.markdown.model/PlaceholderConfig.component1|component1(){}[0]
     final fun component2(): androidx.compose.ui.text/PlaceholderVerticalAlign // com.mikepenz.markdown.model/PlaceholderConfig.component2|component2(){}[0]
-    final fun component3(): kotlin/Boolean // com.mikepenz.markdown.model/PlaceholderConfig.component3|component3(){}[0]
-    final fun copy(androidx.compose.ui.geometry/Size = ..., androidx.compose.ui.text/PlaceholderVerticalAlign = ..., kotlin/Boolean = ...): com.mikepenz.markdown.model/PlaceholderConfig // com.mikepenz.markdown.model/PlaceholderConfig.copy|copy(androidx.compose.ui.geometry.Size;androidx.compose.ui.text.PlaceholderVerticalAlign;kotlin.Boolean){}[0]
+    final fun copy(androidx.compose.ui.geometry/Size = ..., androidx.compose.ui.text/PlaceholderVerticalAlign = ...): com.mikepenz.markdown.model/PlaceholderConfig // com.mikepenz.markdown.model/PlaceholderConfig.copy|copy(androidx.compose.ui.geometry.Size;androidx.compose.ui.text.PlaceholderVerticalAlign){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // com.mikepenz.markdown.model/PlaceholderConfig.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // com.mikepenz.markdown.model/PlaceholderConfig.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // com.mikepenz.markdown.model/PlaceholderConfig.toString|toString(){}[0]

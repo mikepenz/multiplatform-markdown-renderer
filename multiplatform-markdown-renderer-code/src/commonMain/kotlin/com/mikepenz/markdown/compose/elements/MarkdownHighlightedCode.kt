@@ -107,7 +107,6 @@ fun MarkdownHighlightedCode(
         language = language,
         code = code
     ) {
-        @Suppress("DEPRECATION")
         MarkdownBasicText(
             text = codeHighlights,
             style = style,
