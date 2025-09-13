@@ -38,7 +38,7 @@ private fun MarkdownCode(
     code: String,
     language: String? = null,
     style: TextStyle = LocalMarkdownTypography.current.code,
-    showTopBar: Boolean = false,
+    showHeader: Boolean = false,
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
@@ -49,7 +49,7 @@ private fun MarkdownCode(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        showTopBar = showTopBar,
+        showHeader = showHeader,
         language = language,
         code = code
     ) {
@@ -106,7 +106,7 @@ fun MarkdownCodeBackground(
     shape: Shape = RectangleShape,
     border: BorderStroke? = null,
     elevation: Dp = 0.dp,
-    showTopBar: Boolean = false,
+    showHeader: Boolean = false,
     language: String? = null,
     code: String = "",
     content: @Composable () -> Unit,
@@ -123,7 +123,7 @@ fun MarkdownCodeBackground(
             .pointerInput(Unit) {},
         propagateMinConstraints = true
     ) {
-        if (showTopBar) {
+        if (showHeader) {
             Column {
                 MarkdownCodeTopBar(
                     language = language,
