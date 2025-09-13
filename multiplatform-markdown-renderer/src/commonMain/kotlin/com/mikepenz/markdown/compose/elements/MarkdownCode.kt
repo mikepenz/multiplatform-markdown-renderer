@@ -38,6 +38,7 @@ private fun MarkdownCode(
     code: String,
     language: String? = null,
     style: TextStyle = LocalMarkdownTypography.current.code,
+    showTopBar: Boolean = false,
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
@@ -48,7 +49,7 @@ private fun MarkdownCode(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        showTopBar = true,
+        showTopBar = showTopBar,
         language = language,
         code = code
     ) {
