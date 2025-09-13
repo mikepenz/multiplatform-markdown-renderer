@@ -18,5 +18,5 @@ dependencies {
     }
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.runtimeSaveable)
-    commonMainCompileOnly("org.jetbrains.compose.ui:ui-backhandler:1.8.0-rc01")
+    commonMainCompileOnly("org.jetbrains.compose.ui:ui-backhandler:1.8.2")
 }

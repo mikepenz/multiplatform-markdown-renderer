@@ -295,6 +295,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
                         append(child.getUnescapedTextInNode(content))
                     } else appendAutoLink(content, child, annotatorSettings)
+                    GFMTokenTypes.DOLLAR -> append('$')
 
                     MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')
                     MarkdownTokenTypes.DOUBLE_QUOTE -> append('\"')
