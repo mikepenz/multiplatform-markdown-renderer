@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import com.mikepenz.markdown.compose.LocalBulletListHandler
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
@@ -112,6 +113,7 @@ private fun MarkdownListItem(
 
     Row(
         modifier = Modifier
+            .semantics(mergeDescendants = true) {}
             .fillMaxWidth()
             .padding(top = padding.listItemTop, bottom = padding.listItemBottom)
     ) {
