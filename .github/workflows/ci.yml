@@ -104,7 +104,7 @@ jobs:
           detailed_summary: true
 
       - name: Archive Test Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: "Test-Artifacts"
           path: "sample/android/build/reports/screenshotTest/preview/debug/"
@@ -152,7 +152,7 @@ jobs:
 
       - name: Archive Artifacts
         if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: "App-Artifacts"
           path: artifacts/*
