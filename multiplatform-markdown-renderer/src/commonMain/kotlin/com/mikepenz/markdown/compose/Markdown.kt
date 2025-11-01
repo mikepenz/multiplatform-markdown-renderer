@@ -8,6 +8,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.model.ImageTransformer
@@ -74,6 +75,13 @@ import org.intellij.markdown.parser.MarkdownParser
  * @param components The custom components to be used for rendering different markdown elements.
  * @param referenceLinkHandler The handler for resolving reference-style links in markdown.
  * @param animations The animation configurations for interactive elements.
+ * @param lookupLinks Whether to lookup and resolve links in the parsed markdown tree. Defaults to true.
+ * @param retainState Whether to retain the previous rendered content when the markdown content changes,
+ *                    avoiding the display of a loading state during updates. Defaults to false.
+ *                    When true, the previous content remains visible while new content is being parsed.
+ * @param immediate Whether to parse the content immediately in a blocking manner. Defaults to false
+ *                  (true in inspection mode). WARNING: Setting this to true is not advised as it will
+ *                  block the composition and may cause UI performance issues.
  * @param loading A composable function to be displayed while the content is being parsed and prepared.
  * @param success A composable function to be displayed with the successfully parsed markdown content.
  *                It receives the state, components, and modifier as parameters.
@@ -98,6 +106,9 @@ fun Markdown(
     components: MarkdownComponents = markdownComponents(),
     animations: MarkdownAnimations = markdownAnimations(),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
+    lookupLinks: Boolean = true,
+    retainState: Boolean = false,
+    immediate: Boolean = LocalInspectionMode.current,
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
     success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
         MarkdownSuccess(state = state, components = components, modifier = modifier)
@@ -106,9 +117,12 @@ fun Markdown(
 ) {
     val markdownState = rememberMarkdownState(
         content = content,
+        lookupLinks = lookupLinks,
+        retainState = retainState,
         flavour = flavour,
         parser = parser,
         referenceLinkHandler = referenceLinkHandler,
+        immediate = immediate,
     )
 
     Markdown(

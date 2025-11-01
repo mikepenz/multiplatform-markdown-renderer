@@ -128,8 +128,14 @@ Markdown(
 )
 ```
 
-**Note:** Import either `com.mikepenz.markdown.m3.Markdown` for Material 3 or
+> [!NOTE]  
+> Import either `com.mikepenz.markdown.m3.Markdown` for Material 3 or
 `com.mikepenz.markdown.m2.Markdown` for Material 2 themed applications.
+
+> [!NOTE]  
+> By default, when the markdown `content` changes, the component will display a loading state while
+> parsing the new content. To keep the previous content visible during updates and avoid showing the
+> loading state, set `retainState` to `true`.
 
 <details><summary><b>Advanced Usage</b></summary>
 <p>
