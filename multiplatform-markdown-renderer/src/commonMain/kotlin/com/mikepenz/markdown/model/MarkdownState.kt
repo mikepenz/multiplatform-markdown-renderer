@@ -226,7 +226,6 @@ internal class MarkdownStateImpl(
 fun parseMarkdownFlow(
     content: String,
     lookupLinks: Boolean = true,
-    retainState: Boolean = false,
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
     parser: MarkdownParser = MarkdownParser(flavour),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
@@ -239,7 +238,6 @@ fun parseMarkdownFlow(
             flavour = flavour,
             parser = parser,
             referenceLinkHandler = referenceLinkHandler,
-            retainState = retainState,
         )
     )
     markdownState.parse()
