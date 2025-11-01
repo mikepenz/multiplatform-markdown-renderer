@@ -98,6 +98,9 @@ fun Markdown(
     components: MarkdownComponents = markdownComponents(),
     animations: MarkdownAnimations = markdownAnimations(),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
+    lookupLinks: Boolean = true,
+    retainState: Boolean = false,
+    immediate: Boolean = false,
     loading: @Composable (modifier: Modifier) -> Unit = { Box(modifier) },
     success: @Composable (state: State.Success, components: MarkdownComponents, modifier: Modifier) -> Unit = { state, components, modifier ->
         MarkdownSuccess(state = state, components = components, modifier = modifier)
@@ -106,9 +109,12 @@ fun Markdown(
 ) {
     val markdownState = rememberMarkdownState(
         content = content,
+        lookupLinks = lookupLinks,
+        retainState = retainState,
         flavour = flavour,
         parser = parser,
         referenceLinkHandler = referenceLinkHandler,
+        immediate = immediate,
     )
 
     Markdown(
