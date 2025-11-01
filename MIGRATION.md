@@ -1,5 +1,9 @@
 ### Upgrade Notes
 
+#### Version 0.38.0
+
+- **Breaking Change**: Removes prior deprecated APIs and functionality (`PlaceholderConfig.animate`)
+
 #### Version 0.36.0
 
 - **Dependency Upgrade**: Kotlin 2.2.x / Compose 1.8.3 / Compose Multiplatform 1.8.2
