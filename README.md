@@ -158,6 +158,33 @@ val markdownState = rememberMarkdownState(markdown)
 val markdownState = rememberMarkdownState(markdown, immediate = true)
 ```
 
+#### Retaining State During Updates
+
+By default, when the markdown content changes, the component shows a loading state while parsing the
+new content. You can use the `retainState` parameter to keep the previous rendered content visible
+while the new content is being parsed:
+
+```kotlin
+// Retain previous content during updates (avoids showing loading state)
+val markdownState = rememberMarkdownState(
+    markdown,
+    retainState = true
+)
+Markdown(markdownState)
+
+// With dynamic content loading
+val markdownState = rememberMarkdownState(
+    key, // key that triggers re-parsing
+    retainState = true
+) {
+    "# Dynamic content $counter"
+}
+Markdown(markdownState)
+```
+
+This is particularly useful when content updates frequently or when you want to avoid flickering
+between the old content and the loading state.
+
 ### Lazy Loading for Large Documents
 
 Since version 0.33.0, the library supports rendering large markdown documents efficiently using
