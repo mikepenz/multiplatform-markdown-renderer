@@ -74,6 +74,7 @@ fun rememberMarkdownState(
  * A [MarkdownState] that executes the parsing of the markdown content with the [MarkdownParser] asynchronously.
  * This version accepts a suspend function block that returns the markdown content, allowing for dynamic loading.
  *
+ * @param keys Optional keys that determine when the block should be re-executed. When any key changes, the block will be called again.
  * @param block A suspend function that returns the markdown content to parse.
  * @param lookupLinks Whether to lookup links in the parsed tree or not.
  * @param retainState Whether to retain the state of the [MarkdownState] or not, when the input changes
@@ -84,11 +85,12 @@ fun rememberMarkdownState(
  */
 @Composable
 fun rememberMarkdownState(
+    vararg keys: Any?,
     lookupLinks: Boolean = true,
     retainState: Boolean = false,
-    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    parser: MarkdownParser = MarkdownParser(flavour),
-    referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
+    flavour: MarkdownFlavourDescriptor = remember { GFMFlavourDescriptor() },
+    parser: MarkdownParser = remember(flavour) { MarkdownParser(flavour) },
+    referenceLinkHandler: ReferenceLinkHandler = remember { ReferenceLinkHandlerImpl() },
     block: suspend () -> String,
 ): MarkdownState {
     val input = remember(lookupLinks, flavour, parser, referenceLinkHandler, retainState) {
@@ -108,7 +110,7 @@ fun rememberMarkdownState(
         }
     }
 
-    LaunchedEffect(block) {
+    LaunchedEffect(*keys) {
         state.updateInput(
             Input(
                 content = block(),
