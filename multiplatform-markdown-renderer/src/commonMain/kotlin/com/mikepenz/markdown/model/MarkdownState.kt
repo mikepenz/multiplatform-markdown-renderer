@@ -247,7 +247,7 @@ fun parseMarkdownFlow(
 }
 
 /**
- * Creates a [kotlinx.coroutines.flow.Flow] of [State] for use in non-composable contexts like view models.
+ * Transforms a [Flow] of markdown content strings into a [Flow] of parsed [State] for use in non-composable contexts like view models.
  * As soon as the flow is collected, it will start parsing the content, and emit the state once ready.
  *
  * @param lookupLinks Whether to lookup links in the parsed tree or not
@@ -256,8 +256,9 @@ fun parseMarkdownFlow(
  * @param parser The [MarkdownParser] to use for parsing.
  * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
  *
+ * @return A [Flow] of [State] that represents the parsed markdown state.
  */
-fun Flow<String>.toMarkdownFlow(
+fun Flow<String>.asMarkdownState(
     lookupLinks: Boolean = true,
     retainState: Boolean = false,
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
