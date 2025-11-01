@@ -2,15 +2,18 @@ package com.mikepenz.markdown.sample
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -42,23 +45,46 @@ fun RecompositionPage(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize().safeContentPadding()
     ) {
+        var retainState by remember {
+            mutableStateOf(true)
+        }
+        var includeCounter by remember {
+            mutableStateOf(false)
+        }
         var counter by remember {
             mutableIntStateOf(0)
         }
 
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text("Include Counter:")
+            Switch(includeCounter, onCheckedChange = { includeCounter = it })
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text("Retain State:")
+            Switch(retainState, onCheckedChange = { retainState = it })
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button(onClick = { counter++ }) {
+                Text("Increase")
+            }
+
+            Button(onClick = { counter-- }) {
+                Text("Decrease")
+            }
+        }
+
         Text("Count: $counter", color = MaterialTheme.colorScheme.onBackground)
-
-        Button(onClick = { counter++ }) {
-            Text("Increase")
-        }
-
-        Button(onClick = { counter-- }) {
-            Text("Decrease")
-        }
-
+        
         val markdownState = rememberMarkdownState(
-            content = "## My markdown text"
-        )
+            if (includeCounter) counter else 0,
+            retainState = retainState
+        ) {
+            if (includeCounter) {
+                "## My markdown text $counter"
+            } else {
+                "## My markdown text"
+            }
+        }
         Markdown(
             markdownState = markdownState,
             dimens = markdownDimens(),

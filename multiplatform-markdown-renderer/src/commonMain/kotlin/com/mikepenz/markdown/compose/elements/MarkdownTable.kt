@@ -162,7 +162,6 @@ fun MarkdownTableBasicText(
     overflow: TextOverflow = TextOverflow.Ellipsis,
     annotatorSettings: AnnotatorSettings = annotatorSettings(),
 ) {
-    @Suppress("DEPRECATION")
     MarkdownBasicText(
         text = content.buildMarkdownAnnotatedString(
             textNode = cell,

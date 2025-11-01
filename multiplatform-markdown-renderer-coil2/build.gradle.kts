@@ -14,5 +14,5 @@ dependencies {
     commonMainCompileOnly(compose.runtime)
     commonMainCompileOnly(compose.ui)
 
-    "androidMainApi"(libs.coil2.core)
+    androidMainApi(libs.coil2.core)
 }
