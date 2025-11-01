@@ -8,11 +8,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalInspectionMode
 import com.mikepenz.markdown.utils.lookupLinkDefinition
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
@@ -34,21 +36,24 @@ import org.intellij.markdown.parser.MarkdownParser
 fun rememberMarkdownState(
     content: String,
     lookupLinks: Boolean = true,
+    retainState: Boolean = false,
     flavour: MarkdownFlavourDescriptor = remember { GFMFlavourDescriptor() },
     parser: MarkdownParser = remember(flavour) { MarkdownParser(flavour) },
     referenceLinkHandler: ReferenceLinkHandler = remember { ReferenceLinkHandlerImpl() },
     immediate: Boolean = LocalInspectionMode.current,
 ): MarkdownState {
-    val input = remember(content, lookupLinks, flavour, parser, referenceLinkHandler) {
+    val input = remember(content, lookupLinks, flavour, parser, referenceLinkHandler, retainState) {
         Input(
             content = content,
             lookupLinks = lookupLinks,
             flavour = flavour,
             parser = parser,
             referenceLinkHandler = referenceLinkHandler,
+            retainState = retainState,
         )
     }
-    val state = remember(input) {
+
+    val state = remember {
         MarkdownStateImpl(input).apply {
             if (immediate) {
                 // In immediate mode, parse synchronously but be aware this blocks the UI thread
@@ -57,11 +62,9 @@ fun rememberMarkdownState(
         }
     }
 
-    if (!immediate) {
-        // Otherwise, parse asynchronously in a coroutine
-        LaunchedEffect(state) {
-            state.parse()
-        }
+    LaunchedEffect(input) {
+        state.updateInput(input)
+        state.parse()
     }
 
     return state
@@ -73,6 +76,7 @@ fun rememberMarkdownState(
  *
  * @param block A suspend function that returns the markdown content to parse.
  * @param lookupLinks Whether to lookup links in the parsed tree or not.
+ * @param retainState Whether to retain the state of the [MarkdownState] or not, when the input changes
  * @param flavour The [MarkdownFlavourDescriptor] to use for parsing.
  * @param parser The [MarkdownParser] to use for parsing.
  * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
@@ -81,41 +85,41 @@ fun rememberMarkdownState(
 @Composable
 fun rememberMarkdownState(
     lookupLinks: Boolean = true,
+    retainState: Boolean = false,
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
     parser: MarkdownParser = MarkdownParser(flavour),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     block: suspend () -> String,
 ): MarkdownState {
-    // Create an initial state with empty content
-    val initialInput = remember(lookupLinks, flavour, parser, referenceLinkHandler) {
+    val input = remember(lookupLinks, flavour, parser, referenceLinkHandler, retainState) {
         Input(
             content = "",
             lookupLinks = lookupLinks,
             flavour = flavour,
             parser = parser,
             referenceLinkHandler = referenceLinkHandler,
+            retainState = retainState,
         )
     }
-    val state = remember(block, initialInput) {
-        MarkdownStateImpl(initialInput)
+
+    val state = remember {
+        MarkdownStateImpl(input).apply {
+            parseBlocking()
+        }
     }
 
-    // Launch a coroutine to fetch the content and update the state
-    LaunchedEffect(state) {
-        try {
-            val content = block()
-            val input = Input(
-                content = content,
+    LaunchedEffect(block) {
+        state.updateInput(
+            Input(
+                content = block(),
                 lookupLinks = lookupLinks,
                 flavour = flavour,
                 parser = parser,
                 referenceLinkHandler = referenceLinkHandler,
+                retainState = retainState,
             )
-            state.updateInput(input)
-            state.parse()
-        } catch (e: Throwable) {
-            state.setError(e)
-        }
+        )
+        state.parse()
     }
 
     return state
@@ -159,8 +163,10 @@ internal class MarkdownStateImpl(
      * @param newInput The new input to use for parsing.
      */
     internal fun updateInput(newInput: Input) {
+        if (input == newInput) return // don't do anything for the same input
         input = newInput
-        stateFlow.value = State.Loading(input.referenceLinkHandler)
+        // if we already have content don't go back to loading if retain state is set to true
+        if (!newInput.retainState) stateFlow.value = State.Loading(input.referenceLinkHandler)
     }
 
     /**
@@ -208,6 +214,7 @@ internal class MarkdownStateImpl(
  *
  * @param content The markdown content to parse.
  * @param lookupLinks Whether to lookup links in the parsed tree or not.
+ * @param retainState Whether to retain the state of the [MarkdownState] or not, when the input changes
  * @param flavour The [MarkdownFlavourDescriptor] to use for parsing.
  * @param parser The [MarkdownParser] to use for parsing.
  * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
@@ -217,6 +224,7 @@ internal class MarkdownStateImpl(
 fun parseMarkdownFlow(
     content: String,
     lookupLinks: Boolean = true,
+    retainState: Boolean = false,
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
     parser: MarkdownParser = MarkdownParser(flavour),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
@@ -229,11 +237,52 @@ fun parseMarkdownFlow(
             flavour = flavour,
             parser = parser,
             referenceLinkHandler = referenceLinkHandler,
+            retainState = retainState,
         )
     )
     markdownState.parse()
     emitAll(markdownState.state)
 }
+
+/**
+ * Creates a [kotlinx.coroutines.flow.Flow] of [State] for use in non-composable contexts like view models.
+ * As soon as the flow is collected, it will start parsing the content, and emit the state once ready.
+ *
+ * @param lookupLinks Whether to lookup links in the parsed tree or not
+ * @param retainState Whether to retain the state of the [MarkdownState] or not, when the input changes
+ * @param flavour The [MarkdownFlavourDescriptor] to use for parsing.
+ * @param parser The [MarkdownParser] to use for parsing.
+ * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
+ *
+ */
+fun Flow<String>.toMarkdownFlow(
+    lookupLinks: Boolean = true,
+    retainState: Boolean = false,
+    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    parser: MarkdownParser = MarkdownParser(flavour),
+    referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
+): Flow<State> {
+    var isFirst = true
+    return transform {
+        if (isFirst || !retainState) {
+            emit(State.Loading(referenceLinkHandler))
+            isFirst = false
+        }
+        val markdownState = MarkdownStateImpl(
+            Input(
+                content = it,
+                lookupLinks = lookupLinks,
+                flavour = flavour,
+                parser = parser,
+                referenceLinkHandler = referenceLinkHandler,
+                retainState = retainState,
+            )
+        )
+        markdownState.parse()
+        emitAll(markdownState.state)
+    }
+}
+
 
 /**
  * The input for the [MarkdownState].
@@ -243,6 +292,7 @@ fun parseMarkdownFlow(
  * @param flavour The [MarkdownFlavourDescriptor] to use for parsing.
  * @param parser The [MarkdownParser] to use for parsing.
  * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
+ * @param retainState Whether to retain the state of the [MarkdownState] or not, when the input changes
  */
 @Immutable
 data class Input(
@@ -251,6 +301,7 @@ data class Input(
     val flavour: MarkdownFlavourDescriptor,
     val parser: MarkdownParser,
     val referenceLinkHandler: ReferenceLinkHandler,
+    val retainState: Boolean = false,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -263,6 +314,7 @@ data class Input(
         if (flavour != other.flavour) return false
         if (parser != other.parser) return false
         if (referenceLinkHandler != other.referenceLinkHandler) return false
+        if (retainState != other.retainState) return false
 
         return true
     }
@@ -273,6 +325,7 @@ data class Input(
         result = 31 * result + flavour.hashCode()
         result = 31 * result + parser.hashCode()
         result = 31 * result + referenceLinkHandler.hashCode()
+        result = 31 * result + retainState.hashCode()
         return result
     }
 }
