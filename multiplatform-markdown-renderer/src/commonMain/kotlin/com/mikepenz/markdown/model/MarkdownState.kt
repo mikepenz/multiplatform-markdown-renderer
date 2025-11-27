@@ -216,7 +216,6 @@ internal class MarkdownStateImpl(
  *
  * @param content The markdown content to parse.
  * @param lookupLinks Whether to lookup links in the parsed tree or not.
- * @param retainState Whether to retain the state of the [MarkdownState] or not, when the input changes
  * @param flavour The [MarkdownFlavourDescriptor] to use for parsing.
  * @param parser The [MarkdownParser] to use for parsing.
  * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
