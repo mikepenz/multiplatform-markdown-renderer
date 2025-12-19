@@ -31,6 +31,11 @@ class SnapshotTests {
     @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
     fun TableTest() = TestMarkdown(MARKDOWN_TABLE)
+
+    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
+    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
+    @Composable
+    fun InlineCodeTest() = TestMarkdown(MARKDOWN_INLINE_CODE)
 }
 
 
@@ -228,4 +233,15 @@ private val MARKDOWN_LIST = """
       * 7
   * 8
 * **Bold**: 9
+""".trimIndent()
+
+private val MARKDOWN_INLINE_CODE = """
+* Emphasis (`*`, `_`)
+* It will be displayed as: Emphasis ( * , * )
+
+* Strong emphasis (`**`, `__`)
+
+It will be displayed as: Strong emphasis ( ** , ** )
+
+* Strike-through (`~~`)
 """.trimIndent()
