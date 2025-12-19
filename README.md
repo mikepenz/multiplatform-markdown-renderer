@@ -231,7 +231,7 @@ The library offers the ability to modify different behaviour when rendering the 
 ```kotlin
 Markdown(
     content,
-    colors = markdownColors(text = Color.Red),
+    colors = markdownColor(text = Color.Red),
     typography = markdownTypography(h1 = MaterialTheme.typography.body1)
 )
 ```

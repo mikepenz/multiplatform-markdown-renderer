@@ -58,9 +58,6 @@ compose.resources {
 }
 
 aboutLibraries {
-    android {
-        registerAndroidTasks = false
-    }
     export {
         outputPath = file("src/commonMain/composeResources/files/aboutlibraries.json")
     }

@@ -24,6 +24,7 @@ import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
+import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
@@ -295,6 +296,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
                         append(child.getUnescapedTextInNode(content))
                     } else appendAutoLink(content, child, annotatorSettings)
+
                     GFMTokenTypes.DOLLAR -> append('$')
 
                     MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')
@@ -313,11 +315,23 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                         skipIfNext = MarkdownTokenTypes.EOL
                     }
 
-                    MarkdownTokenTypes.EMPH -> if (parentType != MarkdownElementTypes.EMPH && parentType != MarkdownElementTypes.STRONG) append('*')
+                    MarkdownTokenTypes.EMPH -> {
+                        if (parentType != MarkdownElementTypes.EMPH && parentType != MarkdownElementTypes.STRONG) {
+                            append(child.getTextInNode(content))
+                        }
+                    }
+
                     MarkdownTokenTypes.EOL -> if (eolAsNewLine) append('\n') else append(' ')
                     MarkdownTokenTypes.WHITE_SPACE -> if (length > 0) append(' ')
                     MarkdownTokenTypes.BLOCK_QUOTE -> {
                         skipIfNext = MarkdownTokenTypes.WHITE_SPACE
+                    }
+
+                    else -> {
+                        // `~` is not a specific `MarkdownTokenTypes`
+                        if (child.type.name == "~" && parentType != GFMElementTypes.STRIKETHROUGH) {
+                            append(child.getTextInNode(content))
+                        }
                     }
                 }
             }

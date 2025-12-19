@@ -1,5 +1,13 @@
 ### Upgrade Notes
 
+#### Version 0.39.0
+
+- **Note**: The `highlights` library in v1.1.0 seems to be compiled with Java 21
+- **Breaking Change**: Some underlying APIs start to require API 23 instead of 21.
+    - `org.jetbrains.compose.components.resources`
+- **Dependency Upgrade**: Kotlin 2.3.0
+- **Dependency Upgrade**: Compose 1.10.x
+
 #### Version 0.38.0
 
 - **Breaking Change**: Removes prior deprecated APIs and functionality (`PlaceholderConfig.animate`)

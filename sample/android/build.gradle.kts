@@ -3,6 +3,7 @@ plugins {
     id("com.mikepenz.convention.kotlin")
     id("com.mikepenz.convention.compose")
     id("com.mikepenz.aboutlibraries.plugin")
+    id("com.mikepenz.aboutlibraries.plugin.android")
     alias(baseLibs.plugins.screenshot)
 }
 
