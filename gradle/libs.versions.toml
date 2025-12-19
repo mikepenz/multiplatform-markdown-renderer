@@ -1,10 +1,10 @@
 [versions]
-androidx-activityCompose = "1.10.1"
+androidx-activityCompose = "1.12.2"
 coil = "3.3.0"
 coil2 = "2.7.0"
 markdown = "0.7.3"
-ktor = "3.2.3"
-highlights = "1.0.0"
+ktor = "3.3.3"
+highlights = "1.1.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }

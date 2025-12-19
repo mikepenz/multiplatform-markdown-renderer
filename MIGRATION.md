@@ -1,5 +1,10 @@
 ### Upgrade Notes
 
+#### Version 0.39.0
+
+- **Note**: The `highlights` library in v1.1.0 seems to be compiled with Java 21
+- **Note**: Some dependencies start to require minSDK: 23 (compared to the minSDK of 21 from before)
+
 #### Version 0.38.0
 
 - **Breaking Change**: Removes prior deprecated APIs and functionality (`PlaceholderConfig.animate`)
