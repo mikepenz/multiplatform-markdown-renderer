@@ -1,12 +1,14 @@
 plugins {
-    id("com.mikepenz.convention.android-library")
     id("com.mikepenz.convention.kotlin-multiplatform")
     id("com.mikepenz.convention.compose")
     id("com.mikepenz.aboutlibraries.plugin")
 }
 
 kotlin {
-    androidTarget()
+    androidLibrary {
+        namespace = "com.mikepenz.markdown.sample.shared"
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+    }
 
     listOf(
         iosX64(),
@@ -47,10 +49,6 @@ kotlin {
             implementation(libs.ktor.client.darwin)
         }
     }
-}
-
-android {
-    namespace = "com.mikepenz.markdown.sample.shared"
 }
 
 compose.resources {

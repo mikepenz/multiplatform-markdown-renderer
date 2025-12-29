@@ -1,18 +1,22 @@
 plugins {
-    id("com.mikepenz.convention.android-library")
     id("com.mikepenz.convention.kotlin-multiplatform")
     id("com.mikepenz.convention.compose")
     id("com.mikepenz.convention.publishing")
 }
 
-android {
-    namespace = "com.mikepenz.markdown.m2"
-}
+kotlin {
+    android {
+        namespace = "com.mikepenz.markdown.m2"
+    }
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api(projects.multiplatformMarkdownRenderer)
+                api(libs.markdown)
 
-dependencies {
-    commonMainApi(projects.multiplatformMarkdownRenderer)
-    commonMainApi(libs.markdown)
-
-    commonMainCompileOnly(compose.runtime)
-    commonMainCompileOnly(compose.material)
+                compileOnly(compose.runtime)
+                compileOnly(compose.material)
+            }
+        }
+    }
 }
