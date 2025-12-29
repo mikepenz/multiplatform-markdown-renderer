@@ -7,6 +7,7 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "com.mikepenz.markdown.sample.shared"
+        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
     }
 
     listOf(
