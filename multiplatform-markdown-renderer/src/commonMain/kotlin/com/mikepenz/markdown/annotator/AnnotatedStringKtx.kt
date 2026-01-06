@@ -183,8 +183,12 @@ fun AnnotatedString.Builder.appendMarkdownReference(
             buildMarkdownAnnotatedString(content, linkText.mapAutoLinkToType(), annotatorSettings)
         }
     } else {
-        // if no reference is found, reference links are just rendered as normal text.
-        append(node.getUnescapedTextInNode(content))
+        // if no reference is found, reference links are rendered as their individual components
+        val linkText = node.findChildOfType(MarkdownElementTypes.LINK_TEXT)
+        if (linkText != null) {
+            buildMarkdownAnnotatedString(content, linkText, annotatorSettings)
+        }
+        buildMarkdownAnnotatedString(content, labelNode, annotatorSettings)
     }
 }
 
