@@ -1,10 +1,8 @@
 plugins {
     id("com.mikepenz.convention.android-application")
-    id("com.mikepenz.convention.kotlin")
     id("com.mikepenz.convention.compose")
     id("com.mikepenz.aboutlibraries.plugin")
     id("com.mikepenz.aboutlibraries.plugin.android")
-    alias(baseLibs.plugins.screenshot)
 }
 
 android {
@@ -14,20 +12,16 @@ android {
         applicationId = "com.mikepenz.markdown"
         base.archivesName = "markdown-renderer-sample-v$versionName-c$versionCode"
     }
-
-    @Suppress("UnstableApiUsage")
-    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
 dependencies {
     implementation(project(":sample:shared"))
-    implementation(compose.foundation)
-    implementation(compose.material)
-    implementation(compose.material3)
+    implementation(baseLibs.jetbrains.compose.foundation)
+    implementation(baseLibs.jetbrains.compose.material)
+    implementation(baseLibs.jetbrains.compose.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.ktor.client.okhttp)
-    debugImplementation(compose.uiTooling)
-    "screenshotTestImplementation"(compose.uiTooling)
+    debugImplementation(baseLibs.jetbrains.compose.ui.tooling)
 }
 
 aboutLibraries {

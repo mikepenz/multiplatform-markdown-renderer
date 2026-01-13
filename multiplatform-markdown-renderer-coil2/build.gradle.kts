@@ -1,18 +1,22 @@
 plugins {
-    id("com.mikepenz.convention.android-library")
     id("com.mikepenz.convention.kotlin-multiplatform")
     id("com.mikepenz.convention.compose")
     id("com.mikepenz.convention.publishing")
 }
 
-android {
-    namespace = "com.mikepenz.markdown.coil2"
-}
+kotlin {
+    android {
+        namespace = "com.mikepenz.markdown.coil2"
+    }
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.multiplatformMarkdownRenderer)
+            compileOnly(baseLibs.jetbrains.compose.runtime)
+            compileOnly(baseLibs.jetbrains.compose.ui)
+        }
 
-dependencies {
-    commonMainApi(projects.multiplatformMarkdownRenderer)
-    commonMainCompileOnly(compose.runtime)
-    commonMainCompileOnly(compose.ui)
-
-    androidMainApi(libs.coil2.core)
+        androidMain.dependencies {
+            api(libs.coil2.core)
+        }
+    }
 }

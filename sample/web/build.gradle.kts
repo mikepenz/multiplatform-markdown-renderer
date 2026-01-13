@@ -21,8 +21,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":sample:shared"))
-            implementation(compose.foundation)
-            implementation(compose.components.resources)
+            implementation(baseLibs.jetbrains.compose.foundation)
+            implementation(baseLibs.jetbrains.compose.components.resources)
         }
     }
 }
@@ -32,9 +32,6 @@ compose.resources {
 }
 
 aboutLibraries {
-    android {
-        registerAndroidTasks = false
-    }
     export {
         exportVariant = "wasmJs"
         outputPath = file("src/commonMain/composeResources/files/aboutlibraries.json")

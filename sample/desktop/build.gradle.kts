@@ -4,13 +4,14 @@ plugins {
     id("com.mikepenz.convention.kotlin-multiplatform")
     id("com.mikepenz.convention.compose")
     id("com.mikepenz.aboutlibraries.plugin")
+    alias(baseLibs.plugins.composeHotreload)
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":sample:shared"))
-            implementation(compose.components.resources)
+            implementation(baseLibs.jetbrains.compose.components.resources)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
