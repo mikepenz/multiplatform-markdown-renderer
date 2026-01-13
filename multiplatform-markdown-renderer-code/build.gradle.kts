@@ -10,15 +10,13 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(projects.multiplatformMarkdownRenderer)
-                compileOnly(compose.runtime)
-                compileOnly(compose.ui)
-                compileOnly(compose.foundation)
+        commonMain.dependencies {
+            api(projects.multiplatformMarkdownRenderer)
+            compileOnly(baseLibs.jetbrains.compose.runtime)
+            compileOnly(baseLibs.jetbrains.compose.ui)
+            compileOnly(baseLibs.jetbrains.compose.foundation)
 
-                api(libs.highlights)
-            }
+            api(libs.highlights)
         }
     }
 }

@@ -11,7 +11,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":sample:shared"))
-            implementation(compose.components.resources)
+            implementation(baseLibs.jetbrains.compose.components.resources)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)

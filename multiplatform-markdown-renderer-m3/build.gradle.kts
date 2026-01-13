@@ -9,14 +9,12 @@ kotlin {
         namespace = "com.mikepenz.markdown.m3"
     }
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(projects.multiplatformMarkdownRenderer)
-                api(libs.markdown)
+        commonMain.dependencies {
+            api(projects.multiplatformMarkdownRenderer)
+            api(libs.markdown)
 
-                compileOnly(compose.runtime)
-                compileOnly(compose.material3)
-            }
+            compileOnly(baseLibs.jetbrains.compose.runtime)
+            compileOnly(baseLibs.jetbrains.compose.material3)
         }
     }
 }

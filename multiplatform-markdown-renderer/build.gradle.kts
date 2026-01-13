@@ -10,15 +10,13 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(libs.markdown)
-                api(baseLibs.kotlinx.collections.immutable)
+        commonMain.dependencies {
+            api(libs.markdown)
+            api(baseLibs.kotlinx.collections.immutable)
 
-                compileOnly(compose.runtime)
-                compileOnly(compose.ui)
-                compileOnly(compose.foundation)
-            }
+            compileOnly(baseLibs.jetbrains.compose.runtime)
+            compileOnly(baseLibs.jetbrains.compose.ui)
+            compileOnly(baseLibs.jetbrains.compose.foundation)
         }
     }
 }

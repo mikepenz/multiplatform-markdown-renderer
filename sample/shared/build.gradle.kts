@@ -29,12 +29,12 @@ kotlin {
             api(projects.multiplatformMarkdownRendererCoil3)
             api(projects.multiplatformMarkdownRendererCode)
 
-            implementation(compose.foundation)
-            implementation(compose.ui)
-            implementation(compose.uiUtil)
-            implementation(compose.components.resources)
-            implementation(compose.material)
-            implementation(compose.material3)
+            implementation(baseLibs.jetbrains.compose.foundation)
+            implementation(baseLibs.jetbrains.compose.ui)
+            implementation(baseLibs.jetbrains.compose.ui.util)
+            implementation(baseLibs.jetbrains.compose.components.resources)
+            implementation(baseLibs.jetbrains.compose.material)
+            implementation(baseLibs.jetbrains.compose.material3)
 
             // required for coil
             implementation(libs.ktor.client.core)
