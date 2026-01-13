@@ -16,12 +16,12 @@ android {
 
 dependencies {
     implementation(project(":sample:shared"))
-    implementation(compose.foundation)
-    implementation(compose.material)
-    implementation(compose.material3)
+    implementation(baseLibs.jetbrains.compose.foundation)
+    implementation(baseLibs.jetbrains.compose.material)
+    implementation(baseLibs.jetbrains.compose.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.ktor.client.okhttp)
-    debugImplementation(compose.uiTooling)
+    debugImplementation(baseLibs.jetbrains.compose.ui.tooling)
 }
 
 aboutLibraries {

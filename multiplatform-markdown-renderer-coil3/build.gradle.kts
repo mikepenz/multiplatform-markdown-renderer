@@ -9,14 +9,12 @@ kotlin {
         namespace = "com.mikepenz.markdown.coil3"
     }
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(projects.multiplatformMarkdownRenderer)
-                api(libs.coil.core.get().toString()) {
-                    exclude(group = "org.jetbrains.compose.runtime")
-                }
-                compileOnly(compose.runtime)
+        commonMain.dependencies {
+            api(projects.multiplatformMarkdownRenderer)
+            api(libs.coil.core.get().toString()) {
+                exclude(group = "org.jetbrains.compose.runtime")
             }
+            compileOnly(baseLibs.jetbrains.compose.runtime)
         }
     }
 }

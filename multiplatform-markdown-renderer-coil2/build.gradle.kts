@@ -9,18 +9,14 @@ kotlin {
         namespace = "com.mikepenz.markdown.coil2"
     }
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(projects.multiplatformMarkdownRenderer)
-                compileOnly(compose.runtime)
-                compileOnly(compose.ui)
-            }
+        commonMain.dependencies {
+            api(projects.multiplatformMarkdownRenderer)
+            compileOnly(baseLibs.jetbrains.compose.runtime)
+            compileOnly(baseLibs.jetbrains.compose.ui)
         }
 
-        val androidMain by getting {
-            dependencies {
-                api(libs.coil2.core)
-            }
+        androidMain.dependencies {
+            api(libs.coil2.core)
         }
     }
 }
