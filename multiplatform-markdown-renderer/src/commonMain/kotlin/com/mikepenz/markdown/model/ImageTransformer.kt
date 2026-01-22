@@ -30,24 +30,58 @@ interface ImageTransformer {
     }
 
     /**
-     * The expected placeholderSize. Note: The same size is shared for all inline images within a single MarkdownText item.
+     * The expected placeholderSize for an inline image identified by [link].
      */
-    fun placeholderConfig(density: Density, containerSize: Size, intrinsicImageSize: Size): PlaceholderConfig {
-        return PlaceholderConfig(with(density) {
+    fun placeholderConfig(
+        link: String,
+        density: Density,
+        containerSize: Size,
+        imageSize: Size,
+        imageSizeChanged: ((link: String, Size) -> Unit)? = null,
+    ): PlaceholderConfig {
+        fun scale(size: Size, factor: Float): Size {
+            return Size(size.width * factor, size.height * factor)
+        }
+
+        // Work entirely in DP for consistent unit handling
+        // containerSize and imageSize are in PX, convert to DP
+        val maxSideDp = DEFAULT_IMAGE_SIDE_LENGTH_DP
+
+        val sizeInDp = with(density) {
             if (containerSize.isUnspecified) {
-                Size(180f, 180f)
-            } else if (intrinsicImageSize.isUnspecified) {
-                Size(containerSize.width.toSp().value, 180f)
+                // No container size known, use default
+                Size(maxSideDp, maxSideDp)
+            } else if (imageSize.isUnspecified) {
+                // No image size known yet, use container-constrained max side
+                val containerWidthDp = containerSize.width.toDp().value
+                val containerHeightDp = containerSize.height.toDp().value
+                val actualSideLength = minOf(maxSideDp, containerHeightDp, containerWidthDp)
+                Size(actualSideLength, actualSideLength)
             } else {
-                val width = minOf(intrinsicImageSize.width, containerSize.width)
-                val height = if (intrinsicImageSize.width < containerSize.width) {
-                    intrinsicImageSize.height
+                // Both sizes known, calculate scaled size to fit container
+                val imageWidthDp = imageSize.width.toDp().value
+                val imageHeightDp = imageSize.height.toDp().value
+                val containerWidthDp = containerSize.width.toDp().value
+                val containerHeightDp = containerSize.height.toDp().value
+
+                val actualHeight = minOf(imageHeightDp, containerHeightDp, maxSideDp)
+                val actualWidth = minOf(imageWidthDp, containerWidthDp, maxSideDp)
+
+                if (actualWidth < imageWidthDp || actualHeight < imageHeightDp) {
+                    // Image needs scaling down to fit
+                    val lowestRatio = minOf(actualWidth / imageWidthDp, actualHeight / imageHeightDp)
+                    scale(Size(imageWidthDp, imageHeightDp), lowestRatio)
                 } else {
-                    (intrinsicImageSize.height * containerSize.width) / intrinsicImageSize.width
+                    Size(actualWidth, actualHeight)
                 }
-                Size(width.toSp().value, height.toSp().value)
             }
-        })
+        }
+
+        return PlaceholderConfig(sizeInDp)
+    }
+
+    companion object {
+        const val DEFAULT_IMAGE_SIDE_LENGTH_DP = 200f
     }
 }
 
