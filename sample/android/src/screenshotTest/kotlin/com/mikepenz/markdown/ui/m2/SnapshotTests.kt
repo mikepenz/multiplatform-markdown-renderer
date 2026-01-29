@@ -5,6 +5,7 @@ import android.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mikepenz.markdown.ui.m2.util.TestMarkdown
+import com.mikepenz.markdown.ui.m3.util.TestMarkdownCodeBlock
 
 class SnapshotTests {
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1750)
@@ -36,6 +37,11 @@ class SnapshotTests {
     @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
     @Composable
     fun InlineCodeTest() = TestMarkdown(MARKDOWN_INLINE_CODE)
+
+    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
+    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
+    @Composable
+    fun HighlightedCodeTest() = TestMarkdownCodeBlock(MARKDOWN_CODE_BLOCK_TO_HIGHLIGHT)
 }
 
 
@@ -245,3 +251,11 @@ It will be displayed as: Strong emphasis ( ** , ** )
 
 * Strike-through (`~~`)
 """.trimIndent()
+
+private val MARKDOWN_CODE_BLOCK_TO_HIGHLIGHT = $$"""
+```kotlin
+fun greet(name: String): String {
+    return "Hello, $name"
+}
+```
+"""

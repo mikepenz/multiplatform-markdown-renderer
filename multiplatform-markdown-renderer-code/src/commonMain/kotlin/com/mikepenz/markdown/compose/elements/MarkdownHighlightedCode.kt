@@ -11,8 +11,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -51,6 +53,7 @@ fun MarkdownHighlightedCodeFence(
     style: TextStyle = LocalMarkdownTypography.current.code,
     highlightsBuilder: Highlights.Builder = rememberHighlightsBuilder(),
     showHeader: Boolean = false,
+    immediate: Boolean = LocalInspectionMode.current,
 ) {
     MarkdownCodeFence(content, node, style) { code, language, style ->
         MarkdownHighlightedCode(
@@ -59,6 +62,7 @@ fun MarkdownHighlightedCodeFence(
             style = style,
             highlightsBuilder = highlightsBuilder,
             showHeader = showHeader,
+            immediate = immediate,
         )
     }
 }
@@ -70,6 +74,7 @@ fun MarkdownHighlightedCodeBlock(
     style: TextStyle = LocalMarkdownTypography.current.code,
     highlightsBuilder: Highlights.Builder = rememberHighlightsBuilder(),
     showHeader: Boolean = false,
+    immediate: Boolean = LocalInspectionMode.current,
 ) {
     MarkdownCodeBlock(content, node, style) { code, language, style ->
         MarkdownHighlightedCode(
@@ -78,6 +83,7 @@ fun MarkdownHighlightedCodeBlock(
             style = style,
             highlightsBuilder = highlightsBuilder,
             showHeader = showHeader,
+            immediate = immediate,
         )
     }
 }
@@ -89,6 +95,7 @@ fun MarkdownHighlightedCode(
     style: TextStyle = LocalMarkdownTypography.current.code,
     highlightsBuilder: Highlights.Builder = rememberHighlightsBuilder(),
     showHeader: Boolean = false,
+    immediate: Boolean = false,
 ) {
     val backgroundCodeColor = LocalMarkdownColors.current.codeBackground
     val codeBackgroundCornerSize = LocalMarkdownDimens.current.codeBackgroundCornerSize
@@ -97,6 +104,7 @@ fun MarkdownHighlightedCode(
         code = code,
         language = language,
         highlightsBuilder = highlightsBuilder,
+        immediate = immediate,
     )
 
     MarkdownCodeBackground(
@@ -131,33 +139,51 @@ private fun produceHighlightsState(
     code: String,
     language: String?,
     highlightsBuilder: Highlights.Builder,
-): State<AnnotatedString> = produceState(
-    initialValue = AnnotatedString(text = code),
-    key1 = code,
-) {
-    val syntaxLanguage = language?.let { SyntaxLanguage.getByName(it) }
-    val job = launch(Dispatchers.Default) {
-        val codeHighlights = highlightsBuilder
-            .code(code)
-            .let { if (syntaxLanguage != null) it.language(syntaxLanguage) else it }
-            .build()
-            .getHighlights()
-        value = buildAnnotatedString {
-            append(code)
-            codeHighlights.forEach {
-                val style = when (it) {
-                    is ColorHighlight -> SpanStyle(color = Color(it.rgb).copy(alpha = 1f))
-                    is BoldHighlight -> SpanStyle(fontWeight = FontWeight.Bold)
-                }
-                addStyle(
-                    style = style,
-                    start = it.location.start,
-                    end = it.location.end,
-                )
-            }
+    immediate: Boolean,
+): State<AnnotatedString> {
+    if (immediate) {
+        val highlighted = remember(code) {
+            buildHighlightedAnnotatedString(code, language, highlightsBuilder)
+        }
+        return rememberUpdatedState(highlighted)
+    }
+
+    return produceState(
+        initialValue = AnnotatedString(text = code),
+        key1 = code,
+    ) {
+        val job = launch(Dispatchers.Default) {
+            value = buildHighlightedAnnotatedString(code, language, highlightsBuilder)
+        }
+        awaitDispose {
+            job.cancel()
         }
     }
-    awaitDispose {
-        job.cancel()
+}
+
+private fun buildHighlightedAnnotatedString(
+    code: String,
+    language: String?,
+    highlightsBuilder: Highlights.Builder,
+): AnnotatedString {
+    val syntaxLanguage = language?.let { SyntaxLanguage.getByName(it) }
+    val codeHighlights = highlightsBuilder
+        .code(code)
+        .let { if (syntaxLanguage != null) it.language(syntaxLanguage) else it }
+        .build()
+        .getHighlights()
+    return buildAnnotatedString {
+        append(code)
+        codeHighlights.forEach {
+            val style = when (it) {
+                is ColorHighlight -> SpanStyle(color = Color(it.rgb).copy(alpha = 1f))
+                is BoldHighlight -> SpanStyle(fontWeight = FontWeight.Bold)
+            }
+            addStyle(
+                style = style,
+                start = it.location.start,
+                end = it.location.end,
+            )
+        }
     }
 }
