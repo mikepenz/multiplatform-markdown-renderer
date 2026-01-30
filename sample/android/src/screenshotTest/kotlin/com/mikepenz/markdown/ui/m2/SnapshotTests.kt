@@ -5,7 +5,7 @@ import android.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mikepenz.markdown.ui.m2.util.TestMarkdown
-import com.mikepenz.markdown.ui.m3.util.TestMarkdownCodeBlock
+import com.mikepenz.markdown.ui.m2.util.TestMarkdownCodeBlock
 
 class SnapshotTests {
     @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1750)
