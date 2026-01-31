@@ -46,3 +46,8 @@ captures/
 
 ## User settings
 xcuserdata/
+/gradle-user-home/
+/tmp/
+
+## AI
+*.local.json
