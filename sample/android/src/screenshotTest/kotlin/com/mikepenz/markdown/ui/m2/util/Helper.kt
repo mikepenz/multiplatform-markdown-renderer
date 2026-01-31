@@ -16,7 +16,7 @@ fun TestMarkdown(content: String) = SampleTheme(isSystemInDarkTheme()) {
 
 @Composable
 fun TestMarkdownCodeBlock(content: String) =
-    com.mikepenz.markdown.ui.m3.theme.SampleTheme(isSystemInDarkTheme()) {
+    SampleTheme(isSystemInDarkTheme()) {
         Markdown(
             rememberMarkdownState(content),
             components = markdownComponents(
