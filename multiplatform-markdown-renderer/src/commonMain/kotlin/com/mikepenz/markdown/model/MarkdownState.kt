@@ -4,7 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalInspectionMode
 import com.mikepenz.markdown.utils.lookupLinkDefinition
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.transform
@@ -62,9 +66,20 @@ fun rememberMarkdownState(
         }
     }
 
-    LaunchedEffect(input) {
-        state.updateInput(input)
-        state.parse()
+    // Capture the latest input without restarting the effect
+    val currentInput by rememberUpdatedState(input)
+
+    // Use snapshotFlow with conflate to prevent parse thrashing during rapid updates.
+    // Without conflate, LaunchedEffect(input) cancels and restarts on every change,
+    // causing nothing to render if updates arrive faster than parsing completes.
+    // With conflate, parsing always completes and then picks up the latest value.
+    LaunchedEffect(Unit) {
+        snapshotFlow { currentInput }
+            .conflate()
+            .collect { newInput ->
+                state.updateInput(newInput)
+                state.parse()
+            }
     }
 
     return state
@@ -110,18 +125,26 @@ fun rememberMarkdownState(
         }
     }
 
-    LaunchedEffect(*keys) {
-        state.updateInput(
-            Input(
-                content = block(),
-                lookupLinks = lookupLinks,
-                flavour = flavour,
-                parser = parser,
-                referenceLinkHandler = referenceLinkHandler,
-                retainState = retainState,
-            )
-        )
-        state.parse()
+    val keysList = remember(*keys) { keys.toList() }
+    val currentKeys by rememberUpdatedState(keysList)
+    val currentBlock by rememberUpdatedState(block)
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { currentKeys }
+            .conflate()
+            .collect {
+                state.updateInput(
+                    Input(
+                        content = currentBlock(),
+                        lookupLinks = lookupLinks,
+                        flavour = flavour,
+                        parser = parser,
+                        referenceLinkHandler = referenceLinkHandler,
+                        retainState = retainState,
+                    )
+                )
+                state.parse()
+            }
     }
 
     return state
