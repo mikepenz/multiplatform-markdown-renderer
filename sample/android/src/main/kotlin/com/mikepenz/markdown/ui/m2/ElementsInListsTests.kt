@@ -8,11 +8,10 @@ import com.mikepenz.markdown.ui.m2.util.TestMarkdown
  * Covers elements in lists behavior as documented
  * https://www.markdownguide.org/basic-syntax/#adding-elements-in-lists
  */
-class ElementsInListsTests {
-    @DarkLightPreview
-    @Composable
-    fun ParagraphInListTest() = TestMarkdown(
-        """
+@DarkLightPreview
+@Composable
+fun ParagraphInListTest() = TestMarkdown(
+    """
         * This is the first list item.
         * Here's the second list item.
         
@@ -20,12 +19,12 @@ class ElementsInListsTests {
         
         * And here's the third list item.
         """.trimIndent()
-    )
+)
 
-    @DarkLightPreview
-    @Composable
-    fun BlockQuoteInListTest() = TestMarkdown(
-        """
+@DarkLightPreview
+@Composable
+fun BlockQuoteInListTest() = TestMarkdown(
+    """
         * This is the first list item.
         * Here's the second list item.
         
@@ -33,12 +32,12 @@ class ElementsInListsTests {
         
         * And here's the third list item.
         """.trimIndent()
-    )
+)
 
-    @DarkLightPreview
-    @Composable
-    fun CodeBlockInListTest() = TestMarkdown(
-        """
+@DarkLightPreview
+@Composable
+fun CodeBlockInListTest() = TestMarkdown(
+    """
         1. Open the file.
         2. Find the following code block on line 21:
         
@@ -48,12 +47,12 @@ class ElementsInListsTests {
         
         3. Update the title to match the name of your website.
         """.trimIndent()
-    )
+)
 
-    @DarkLightPreview
-    @Composable
-    fun ImageInListTest() = TestMarkdown(
-        """
+@DarkLightPreview
+@Composable
+fun ImageInListTest() = TestMarkdown(
+    """
         1. Open the file containing the Linux mascot.
         2. Marvel at its beauty.
         
@@ -61,12 +60,12 @@ class ElementsInListsTests {
         
         3. Close the file.
         """.trimIndent()
-    )
+)
 
-    @DarkLightPreview
-    @Composable
-    fun UnorderedListInListTest() = TestMarkdown(
-        """
+@DarkLightPreview
+@Composable
+fun UnorderedListInListTest() = TestMarkdown(
+    """
         1. First item
         2. Second item
         3. Third item
@@ -74,12 +73,12 @@ class ElementsInListsTests {
             - Indented item
         4. Fourth item
         """.trimIndent()
-    )
+)
 
-    @DarkLightPreview
-    @Composable
-    fun CheckBoxInListTest() = TestMarkdown(
-        """
+@DarkLightPreview
+@Composable
+fun CheckBoxInListTest() = TestMarkdown(
+    """
         This is an ordered list with task list items:
         1. [ ] foo
         2. [x] bar
@@ -88,16 +87,16 @@ class ElementsInListsTests {
         - [ ] foo
         - [x] bar
         """.trimIndent()
-    )
+)
 
-    /**
-     * Initial number dictates number of remaining list items.
-     * https://spec.commonmark.org/0.31.2/#start-number
-     */
-    @DarkLightPreview
-    @Composable
-    fun OrderedListRandomStartTest() = TestMarkdown(
-        """
+/**
+ * Initial number dictates number of remaining list items.
+ * https://spec.commonmark.org/0.31.2/#start-number
+ */
+@DarkLightPreview
+@Composable
+fun OrderedListRandomStartTest() = TestMarkdown(
+    """
         7. First item
         2. Second item
         3. Third item
@@ -105,5 +104,4 @@ class ElementsInListsTests {
             - Indented item
         4. Fourth item
         """.trimIndent()
-    )
-}
+)

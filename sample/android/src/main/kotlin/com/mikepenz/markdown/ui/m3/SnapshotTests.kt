@@ -1,48 +1,46 @@
-package com.mikepenz.markdown.ui.m2
+package com.mikepenz.markdown.ui.m3
 
 import android.content.res.Configuration
 import android.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.mikepenz.markdown.ui.m2.util.TestMarkdown
-import com.mikepenz.markdown.ui.m2.util.TestMarkdownCodeBlock
+import com.mikepenz.markdown.ui.m3.util.TestMarkdown
+import com.mikepenz.markdown.ui.m3.util.TestMarkdownCodeBlock
 
-class SnapshotTests {
-    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1750)
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1750, uiMode = Configuration.UI_MODE_NIGHT_YES)
-    @Composable
-    fun DefaultTest() = TestMarkdown(MARKDOWN_DEFAULT)
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1750)
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1750, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun DefaultTest() = TestMarkdown(MARKDOWN_DEFAULT)
 
-    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1000)
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1000, uiMode = Configuration.UI_MODE_NIGHT_YES)
-    @Composable
-    fun RandomTest() = TestMarkdown(MARKDOWN_RANDOM)
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1000)
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1000, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun RandomTest() = TestMarkdown(MARKDOWN_RANDOM)
 
-    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 380)
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 380, uiMode = Configuration.UI_MODE_NIGHT_YES)
-    @Composable
-    fun ListCodeBlockTest() = TestMarkdown(MARKDOWN_LIST_CODE_BLOCK)
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 380)
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 380, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ListCodeBlockTest() = TestMarkdown(MARKDOWN_LIST_CODE_BLOCK)
 
-    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1250)
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1250, uiMode = Configuration.UI_MODE_NIGHT_YES)
-    @Composable
-    fun ListTest() = TestMarkdown(MARKDOWN_LIST)
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1250)
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1250, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ListTest() = TestMarkdown(MARKDOWN_LIST)
 
-    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
-    @Composable
-    fun TableTest() = TestMarkdown(MARKDOWN_TABLE)
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun TableTest() = TestMarkdown(MARKDOWN_TABLE)
 
-    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
-    @Composable
-    fun InlineCodeTest() = TestMarkdown(MARKDOWN_INLINE_CODE)
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun InlineCodeTest() = TestMarkdown(MARKDOWN_INLINE_CODE)
 
-    @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
-    @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
-    @Composable
-    fun HighlightedCodeTest() = TestMarkdownCodeBlock(MARKDOWN_CODE_BLOCK_TO_HIGHLIGHT)
-}
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun HighlightedCodeTest() = TestMarkdownCodeBlock(MARKDOWN_CODE_BLOCK_TO_HIGHLIGHT)
 
 
 private val MARKDOWN_DEFAULT = """

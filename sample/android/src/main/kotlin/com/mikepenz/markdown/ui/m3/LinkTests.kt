@@ -8,11 +8,10 @@ import com.mikepenz.markdown.ui.m3.util.TestMarkdown
  * Covers links and reference behavior as documented
  * https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet#links
  */
-class LinkTests {
-    @DarkLightPreview
-    @Composable
-    fun LinkTest() = TestMarkdown(
-        """
+@DarkLightPreview
+@Composable
+fun LinkTest() = TestMarkdown(
+    """
         [I'm an inline-style link](https://www.google.com)
 
         [I'm an inline-style link with title](https://www.google.com "Google's Homepage")
@@ -35,5 +34,4 @@ class LinkTests {
         [1]: http://slashdot.org
         [link text itself]: http://www.reddit.com
         """.trimIndent()
-    )
-}
+)

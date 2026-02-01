@@ -14,6 +14,7 @@ plugins {
     alias(baseLibs.plugins.binaryCompatiblityValidator) apply false
     alias(baseLibs.plugins.versionCatalogUpdate) apply false
     alias(baseLibs.plugins.tapmoc) apply false
+    alias(baseLibs.plugins.paparazzi) apply false
 }
 
 allprojects {
