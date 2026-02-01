@@ -89,15 +89,14 @@ jobs:
           ./gradlew sample:android:assembleDebug --stacktrace
 
       - name: Run Tests
-        if: false
         run: |
-          ./gradlew sample:android:validateDebugScreenshotTest
+          ./gradlew :sample:android:verifyPaparazzi
 
       - name: Publish Test Report
         if: false && (failure() || success()) && github.event_name == 'pull_request'
         uses: mikepenz/action-junit-report@v6
         with:
-          report_paths: '**/sample/android/build/test-results/validateDebugScreenshotTest/TEST-*.xml'
+          report_paths: '**/sample/android/build/test-results/testDebugUnitTest/TEST-*.xml'
           github_token: ${{ secrets.GITHUB_TOKEN }}
           fail_on_failure: true
           annotate_only: true
@@ -107,7 +106,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: "Test-Artifacts"
-          path: "sample/android/build/reports/screenshotTest/preview/debug/"
+          path: "sample/android/build/reports/paparazzi/debug/"
 
       - name: Api Check
         if: github.event_name  == 'pull_request'
