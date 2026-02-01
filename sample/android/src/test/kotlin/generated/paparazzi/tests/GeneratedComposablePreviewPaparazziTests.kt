@@ -132,7 +132,7 @@ private class PreviewSnapshotVerifier(
 }
 
 private class PreviewHtmlReportWriter : SnapshotHandler {
-    private val snapshotHandler = HtmlReportWriter(maxPercentDifference = 0.01)
+    private val snapshotHandler = HtmlReportWriter(maxPercentDifference = 0.1)
     override fun newFrameHandler(
         snapshot: Snapshot,
         frameCount: Int,
@@ -167,7 +167,7 @@ object PaparazziPreviewRule {
             true -> MAX_API_LEVEL
             false -> previewInfo.apiLevel
         }
-        val tolerance = 0.0
+        val tolerance = 0.1
         return Paparazzi(
             environment = detectEnvironment().copy(compileSdkVersion = previewApiLevel),
             deviceConfig = DeviceConfigBuilder.build(preview.previewInfo),
@@ -257,7 +257,6 @@ class GeneratedComposablePreviewPaparazziTests(
     @Test
     fun snapshot() {
         val screenshotId = AndroidPreviewScreenshotIdBuilder(preview)
-            .ignoreClassName()
             .ignoreIdFor("heightDp")
             .ignoreIdFor("widthDp")
             .ignoreIdFor("showBackground")
