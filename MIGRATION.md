@@ -1,5 +1,10 @@
 ### Upgrade Notes
 
+#### Version 0.40.0
+
+- **Breaking Change**: Due to Paparazzi requiring Java 21 - This project is now also compiled with
+  Java 21
+
 #### Version 0.39.0
 
 - **Note**: The `highlights` library in v1.1.0 seems to be compiled with Java 21
