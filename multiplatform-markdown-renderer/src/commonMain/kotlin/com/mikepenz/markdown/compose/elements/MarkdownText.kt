@@ -18,12 +18,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.mikepenz.markdown.annotator.AnnotatorSettings
 import com.mikepenz.markdown.annotator.annotatorSettings
 import com.mikepenz.markdown.annotator.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.compose.LocalImageTransformer
+import com.mikepenz.markdown.compose.LocalInlineImageWidth
 import com.mikepenz.markdown.compose.LocalMarkdownAnimations
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
@@ -35,6 +35,7 @@ import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.drawBehind
 import com.mikepenz.markdown.model.ImageTransformer
+import com.mikepenz.markdown.model.InlineImageWidth
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
 import kotlinx.collections.immutable.toPersistentMap
 import org.intellij.markdown.IElementType
@@ -118,6 +119,7 @@ fun MarkdownText(
     val animations = LocalMarkdownAnimations.current
     val transformer = LocalImageTransformer.current
     val inlineContent = LocalMarkdownInlineContent.current
+    val inlineImageWidth = LocalInlineImageWidth.current
     val density = LocalDensity.current
 
     val layoutResult: MutableState<TextLayoutResult?> = remember { mutableStateOf(null) }
@@ -137,13 +139,14 @@ fun MarkdownText(
             },
         style = style,
         inlineContent = imageSizeByLink.toPersistentMap().let { imageSizeByLinkSnapshot ->
-            remember(node, inlineContent.inlineContent, content, containerSize.value, transformer, imageSizeByLinkSnapshot) {
+            remember(node, inlineContent.inlineContent, content, containerSize.value, transformer, inlineImageWidth, imageSizeByLinkSnapshot) {
                 inlineContent.inlineContent + buildImageInlineContent(
                     content,
                     node,
                     transformer,
                     density,
                     containerSize.value,
+                    inlineImageWidth,
                     imageSizeByLinkSnapshot,
                     imageSizeChanged = { link, size -> imageSizeByLink += (link to size) }
                 )
@@ -162,6 +165,7 @@ private fun buildImageInlineContent(
     transformer: ImageTransformer,
     density: Density,
     containerSize: Size,
+    inlineImageWidth: InlineImageWidth,
     imageSizeByLink: Map<String, Size>,
     defaultImageSize: Size = Size.Unspecified,
     imageSizeChanged: ((link: String, Size) -> Unit)? = null,
@@ -175,7 +179,7 @@ private fun buildImageInlineContent(
             // Try to get stored size, or use default
             val imageSize = imageSizeByLink[url] ?: defaultImageSize
             
-            val config = transformer.placeholderConfig(url, density, containerSize, imageSize, imageSizeChanged)
+            val config = transformer.placeholderConfig(url, density, containerSize, inlineImageWidth, imageSize, imageSizeChanged)
             // Config size is in DP, convert to SP for Placeholder TextUnit
             annotation.item to InlineTextContent(
                 Placeholder(

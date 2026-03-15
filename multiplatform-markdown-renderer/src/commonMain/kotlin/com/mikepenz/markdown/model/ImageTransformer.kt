@@ -1,6 +1,5 @@
 package com.mikepenz.markdown.model
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
@@ -36,6 +35,7 @@ interface ImageTransformer {
         link: String,
         density: Density,
         containerSize: Size,
+        inlineImageWidth: InlineImageWidth,
         imageSize: Size,
         imageSizeChanged: ((link: String, Size) -> Unit)? = null,
     ): PlaceholderConfig {
@@ -43,19 +43,15 @@ interface ImageTransformer {
             return Size(size.width * factor, size.height * factor)
         }
 
-        // Work entirely in DP for consistent unit handling
-        // containerSize and imageSize are in PX, convert to DP
-        val maxSideDp = DEFAULT_IMAGE_SIDE_LENGTH_DP
-
         val sizeInDp = with(density) {
             if (containerSize.isUnspecified) {
                 // No container size known, use default
-                Size(maxSideDp, maxSideDp)
+                Size(DEFAULT_IMAGE_SIDE_LENGTH_DP, DEFAULT_IMAGE_SIDE_LENGTH_DP)
             } else if (imageSize.isUnspecified) {
                 // No image size known yet, use container-constrained max side
                 val containerWidthDp = containerSize.width.toDp().value
                 val containerHeightDp = containerSize.height.toDp().value
-                val actualSideLength = minOf(maxSideDp, containerHeightDp, containerWidthDp)
+                val actualSideLength = minOf(DEFAULT_IMAGE_SIDE_LENGTH_DP, containerHeightDp, containerWidthDp)
                 Size(actualSideLength, actualSideLength)
             } else {
                 // Both sizes known, calculate scaled size to fit container
@@ -64,15 +60,21 @@ interface ImageTransformer {
                 val containerWidthDp = containerSize.width.toDp().value
                 val containerHeightDp = containerSize.height.toDp().value
 
-                val actualHeight = minOf(imageHeightDp, containerHeightDp, maxSideDp)
-                val actualWidth = minOf(imageWidthDp, containerWidthDp, maxSideDp)
+                val containerCappedHeight = minOf(imageHeightDp, containerHeightDp)
+                val containerCappedWidth = when (inlineImageWidth) {
+                    InlineImageWidth.IMAGE_WIDTH -> minOf(imageWidthDp, containerWidthDp)
+                    InlineImageWidth.MAX_WIDTH -> containerWidthDp
+                }
 
-                if (actualWidth < imageWidthDp || actualHeight < imageHeightDp) {
+                if (containerCappedWidth < imageWidthDp || containerCappedHeight < imageHeightDp) {
                     // Image needs scaling down to fit
-                    val lowestRatio = minOf(actualWidth / imageWidthDp, actualHeight / imageHeightDp)
-                    scale(Size(imageWidthDp, imageHeightDp), lowestRatio)
+                    val lowestRatio = minOf(containerCappedWidth / imageWidthDp, containerCappedHeight / imageHeightDp)
+                    when (inlineImageWidth) {
+                        InlineImageWidth.IMAGE_WIDTH -> scale(Size(imageWidthDp, imageHeightDp), lowestRatio)
+                        InlineImageWidth.MAX_WIDTH -> Size(containerCappedWidth, imageHeightDp * lowestRatio)
+                    }
                 } else {
-                    Size(actualWidth, actualHeight)
+                    Size(containerCappedWidth, containerCappedHeight)
                 }
             }
         }
@@ -94,7 +96,7 @@ data class PlaceholderConfig(
 @Immutable
 data class ImageData(
     val painter: Painter,
-    val modifier: Modifier = Modifier.fillMaxWidth(),
+    val modifier: Modifier = Modifier,
     val contentDescription: String? = "Image",
     val alignment: Alignment = Alignment.CenterStart,
     val contentScale: ContentScale = ContentScale.Fit,

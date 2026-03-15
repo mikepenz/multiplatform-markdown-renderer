@@ -6,6 +6,17 @@
 // - Show declarations: true
 
 // Library unique name: <com.mikepenz:multiplatform-markdown-renderer>
+final enum class com.mikepenz.markdown.model/InlineImageWidth : kotlin/Enum<com.mikepenz.markdown.model/InlineImageWidth> { // com.mikepenz.markdown.model/InlineImageWidth|null[0]
+    enum entry IMAGE_WIDTH // com.mikepenz.markdown.model/InlineImageWidth.IMAGE_WIDTH|null[0]
+    enum entry MAX_WIDTH // com.mikepenz.markdown.model/InlineImageWidth.MAX_WIDTH|null[0]
+
+    final val entries // com.mikepenz.markdown.model/InlineImageWidth.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<com.mikepenz.markdown.model/InlineImageWidth> // com.mikepenz.markdown.model/InlineImageWidth.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): com.mikepenz.markdown.model/InlineImageWidth // com.mikepenz.markdown.model/InlineImageWidth.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<com.mikepenz.markdown.model/InlineImageWidth> // com.mikepenz.markdown.model/InlineImageWidth.values|values#static(){}[0]
+}
+
 abstract fun interface com.mikepenz.markdown.compose.extendedspans/SpanDrawInstructions { // com.mikepenz.markdown.compose.extendedspans/SpanDrawInstructions|null[0]
     abstract fun (androidx.compose.ui.graphics.drawscope/DrawScope).draw() // com.mikepenz.markdown.compose.extendedspans/SpanDrawInstructions.draw|draw@androidx.compose.ui.graphics.drawscope.DrawScope(){}[0]
 }
@@ -77,7 +88,7 @@ abstract interface com.mikepenz.markdown.compose.components/MarkdownComponents {
 abstract interface com.mikepenz.markdown.model/ImageTransformer { // com.mikepenz.markdown.model/ImageTransformer|null[0]
     abstract fun transform(kotlin/String, androidx.compose.runtime/Composer?, kotlin/Int): com.mikepenz.markdown.model/ImageData? // com.mikepenz.markdown.model/ImageTransformer.transform|transform(kotlin.String;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
     open fun intrinsicSize(androidx.compose.ui.graphics.painter/Painter, androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui.geometry/Size // com.mikepenz.markdown.model/ImageTransformer.intrinsicSize|intrinsicSize(androidx.compose.ui.graphics.painter.Painter;androidx.compose.runtime.Composer?;kotlin.Int){}[0]
-    open fun placeholderConfig(kotlin/String, androidx.compose.ui.unit/Density, androidx.compose.ui.geometry/Size, androidx.compose.ui.geometry/Size, kotlin/Function2<kotlin/String, androidx.compose.ui.geometry/Size, kotlin/Unit>? = ...): com.mikepenz.markdown.model/PlaceholderConfig // com.mikepenz.markdown.model/ImageTransformer.placeholderConfig|placeholderConfig(kotlin.String;androidx.compose.ui.unit.Density;androidx.compose.ui.geometry.Size;androidx.compose.ui.geometry.Size;kotlin.Function2<kotlin.String,androidx.compose.ui.geometry.Size,kotlin.Unit>?){}[0]
+    open fun placeholderConfig(kotlin/String, androidx.compose.ui.unit/Density, androidx.compose.ui.geometry/Size, com.mikepenz.markdown.model/InlineImageWidth, androidx.compose.ui.geometry/Size, kotlin/Function2<kotlin/String, androidx.compose.ui.geometry/Size, kotlin/Unit>? = ...): com.mikepenz.markdown.model/PlaceholderConfig // com.mikepenz.markdown.model/ImageTransformer.placeholderConfig|placeholderConfig(kotlin.String;androidx.compose.ui.unit.Density;androidx.compose.ui.geometry.Size;com.mikepenz.markdown.model.InlineImageWidth;androidx.compose.ui.geometry.Size;kotlin.Function2<kotlin.String,androidx.compose.ui.geometry.Size,kotlin.Unit>?){}[0]
 
     final object Companion { // com.mikepenz.markdown.model/ImageTransformer.Companion|null[0]
         final const val DEFAULT_IMAGE_SIDE_LENGTH_DP // com.mikepenz.markdown.model/ImageTransformer.Companion.DEFAULT_IMAGE_SIDE_LENGTH_DP|{}DEFAULT_IMAGE_SIDE_LENGTH_DP[0]
@@ -698,6 +709,8 @@ final val com.mikepenz.markdown.compose/LocalBulletListHandler // com.mikepenz.m
     final fun <get-LocalBulletListHandler>(): androidx.compose.runtime/ProvidableCompositionLocal<com.mikepenz.markdown.model/BulletHandler> // com.mikepenz.markdown.compose/LocalBulletListHandler.<get-LocalBulletListHandler>|<get-LocalBulletListHandler>(){}[0]
 final val com.mikepenz.markdown.compose/LocalImageTransformer // com.mikepenz.markdown.compose/LocalImageTransformer|{}LocalImageTransformer[0]
     final fun <get-LocalImageTransformer>(): androidx.compose.runtime/ProvidableCompositionLocal<com.mikepenz.markdown.model/ImageTransformer> // com.mikepenz.markdown.compose/LocalImageTransformer.<get-LocalImageTransformer>|<get-LocalImageTransformer>(){}[0]
+final val com.mikepenz.markdown.compose/LocalInlineImageWidth // com.mikepenz.markdown.compose/LocalInlineImageWidth|{}LocalInlineImageWidth[0]
+    final fun <get-LocalInlineImageWidth>(): androidx.compose.runtime/ProvidableCompositionLocal<com.mikepenz.markdown.model/InlineImageWidth> // com.mikepenz.markdown.compose/LocalInlineImageWidth.<get-LocalInlineImageWidth>|<get-LocalInlineImageWidth>(){}[0]
 final val com.mikepenz.markdown.compose/LocalMarkdownAnimations // com.mikepenz.markdown.compose/LocalMarkdownAnimations|{}LocalMarkdownAnimations[0]
     final fun <get-LocalMarkdownAnimations>(): androidx.compose.runtime/ProvidableCompositionLocal<com.mikepenz.markdown.model/MarkdownAnimations> // com.mikepenz.markdown.compose/LocalMarkdownAnimations.<get-LocalMarkdownAnimations>|<get-LocalMarkdownAnimations>(){}[0]
 final val com.mikepenz.markdown.compose/LocalMarkdownAnnotator // com.mikepenz.markdown.compose/LocalMarkdownAnnotator|{}LocalMarkdownAnnotator[0]

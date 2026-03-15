@@ -2,7 +2,7 @@ public final class com/mikepenz/markdown/coil3/Coil3ImageTransformerImpl : com/m
 	public static final field $stable I
 	public static final field INSTANCE Lcom/mikepenz/markdown/coil3/Coil3ImageTransformerImpl;
 	public fun intrinsicSize-bSu-EZI (Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/runtime/Composer;I)J
-	public fun placeholderConfig-M3cbxlo (Ljava/lang/String;Landroidx/compose/ui/unit/Density;JJLkotlin/jvm/functions/Function2;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+	public fun placeholderConfig-JRj2zQI (Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/InlineImageWidth;JLkotlin/jvm/functions/Function2;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
 	public fun transform (Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Lcom/mikepenz/markdown/model/ImageData;
 }
 
