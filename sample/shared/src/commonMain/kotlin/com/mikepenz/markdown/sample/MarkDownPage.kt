@@ -60,7 +60,7 @@ internal fun MarkDownPage(modifier: Modifier = Modifier) {
                         showHeader = true,
                     )
                 },
-                checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }
+                checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) },
             ),
             imageTransformer = Coil3ImageTransformerImpl,
             extendedSpans = markdownExtendedSpans {

@@ -18,6 +18,7 @@ fun MarkdownCheckBox(
     checkedIndicator: @Composable (Boolean, Modifier) -> Unit = { checked, modifier ->
         MarkdownText(
             content = "[${if (checked) "x" else " "}] ",
+            node = node,
             modifier = modifier,
             style = style.copy(fontFamily = FontFamily.Monospace)
         )

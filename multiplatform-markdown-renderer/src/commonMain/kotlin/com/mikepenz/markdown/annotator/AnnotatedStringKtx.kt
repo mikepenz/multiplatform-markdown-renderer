@@ -261,7 +261,8 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content = content, node = child, annotatorSettings = annotatorSettings)
 
                     MarkdownElementTypes.IMAGE -> child.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.let {
-                        appendInlineContent(MARKDOWN_TAG_IMAGE_URL, it.getUnescapedTextInNode(content))
+                        val imageUrl = it.getUnescapedTextInNode(content)
+                        appendInlineContent("${MARKDOWN_TAG_IMAGE_URL}_$imageUrl", imageUrl)
                     }
 
                     MarkdownElementTypes.EMPH -> {
