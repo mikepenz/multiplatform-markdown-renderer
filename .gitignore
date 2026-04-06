@@ -51,3 +51,6 @@ xcuserdata/
 
 ## AI
 *.local.json
+
+## Kotlin/JS
+kotlin-js-store/

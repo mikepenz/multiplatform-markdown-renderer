@@ -3,6 +3,7 @@ plugins {
     id("com.mikepenz.convention.compose")
     id("com.mikepenz.aboutlibraries.plugin")
     id("com.mikepenz.aboutlibraries.plugin.android")
+    id("com.mikepenz.convention.composable-preview-scanner.paparazzi-plugin")
 }
 
 android {
@@ -32,3 +33,10 @@ aboutLibraries {
         exportVariant = "release"
     }
 }
+
+/*
+composablePreviewPaparazzi {
+    enable = true
+    packages.add("com.mikepenz.markdown.ui")
+}
+ */

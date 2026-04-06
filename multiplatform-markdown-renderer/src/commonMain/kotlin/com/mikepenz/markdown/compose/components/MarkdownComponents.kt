@@ -13,6 +13,7 @@ import com.mikepenz.markdown.compose.elements.MarkdownCodeFence
 import com.mikepenz.markdown.compose.elements.MarkdownDivider
 import com.mikepenz.markdown.compose.elements.MarkdownHeader
 import com.mikepenz.markdown.compose.elements.MarkdownImage
+import com.mikepenz.markdown.compose.elements.MarkdownInlineImage
 import com.mikepenz.markdown.compose.elements.MarkdownOrderedList
 import com.mikepenz.markdown.compose.elements.MarkdownParagraph
 import com.mikepenz.markdown.compose.elements.MarkdownTable
@@ -61,6 +62,7 @@ fun markdownComponents(
     orderedList: MarkdownComponent = CurrentComponentsBridge.orderedList,
     unorderedList: MarkdownComponent = CurrentComponentsBridge.unorderedList,
     image: MarkdownComponent = CurrentComponentsBridge.image,
+    inlineImage: MarkdownComponent = CurrentComponentsBridge.inlineImage,
     horizontalRule: MarkdownComponent = CurrentComponentsBridge.horizontalRule,
     table: MarkdownComponent = CurrentComponentsBridge.table,
     checkbox: MarkdownComponent = CurrentComponentsBridge.checkbox,
@@ -83,6 +85,7 @@ fun markdownComponents(
     orderedList = orderedList,
     unorderedList = unorderedList,
     image = image,
+    inlineImage = inlineImage,
     horizontalRule = horizontalRule,
     table = table,
     checkbox = checkbox,
@@ -111,6 +114,7 @@ interface MarkdownComponents {
     val orderedList: MarkdownComponent
     val unorderedList: MarkdownComponent
     val image: MarkdownComponent
+    val inlineImage: MarkdownComponent
     val horizontalRule: MarkdownComponent
     val table: MarkdownComponent
     val checkbox: MarkdownComponent
@@ -136,6 +140,7 @@ private data class DefaultMarkdownComponents(
     override val orderedList: MarkdownComponent,
     override val unorderedList: MarkdownComponent,
     override val image: MarkdownComponent,
+    override val inlineImage: MarkdownComponent,
     override val horizontalRule: MarkdownComponent,
     override val table: MarkdownComponent,
     override val checkbox: MarkdownComponent,
@@ -147,7 +152,7 @@ private data class DefaultMarkdownComponents(
  */
 object CurrentComponentsBridge {
     val text: MarkdownComponent = {
-        MarkdownText(it.getUnescapedTextInNode(), style = it.typography.text)
+        MarkdownText(it.getUnescapedTextInNode(), it.node, style = it.typography.text)
     }
     val eol: MarkdownComponent = { }
     val codeFence: MarkdownComponent = {
@@ -194,6 +199,9 @@ object CurrentComponentsBridge {
     }
     val image: MarkdownComponent = {
         MarkdownImage(it.content, it.node)
+    }
+    val inlineImage: MarkdownComponent = {
+        MarkdownInlineImage(it.content, it.node)
     }
     val horizontalRule: MarkdownComponent = {
         MarkdownDivider(Modifier.fillMaxWidth())
