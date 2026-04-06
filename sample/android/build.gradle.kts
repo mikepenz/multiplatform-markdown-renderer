@@ -22,7 +22,7 @@ dependencies {
     implementation(baseLibs.jetbrains.compose.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.ktor.client.okhttp)
-    debugImplementation(baseLibs.jetbrains.compose.ui.tooling)
+    implementation(baseLibs.jetbrains.compose.ui.tooling)
 }
 
 aboutLibraries {
