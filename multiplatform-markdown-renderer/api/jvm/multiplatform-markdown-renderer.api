@@ -45,7 +45,7 @@ public final class com/mikepenz/markdown/compose/ComposableSingletons$MarkdownKt
 public final class com/mikepenz/markdown/compose/ComposeLocalKt {
 	public static final fun getLocalBulletListHandler ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalImageTransformer ()Landroidx/compose/runtime/ProvidableCompositionLocal;
-	public static final fun getLocalInlineImageWidth ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalImageWidth ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownAnimations ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownAnnotator ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
@@ -487,8 +487,8 @@ public abstract interface class com/mikepenz/markdown/model/ImageTransformer {
 	public static final field Companion Lcom/mikepenz/markdown/model/ImageTransformer$Companion;
 	public static final field DEFAULT_IMAGE_SIDE_LENGTH_DP F
 	public fun intrinsicSize-bSu-EZI (Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/runtime/Composer;I)J
-	public fun placeholderConfig-JRj2zQI (Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/InlineImageWidth;JLkotlin/jvm/functions/Function2;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
-	public static synthetic fun placeholderConfig-JRj2zQI$default (Lcom/mikepenz/markdown/model/ImageTransformer;Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/InlineImageWidth;JLkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+	public fun placeholderConfig-JRj2zQI (Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/ImageWidth;JLkotlin/jvm/functions/Function2;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+	public static synthetic fun placeholderConfig-JRj2zQI$default (Lcom/mikepenz/markdown/model/ImageTransformer;Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/ImageWidth;JLkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
 	public abstract fun transform (Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Lcom/mikepenz/markdown/model/ImageData;
 }
 
@@ -498,16 +498,16 @@ public final class com/mikepenz/markdown/model/ImageTransformer$Companion {
 
 public final class com/mikepenz/markdown/model/ImageTransformer$DefaultImpls {
 	public static fun intrinsicSize-bSu-EZI (Lcom/mikepenz/markdown/model/ImageTransformer;Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/runtime/Composer;I)J
-	public static fun placeholderConfig-JRj2zQI (Lcom/mikepenz/markdown/model/ImageTransformer;Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/InlineImageWidth;JLkotlin/jvm/functions/Function2;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
-	public static synthetic fun placeholderConfig-JRj2zQI$default (Lcom/mikepenz/markdown/model/ImageTransformer;Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/InlineImageWidth;JLkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+	public static fun placeholderConfig-JRj2zQI (Lcom/mikepenz/markdown/model/ImageTransformer;Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/ImageWidth;JLkotlin/jvm/functions/Function2;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+	public static synthetic fun placeholderConfig-JRj2zQI$default (Lcom/mikepenz/markdown/model/ImageTransformer;Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/ImageWidth;JLkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
 }
 
-public final class com/mikepenz/markdown/model/InlineImageWidth : java/lang/Enum {
-	public static final field IMAGE_WIDTH Lcom/mikepenz/markdown/model/InlineImageWidth;
-	public static final field MAX_WIDTH Lcom/mikepenz/markdown/model/InlineImageWidth;
+public final class com/mikepenz/markdown/model/ImageWidth : java/lang/Enum {
+	public static final field IMAGE_WIDTH Lcom/mikepenz/markdown/model/ImageWidth;
+	public static final field MAX_WIDTH Lcom/mikepenz/markdown/model/ImageWidth;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lcom/mikepenz/markdown/model/InlineImageWidth;
-	public static fun values ()[Lcom/mikepenz/markdown/model/InlineImageWidth;
+	public static fun valueOf (Ljava/lang/String;)Lcom/mikepenz/markdown/model/ImageWidth;
+	public static fun values ()[Lcom/mikepenz/markdown/model/ImageWidth;
 }
 
 public final class com/mikepenz/markdown/model/Input {
@@ -660,7 +660,7 @@ public final class com/mikepenz/markdown/model/NoOpImageTransformerImpl : com/mi
 	public static final field $stable I
 	public fun <init> ()V
 	public fun intrinsicSize-bSu-EZI (Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/runtime/Composer;I)J
-	public fun placeholderConfig-JRj2zQI (Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/InlineImageWidth;JLkotlin/jvm/functions/Function2;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
+	public fun placeholderConfig-JRj2zQI (Ljava/lang/String;Landroidx/compose/ui/unit/Density;JLcom/mikepenz/markdown/model/ImageWidth;JLkotlin/jvm/functions/Function2;)Lcom/mikepenz/markdown/model/PlaceholderConfig;
 	public fun transform (Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Lcom/mikepenz/markdown/model/ImageData;
 }
 
