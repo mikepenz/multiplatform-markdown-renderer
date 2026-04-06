@@ -10,7 +10,7 @@ import com.mikepenz.markdown.model.DefaultMarkdownAnnotatorConfig
 import com.mikepenz.markdown.model.DefaultMarkdownExtendedSpans
 import com.mikepenz.markdown.model.DefaultMarkdownInlineContent
 import com.mikepenz.markdown.model.ImageTransformer
-import com.mikepenz.markdown.model.InlineImageWidth
+import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.model.MarkdownAnimations
 import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.MarkdownColors
@@ -85,10 +85,10 @@ val LocalMarkdownInlineContent = staticCompositionLocalOf<MarkdownInlineContent>
 }
 
 /**
- * Local [InlineImageWidth] provider
+ * Local [ImageWidth] provider
  */
-val LocalInlineImageWidth = staticCompositionLocalOf<InlineImageWidth> {
-    return@staticCompositionLocalOf InlineImageWidth.IMAGE_WIDTH
+val LocalImageWidth = staticCompositionLocalOf<ImageWidth> {
+    return@staticCompositionLocalOf ImageWidth.IMAGE_WIDTH
 }
 
 /**

@@ -3,6 +3,7 @@ package com.mikepenz.markdown.compose.elements
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,7 +24,7 @@ import com.mikepenz.markdown.annotator.AnnotatorSettings
 import com.mikepenz.markdown.annotator.annotatorSettings
 import com.mikepenz.markdown.annotator.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.compose.LocalImageTransformer
-import com.mikepenz.markdown.compose.LocalInlineImageWidth
+import com.mikepenz.markdown.compose.LocalImageWidth
 import com.mikepenz.markdown.compose.LocalMarkdownAnimations
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
@@ -35,7 +36,7 @@ import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.drawBehind
 import com.mikepenz.markdown.model.ImageTransformer
-import com.mikepenz.markdown.model.InlineImageWidth
+import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
 import kotlinx.collections.immutable.toPersistentMap
 import org.intellij.markdown.IElementType
@@ -119,7 +120,7 @@ fun MarkdownText(
     val animations = LocalMarkdownAnimations.current
     val transformer = LocalImageTransformer.current
     val inlineContent = LocalMarkdownInlineContent.current
-    val inlineImageWidth = LocalInlineImageWidth.current
+    val inlineImageWidth = LocalImageWidth.current
     val density = LocalDensity.current
 
     val layoutResult: MutableState<TextLayoutResult?> = remember { mutableStateOf(null) }
@@ -165,7 +166,7 @@ private fun buildImageInlineContent(
     transformer: ImageTransformer,
     density: Density,
     containerSize: Size,
-    inlineImageWidth: InlineImageWidth,
+    inlineImageWidth: ImageWidth,
     imageSizeByLink: Map<String, Size>,
     defaultImageSize: Size = Size.Unspecified,
     imageSizeChanged: ((link: String, Size) -> Unit)? = null,
@@ -175,10 +176,10 @@ private fun buildImageInlineContent(
         .distinctBy { it.item }
         .associate { annotation ->
             val url = annotation.item.removePrefix("${MARKDOWN_TAG_IMAGE_URL}_")
-            
+
             // Try to get stored size, or use default
             val imageSize = imageSizeByLink[url] ?: defaultImageSize
-            
+
             val config = transformer.placeholderConfig(url, density, containerSize, inlineImageWidth, imageSize, imageSizeChanged)
             // Config size is in DP, convert to SP for Placeholder TextUnit
             annotation.item to InlineTextContent(
@@ -209,18 +210,16 @@ private fun MarkdownInlineImageWithSize(
     node: ASTNode,
     transformer: ImageTransformer,
     density: Density,
-    onSizeDetected: (Size) -> Unit
+    onSizeDetected: (Size) -> Unit,
 ) {
     val imageData = transformer.transform(link)
-    
+
     // Detect intrinsic size when painter becomes available
-    imageData?.let {
-        val intrinsicSize = transformer.intrinsicSize(it.painter)
-        if (intrinsicSize != Size.Unspecified) {
-            onSizeDetected(intrinsicSize)
-        }
+    val intrinsicSize = imageData?.let { transformer.intrinsicSize(it.painter) } ?: Size.Unspecified
+    if (intrinsicSize != Size.Unspecified) {
+        SideEffect { onSizeDetected(intrinsicSize) }
     }
-    
+
     // Delegate to the customizable component
     LocalMarkdownComponents.current.inlineImage(
         MarkdownComponentModel(link, node, LocalMarkdownTypography.current)

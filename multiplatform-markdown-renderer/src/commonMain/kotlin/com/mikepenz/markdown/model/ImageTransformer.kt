@@ -35,7 +35,7 @@ interface ImageTransformer {
         link: String,
         density: Density,
         containerSize: Size,
-        inlineImageWidth: InlineImageWidth,
+        imageWidth: ImageWidth,
         imageSize: Size,
         imageSizeChanged: ((link: String, Size) -> Unit)? = null,
     ): PlaceholderConfig {
@@ -61,20 +61,32 @@ interface ImageTransformer {
                 val containerHeightDp = containerSize.height.toDp().value
 
                 val containerCappedHeight = minOf(imageHeightDp, containerHeightDp)
-                val containerCappedWidth = when (inlineImageWidth) {
-                    InlineImageWidth.IMAGE_WIDTH -> minOf(imageWidthDp, containerWidthDp)
-                    InlineImageWidth.MAX_WIDTH -> containerWidthDp
+                val containerCappedWidth = when (imageWidth) {
+                    ImageWidth.IMAGE_WIDTH -> minOf(imageWidthDp, containerWidthDp)
+                    ImageWidth.MAX_WIDTH -> containerWidthDp
                 }
 
                 if (containerCappedWidth < imageWidthDp || containerCappedHeight < imageHeightDp) {
                     // Image needs scaling down to fit
-                    val lowestRatio = minOf(containerCappedWidth / imageWidthDp, containerCappedHeight / imageHeightDp)
-                    when (inlineImageWidth) {
-                        InlineImageWidth.IMAGE_WIDTH -> scale(Size(imageWidthDp, imageHeightDp), lowestRatio)
-                        InlineImageWidth.MAX_WIDTH -> Size(containerCappedWidth, imageHeightDp * lowestRatio)
+                    when (imageWidth) {
+                        ImageWidth.IMAGE_WIDTH -> {
+                            val lowestRatio = minOf(containerCappedWidth / imageWidthDp, containerCappedHeight / imageHeightDp)
+                            scale(Size(imageWidthDp, imageHeightDp), lowestRatio)
+                        }
+                        ImageWidth.MAX_WIDTH -> {
+                            val widthRatio = containerCappedWidth / imageWidthDp
+                            Size(containerCappedWidth, imageHeightDp * widthRatio)
+                        }
                     }
                 } else {
-                    Size(containerCappedWidth, containerCappedHeight)
+                    // Image fits naturally in container; for MAX_WIDTH scale up to fill width proportionally
+                    when (imageWidth) {
+                        ImageWidth.IMAGE_WIDTH -> Size(containerCappedWidth, containerCappedHeight)
+                        ImageWidth.MAX_WIDTH -> {
+                            val widthRatio = containerCappedWidth / imageWidthDp
+                            Size(containerCappedWidth, imageHeightDp * widthRatio)
+                        }
+                    }
                 }
             }
         }

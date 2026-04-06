@@ -1,7 +1,9 @@
 package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.LocalImageTransformer
 import org.intellij.markdown.ast.ASTNode
 
@@ -12,7 +14,7 @@ fun MarkdownInlineImage(link: String, node: ASTNode) {
         Image(
             painter = imageData.painter,
             contentDescription = imageData.contentDescription,
-            modifier = imageData.modifier,
+            modifier = Modifier.fillMaxSize().then(imageData.modifier),
             alignment = imageData.alignment,
             contentScale = imageData.contentScale,
             alpha = imageData.alpha,
