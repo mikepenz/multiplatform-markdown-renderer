@@ -4,6 +4,10 @@
 
 - **Breaking Change**: Due to Paparazzi requiring Java 21 - This project is now also compiled with
   Java 21
+- **New Component**: A dedicated `inlineImage` component was added to `MarkdownComponents`.
+    - This separates inline image rendering from the general image component.
+    - If you have a custom `MarkdownComponents` implementation you will need to add the
+      `inlineImage` component.
 
 #### Version 0.39.0
 
