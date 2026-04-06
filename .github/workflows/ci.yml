@@ -62,6 +62,8 @@ jobs:
   build:
     name: Build
     runs-on: macos-latest
+    permissions:
+      security-events: write
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -114,23 +116,15 @@ jobs:
         run: ./gradlew apiCheck
 
       - name: Run Lint
-        if: github.event_name  == 'pull_request'
+        if: github.event_name == 'pull_request'
         run: ./gradlew lintDebug
 
-      - name: Setup Ruby
-        if: github.event_name  == 'pull_request'
-        uses: ruby/setup-ruby@v1
+      - name: Upload Lint SARIF
+        if: github.event_name == 'pull_request'
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          ruby-version: '3.0'
-          bundler-cache: true
-
-      - name: Run Danger
-        if: github.event_name  == 'pull_request'
-        run: |
-          gem install danger
-          bundle exec danger --dangerfile=Dangerfile --danger_id=danger-pr
-        env:
-          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          sarif_file: '**/build/reports/lint-results-debug.sarif'
+          category: android-lint
 
       - name: Prepare Keystore and Local.
         if: startsWith(github.ref, 'refs/tags/')
