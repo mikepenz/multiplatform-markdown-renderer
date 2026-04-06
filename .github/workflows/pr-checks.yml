@@ -3,6 +3,9 @@ name: PR Checks
 on:
   pull_request:
 
+permissions:
+  pull-requests: read
+
 jobs:
   quality-gates:
     name: Quality Gates

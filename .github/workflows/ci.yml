@@ -63,6 +63,7 @@ jobs:
     name: Build
     runs-on: macos-latest
     permissions:
+      contents: read
       security-events: write
     steps:
       - name: Checkout
@@ -106,6 +107,7 @@ jobs:
           detailed_summary: true
 
       - name: Archive Test Report
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: "Test-Artifacts"
@@ -119,11 +121,20 @@ jobs:
         if: github.event_name == 'pull_request'
         run: ./gradlew lintDebug
 
-      - name: Upload Lint SARIF
+      - name: Collect Lint SARIF reports
         if: github.event_name == 'pull_request'
+        run: |
+          mkdir -p sarif-reports
+          find . -name "lint-results-debug.sarif" | while read f; do
+            module=$(echo "$f" | sed 's|^\./||' | sed 's|/build/reports/.*||' | sed 's|/|-|g')
+            cp "$f" "sarif-reports/${module}-lint.sarif"
+          done
+
+      - name: Upload Lint SARIF
+        if: always() && github.event_name == 'pull_request'
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: '**/build/reports/lint-results-debug.sarif'
+          sarif_file: 'sarif-reports'
           category: android-lint
 
       - name: Prepare Keystore and Local.
