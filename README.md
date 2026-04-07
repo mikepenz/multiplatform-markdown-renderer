@@ -37,6 +37,7 @@
 - **Customization Options** - Extensive customization for colors, typography, components, and more
 - **Performance Optimized** - Efficient rendering with lazy loading support for large documents
 - **Extended Text Spans** - Support for advanced text styling with extended spans
+- **LaTeX Math Rendering** - Optional LaTeX math formula rendering for inline and block equations
 - **Lightweight** - Minimal dependencies and optimized for performance
 
 -------
@@ -493,6 +494,28 @@ Markdown(
 )
 ```
 
+### LaTeX Math Rendering
+
+The library offers optional support for rendering LaTeX math formulas (both inline `$...$` and
+block `$$...$$`) via the `multiplatform-markdown-renderer-latex` module, powered
+by [RaTeX](https://github.com/erweixin/RaTeX).
+
+```groovy
+implementation("com.mikepenz:multiplatform-markdown-renderer-latex:${version}")
+```
+
+Once added, configure the `Markdown` composable with the LaTeX components:
+
+```kotlin
+Markdown(
+    MARKDOWN,
+    inlineContent = mathInlineContent(),
+    components = markdownComponents(
+        blockMath = latexBlockMath,
+    ),
+)
+```
+
 ## Dependencies
 
 This library uses the following key dependencies:
@@ -504,6 +527,7 @@ This library uses the following key dependencies:
 - [Extended Spans](https://github.com/saket/extended-spans) - For advanced text styling (integrated
   as multiplatform)
 - [Highlights](https://github.com/SnipMeDev/Highlights) - For code syntax highlighting (optional)
+- [RaTeX](https://github.com/erweixin/RaTeX) - For LaTeX math rendering (optional)
 
 ## Developed By
 
