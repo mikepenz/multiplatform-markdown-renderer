@@ -175,7 +175,7 @@ interface MarkdownState {
 internal class MarkdownStateImpl(
     private var input: Input,
 ) : MarkdownState {
-    private val stateFlow: MutableStateFlow<State> = MutableStateFlow(State.Loading(input.referenceLinkHandler))
+    private val stateFlow: MutableStateFlow<State> = MutableStateFlow(State.Loading)
     override val state: StateFlow<State> = stateFlow.asStateFlow()
 
     private val linkStateFlow: MutableStateFlow<Map<String, String?>> = MutableStateFlow(emptyMap())
@@ -191,7 +191,7 @@ internal class MarkdownStateImpl(
         if (input == newInput) return // don't do anything for the same input
         input = newInput
         // if we already have content don't go back to loading if retain state is set to true
-        if (!newInput.retainState) stateFlow.value = State.Loading(input.referenceLinkHandler)
+        if (!newInput.retainState) stateFlow.value = State.Loading
     }
 
     /**
@@ -201,7 +201,7 @@ internal class MarkdownStateImpl(
      * @param error The error that occurred.
      */
     internal fun setError(error: Throwable) {
-        stateFlow.value = State.Error(error, input.referenceLinkHandler)
+        stateFlow.value = State.Error(error)
     }
 
     /**
@@ -226,7 +226,7 @@ internal class MarkdownStateImpl(
             }
             State.Success(parsedResult, input.content, input.lookupLinks, input.referenceLinkHandler)
         } catch (error: Throwable) {
-            State.Error(error, input.referenceLinkHandler)
+            State.Error(error)
         }.also { result ->
             stateFlow.value = result
         }
@@ -234,7 +234,7 @@ internal class MarkdownStateImpl(
 }
 
 /**
- * Creates a [kotlinx.coroutines.flow.Flow] of [State] for use in non-composable contexts like view models.
+ * Creates a [Flow] of [State] for use in non-composable contexts like view models.
  * As soon as the flow is collected, it will start parsing the content, and emit the state once ready.
  *
  * @param content The markdown content to parse.
@@ -243,7 +243,7 @@ internal class MarkdownStateImpl(
  * @param parser The [MarkdownParser] to use for parsing.
  * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
  *
- * @return A [kotlinx.coroutines.flow.Flow] of [State] that will emit the parsing state.
+ * @return A [Flow] of [State] that will emit the parsing state.
  */
 fun parseMarkdownFlow(
     content: String,
@@ -252,7 +252,7 @@ fun parseMarkdownFlow(
     parser: MarkdownParser = MarkdownParser(flavour),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
 ) = flow {
-    emit(State.Loading(referenceLinkHandler))
+    emit(State.Loading)
     val markdownState = MarkdownStateImpl(
         Input(
             content = content,
@@ -288,7 +288,7 @@ fun Flow<String>.asMarkdownState(
     var isFirst = true
     return transform {
         if (isFirst || !retainState) {
-            emit(State.Loading(referenceLinkHandler))
+            emit(State.Loading)
             isFirst = false
         }
         val markdownState = MarkdownStateImpl(
@@ -305,7 +305,6 @@ fun Flow<String>.asMarkdownState(
         emitAll(markdownState.state)
     }
 }
-
 
 /**
  * The input for the [MarkdownState].
@@ -358,15 +357,9 @@ data class Input(
  */
 @Immutable
 sealed interface State {
-
-    /** The [ReferenceLinkHandler] to store links in. */
-    val referenceLinkHandler: ReferenceLinkHandler
-
     /** The parsing is in-progress. */
     @Immutable
-    data class Loading(
-        override val referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
-    ) : State
+    data object Loading : State
 
     /** The parsing was successful. */
     @Immutable
@@ -374,13 +367,12 @@ sealed interface State {
         val node: ASTNode,
         val content: String,
         val linksLookedUp: Boolean,
-        override val referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
+        val referenceLinkHandler: ReferenceLinkHandler,
     ) : State
 
     /** The parsing failed due to [Throwable]. */
     @Immutable
     data class Error(
         val result: Throwable,
-        override val referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
     ) : State
 }
