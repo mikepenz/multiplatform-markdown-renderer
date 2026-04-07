@@ -20,6 +20,26 @@ import org.intellij.markdown.flavours.gfm.GFMTokenTypes
 const val MARKDOWN_TAG_IMAGE_URL = "MARKDOWN_IMAGE_URL"
 
 /**
+ * Tag used to indicate an inline math expression for inline content. Required for rendering.
+ */
+const val MARKDOWN_TAG_INLINE_MATH = "MARKDOWN_INLINE_MATH"
+
+/**
+ * Fence language identifier used to detect math code blocks (```math).
+ */
+const val MATH_FENCE_LANGUAGE = "math"
+
+/**
+ * Extract content from a math AST node (INLINE_MATH or BLOCK_MATH)
+ * by skipping DOLLAR delimiter children.
+ */
+fun ASTNode.extractMathContent(content: String): String {
+    val inner = children.filter { it.type != GFMTokenTypes.DOLLAR }
+    if (inner.isEmpty()) return ""
+    return content.substring(inner.first().startOffset, inner.last().endOffset).trim()
+}
+
+/**
  * Find a child node recursive
  */
 internal fun ASTNode.findChildOfTypeRecursive(type: IElementType): ASTNode? {

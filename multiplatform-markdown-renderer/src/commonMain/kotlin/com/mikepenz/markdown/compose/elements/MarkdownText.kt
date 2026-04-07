@@ -127,6 +127,8 @@ fun MarkdownText(
     val containerSize = remember { mutableStateOf(Size.Unspecified) }
     val imageSizeByLink = remember { mutableStateMapOf<String, Size>() }
 
+    val userInlineContent = inlineContent.inlineContent(content)
+
     MarkdownBasicText(
         text = content,
         modifier = modifier
@@ -140,8 +142,8 @@ fun MarkdownText(
             },
         style = style,
         inlineContent = imageSizeByLink.toPersistentMap().let { imageSizeByLinkSnapshot ->
-            remember(node, inlineContent.inlineContent, content, containerSize.value, transformer, inlineImageWidth, imageSizeByLinkSnapshot) {
-                inlineContent.inlineContent + buildImageInlineContent(
+            remember(node, userInlineContent, content, containerSize.value, transformer, inlineImageWidth, imageSizeByLinkSnapshot) {
+                userInlineContent + buildImageInlineContent(
                     content,
                     node,
                     transformer,
