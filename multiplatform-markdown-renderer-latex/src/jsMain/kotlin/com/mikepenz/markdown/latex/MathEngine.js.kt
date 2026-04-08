@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.mikepenz.markdown.latex.model.DisplayList
 
+internal actual val isAsyncFontLoading: Boolean = true
+
 private class JsMathEngine : MathEngine {
     override suspend fun parse(latex: String): DisplayList {
         throw UnsupportedOperationException(

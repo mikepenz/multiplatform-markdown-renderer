@@ -78,6 +78,9 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.ratex.android)
         }
+        wasmJsMain.dependencies {
+            implementation(npm("ratex-wasm", ratexVersion))
+        }
     }
 }
 

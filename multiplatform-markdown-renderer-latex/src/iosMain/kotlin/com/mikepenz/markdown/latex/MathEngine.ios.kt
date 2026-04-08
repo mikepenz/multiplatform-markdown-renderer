@@ -13,6 +13,8 @@ import ratex.ffi.ratex_free_display_list
 import ratex.ffi.ratex_get_last_error
 import ratex.ffi.ratex_parse_and_layout
 
+internal actual val isAsyncFontLoading: Boolean = false
+
 private class IosMathEngine : MathEngine {
     @OptIn(ExperimentalForeignApi::class)
     private suspend fun parseJson(latex: String): String = withContext(Dispatchers.IO) {

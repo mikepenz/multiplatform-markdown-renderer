@@ -14,6 +14,8 @@ import io.ratex.DisplayList as NativeDisplayList
 import io.ratex.PathCommand as NativePathCommand
 import io.ratex.RaTeXColor as NativeRaTeXColor
 
+internal actual val isAsyncFontLoading: Boolean = false
+
 private class AndroidMathEngine : MathEngine {
     override suspend fun parse(latex: String): CommonDisplayList {
         val native = withContext(Dispatchers.Default) {

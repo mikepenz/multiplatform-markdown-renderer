@@ -24,6 +24,7 @@ import com.mikepenz.markdown.latex.generated.resources.KaTeX_Size3_Regular
 import com.mikepenz.markdown.latex.generated.resources.KaTeX_Size4_Regular
 import com.mikepenz.markdown.latex.generated.resources.KaTeX_Typewriter_Regular
 import com.mikepenz.markdown.latex.generated.resources.Res
+import com.mikepenz.markdown.latex.isAsyncFontLoading
 import org.jetbrains.compose.resources.Font
 
 @Composable
@@ -49,7 +50,10 @@ fun rememberKaTeXFontMap(): Map<String, FontFamily> {
     val size4Regular = FontFamily(Font(Res.font.KaTeX_Size4_Regular))
     val typewriterRegular = FontFamily(Font(Res.font.KaTeX_Typewriter_Regular))
 
-    return remember {
+    // On platforms with async font loading (JS/WASM), skip `remember` so that
+    // font load completion triggers a new map reference, which causes MathCanvas
+    // to recreate its renderer with the loaded fonts.
+    return if (isAsyncFontLoading) {
         mapOf(
             "AMS-Regular" to amsRegular,
             "Caligraphic-Bold" to caligraphicBold,
@@ -72,5 +76,30 @@ fun rememberKaTeXFontMap(): Map<String, FontFamily> {
             "Size4-Regular" to size4Regular,
             "Typewriter-Regular" to typewriterRegular,
         )
+    } else {
+        remember {
+            mapOf(
+                "AMS-Regular" to amsRegular,
+                "Caligraphic-Bold" to caligraphicBold,
+                "Caligraphic-Regular" to caligraphicRegular,
+                "Fraktur-Bold" to frakturBold,
+                "Fraktur-Regular" to frakturRegular,
+                "Main-Bold" to mainBold,
+                "Main-BoldItalic" to mainBoldItalic,
+                "Main-Italic" to mainItalic,
+                "Main-Regular" to mainRegular,
+                "Math-BoldItalic" to mathBoldItalic,
+                "Math-Italic" to mathItalic,
+                "SansSerif-Bold" to sansSerifBold,
+                "SansSerif-Italic" to sansSerifItalic,
+                "SansSerif-Regular" to sansSerifRegular,
+                "Script-Regular" to scriptRegular,
+                "Size1-Regular" to size1Regular,
+                "Size2-Regular" to size2Regular,
+                "Size3-Regular" to size3Regular,
+                "Size4-Regular" to size4Regular,
+                "Typewriter-Regular" to typewriterRegular,
+            )
+        }
     }
 }

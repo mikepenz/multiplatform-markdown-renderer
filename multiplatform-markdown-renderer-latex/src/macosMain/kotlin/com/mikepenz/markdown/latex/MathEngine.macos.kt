@@ -6,13 +6,13 @@ import com.mikepenz.markdown.latex.model.DisplayList
 
 internal actual val isAsyncFontLoading: Boolean = false
 
-private class JvmMathEngine : MathEngine {
+private class MacosMathEngine : MathEngine {
     override suspend fun parse(latex: String): DisplayList {
         throw UnsupportedOperationException(
-            "JVM Desktop LaTeX rendering requires a JNI bridge for libratex_ffi."
+            "macOS LaTeX rendering is not yet supported."
         )
     }
 }
 
 @Composable
-actual fun rememberMathEngine(): MathEngine = remember { JvmMathEngine() }
+actual fun rememberMathEngine(): MathEngine = remember { MacosMathEngine() }
