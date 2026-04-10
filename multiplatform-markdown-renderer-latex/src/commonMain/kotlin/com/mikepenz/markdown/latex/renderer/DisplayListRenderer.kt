@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.takeOrElse
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
@@ -29,6 +30,8 @@ internal class DisplayListRenderer(
     private val fontMap: Map<String, FontFamily>,
     private val colorOverride: Color = Color.Unspecified,
 ) {
+    private val glyphCache = HashMap<GlyphCacheKey, TextLayoutResult>()
+
     fun draw(drawScope: DrawScope) {
         for (item in displayList.items) {
             when (item) {
@@ -55,12 +58,15 @@ internal class DisplayListRenderer(
         val targetPx = fontSizePx * glyph.scale
         val fontSizeSp = (targetPx / (density * fontScale)).toFloat()
 
-        val style = TextStyle(
-            fontFamily = fontFamily,
-            fontSize = fontSizeSp.sp,
-            color = color,
-        )
-        val result = textMeasurer.measure(str, style)
+        val key = GlyphCacheKey(fontFamily, charCode, fontSizeSp, color)
+        val result = glyphCache.getOrPut(key) {
+            val style = TextStyle(
+                fontFamily = fontFamily,
+                fontSize = fontSizeSp.sp,
+                color = color,
+            )
+            textMeasurer.measure(str, style)
+        }
         drawText(
             textLayoutResult = result,
             topLeft = Offset(
@@ -117,6 +123,13 @@ internal class DisplayListRenderer(
         return path
     }
 }
+
+private data class GlyphCacheKey(
+    val fontFamily: FontFamily,
+    val charCode: Int,
+    val fontSizeSp: Float,
+    val color: Color,
+)
 
 /** Convert a Unicode code point to a String (supports supplementary planes). */
 private fun Int.toCodePointString(): String {
