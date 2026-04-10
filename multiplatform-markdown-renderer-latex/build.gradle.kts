@@ -2,7 +2,7 @@ plugins {
     id("com.mikepenz.convention.kotlin-multiplatform")
     id("com.mikepenz.convention.compose")
     id("com.mikepenz.convention.publishing")
-    alias(libs.plugins.kotlinx.serialization)
+    alias(baseLibs.plugins.kotlinSerialization)
 }
 
 // Download RaTeX XCFramework from GitHub Releases

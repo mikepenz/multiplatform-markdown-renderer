@@ -29,6 +29,3 @@ coil = [
     "coil-core",
     "coil-network-okhttp",
 ]
-
-[plugins]
-kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization" }
