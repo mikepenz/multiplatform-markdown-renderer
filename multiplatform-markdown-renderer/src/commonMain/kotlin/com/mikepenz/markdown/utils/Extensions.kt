@@ -40,6 +40,27 @@ fun ASTNode.extractMathContent(content: String): String {
 }
 
 /**
+ * Extracts the content and optional language from a CODE_FENCE node.
+ * Handles both complete fences (with closing ```) and unclosed fences during live editing.
+ *
+ * @return a pair of (language, code), or `null` if the fence has fewer than 3 children.
+ */
+fun ASTNode.extractCodeFenceContent(content: String): Pair<String?, String>? {
+    // invalid code block, skipping
+    if (children.size < 3) return null
+    // CODE_FENCE_START, FENCE_LANG, EOL, {content // CODE_FENCE_CONTENT // x-times}, CODE_FENCE_END
+    // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}, EOL
+    // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}
+    // CODE_FENCE_START, FENCE_LANG, EOL, {content // CODE_FENCE_CONTENT // x-times}
+    val language = findChildOfType(MarkdownTokenTypes.FENCE_LANG)?.getTextInNode(content)?.toString()
+    val start = children[2].startOffset
+    val minCodeFenceCount = if (language != null && children.size > 3) 3 else 2
+    val end = children[(children.size - 2).coerceAtLeast(minCodeFenceCount)].endOffset
+    val code = content.subSequence(start, end).toString().replaceIndent()
+    return language to code
+}
+
+/**
  * Find a child node recursive
  */
 internal fun ASTNode.findChildOfTypeRecursive(type: IElementType): ASTNode? {
