@@ -108,7 +108,7 @@ jobs:
 
       - name: Archive Test Report
         if: always()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: "Test-Artifacts"
           path: "sample/android/build/reports/paparazzi/debug/"
@@ -157,7 +157,7 @@ jobs:
 
       - name: Archive Artifacts
         if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: "App-Artifacts"
           path: artifacts/*
@@ -183,7 +183,7 @@ jobs:
 
       - name: Build Changelog
         id: github_release
-        uses: mikepenz/release-changelog-builder-action@2cb9befdbc05f65b8354cc9873cd506509bd0782 # v6
+        uses: mikepenz/release-changelog-builder-action@bcae7115752d4ed746ff92feb666574428a79415 # v6
         with:
           configuration: ".github/config/configuration.json"
           ignorePreReleases: ${{ !contains(github.ref, '-') }}
