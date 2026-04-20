@@ -16,6 +16,8 @@ import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.ReferenceLinkHandler
 import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
+import com.mikepenz.markdown.utils.MARKDOWN_TAG_INLINE_MATH
+import com.mikepenz.markdown.utils.extractMathContent
 import com.mikepenz.markdown.utils.findChildOfTypeRecursive
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import com.mikepenz.markdown.utils.innerList
@@ -301,6 +303,15 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
                         append(child.getUnescapedTextInNode(content))
                     } else appendAutoLink(content, child, annotatorSettings)
+
+                    GFMElementTypes.INLINE_MATH -> {
+                        val text = child.extractMathContent(content)
+                        if (text.isNotEmpty()) {
+                            // Use startOffset as unique key per formula so each gets its own
+                            // InlineTextContent with correctly sized Placeholder.
+                            appendInlineContent("${MARKDOWN_TAG_INLINE_MATH}:${child.startOffset}", text)
+                        }
+                    }
 
                     GFMTokenTypes.DOLLAR -> append('$')
 

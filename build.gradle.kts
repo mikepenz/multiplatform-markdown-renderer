@@ -15,6 +15,7 @@ plugins {
     alias(baseLibs.plugins.versionCatalogUpdate) apply false
     alias(baseLibs.plugins.tapmoc) apply false
     alias(baseLibs.plugins.paparazzi) apply false
+    alias(baseLibs.plugins.kotlinSerialization) apply false
 }
 
 allprojects {

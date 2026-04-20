@@ -3,32 +3,33 @@ package com.mikepenz.markdown.model
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.text.AnnotatedString
 
 @Immutable
 interface MarkdownInlineContent {
-    /** Represents the map used to store tags and corresponding inline content */
-    val inlineContent: Map<String, InlineTextContent>
+    @Composable
+    fun inlineContent(content: AnnotatedString): Map<String, InlineTextContent>
 }
+
+/**
+ * Creates a [MarkdownInlineContent] from a static map (ignores the AnnotatedString).
+ */
+fun markdownInlineContent(
+    staticContent: Map<String, InlineTextContent> = mapOf(),
+): MarkdownInlineContent = StaticMarkdownInlineContent(staticContent)
 
 @Immutable
-class DefaultMarkdownInlineContent(
-    override val inlineContent: Map<String, InlineTextContent>,
+private class StaticMarkdownInlineContent(
+    private val staticContent: Map<String, InlineTextContent>,
 ) : MarkdownInlineContent {
+    @Composable
+    override fun inlineContent(content: AnnotatedString) = staticContent
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as DefaultMarkdownInlineContent
-
-        return inlineContent == other.inlineContent
+        if (other !is StaticMarkdownInlineContent) return false
+        return staticContent == other.staticContent
     }
 
-    override fun hashCode(): Int {
-        return inlineContent.hashCode()
-    }
+    override fun hashCode(): Int = staticContent.hashCode()
 }
-
-@Composable
-fun markdownInlineContent(
-    content: Map<String, InlineTextContent> = mapOf(),
-): MarkdownInlineContent = DefaultMarkdownInlineContent(content)

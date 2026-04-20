@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.components.MarkdownComponents
+import com.mikepenz.markdown.utils.MATH_FENCE_LANGUAGE
 import org.intellij.markdown.MarkdownElementTypes.ATX_1
 import org.intellij.markdown.MarkdownElementTypes.ATX_2
 import org.intellij.markdown.MarkdownElementTypes.ATX_3
@@ -22,10 +23,14 @@ import org.intellij.markdown.MarkdownElementTypes.PARAGRAPH
 import org.intellij.markdown.MarkdownElementTypes.SETEXT_1
 import org.intellij.markdown.MarkdownElementTypes.SETEXT_2
 import org.intellij.markdown.MarkdownElementTypes.UNORDERED_LIST
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.MarkdownTokenTypes.Companion.EOL
 import org.intellij.markdown.MarkdownTokenTypes.Companion.HORIZONTAL_RULE
 import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.findChildOfType
+import org.intellij.markdown.ast.getTextInNode
+import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMElementTypes.TABLE
 
 /**
@@ -59,7 +64,15 @@ fun MarkdownElement(
     when (node.type) {
         TEXT -> components.text(model)
         EOL -> components.eol(model)
-        CODE_FENCE -> components.codeFence(model)
+        CODE_FENCE -> {
+            val language = node.findChildOfType(MarkdownTokenTypes.FENCE_LANG)
+                ?.getTextInNode(content)?.toString()
+            if (language == MATH_FENCE_LANGUAGE) {
+                components.blockMath(model)
+            } else {
+                components.codeFence(model)
+            }
+        }
         CODE_BLOCK -> components.codeBlock(model)
         ATX_1 -> components.heading1(model)
         ATX_2 -> components.heading2(model)
@@ -70,12 +83,25 @@ fun MarkdownElement(
         SETEXT_1 -> components.setextHeading1(model)
         SETEXT_2 -> components.setextHeading2(model)
         BLOCK_QUOTE -> components.blockQuote(model)
-        PARAGRAPH -> components.paragraph(model)
+        PARAGRAPH -> {
+            val singleChild = node.children.singleOrNull()
+            if (singleChild != null && singleChild.type == GFMElementTypes.BLOCK_MATH) {
+                MarkdownElement(
+                    node = singleChild,
+                    components = components,
+                    content = content,
+                    includeSpacer = false,
+                )
+            } else {
+                components.paragraph(model)
+            }
+        }
         ORDERED_LIST -> components.orderedList(model)
         UNORDERED_LIST -> components.unorderedList(model)
         IMAGE -> components.image(model)
         HORIZONTAL_RULE -> components.horizontalRule(model)
         TABLE -> components.table(model)
+        GFMElementTypes.BLOCK_MATH -> components.blockMath(model)
         else -> {
             handled = components.custom?.invoke(node.type, model) != null
         }

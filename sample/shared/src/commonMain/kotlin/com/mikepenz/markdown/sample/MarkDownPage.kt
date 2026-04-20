@@ -25,6 +25,8 @@ import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.elements.MarkdownCheckBox
 import com.mikepenz.markdown.model.markdownExtendedSpans
 import com.mikepenz.markdown.model.rememberMarkdownState
+import com.mikepenz.markdown.latex.latexBlockMath
+import com.mikepenz.markdown.latex.mathInlineContent
 import com.mikepenz.markdown.sample.shared.resources.Res
 import dev.snipme.highlights.Highlights
 import dev.snipme.highlights.model.SyntaxThemes
@@ -61,8 +63,10 @@ internal fun MarkDownPage(modifier: Modifier = Modifier) {
                     )
                 },
                 checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) },
+                blockMath = latexBlockMath,
             ),
             imageTransformer = Coil3ImageTransformerImpl,
+            inlineContent = mathInlineContent(),
             extendedSpans = markdownExtendedSpans {
                 val animator = rememberSquigglyUnderlineAnimator()
                 remember {
