@@ -5,9 +5,9 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "com.mikepenz.markdown.sample.shared"
-        experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
+        androidResources.enable = true
     }
 
     listOf(
@@ -28,6 +28,7 @@ kotlin {
             api(projects.multiplatformMarkdownRendererM3)
             api(projects.multiplatformMarkdownRendererCoil3)
             api(projects.multiplatformMarkdownRendererCode)
+            api(projects.multiplatformMarkdownRendererLatex)
 
             implementation(baseLibs.jetbrains.compose.foundation)
             implementation(baseLibs.jetbrains.compose.ui)

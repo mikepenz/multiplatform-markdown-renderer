@@ -8,7 +8,7 @@ import com.mikepenz.markdown.model.BulletHandler
 import com.mikepenz.markdown.model.DefaultMarkdownAnnotator
 import com.mikepenz.markdown.model.DefaultMarkdownAnnotatorConfig
 import com.mikepenz.markdown.model.DefaultMarkdownExtendedSpans
-import com.mikepenz.markdown.model.DefaultMarkdownInlineContent
+import com.mikepenz.markdown.model.markdownInlineContent
 import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.model.MarkdownAnimations
@@ -81,7 +81,7 @@ val LocalImageTransformer = staticCompositionLocalOf<ImageTransformer> {
  * Local [MarkdownInlineContent] provider
  */
 val LocalMarkdownInlineContent = staticCompositionLocalOf<MarkdownInlineContent> {
-    return@staticCompositionLocalOf DefaultMarkdownInlineContent(mapOf())
+    return@staticCompositionLocalOf markdownInlineContent()
 }
 
 /**

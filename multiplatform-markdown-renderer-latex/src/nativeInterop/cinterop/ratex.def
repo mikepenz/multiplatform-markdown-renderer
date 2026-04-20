@@ -1,0 +1,3 @@
+headers = ratex.h
+package = ratex.ffi
+staticLibraries = libratex_ffi.a

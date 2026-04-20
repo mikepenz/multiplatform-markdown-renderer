@@ -28,6 +28,7 @@ import com.mikepenz.markdown.compose.LocalMarkdownDimens
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
+import com.mikepenz.markdown.utils.extractCodeFenceContent
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
@@ -70,20 +71,8 @@ fun MarkdownCodeFence(
     style: TextStyle = LocalMarkdownTypography.current.code,
     block: @Composable (String, String?, TextStyle) -> Unit = { code, language, style -> MarkdownCode(code = code, language = language, style = style) },
 ) {
-    // CODE_FENCE_START, FENCE_LANG, EOL, {content // CODE_FENCE_CONTENT // x-times}, CODE_FENCE_END
-    // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}, EOL
-    // CODE_FENCE_START, EOL, {content // CODE_FENCE_CONTENT // x-times}
-    // CODE_FENCE_START, FENCE_LANG, EOL, {content // CODE_FENCE_CONTENT // x-times}
-
-    val language = node.findChildOfType(MarkdownTokenTypes.FENCE_LANG)?.getTextInNode(content)?.toString()
-    if (node.children.size >= 3) {
-        val start = node.children[2].startOffset
-        val minCodeFenceCount = if (language != null && node.children.size > 3) 3 else 2
-        val end = node.children[(node.children.size - 2).coerceAtLeast(minCodeFenceCount)].endOffset
-        block(content.subSequence(start, end).toString().replaceIndent(), language, style)
-    } else {
-        // invalid code block, skipping
-    }
+    val (language, code) = node.extractCodeFenceContent(content) ?: return
+    block(code, language, style)
 }
 
 @Composable

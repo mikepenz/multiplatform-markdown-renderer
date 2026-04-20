@@ -66,6 +66,7 @@ fun markdownComponents(
     horizontalRule: MarkdownComponent = CurrentComponentsBridge.horizontalRule,
     table: MarkdownComponent = CurrentComponentsBridge.table,
     checkbox: MarkdownComponent = CurrentComponentsBridge.checkbox,
+    blockMath: MarkdownComponent = CurrentComponentsBridge.blockMath,
     custom: CustomMarkdownComponent? = CurrentComponentsBridge.custom,
 ): MarkdownComponents = DefaultMarkdownComponents(
     text = text,
@@ -89,6 +90,7 @@ fun markdownComponents(
     horizontalRule = horizontalRule,
     table = table,
     checkbox = checkbox,
+    blockMath = blockMath,
     custom = custom,
 )
 
@@ -118,6 +120,7 @@ interface MarkdownComponents {
     val horizontalRule: MarkdownComponent
     val table: MarkdownComponent
     val checkbox: MarkdownComponent
+    val blockMath: MarkdownComponent
     val custom: CustomMarkdownComponent?
 }
 
@@ -144,6 +147,7 @@ private data class DefaultMarkdownComponents(
     override val horizontalRule: MarkdownComponent,
     override val table: MarkdownComponent,
     override val checkbox: MarkdownComponent,
+    override val blockMath: MarkdownComponent,
     override val custom: CustomMarkdownComponent?,
 ) : MarkdownComponents
 
@@ -211,6 +215,9 @@ object CurrentComponentsBridge {
     }
     val checkbox: MarkdownComponent = {
         MarkdownCheckBox(it.content, it.node, style = it.typography.text)
+    }
+    val blockMath: MarkdownComponent = {
+        MarkdownCodeFence(it.content, it.node, style = it.typography.code)
     }
     val custom: CustomMarkdownComponent? = null
 }

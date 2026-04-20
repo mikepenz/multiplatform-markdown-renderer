@@ -70,7 +70,29 @@ This is an unordered list with task list items:
 
 -------- 
 
-# Random
+### Inline Math
+
+The quadratic formula is $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$, where $a \neq 0$.
+
+Euler's identity: $e^{i\pi} + 1 = 0$.
+
+### Block Math
+
+$$
+\int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi}
+$$
+
+$$
+\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}
+$$
+
+### Math Code Fence
+
+```math
+\begin{pmatrix} a & b \\ c & d \end{pmatrix} \cdot \begin{pmatrix} e \\ f \end{pmatrix} = \begin{pmatrix} ae + bf \\ ce + df \end{pmatrix}
+```
+
+--------
 
 ### Getting Started
 
