@@ -52,7 +52,13 @@ fun MarkdownBlockQuote(
             }
             .padding(blockQuote)
     ) {
-        val blockQuoteLineHeightInDp = with(LocalDensity.current) { LocalMarkdownTypography.current.quote.fontSize.toDp() }
+        val blockQuoteEmptyLineHeight = with(LocalDensity.current) {
+            when {
+                style.lineHeight.isSp -> style.lineHeight.toDp()
+                style.fontSize.isSp -> style.fontSize.toDp()
+                else -> blockQuoteText.calculateTopPadding() + blockQuoteText.calculateBottomPadding()
+            }
+        }
         var priorNestedQuote = false
         node.children.onEachIndexed { index, child ->
             if (child.type == MarkdownElementTypes.BLOCK_QUOTE) {
@@ -61,7 +67,7 @@ fun MarkdownBlockQuote(
                 MarkdownBlockQuote(content = content, node = child, style = style)
                 priorNestedQuote = true
             } else if (child.type == EOL) {
-                Spacer(Modifier.height(blockQuoteLineHeightInDp))
+                Spacer(Modifier.height(blockQuoteEmptyLineHeight))
             } else {
                 // if first item either completely, or after a nested quote, add top padding
                 if (index == 0 || priorNestedQuote) Spacer(Modifier.height(blockQuoteText.calculateTopPadding()))
