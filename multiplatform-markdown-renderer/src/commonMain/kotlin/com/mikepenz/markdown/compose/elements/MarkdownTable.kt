@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +54,14 @@ import org.intellij.markdown.flavours.gfm.GFMElementTypes.ROW
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes.CELL
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes.TABLE_SEPARATOR
 
+/**
+ * Internal hook so the table iteration can pass the current body row index
+ * (header is row 0, body rows start at 1) to [MarkdownTableRow] without
+ * breaking the public `rowBlock` lambda signature. Custom `rowBlock`
+ * implementations can read this to set their own collection semantics.
+ */
+val LocalTableRowIndex = compositionLocalOf { 1 }
+
 @Composable
 fun MarkdownTable(
     content: String,
@@ -63,9 +73,9 @@ fun MarkdownTable(
             content = content, header = header, tableWidth = tableWidth, style = style, annotatorSettings = annotatorSettings,
         )
     },
-    rowBlock: @Composable (String, ASTNode, Dp, TextStyle, Int) -> Unit = { content, header, tableWidth, style, rowIndex ->
+    rowBlock: @Composable (String, ASTNode, Dp, TextStyle) -> Unit = { content, header, tableWidth, style ->
         MarkdownTableRow(
-            content = content, header = header, tableWidth = tableWidth, style = style, rowIndex = rowIndex, annotatorSettings = annotatorSettings,
+            content = content, header = header, tableWidth = tableWidth, style = style, annotatorSettings = annotatorSettings,
         )
     },
 ) {
@@ -98,7 +108,9 @@ fun MarkdownTable(
                 when (it.type) {
                     HEADER -> headerBlock(content, it, tableWidth, style)
                     ROW -> {
-                        rowBlock(content, it, tableWidth, style, rowIndex)
+                        CompositionLocalProvider(LocalTableRowIndex provides rowIndex) {
+                            rowBlock(content, it, tableWidth, style)
+                        }
                         rowIndex++
                     }
                     TABLE_SEPARATOR -> MarkdownDivider()
@@ -155,7 +167,7 @@ fun MarkdownTableRow(
     header: ASTNode,
     tableWidth: Dp,
     style: TextStyle,
-    rowIndex: Int = 1,
+    rowIndex: Int = LocalTableRowIndex.current,
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     maxLines: Int = 1,
     overflow: TextOverflow = TextOverflow.Ellipsis,

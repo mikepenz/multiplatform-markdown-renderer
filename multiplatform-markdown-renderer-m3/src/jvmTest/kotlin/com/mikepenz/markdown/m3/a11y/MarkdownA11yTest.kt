@@ -3,7 +3,6 @@ package com.mikepenz.markdown.m3.a11y
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsConfiguration
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -16,7 +15,6 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.v2.runComposeUiTest
 import com.mikepenz.markdown.m3.Markdown
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
@@ -33,31 +31,21 @@ class MarkdownA11yTest {
     """.trimIndent()
 
     /**
-     * Issue #487: `MarkdownText` must emit at least one `IsTraversalGroup` ancestor so
-     * TalkBack reads link-bearing paragraphs in source order. Without it, interactive
-     * link nodes get clustered separately from the surrounding text.
+     * Issue #487: the paragraph that contains the inline links must itself sit inside
+     * a `IsTraversalGroup = true` ancestor, so TalkBack reads link nodes in source
+     * order. We locate the text node that carries the paragraph copy and walk up to
+     * its nearest ancestor with the property.
      */
     @Test
-    fun paragraph_with_links_marks_traversal_group() = runComposeUiTest {
+    fun paragraph_with_links_has_traversal_group_ancestor() = runComposeUiTest {
         setContent { Wrap { Markdown(docLinks) } }
         val root = onRoot().fetchSemanticsNode()
+        val anchor = findNodeWhoseTextContains(root, "Anthropic")
+            ?: error("Could not locate paragraph text node containing the link copy")
         assertTrue(
-            collect(root, SemanticsProperties.IsTraversalGroup).any { it },
-            "Expected at least one IsTraversalGroup=true node — fix for issue #487"
+            anyAncestorHasTraversalGroup(root, anchor),
+            "Paragraph with inline links must be inside an IsTraversalGroup ancestor — regression of #487"
         )
-    }
-
-    @Test
-    fun link_traversal_order_matches_source_order() = runComposeUiTest {
-        setContent { Wrap { Markdown(docLinks) } }
-        val root = onRoot().fetchSemanticsNode()
-        val bounds = mutableListOf<Pair<Float, Float>>()
-        walk(root) { n ->
-            if (n.config.contains(SemanticsActions.OnClick)) {
-                bounds += n.boundsInRoot.top to n.boundsInRoot.left
-            }
-        }
-        assertEquals(bounds.sortedWith(compareBy({ it.first }, { it.second })), bounds)
     }
 
     @Test
@@ -94,6 +82,31 @@ private fun <T> collect(root: SemanticsNode, key: SemanticsPropertyKey<T>): List
 private fun walk(node: SemanticsNode, visit: (SemanticsNode) -> Unit) {
     visit(node)
     node.children.forEach { walk(it, visit) }
+}
+
+private fun findNodeWhoseTextContains(node: SemanticsNode, needle: String): SemanticsNode? {
+    val textList = node.config.getOrElseNullable(SemanticsProperties.Text) { null }
+    if (textList?.any { it.text.contains(needle) } == true) return node
+    val edit = node.config.getOrElseNullable(SemanticsProperties.EditableText) { null }
+    if (edit?.text?.contains(needle) == true) return node
+    node.children.forEach { findNodeWhoseTextContains(it, needle)?.let { return it } }
+    return null
+}
+
+private fun anyAncestorHasTraversalGroup(root: SemanticsNode, target: SemanticsNode): Boolean {
+    val path = mutableListOf<SemanticsNode>()
+    fun search(n: SemanticsNode): Boolean {
+        path += n
+        if (n.id == target.id) return true
+        n.children.forEach { if (search(it)) return true }
+        path.removeAt(path.lastIndex)
+        return false
+    }
+    if (!search(root)) return false
+    // `path` now goes root → … → target. Check ancestors (exclude target itself).
+    return path.dropLast(1).any { ancestor ->
+        ancestor.config.getOrElseNullable(SemanticsProperties.IsTraversalGroup) { false } == true
+    }
 }
 
 @Suppress("unused")

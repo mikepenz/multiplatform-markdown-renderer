@@ -43,9 +43,12 @@ internal fun MarkdownCodeTopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         val languageLabel = language?.uppercase() ?: a11yLabels.codeFallbackLanguage
+        // Screen readers tend to spell out all-caps letter-by-letter; announce
+        // the original-cased language (or fallback) for a better experience.
+        val languageAnnouncement = language?.takeIf { it.isNotBlank() } ?: a11yLabels.codeFallbackLanguage
         MarkdownBasicText(
             text = languageLabel,
-            modifier = Modifier.semantics { contentDescription = a11yLabels.codeLanguage(languageLabel) },
+            modifier = Modifier.semantics { contentDescription = a11yLabels.codeLanguage(languageAnnouncement) },
             style = androidx.compose.ui.text.TextStyle(
                 fontSize = 10.sp,
                 fontFamily = FontFamily.Monospace,
