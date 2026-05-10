@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -48,32 +49,35 @@ internal fun MarkdownCodeTopBar(
         val languageAnnouncement = language?.takeIf { it.isNotBlank() } ?: a11yLabels.codeFallbackLanguage
         MarkdownBasicText(
             text = languageLabel,
-            modifier = Modifier.semantics { contentDescription = a11yLabels.codeLanguage(languageAnnouncement) },
+            modifier = Modifier
+                .semantics { contentDescription = a11yLabels.codeLanguage(languageAnnouncement) }
+                .graphicsLayer { alpha = 0.6f },
             style = androidx.compose.ui.text.TextStyle(
                 fontSize = 10.sp,
                 fontFamily = FontFamily.Monospace,
-                color = textColor.copy(alpha = 0.6f)
+                color = textColor
             )
         )
 
         Box(
             modifier = Modifier
                 .size(24.dp)
-                .clip(CircleShape)
                 .semantics {
                     contentDescription = a11yLabels.copyCode
                     role = Role.Button
                 }
                 .clickable(onClickLabel = a11yLabels.copyCode) {
                     clipboardManager.setText(AnnotatedString(code))
-                },
+                }
+                .clip(CircleShape)
+                .graphicsLayer { alpha = 0.6f },
             contentAlignment = Alignment.Center
         ) {
             MarkdownBasicText(
                 text = "⧉",
                 style = androidx.compose.ui.text.TextStyle(
                     fontSize = 14.sp,
-                    color = textColor.copy(alpha = 0.6f)
+                    color = textColor
                 )
             )
         }

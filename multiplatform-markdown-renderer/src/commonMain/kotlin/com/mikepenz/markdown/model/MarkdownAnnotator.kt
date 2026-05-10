@@ -1,9 +1,11 @@
 package com.mikepenz.markdown.model
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.text.AnnotatedString
 import org.intellij.markdown.ast.ASTNode
 
+@Stable
 @Immutable
 interface MarkdownAnnotator {
 
@@ -19,6 +21,7 @@ interface MarkdownAnnotator {
     val config: MarkdownAnnotatorConfig
 }
 
+@Stable
 @Immutable
 class DefaultMarkdownAnnotator(
     override val annotate: (AnnotatedString.Builder.(content: String, child: ASTNode) -> Boolean)?,

@@ -39,7 +39,10 @@ fun LazyMarkdownSuccess(
         items(
             items = nodes,
             // Use the node's start offset as a key for stable item identity
-            key = { node -> node.startOffset }
+            key = { node -> node.startOffset },
+            // contentType lets the lazy layout reuse compositions across items
+            // of the same markdown element type (e.g. paragraph after paragraph).
+            contentType = { node -> node.type }
         ) { node ->
             MarkdownElement(node, components, state.content)
         }

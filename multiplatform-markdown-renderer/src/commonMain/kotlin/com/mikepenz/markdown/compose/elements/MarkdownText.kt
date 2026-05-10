@@ -6,6 +6,8 @@ import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -134,38 +136,43 @@ fun MarkdownText(
         if (lh.isSpecified) lh.toPx() else 0f
     }
 
-    val imageSizeByLinkSnapshot = imageSizeByLink.toPersistentMap()
     val inlineImageAsBlock = annotatorConfig.inlineImageAsBlock
     val imageNodes = remember(node) { collectImageNodes(node) }
-    val (resolvedInlineContent, blockImageRanges) = remember(
+    // Wrap the build in derivedStateOf so chatty image-size updates from
+    // imageSizeByLink only invalidate downstream when the resolved content
+    // or block-range list actually changes.
+    val resolved by remember(
         node,
         inlineContent.inlineContent,
         content,
-        containerSize.value,
         transformer,
         inlineImageWidth,
-        imageSizeByLinkSnapshot,
         lineHeightPx,
         inlineImageAsBlock,
         imageNodes,
     ) {
-        val blocks = mutableListOf<BlockImageRange>()
-        val map = inlineContent.inlineContent + buildImageInlineContent(
-            content = content,
-            node = node,
-            transformer = transformer,
-            density = density,
-            containerSize = containerSize.value,
-            inlineImageWidth = inlineImageWidth,
-            imageSizeByLink = imageSizeByLinkSnapshot,
-            lineHeightPx = lineHeightPx,
-            inlineImageAsBlock = inlineImageAsBlock,
-            imageNodes = imageNodes,
-            onBlockImage = { range -> blocks += range },
-            imageSizeChanged = { link, size -> imageSizeByLink += (link to size) },
-        )
-        map to blocks.sortedBy { it.start }
+        derivedStateOf {
+            val sizeSnapshot = imageSizeByLink.toPersistentMap()
+            val blocks = mutableListOf<BlockImageRange>()
+            val map = inlineContent.inlineContent + buildImageInlineContent(
+                content = content,
+                node = node,
+                transformer = transformer,
+                density = density,
+                containerSize = containerSize.value,
+                inlineImageWidth = inlineImageWidth,
+                imageSizeByLink = sizeSnapshot,
+                lineHeightPx = lineHeightPx,
+                inlineImageAsBlock = inlineImageAsBlock,
+                imageNodes = imageNodes,
+                onBlockImage = { range -> blocks += range },
+                imageSizeChanged = { link, size -> imageSizeByLink += (link to size) },
+            )
+            map to blocks.sortedBy { it.start }
+        }
     }
+    val resolvedInlineContent = resolved.first
+    val blockImageRanges = resolved.second
 
     val containerModifier: @Composable (Modifier) -> Modifier = { base ->
         // Pin descendants (text + inline link nodes) to source order. Without this,

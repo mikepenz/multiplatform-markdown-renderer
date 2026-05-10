@@ -6,6 +6,9 @@
 package com.mikepenz.markdown.compose.extendedspans
 
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
@@ -23,7 +26,8 @@ class ExtendedSpans(
     vararg painters: ExtendedSpanPainter,
 ) {
     private val painters = painters.toList()
-    internal var drawInstructions = emptyList<SpanDrawInstructions>()
+    internal var drawInstructions by mutableStateOf<List<SpanDrawInstructions>>(emptyList())
+        private set
 
     /**
      * Prepares [text] to be rendered by [painters]. [RoundedCornerSpanPainter] and [SquigglyUnderlineSpanPainter]
