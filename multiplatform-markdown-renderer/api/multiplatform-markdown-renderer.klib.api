@@ -111,8 +111,12 @@ abstract interface com.mikepenz.markdown.model/MarkdownAnnotator { // com.mikepe
 abstract interface com.mikepenz.markdown.model/MarkdownAnnotatorConfig { // com.mikepenz.markdown.model/MarkdownAnnotatorConfig|null[0]
     abstract val eolAsNewLine // com.mikepenz.markdown.model/MarkdownAnnotatorConfig.eolAsNewLine|{}eolAsNewLine[0]
         abstract fun <get-eolAsNewLine>(): kotlin/Boolean // com.mikepenz.markdown.model/MarkdownAnnotatorConfig.eolAsNewLine.<get-eolAsNewLine>|<get-eolAsNewLine>(){}[0]
+    open val imageAltTooltipHoverDelayMs // com.mikepenz.markdown.model/MarkdownAnnotatorConfig.imageAltTooltipHoverDelayMs|{}imageAltTooltipHoverDelayMs[0]
+        open fun <get-imageAltTooltipHoverDelayMs>(): kotlin/Long // com.mikepenz.markdown.model/MarkdownAnnotatorConfig.imageAltTooltipHoverDelayMs.<get-imageAltTooltipHoverDelayMs>|<get-imageAltTooltipHoverDelayMs>(){}[0]
     open val inlineImageAsBlock // com.mikepenz.markdown.model/MarkdownAnnotatorConfig.inlineImageAsBlock|{}inlineImageAsBlock[0]
         open fun <get-inlineImageAsBlock>(): kotlin/Boolean // com.mikepenz.markdown.model/MarkdownAnnotatorConfig.inlineImageAsBlock.<get-inlineImageAsBlock>|<get-inlineImageAsBlock>(){}[0]
+    open val showImageAltTooltip // com.mikepenz.markdown.model/MarkdownAnnotatorConfig.showImageAltTooltip|{}showImageAltTooltip[0]
+        open fun <get-showImageAltTooltip>(): kotlin/Boolean // com.mikepenz.markdown.model/MarkdownAnnotatorConfig.showImageAltTooltip.<get-showImageAltTooltip>|<get-showImageAltTooltip>(){}[0]
 
     final object Companion { // com.mikepenz.markdown.model/MarkdownAnnotatorConfig.Companion|null[0]
         final const val BLOCK_FALLBACK_LINE_MULTIPLIER // com.mikepenz.markdown.model/MarkdownAnnotatorConfig.Companion.BLOCK_FALLBACK_LINE_MULTIPLIER|{}BLOCK_FALLBACK_LINE_MULTIPLIER[0]
@@ -436,12 +440,16 @@ final class com.mikepenz.markdown.model/DefaultMarkdownAnnotator : com.mikepenz.
 }
 
 final class com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig : com.mikepenz.markdown.model/MarkdownAnnotatorConfig { // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig|null[0]
-    constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ...) // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.<init>|<init>(kotlin.Boolean;kotlin.Boolean){}[0]
+    constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Long = ...) // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.<init>|<init>(kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Long){}[0]
 
     final val eolAsNewLine // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.eolAsNewLine|{}eolAsNewLine[0]
         final fun <get-eolAsNewLine>(): kotlin/Boolean // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.eolAsNewLine.<get-eolAsNewLine>|<get-eolAsNewLine>(){}[0]
+    final val imageAltTooltipHoverDelayMs // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.imageAltTooltipHoverDelayMs|{}imageAltTooltipHoverDelayMs[0]
+        final fun <get-imageAltTooltipHoverDelayMs>(): kotlin/Long // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.imageAltTooltipHoverDelayMs.<get-imageAltTooltipHoverDelayMs>|<get-imageAltTooltipHoverDelayMs>(){}[0]
     final val inlineImageAsBlock // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.inlineImageAsBlock|{}inlineImageAsBlock[0]
         final fun <get-inlineImageAsBlock>(): kotlin/Boolean // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.inlineImageAsBlock.<get-inlineImageAsBlock>|<get-inlineImageAsBlock>(){}[0]
+    final val showImageAltTooltip // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.showImageAltTooltip|{}showImageAltTooltip[0]
+        final fun <get-showImageAltTooltip>(): kotlin/Boolean // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.showImageAltTooltip.<get-showImageAltTooltip>|<get-showImageAltTooltip>(){}[0]
 
     final fun equals(kotlin/Any?): kotlin/Boolean // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // com.mikepenz.markdown.model/DefaultMarkdownAnnotatorConfig.hashCode|hashCode(){}[0]
@@ -839,7 +847,7 @@ final fun com.mikepenz.markdown.model/com_mikepenz_markdown_model_State_Loading$
 final fun com.mikepenz.markdown.model/com_mikepenz_markdown_model_State_Success$stableprop_getter(): kotlin/Int // com.mikepenz.markdown.model/com_mikepenz_markdown_model_State_Success$stableprop_getter|com_mikepenz_markdown_model_State_Success$stableprop_getter(){}[0]
 final fun com.mikepenz.markdown.model/markdownAnimations(kotlin/Function1<androidx.compose.ui/Modifier, androidx.compose.ui/Modifier>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): com.mikepenz.markdown.model/MarkdownAnimations // com.mikepenz.markdown.model/markdownAnimations|markdownAnimations(kotlin.Function1<androidx.compose.ui.Modifier,androidx.compose.ui.Modifier>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
 final fun com.mikepenz.markdown.model/markdownAnnotator(com.mikepenz.markdown.model/MarkdownAnnotatorConfig = ..., kotlin/Function3<androidx.compose.ui.text/AnnotatedString.Builder, kotlin/String, org.intellij.markdown.ast/ASTNode, kotlin/Boolean>? = ...): com.mikepenz.markdown.model/MarkdownAnnotator // com.mikepenz.markdown.model/markdownAnnotator|markdownAnnotator(com.mikepenz.markdown.model.MarkdownAnnotatorConfig;kotlin.Function3<androidx.compose.ui.text.AnnotatedString.Builder,kotlin.String,org.intellij.markdown.ast.ASTNode,kotlin.Boolean>?){}[0]
-final fun com.mikepenz.markdown.model/markdownAnnotatorConfig(kotlin/Boolean = ..., kotlin/Boolean = ...): com.mikepenz.markdown.model/MarkdownAnnotatorConfig // com.mikepenz.markdown.model/markdownAnnotatorConfig|markdownAnnotatorConfig(kotlin.Boolean;kotlin.Boolean){}[0]
+final fun com.mikepenz.markdown.model/markdownAnnotatorConfig(kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Long = ...): com.mikepenz.markdown.model/MarkdownAnnotatorConfig // com.mikepenz.markdown.model/markdownAnnotatorConfig|markdownAnnotatorConfig(kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Long){}[0]
 final fun com.mikepenz.markdown.model/markdownDimens(androidx.compose.ui.unit/Dp, androidx.compose.ui.unit/Dp, androidx.compose.ui.unit/Dp, androidx.compose.ui.unit/Dp, androidx.compose.ui.unit/Dp, androidx.compose.ui.unit/Dp, androidx.compose.ui.unit/Dp, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): com.mikepenz.markdown.model/MarkdownDimens // com.mikepenz.markdown.model/markdownDimens|markdownDimens(androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
 final fun com.mikepenz.markdown.model/markdownExtendedSpans(kotlin/Function2<androidx.compose.runtime/Composer, kotlin/Int, com.mikepenz.markdown.compose.extendedspans/ExtendedSpans>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): com.mikepenz.markdown.model/MarkdownExtendedSpans // com.mikepenz.markdown.model/markdownExtendedSpans|markdownExtendedSpans(kotlin.Function2<androidx.compose.runtime.Composer,kotlin.Int,com.mikepenz.markdown.compose.extendedspans.ExtendedSpans>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
 final fun com.mikepenz.markdown.model/markdownInlineContent(kotlin.collections/Map<kotlin/String, androidx.compose.foundation.text/InlineTextContent>?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int): com.mikepenz.markdown.model/MarkdownInlineContent // com.mikepenz.markdown.model/markdownInlineContent|markdownInlineContent(kotlin.collections.Map<kotlin.String,androidx.compose.foundation.text.InlineTextContent>?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]

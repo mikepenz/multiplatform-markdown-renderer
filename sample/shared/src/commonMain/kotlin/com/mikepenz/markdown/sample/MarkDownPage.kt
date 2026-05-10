@@ -23,6 +23,8 @@ import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.rememberSquigglyUnderlineAnimator
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.elements.MarkdownCheckBox
+import com.mikepenz.markdown.model.markdownAnnotator
+import com.mikepenz.markdown.model.markdownAnnotatorConfig
 import com.mikepenz.markdown.model.markdownExtendedSpans
 import com.mikepenz.markdown.model.rememberMarkdownState
 import com.mikepenz.markdown.sample.shared.resources.Res
@@ -62,6 +64,7 @@ internal fun MarkDownPage(modifier: Modifier = Modifier) {
                 },
                 checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) },
             ),
+            annotator = markdownAnnotator(markdownAnnotatorConfig(showImageAltTooltip = true)),
             imageTransformer = Coil3ImageTransformerImpl,
             extendedSpans = markdownExtendedSpans {
                 val animator = rememberSquigglyUnderlineAnimator()

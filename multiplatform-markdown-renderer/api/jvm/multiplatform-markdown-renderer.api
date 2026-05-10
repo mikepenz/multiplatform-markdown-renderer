@@ -373,11 +373,13 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownAnnotator : com/mi
 public final class com/mikepenz/markdown/model/DefaultMarkdownAnnotatorConfig : com/mikepenz/markdown/model/MarkdownAnnotatorConfig {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (ZZ)V
-	public synthetic fun <init> (ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (ZZZJ)V
+	public synthetic fun <init> (ZZZJILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getEolAsNewLine ()Z
+	public fun getImageAltTooltipHoverDelayMs ()J
 	public fun getInlineImageAsBlock ()Z
+	public fun getShowImageAltTooltip ()Z
 	public fun hashCode ()I
 }
 
@@ -551,7 +553,9 @@ public abstract interface class com/mikepenz/markdown/model/MarkdownAnnotatorCon
 	public static final field BLOCK_FALLBACK_LINE_MULTIPLIER F
 	public static final field Companion Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig$Companion;
 	public abstract fun getEolAsNewLine ()Z
+	public fun getImageAltTooltipHoverDelayMs ()J
 	public fun getInlineImageAsBlock ()Z
+	public fun getShowImageAltTooltip ()Z
 }
 
 public final class com/mikepenz/markdown/model/MarkdownAnnotatorConfig$Companion {
@@ -559,12 +563,14 @@ public final class com/mikepenz/markdown/model/MarkdownAnnotatorConfig$Companion
 }
 
 public final class com/mikepenz/markdown/model/MarkdownAnnotatorConfig$DefaultImpls {
+	public static fun getImageAltTooltipHoverDelayMs (Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;)J
 	public static fun getInlineImageAsBlock (Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;)Z
+	public static fun getShowImageAltTooltip (Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;)Z
 }
 
 public final class com/mikepenz/markdown/model/MarkdownAnnotatorConfigKt {
-	public static final fun markdownAnnotatorConfig (ZZ)Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;
-	public static synthetic fun markdownAnnotatorConfig$default (ZZILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;
+	public static final fun markdownAnnotatorConfig (ZZZJ)Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;
+	public static synthetic fun markdownAnnotatorConfig$default (ZZZJILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;
 }
 
 public final class com/mikepenz/markdown/model/MarkdownAnnotatorKt {

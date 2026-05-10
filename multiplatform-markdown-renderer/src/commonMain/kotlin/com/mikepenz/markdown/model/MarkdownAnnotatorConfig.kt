@@ -18,6 +18,22 @@ interface MarkdownAnnotatorConfig {
     val inlineImageAsBlock: Boolean
         get() = true
 
+    /**
+     * If `true`, hovering an image surfaces its alt text in a small popup
+     * (web-style tooltip). On touch-only platforms a long-press also
+     * triggers it via [androidx.compose.foundation.hoverable]'s interaction
+     * source.
+     */
+    val showImageAltTooltip: Boolean
+        get() = false
+
+    /**
+     * Hover dwell time in milliseconds before the alt-text tooltip appears.
+     * Only honored when [showImageAltTooltip] is `true`.
+     */
+    val imageAltTooltipHoverDelayMs: Long
+        get() = 2_000L
+
     companion object {
         /**
          * Multiplier of the surrounding text's line height above which an
@@ -32,6 +48,8 @@ interface MarkdownAnnotatorConfig {
 class DefaultMarkdownAnnotatorConfig(
     override val eolAsNewLine: Boolean = false,
     override val inlineImageAsBlock: Boolean = true,
+    override val showImageAltTooltip: Boolean = false,
+    override val imageAltTooltipHoverDelayMs: Long = 2_000L,
 ) : MarkdownAnnotatorConfig {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -41,12 +59,16 @@ class DefaultMarkdownAnnotatorConfig(
 
         if (eolAsNewLine != other.eolAsNewLine) return false
         if (inlineImageAsBlock != other.inlineImageAsBlock) return false
+        if (showImageAltTooltip != other.showImageAltTooltip) return false
+        if (imageAltTooltipHoverDelayMs != other.imageAltTooltipHoverDelayMs) return false
         return true
     }
 
     override fun hashCode(): Int {
         var result = eolAsNewLine.hashCode()
         result = 31 * result + inlineImageAsBlock.hashCode()
+        result = 31 * result + showImageAltTooltip.hashCode()
+        result = 31 * result + imageAltTooltipHoverDelayMs.hashCode()
         return result
     }
 }
@@ -54,7 +76,11 @@ class DefaultMarkdownAnnotatorConfig(
 fun markdownAnnotatorConfig(
     eolAsNewLine: Boolean = false,
     inlineImageAsBlock: Boolean = true,
+    showImageAltTooltip: Boolean = false,
+    imageAltTooltipHoverDelayMs: Long = 2_000L,
 ): MarkdownAnnotatorConfig = DefaultMarkdownAnnotatorConfig(
     eolAsNewLine = eolAsNewLine,
     inlineImageAsBlock = inlineImageAsBlock,
+    showImageAltTooltip = showImageAltTooltip,
+    imageAltTooltipHoverDelayMs = imageAltTooltipHoverDelayMs,
 )
