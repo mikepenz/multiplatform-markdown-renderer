@@ -25,9 +25,10 @@ fun MarkdownParagraph(
     }
 
     MarkdownText(
-        styledText,
-        node,
+        content = styledText,
+        node = node,
         modifier = modifier,
         style = style,
+        sourceContent = content,
     )
 }
