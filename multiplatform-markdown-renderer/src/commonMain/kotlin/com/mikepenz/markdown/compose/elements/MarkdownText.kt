@@ -44,8 +44,6 @@ import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.model.MarkdownAnnotatorConfig
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
-import com.mikepenz.markdown.utils.findChildOfTypeRecursive
-import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import kotlinx.collections.immutable.toPersistentMap
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
@@ -272,9 +270,9 @@ private fun buildImageInlineContent(
     fun shouldPromote(url: String): Boolean {
         val imageSize = imageSizeByLink[url] ?: defaultImageSize
         return inlineImageAsBlock &&
-            lineHeightPx > 0f &&
-            !imageSize.isUnspecified &&
-            imageSize.height > lineHeightPx * MarkdownAnnotatorConfig.BLOCK_FALLBACK_LINE_MULTIPLIER
+                lineHeightPx > 0f &&
+                !imageSize.isUnspecified &&
+                imageSize.height > lineHeightPx * MarkdownAnnotatorConfig.BLOCK_FALLBACK_LINE_MULTIPLIER
     }
 
     annotations.forEachIndexed { index, annotation ->
