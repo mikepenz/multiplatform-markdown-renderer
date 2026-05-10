@@ -63,9 +63,9 @@ fun MarkdownTable(
             content = content, header = header, tableWidth = tableWidth, style = style, annotatorSettings = annotatorSettings,
         )
     },
-    rowBlock: @Composable (String, ASTNode, Dp, TextStyle) -> Unit = { content, header, tableWidth, style ->
+    rowBlock: @Composable (String, ASTNode, Dp, TextStyle, Int) -> Unit = { content, header, tableWidth, style, rowIndex ->
         MarkdownTableRow(
-            content = content, header = header, tableWidth = tableWidth, style = style, annotatorSettings = annotatorSettings,
+            content = content, header = header, tableWidth = tableWidth, style = style, rowIndex = rowIndex, annotatorSettings = annotatorSettings,
         )
     },
 ) {
@@ -92,10 +92,15 @@ fun MarkdownTable(
                 Modifier.horizontalScroll(rememberScrollState()).requiredWidth(tableWidth)
             } else Modifier.fillMaxWidth()
         ) {
+            // Body rows start at semantic index 1 because the header occupies row 0.
+            var rowIndex = 1
             node.children.forEach {
                 when (it.type) {
                     HEADER -> headerBlock(content, it, tableWidth, style)
-                    ROW -> rowBlock(content, it, tableWidth, style)
+                    ROW -> {
+                        rowBlock(content, it, tableWidth, style, rowIndex)
+                        rowIndex++
+                    }
                     TABLE_SEPARATOR -> MarkdownDivider()
                 }
             }
@@ -150,6 +155,7 @@ fun MarkdownTableRow(
     header: ASTNode,
     tableWidth: Dp,
     style: TextStyle,
+    rowIndex: Int = 1,
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     maxLines: Int = 1,
     overflow: TextOverflow = TextOverflow.Ellipsis,
@@ -166,7 +172,7 @@ fun MarkdownTableRow(
                     .weight(1f)
                     .semantics {
                         collectionItemInfo = CollectionItemInfo(
-                            rowIndex = 1, rowSpan = 1,
+                            rowIndex = rowIndex, rowSpan = 1,
                             columnIndex = colIndex, columnSpan = 1,
                         )
                     },

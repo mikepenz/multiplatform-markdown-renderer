@@ -42,7 +42,7 @@ internal fun MarkdownCodeTopBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val languageLabel = language?.uppercase() ?: "CODE"
+        val languageLabel = language?.uppercase() ?: a11yLabels.codeFallbackLanguage
         MarkdownBasicText(
             text = languageLabel,
             modifier = Modifier.semantics { contentDescription = a11yLabels.codeLanguage(languageLabel) },

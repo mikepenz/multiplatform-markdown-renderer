@@ -20,6 +20,8 @@ data class MarkdownA11yLabels(
     val codeBlockWithLanguage: (language: String) -> String = { "Code block, $it" },
     /** Language label prefix used in the code top bar, e.g. "Language: KOTLIN". */
     val codeLanguage: (language: String) -> String = { "Language: $it" },
+    /** Visible top-bar label shown when no language is detected on a code block. */
+    val codeFallbackLanguage: String = "CODE",
     /** Copy-to-clipboard button label / click action. */
     val copyCode: String = "Copy code",
 )
