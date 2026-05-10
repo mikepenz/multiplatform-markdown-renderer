@@ -15,6 +15,8 @@ import androidx.compose.ui.geometry.isUnspecified
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.isTraversalGroup
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.TextLayoutResult
@@ -166,7 +168,9 @@ fun MarkdownText(
     }
 
     val containerModifier: @Composable (Modifier) -> Modifier = { base ->
-        base.onPlaced {
+        // Pin descendants (text + inline link nodes) to source order. Without this,
+        // TalkBack reorders interactive link nodes after non-interactive text — see #487.
+        base.semantics { isTraversalGroup = true }.onPlaced {
             it.parentLayoutCoordinates?.also { coordinates ->
                 containerSize.value = coordinates.size.toSize()
             }

@@ -46,6 +46,7 @@ public final class com/mikepenz/markdown/compose/ComposeLocalKt {
 	public static final fun getLocalBulletListHandler ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalImageTransformer ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalImageWidth ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownA11yLabels ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownAnimations ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownAnnotator ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
@@ -211,7 +212,7 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownImageKt {
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownInlineImageKt {
-	public static final fun MarkdownInlineImage (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/runtime/Composer;I)V
+	public static final fun MarkdownInlineImage (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownListKt {
@@ -229,7 +230,8 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownTableKt {
 	public static final fun MarkdownTable (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lcom/mikepenz/markdown/annotator/AnnotatorSettings;Lkotlin/jvm/functions/Function6;Lkotlin/jvm/functions/Function6;Landroidx/compose/runtime/Composer;II)V
 	public static final fun MarkdownTableBasicText-kKmfEb0 (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;IILcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
 	public static final fun MarkdownTableHeader-OniuKJc (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownTableRow-OniuKJc (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Alignment$Vertical;IILcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownTableRow-BvHgwxg (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;FLandroidx/compose/ui/text/TextStyle;ILandroidx/compose/ui/Alignment$Vertical;IILcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
+	public static final fun getLocalTableRowIndex ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownTextKt {
@@ -532,6 +534,30 @@ public final class com/mikepenz/markdown/model/Input {
 	public final fun getParser ()Lorg/intellij/markdown/parser/MarkdownParser;
 	public final fun getReferenceLinkHandler ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
 	public final fun getRetainState ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownA11yLabels {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lkotlin/jvm/functions/Function1;
+	public final fun component4 ()Lkotlin/jvm/functions/Function1;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;)Lcom/mikepenz/markdown/model/MarkdownA11yLabels;
+	public static synthetic fun copy$default (Lcom/mikepenz/markdown/model/MarkdownA11yLabels;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownA11yLabels;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBlockquote ()Ljava/lang/String;
+	public final fun getCodeBlock ()Ljava/lang/String;
+	public final fun getCodeBlockWithLanguage ()Lkotlin/jvm/functions/Function1;
+	public final fun getCodeFallbackLanguage ()Ljava/lang/String;
+	public final fun getCodeLanguage ()Lkotlin/jvm/functions/Function1;
+	public final fun getCopyCode ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

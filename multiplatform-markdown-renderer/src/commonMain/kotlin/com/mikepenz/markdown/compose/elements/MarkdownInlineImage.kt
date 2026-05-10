@@ -8,12 +8,12 @@ import com.mikepenz.markdown.compose.LocalImageTransformer
 import org.intellij.markdown.ast.ASTNode
 
 @Composable
-fun MarkdownInlineImage(link: String, node: ASTNode) {
+fun MarkdownInlineImage(link: String, node: ASTNode, alt: String? = null) {
     val transformer = LocalImageTransformer.current
     transformer.transform(link)?.let { imageData ->
         Image(
             painter = imageData.painter,
-            contentDescription = imageData.contentDescription,
+            contentDescription = alt ?: imageData.contentDescription,
             modifier = Modifier.fillMaxSize().then(imageData.modifier),
             alignment = imageData.alignment,
             contentScale = imageData.contentScale,

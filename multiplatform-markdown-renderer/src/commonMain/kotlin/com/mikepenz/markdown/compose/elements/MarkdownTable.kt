@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +25,12 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.CollectionInfo
+import androidx.compose.ui.semantics.CollectionItemInfo
+import androidx.compose.ui.semantics.collectionInfo
+import androidx.compose.ui.semantics.collectionItemInfo
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -46,6 +54,14 @@ import org.intellij.markdown.flavours.gfm.GFMElementTypes.ROW
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes.CELL
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes.TABLE_SEPARATOR
 
+/**
+ * Internal hook so the table iteration can pass the current body row index
+ * (header is row 0, body rows start at 1) to [MarkdownTableRow] without
+ * breaking the public `rowBlock` lambda signature. Custom `rowBlock`
+ * implementations can read this to set their own collection semantics.
+ */
+val LocalTableRowIndex = compositionLocalOf { 1 }
+
 @Composable
 fun MarkdownTable(
     content: String,
@@ -68,6 +84,7 @@ fun MarkdownTable(
     val tableCornerSize = LocalMarkdownDimens.current.tableCornerSize
 
     val columnsCount = remember(node) { node.findChildOfType(HEADER)?.children?.count { it.type == CELL } ?: 0 }
+    val rowsCount = remember(node) { node.children.count { it.type == ROW } + 1 /* header */ }
     val tableWidth = columnsCount * tableCellWidth
 
     val backgroundCodeColor = LocalMarkdownColors.current.tableBackground
@@ -75,6 +92,9 @@ fun MarkdownTable(
         modifier = Modifier
             .background(backgroundCodeColor, RoundedCornerShape(tableCornerSize))
             .widthIn(max = tableMaxWidth)
+            .semantics {
+                collectionInfo = CollectionInfo(rowCount = rowsCount, columnCount = columnsCount)
+            }
     ) {
         val scrollable = maxWidth <= tableWidth
         Column(
@@ -82,10 +102,17 @@ fun MarkdownTable(
                 Modifier.horizontalScroll(rememberScrollState()).requiredWidth(tableWidth)
             } else Modifier.fillMaxWidth()
         ) {
+            // Body rows start at semantic index 1 because the header occupies row 0.
+            var rowIndex = 1
             node.children.forEach {
                 when (it.type) {
                     HEADER -> headerBlock(content, it, tableWidth, style)
-                    ROW -> rowBlock(content, it, tableWidth, style)
+                    ROW -> {
+                        CompositionLocalProvider(LocalTableRowIndex provides rowIndex) {
+                            rowBlock(content, it, tableWidth, style)
+                        }
+                        rowIndex++
+                    }
                     TABLE_SEPARATOR -> MarkdownDivider()
                 }
             }
@@ -108,9 +135,18 @@ fun MarkdownTableHeader(
     Row(
         verticalAlignment = verticalAlignment, modifier = Modifier.widthIn(tableWidth).height(IntrinsicSize.Max)
     ) {
-        header.children.filter { it.type == CELL }.forEach { cell ->
+        header.children.filter { it.type == CELL }.forEachIndexed { colIndex, cell ->
             Column(
-                modifier = Modifier.padding(tableCellPadding).weight(1f),
+                modifier = Modifier
+                    .padding(tableCellPadding)
+                    .weight(1f)
+                    .semantics {
+                        heading()
+                        collectionItemInfo = CollectionItemInfo(
+                            rowIndex = 0, rowSpan = 1,
+                            columnIndex = colIndex, columnSpan = 1,
+                        )
+                    },
             ) {
                 MarkdownTableBasicText(
                     content = content,
@@ -131,6 +167,7 @@ fun MarkdownTableRow(
     header: ASTNode,
     tableWidth: Dp,
     style: TextStyle,
+    rowIndex: Int = LocalTableRowIndex.current,
     verticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
     maxLines: Int = 1,
     overflow: TextOverflow = TextOverflow.Ellipsis,
@@ -140,9 +177,17 @@ fun MarkdownTableRow(
     Row(
         verticalAlignment = verticalAlignment, modifier = Modifier.widthIn(tableWidth)
     ) {
-        header.children.filter { it.type == CELL }.forEach { cell ->
+        header.children.filter { it.type == CELL }.forEachIndexed { colIndex, cell ->
             Column(
-                modifier = Modifier.padding(tableCellPadding).weight(1f),
+                modifier = Modifier
+                    .padding(tableCellPadding)
+                    .weight(1f)
+                    .semantics {
+                        collectionItemInfo = CollectionItemInfo(
+                            rowIndex = rowIndex, rowSpan = 1,
+                            columnIndex = colIndex, columnSpan = 1,
+                        )
+                    },
             ) {
                 MarkdownTableBasicText(
                     content = content,

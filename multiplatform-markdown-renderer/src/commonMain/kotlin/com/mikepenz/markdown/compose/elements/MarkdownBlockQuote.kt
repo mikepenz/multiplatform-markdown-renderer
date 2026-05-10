@@ -11,8 +11,11 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
+import com.mikepenz.markdown.compose.LocalMarkdownA11yLabels
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
@@ -39,9 +42,11 @@ fun MarkdownBlockQuote(
     val blockQuoteText = LocalMarkdownPadding.current.blockQuoteText
     val blockQuoteBar = LocalMarkdownPadding.current.blockQuoteBar
     val markdownComponents = LocalMarkdownComponents.current
+    val a11yLabels = LocalMarkdownA11yLabels.current
 
     Column(
         modifier = Modifier
+            .semantics { contentDescription = a11yLabels.blockquote }
             .drawBehind {
                 drawLine(
                     color = blockQuoteColor,
