@@ -19,6 +19,21 @@ demonstrates a different inline construct.
 | escaped pipe        | a \| b                                 |
 | mixed               | **bold** and `code` and [link](https://x) |
 
+## Inline placeholders (issue #511)
+
+Demonstrates a custom `MarkdownAnnotator` + `MarkdownInlineContent` that
+substitutes the `⦃check⦄` token with a ✅ glyph — both outside and
+inside table cells.
+
+Outside table: ⦃check⦄ Complete
+
+| Feature       | Status            |
+| ------------- | ----------------- |
+| **Headers**   | ⦃check⦄ Complete |
+| **Links**     | ⦃check⦄ Complete |
+| **Bold/Italic** | ⦃check⦄ Complete |
+| **Tables**    | ⦃check⦄ Complete |
+
 ## Inline images
 
 Images inside cells render inline (per GFM spec — no block content in cells):
