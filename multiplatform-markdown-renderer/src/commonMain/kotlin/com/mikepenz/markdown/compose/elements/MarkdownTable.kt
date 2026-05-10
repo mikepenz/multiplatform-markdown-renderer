@@ -14,10 +14,14 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -34,6 +38,7 @@ import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
 import com.mikepenz.markdown.compose.LocalMarkdownInlineContent
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
+import kotlinx.collections.immutable.toPersistentMap
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.flavours.gfm.GFMElementTypes.HEADER
@@ -183,26 +188,33 @@ fun MarkdownTableBasicText(
     val userInlineContent = LocalMarkdownInlineContent.current.inlineContent
     val inlineImageWidth = LocalImageWidth.current
     val density = LocalDensity.current
-    val imageNodes = remember(cell) { collectImageNodes(cell) }
+
+    val containerSize = remember { mutableStateOf(Size.Unspecified) }
+    val imageSizeByLink = remember { mutableStateMapOf<String, Size>() }
+    val imageSizeByLinkSnapshot = imageSizeByLink.toPersistentMap()
 
     val resolvedInlineContent = remember(
-        text, userInlineContent, transformer, inlineImageWidth, imageNodes,
+        text, userInlineContent, transformer, inlineImageWidth,
+        containerSize.value, imageSizeByLinkSnapshot,
     ) {
         userInlineContent + buildImageInlineContent(
             content = text,
             node = cell,
             transformer = transformer,
             density = density,
-            containerSize = Size.Unspecified,
+            containerSize = containerSize.value,
             inlineImageWidth = inlineImageWidth,
-            imageSizeByLink = emptyMap(),
+            imageSizeByLink = imageSizeByLinkSnapshot,
             inlineImageAsBlock = false,
-            imageNodes = imageNodes,
+            imageSizeChanged = { link, size -> imageSizeByLink += (link to size) },
         )
     }
 
     MarkdownBasicText(
         text = text,
+        modifier = Modifier.onPlaced { coords ->
+            coords.parentLayoutCoordinates?.also { containerSize.value = it.size.toSize() }
+        },
         style = style,
         maxLines = maxLines,
         overflow = overflow,

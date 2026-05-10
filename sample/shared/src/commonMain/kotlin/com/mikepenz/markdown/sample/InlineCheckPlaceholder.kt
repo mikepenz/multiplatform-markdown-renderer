@@ -38,14 +38,17 @@ fun rememberCheckAnnotator(
 }
 
 @Composable
-fun rememberCheckInlineContent(): MarkdownInlineContent = markdownInlineContent(
-    content = mapOf(
-        CHECK_PLACEHOLDER to InlineTextContent(
-            Placeholder(
-                width = 16.sp,
-                height = 16.sp,
-                placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter,
-            ),
-        ) { Text("✅") },
-    ),
-)
+fun rememberCheckInlineContent(): MarkdownInlineContent {
+    val map = remember {
+        mapOf(
+            CHECK_PLACEHOLDER to InlineTextContent(
+                Placeholder(
+                    width = 16.sp,
+                    height = 16.sp,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter,
+                ),
+            ) @Composable { Text("✅") },
+        )
+    }
+    return markdownInlineContent(content = map)
+}
