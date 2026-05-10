@@ -58,7 +58,7 @@ internal fun MarkdownCodeTopBar(
 
         Box(
             modifier = Modifier
-                .size(48.dp)
+                .size(24.dp)
                 .clip(CircleShape)
                 .semantics {
                     contentDescription = a11yLabels.copyCode
