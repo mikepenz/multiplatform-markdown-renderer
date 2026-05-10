@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.SpanStyle
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.model.ReferenceLinkHandler
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
@@ -18,6 +19,28 @@ import org.intellij.markdown.flavours.gfm.GFMTokenTypes
  * Tag used to indicate an image url for inline content. Required for rendering.
  */
 const val MARKDOWN_TAG_IMAGE_URL = "MARKDOWN_IMAGE_URL"
+
+/**
+ * Resolve the destination URL for an `IMAGE` node. Falls back to looking up
+ * a `FULL_REFERENCE_LINK` / `SHORT_REFERENCE_LINK` descendant's `LINK_LABEL`
+ * via the supplied [referenceLinkHandler] when no inline `LINK_DESTINATION`
+ * is present (i.e. for reference-style images like `![alt][id]`).
+ */
+internal fun ASTNode.resolveImageLink(
+    content: String,
+    referenceLinkHandler: ReferenceLinkHandler?,
+): String? {
+    findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.let {
+        return it.getUnescapedTextInNode(content)
+    }
+    val refNode = findChildOfTypeRecursive(MarkdownElementTypes.FULL_REFERENCE_LINK)
+        ?: findChildOfTypeRecursive(MarkdownElementTypes.SHORT_REFERENCE_LINK)
+        ?: return null
+    val label = refNode.findChildOfType(MarkdownElementTypes.LINK_LABEL)
+        ?.getUnescapedTextInNode(content)
+        ?: return null
+    return referenceLinkHandler?.find(label)?.takeIf { it.isNotEmpty() }
+}
 
 /**
  * Find a child node recursive

@@ -3,15 +3,14 @@ package com.mikepenz.markdown.compose.elements
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import com.mikepenz.markdown.compose.LocalImageTransformer
-import com.mikepenz.markdown.utils.findChildOfTypeRecursive
-import com.mikepenz.markdown.utils.getUnescapedTextInNode
-import org.intellij.markdown.MarkdownElementTypes
+import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
+import com.mikepenz.markdown.utils.resolveImageLink
 import org.intellij.markdown.ast.ASTNode
 
 @Composable
 fun MarkdownImage(content: String, node: ASTNode) {
 
-    val link = node.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(content) ?: return
+    val link = node.resolveImageLink(content, LocalReferenceLinkHandler.current) ?: return
 
     LocalImageTransformer.current.transform(link)?.let { imageData ->
         Image(
