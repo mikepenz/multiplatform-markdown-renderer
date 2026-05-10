@@ -15,6 +15,8 @@ import androidx.compose.ui.geometry.isUnspecified
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.isTraversalGroup
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.TextLayoutResult
@@ -44,6 +46,7 @@ import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.model.MarkdownAnnotatorConfig
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
+import com.mikepenz.markdown.utils.resolveImageAlt
 import kotlinx.collections.immutable.toPersistentMap
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
@@ -166,7 +169,9 @@ fun MarkdownText(
     }
 
     val containerModifier: @Composable (Modifier) -> Modifier = { base ->
-        base.onPlaced {
+        // Pin descendants (text + inline link nodes) to source order. Without this,
+        // TalkBack reorders interactive link nodes after non-interactive text — see #487.
+        base.semantics { isTraversalGroup = true }.onPlaced {
             it.parentLayoutCoordinates?.also { coordinates ->
                 containerSize.value = coordinates.size.toSize()
             }
@@ -210,7 +215,7 @@ fun MarkdownText(
                 if (sourceContent != null && range.imageNode != null) {
                     components.image(MarkdownComponentModel(sourceContent, range.imageNode, typography))
                 } else {
-                    BlockFallbackImage(range.url)
+                    BlockFallbackImage(range.url, range.alt)
                 }
                 cursor = range.end
             }
@@ -231,14 +236,14 @@ internal fun collectImageNodes(root: ASTNode): List<ASTNode> {
     return list
 }
 
-internal data class BlockImageRange(val url: String, val start: Int, val end: Int, val imageNode: ASTNode?)
+internal data class BlockImageRange(val url: String, val start: Int, val end: Int, val imageNode: ASTNode?, val alt: String? = null)
 
 @Composable
-private fun BlockFallbackImage(url: String) {
+private fun BlockFallbackImage(url: String, alt: String? = null) {
     LocalImageTransformer.current.transform(url)?.let { imageData ->
         Image(
             painter = imageData.painter,
-            contentDescription = imageData.contentDescription,
+            contentDescription = alt ?: imageData.contentDescription,
             modifier = imageData.modifier,
             alignment = imageData.alignment,
             contentScale = imageData.contentScale,
@@ -278,12 +283,14 @@ internal fun buildImageInlineContent(
     annotations.forEachIndexed { index, annotation ->
         val url = annotation.item.removePrefix("${MARKDOWN_TAG_IMAGE_URL}_")
         if (shouldPromote(url)) {
+            val imageNode = imageNodes.getOrNull(index)
             onBlockImage?.invoke(
                 BlockImageRange(
                     url = url,
                     start = annotation.start,
                     end = annotation.end,
-                    imageNode = imageNodes.getOrNull(index),
+                    imageNode = imageNode,
+                    alt = imageNode?.resolveImageAlt(content.text),
                 )
             )
         }

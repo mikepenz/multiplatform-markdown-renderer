@@ -18,7 +18,7 @@ fun MarkdownImage(content: String, node: ASTNode) {
         ImageAltTooltip(alt) {
             Image(
                 painter = imageData.painter,
-                contentDescription = imageData.contentDescription ?: alt,
+                contentDescription = alt ?: imageData.contentDescription,
                 modifier = imageData.modifier,
                 alignment = imageData.alignment,
                 contentScale = imageData.contentScale,

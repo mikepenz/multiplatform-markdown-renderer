@@ -23,6 +23,12 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.CollectionInfo
+import androidx.compose.ui.semantics.CollectionItemInfo
+import androidx.compose.ui.semantics.collectionInfo
+import androidx.compose.ui.semantics.collectionItemInfo
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -68,6 +74,7 @@ fun MarkdownTable(
     val tableCornerSize = LocalMarkdownDimens.current.tableCornerSize
 
     val columnsCount = remember(node) { node.findChildOfType(HEADER)?.children?.count { it.type == CELL } ?: 0 }
+    val rowsCount = remember(node) { node.children.count { it.type == ROW } + 1 /* header */ }
     val tableWidth = columnsCount * tableCellWidth
 
     val backgroundCodeColor = LocalMarkdownColors.current.tableBackground
@@ -75,6 +82,9 @@ fun MarkdownTable(
         modifier = Modifier
             .background(backgroundCodeColor, RoundedCornerShape(tableCornerSize))
             .widthIn(max = tableMaxWidth)
+            .semantics {
+                collectionInfo = CollectionInfo(rowCount = rowsCount, columnCount = columnsCount)
+            }
     ) {
         val scrollable = maxWidth <= tableWidth
         Column(
@@ -108,9 +118,18 @@ fun MarkdownTableHeader(
     Row(
         verticalAlignment = verticalAlignment, modifier = Modifier.widthIn(tableWidth).height(IntrinsicSize.Max)
     ) {
-        header.children.filter { it.type == CELL }.forEach { cell ->
+        header.children.filter { it.type == CELL }.forEachIndexed { colIndex, cell ->
             Column(
-                modifier = Modifier.padding(tableCellPadding).weight(1f),
+                modifier = Modifier
+                    .padding(tableCellPadding)
+                    .weight(1f)
+                    .semantics {
+                        heading()
+                        collectionItemInfo = CollectionItemInfo(
+                            rowIndex = 0, rowSpan = 1,
+                            columnIndex = colIndex, columnSpan = 1,
+                        )
+                    },
             ) {
                 MarkdownTableBasicText(
                     content = content,
@@ -140,9 +159,17 @@ fun MarkdownTableRow(
     Row(
         verticalAlignment = verticalAlignment, modifier = Modifier.widthIn(tableWidth)
     ) {
-        header.children.filter { it.type == CELL }.forEach { cell ->
+        header.children.filter { it.type == CELL }.forEachIndexed { colIndex, cell ->
             Column(
-                modifier = Modifier.padding(tableCellPadding).weight(1f),
+                modifier = Modifier
+                    .padding(tableCellPadding)
+                    .weight(1f)
+                    .semantics {
+                        collectionItemInfo = CollectionItemInfo(
+                            rowIndex = 1, rowSpan = 1,
+                            columnIndex = colIndex, columnSpan = 1,
+                        )
+                    },
             ) {
                 MarkdownTableBasicText(
                     content = content,

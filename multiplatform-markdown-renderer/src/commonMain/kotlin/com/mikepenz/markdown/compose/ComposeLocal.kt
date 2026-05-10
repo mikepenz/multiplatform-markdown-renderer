@@ -11,6 +11,7 @@ import com.mikepenz.markdown.model.DefaultMarkdownExtendedSpans
 import com.mikepenz.markdown.model.DefaultMarkdownInlineContent
 import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
+import com.mikepenz.markdown.model.MarkdownA11yLabels
 import com.mikepenz.markdown.model.MarkdownAnimations
 import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.MarkdownColors
@@ -118,3 +119,8 @@ val LocalMarkdownComponents = compositionLocalOf<MarkdownComponents> {
 val LocalMarkdownAnimations = compositionLocalOf<MarkdownAnimations> {
     error("No local MarkdownAnimations")
 }
+
+/**
+ * Local [MarkdownA11yLabels] provider — override to localize accessibility labels.
+ */
+val LocalMarkdownA11yLabels = staticCompositionLocalOf { MarkdownA11yLabels() }
