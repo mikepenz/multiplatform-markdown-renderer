@@ -48,7 +48,6 @@ import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.model.MarkdownAnnotatorConfig
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
-import kotlinx.collections.immutable.toPersistentMap
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
@@ -150,9 +149,12 @@ fun MarkdownText(
         lineHeightPx,
         inlineImageAsBlock,
         imageNodes,
+        density,
     ) {
         derivedStateOf {
-            val sizeSnapshot = imageSizeByLink.toPersistentMap()
+            // Pass the SnapshotStateMap directly so the snapshot system tracks
+            // per-key reads. Only image URLs actually queried by this node
+            // invalidate the derived state.
             val blocks = mutableListOf<BlockImageRange>()
             val map = inlineContent.inlineContent + buildImageInlineContent(
                 content = content,
@@ -161,7 +163,7 @@ fun MarkdownText(
                 density = density,
                 containerSize = containerSize.value,
                 inlineImageWidth = inlineImageWidth,
-                imageSizeByLink = sizeSnapshot,
+                imageSizeByLink = imageSizeByLink,
                 lineHeightPx = lineHeightPx,
                 inlineImageAsBlock = inlineImageAsBlock,
                 imageNodes = imageNodes,

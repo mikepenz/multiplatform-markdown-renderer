@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
@@ -136,8 +135,7 @@ fun MarkdownCodeBackground(
                     code = code
                 )
                 MarkdownDivider(
-                    modifier = Modifier.graphicsLayer { alpha = 0.3f },
-                    color = LocalMarkdownColors.current.dividerColor,
+                    color = LocalMarkdownColors.current.dividerColor.copy(alpha = 0.3f),
                     thickness = 0.5.dp
                 )
                 content()
