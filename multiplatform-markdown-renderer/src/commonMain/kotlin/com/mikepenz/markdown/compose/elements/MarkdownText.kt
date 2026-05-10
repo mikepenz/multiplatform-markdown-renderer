@@ -17,7 +17,6 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -45,8 +44,11 @@ import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.model.MarkdownAnnotatorConfig
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
+import com.mikepenz.markdown.utils.findChildOfTypeRecursive
+import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import kotlinx.collections.immutable.toPersistentMap
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 
@@ -57,7 +59,7 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text,
 ) {
-    MarkdownText(AnnotatedString(content), node, modifier, style)
+    MarkdownText(AnnotatedString(content), node, modifier, style, sourceContent = content)
 }
 
 @Composable
@@ -80,7 +82,7 @@ fun MarkdownText(
         pop()
     }
 
-    MarkdownText(styledText, node, modifier = modifier, style = style)
+    MarkdownText(content = styledText, node = node, modifier = modifier, style = style, sourceContent = content)
 }
 
 @Composable
@@ -90,6 +92,7 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text,
     extendedSpans: ExtendedSpans? = LocalMarkdownExtendedSpans.current.extendedSpans?.invoke(),
+    sourceContent: String? = null,
 ) {
     // extend the annotated string with `extended-spans` styles if provided
     val extendedStyledText = if (extendedSpans != null) {
@@ -112,7 +115,7 @@ fun MarkdownText(
         modifier.drawBehind(extendedSpans)
     } else modifier
 
-    MarkdownText(extendedStyledText, node, extendedModifier, style, onTextLayout)
+    MarkdownText(extendedStyledText, node, extendedModifier, style, onTextLayout, sourceContent)
 }
 
 @Composable
@@ -122,6 +125,7 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text,
     onTextLayout: ((TextLayoutResult, Color?) -> Unit)?,
+    sourceContent: String? = null,
 ) {
     val baseColor = LocalMarkdownColors.current.text
     val animations = LocalMarkdownAnimations.current
@@ -144,16 +148,26 @@ fun MarkdownText(
 
     val imageSizeByLinkSnapshot = imageSizeByLink.toPersistentMap()
     val inlineImageAsBlock = annotatorConfig.inlineImageAsBlock
-    val (resolvedInlineContent, blockImageRanges) = remember(node, inlineContent.inlineContent, content, containerSize.value, transformer, inlineImageWidth, imageSizeByLinkSnapshot, lineHeightPx, inlineImageAsBlock) {
+    val (resolvedInlineContent, blockImageRanges) = remember(
+        node,
+        inlineContent.inlineContent,
+        content,
+        containerSize.value,
+        transformer,
+        inlineImageWidth,
+        imageSizeByLinkSnapshot,
+        lineHeightPx,
+        inlineImageAsBlock
+    ) {
         val blocks = mutableListOf<BlockImageRange>()
         val map = inlineContent.inlineContent + buildImageInlineContent(
-            content,
-            node,
-            transformer,
-            density,
-            containerSize.value,
-            inlineImageWidth,
-            imageSizeByLinkSnapshot,
+            content = content,
+            node = node,
+            transformer = transformer,
+            density = density,
+            containerSize = containerSize.value,
+            inlineImageWidth = inlineImageWidth,
+            imageSizeByLink = imageSizeByLinkSnapshot,
             lineHeightPx = lineHeightPx,
             inlineImageAsBlock = inlineImageAsBlock,
             onBlockImage = { url, start, end -> blocks += BlockImageRange(url, start, end) },
@@ -186,13 +200,23 @@ fun MarkdownText(
     if (blockImageRanges.isEmpty()) {
         textSegment(content, containerModifier(modifier))
     } else {
+        val components = LocalMarkdownComponents.current
+        val typography = LocalMarkdownTypography.current
+        val imageNodesByUrl = remember(node, sourceContent) {
+            if (sourceContent == null) emptyMap() else collectImageNodesByUrl(node, sourceContent)
+        }
         Column(modifier = containerModifier(modifier)) {
             var cursor = 0
             blockImageRanges.forEach { range ->
                 if (range.start > cursor) {
                     textSegment(content.subSequence(cursor, range.start), Modifier)
                 }
-                BlockFallbackImage(range.url)
+                val imageNode = imageNodesByUrl[range.url]
+                if (sourceContent != null && imageNode != null) {
+                    components.image(MarkdownComponentModel(sourceContent, imageNode, typography))
+                } else {
+                    BlockFallbackImage(range.url)
+                }
                 cursor = range.end
             }
             if (cursor < content.length) {
@@ -200,6 +224,19 @@ fun MarkdownText(
             }
         }
     }
+}
+
+private fun collectImageNodesByUrl(root: ASTNode, content: String): Map<String, ASTNode> {
+    val map = LinkedHashMap<String, ASTNode>()
+    fun visit(n: ASTNode) {
+        if (n.type == MarkdownElementTypes.IMAGE) {
+            val link = n.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(content)
+            if (link != null && link !in map) map[link] = n
+        }
+        n.children.forEach { visit(it) }
+    }
+    visit(root)
+    return map
 }
 
 private data class BlockImageRange(val url: String, val start: Int, val end: Int)
@@ -245,9 +282,9 @@ private fun buildImageInlineContent(
         // not grow line metrics to fit placeholders taller than the line
         // height, which causes overlap with preceding lines.
         val promoteToBlock = inlineImageAsBlock &&
-            lineHeightPx > 0f &&
-            !imageSize.isUnspecified &&
-            imageSize.height > lineHeightPx * MarkdownAnnotatorConfig.BLOCK_FALLBACK_LINE_MULTIPLIER
+                lineHeightPx > 0f &&
+                !imageSize.isUnspecified &&
+                imageSize.height > lineHeightPx * MarkdownAnnotatorConfig.BLOCK_FALLBACK_LINE_MULTIPLIER
 
         if (promoteToBlock) {
             occurrences.forEach { onBlockImage?.invoke(url, it.start, it.end) }
@@ -255,13 +292,13 @@ private fun buildImageInlineContent(
         }
 
         val config = transformer.placeholderConfig(
-                url,
-                density,
-                containerSize,
-                inlineImageWidth,
-                imageSize,
-                imageSizeChanged,
-            )
+            url,
+            density,
+            containerSize,
+            inlineImageWidth,
+            imageSize,
+            imageSizeChanged,
+        )
 
         // Config size is in DP, convert to SP for Placeholder TextUnit
         tag to InlineTextContent(
