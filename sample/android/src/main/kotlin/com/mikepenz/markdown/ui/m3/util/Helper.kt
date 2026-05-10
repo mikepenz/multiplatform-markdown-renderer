@@ -9,12 +9,25 @@ import com.mikepenz.markdown.compose.elements.highlightedCodeBlock
 import com.mikepenz.markdown.compose.elements.highlightedCodeFence
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.model.rememberMarkdownState
+import com.mikepenz.markdown.sample.rememberCheckAnnotator
+import com.mikepenz.markdown.sample.rememberCheckInlineContent
 import com.mikepenz.markdown.ui.m3.theme.SampleTheme
 
 @Composable
 fun TestMarkdown(content: String) = SampleTheme(isSystemInDarkTheme()) {
     CompositionLocalProvider(LocalInspectionMode provides true) {
         Markdown(rememberMarkdownState(content))
+    }
+}
+
+@Composable
+fun TestMarkdownTableInline(content: String) = SampleTheme(isSystemInDarkTheme()) {
+    CompositionLocalProvider(LocalInspectionMode provides true) {
+        Markdown(
+            rememberMarkdownState(content),
+            annotator = rememberCheckAnnotator(),
+            inlineContent = rememberCheckInlineContent(),
+        )
     }
 }
 

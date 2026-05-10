@@ -221,7 +221,7 @@ fun MarkdownText(
     }
 }
 
-private fun collectImageNodes(root: ASTNode): List<ASTNode> {
+internal fun collectImageNodes(root: ASTNode): List<ASTNode> {
     val list = mutableListOf<ASTNode>()
     fun visit(n: ASTNode) {
         if (n.type == MarkdownElementTypes.IMAGE) list += n
@@ -231,7 +231,7 @@ private fun collectImageNodes(root: ASTNode): List<ASTNode> {
     return list
 }
 
-private data class BlockImageRange(val url: String, val start: Int, val end: Int, val imageNode: ASTNode?)
+internal data class BlockImageRange(val url: String, val start: Int, val end: Int, val imageNode: ASTNode?)
 
 @Composable
 private fun BlockFallbackImage(url: String) {
@@ -248,7 +248,7 @@ private fun BlockFallbackImage(url: String) {
     }
 }
 
-private fun buildImageInlineContent(
+internal fun buildImageInlineContent(
     content: AnnotatedString,
     node: ASTNode,
     transformer: ImageTransformer,

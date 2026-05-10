@@ -23,7 +23,6 @@ import com.mikepenz.markdown.compose.extendedspans.SquigglyUnderlineSpanPainter
 import com.mikepenz.markdown.compose.extendedspans.rememberSquigglyUnderlineAnimator
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.elements.MarkdownCheckBox
-import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.model.markdownAnnotatorConfig
 import com.mikepenz.markdown.model.markdownExtendedSpans
 import com.mikepenz.markdown.model.rememberMarkdownState
@@ -34,7 +33,10 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-internal fun MarkDownPage(modifier: Modifier = Modifier) {
+internal fun MarkDownPage(
+    modifier: Modifier = Modifier,
+    file: String = "files/sample.md",
+) {
     val isDarkTheme = isSystemInDarkTheme()
     val highlightsBuilder = remember(isDarkTheme) {
         Highlights.Builder().theme(SyntaxThemes.atom(darkMode = isDarkTheme))
@@ -42,8 +44,8 @@ internal fun MarkDownPage(modifier: Modifier = Modifier) {
 
     SelectionContainer {
         Markdown(
-            markdownState = rememberMarkdownState {
-                Res.readBytes("files/sample.md").decodeToString()
+            markdownState = rememberMarkdownState(file) {
+                Res.readBytes(file).decodeToString()
             },
             components = markdownComponents(
                 codeBlock = {
@@ -64,7 +66,8 @@ internal fun MarkDownPage(modifier: Modifier = Modifier) {
                 },
                 checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) },
             ),
-            annotator = markdownAnnotator(markdownAnnotatorConfig(showImageAltTooltip = true)),
+            annotator = rememberCheckAnnotator(markdownAnnotatorConfig(showImageAltTooltip = true)),
+            inlineContent = rememberCheckInlineContent(),
             imageTransformer = Coil3ImageTransformerImpl,
             extendedSpans = markdownExtendedSpans {
                 val animator = rememberSquigglyUnderlineAnimator()

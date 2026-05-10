@@ -14,10 +14,17 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.unit.toSize
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -25,12 +32,13 @@ import androidx.compose.ui.unit.times
 import com.mikepenz.markdown.annotator.AnnotatorSettings
 import com.mikepenz.markdown.annotator.annotatorSettings
 import com.mikepenz.markdown.annotator.buildMarkdownAnnotatedString
+import com.mikepenz.markdown.compose.LocalImageTransformer
+import com.mikepenz.markdown.compose.LocalImageWidth
 import com.mikepenz.markdown.compose.LocalMarkdownColors
-import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
-import com.mikepenz.markdown.compose.MarkdownElement
+import com.mikepenz.markdown.compose.LocalMarkdownInlineContent
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
-import org.intellij.markdown.MarkdownElementTypes.IMAGE
+import kotlinx.collections.immutable.toPersistentMap
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.flavours.gfm.GFMElementTypes.HEADER
@@ -96,7 +104,6 @@ fun MarkdownTableHeader(
     overflow: TextOverflow = TextOverflow.Ellipsis,
     annotatorSettings: AnnotatorSettings = annotatorSettings(),
 ) {
-    val markdownComponents = LocalMarkdownComponents.current
     val tableCellPadding = LocalMarkdownDimens.current.tableCellPadding
     Row(
         verticalAlignment = verticalAlignment, modifier = Modifier.widthIn(tableWidth).height(IntrinsicSize.Max)
@@ -105,18 +112,14 @@ fun MarkdownTableHeader(
             Column(
                 modifier = Modifier.padding(tableCellPadding).weight(1f),
             ) {
-                if (cell.children.any { it.type == IMAGE }) {
-                    MarkdownElement(node = cell, components = markdownComponents, content = content, includeSpacer = false)
-                } else {
-                    MarkdownTableBasicText(
-                        content = content,
-                        cell = cell,
-                        style = style.copy(fontWeight = FontWeight.Bold),
-                        maxLines = maxLines,
-                        overflow = overflow,
-                        annotatorSettings = annotatorSettings
-                    )
-                }
+                MarkdownTableBasicText(
+                    content = content,
+                    cell = cell,
+                    style = style.copy(fontWeight = FontWeight.Bold),
+                    maxLines = maxLines,
+                    overflow = overflow,
+                    annotatorSettings = annotatorSettings,
+                )
             }
         }
     }
@@ -133,7 +136,6 @@ fun MarkdownTableRow(
     overflow: TextOverflow = TextOverflow.Ellipsis,
     annotatorSettings: AnnotatorSettings = annotatorSettings(),
 ) {
-    val markdownComponents = LocalMarkdownComponents.current
     val tableCellPadding = LocalMarkdownDimens.current.tableCellPadding
     Row(
         verticalAlignment = verticalAlignment, modifier = Modifier.widthIn(tableWidth)
@@ -142,17 +144,31 @@ fun MarkdownTableRow(
             Column(
                 modifier = Modifier.padding(tableCellPadding).weight(1f),
             ) {
-                if (cell.children.any { it.type == IMAGE }) {
-                    MarkdownElement(node = cell, components = markdownComponents, content = content, includeSpacer = false)
-                } else {
-                    MarkdownTableBasicText(content = content, cell = cell, style = style, maxLines = maxLines, overflow = overflow, annotatorSettings = annotatorSettings)
-                }
+                MarkdownTableBasicText(
+                    content = content,
+                    cell = cell,
+                    style = style,
+                    maxLines = maxLines,
+                    overflow = overflow,
+                    annotatorSettings = annotatorSettings,
+                )
             }
         }
     }
 }
 
-
+/**
+ * Renders an individual table cell.
+ *
+ * GFM table cells contain inline content only (no block elements). This composable builds the
+ * cell's [androidx.compose.ui.text.AnnotatedString] via the standard inline annotator pipeline
+ * and resolves inline content from two sources:
+ *  - user-provided placeholders via [LocalMarkdownInlineContent]
+ *  - inline images (`![alt](url)`) found in the cell, rendered through [LocalImageTransformer]
+ *
+ * Images in cells are always rendered inline (the GFM spec disallows block content inside cells),
+ * so block-image promotion is intentionally disabled.
+ */
 @Composable
 fun MarkdownTableBasicText(
     content: String,
@@ -162,14 +178,46 @@ fun MarkdownTableBasicText(
     overflow: TextOverflow = TextOverflow.Ellipsis,
     annotatorSettings: AnnotatorSettings = annotatorSettings(),
 ) {
+    val text = buildAnnotatedString {
+        pushStyle(style.toSpanStyle())
+        buildMarkdownAnnotatedString(content = content, node = cell, annotatorSettings = annotatorSettings)
+        pop()
+    }
+
+    val transformer = LocalImageTransformer.current
+    val userInlineContent = LocalMarkdownInlineContent.current.inlineContent
+    val inlineImageWidth = LocalImageWidth.current
+    val density = LocalDensity.current
+
+    val containerSize = remember { mutableStateOf(Size.Unspecified) }
+    val imageSizeByLink = remember { mutableStateMapOf<String, Size>() }
+    val imageSizeByLinkSnapshot = imageSizeByLink.toPersistentMap()
+
+    val resolvedInlineContent = remember(
+        text, userInlineContent, transformer, inlineImageWidth,
+        containerSize.value, imageSizeByLinkSnapshot,
+    ) {
+        userInlineContent + buildImageInlineContent(
+            content = text,
+            node = cell,
+            transformer = transformer,
+            density = density,
+            containerSize = containerSize.value,
+            inlineImageWidth = inlineImageWidth,
+            imageSizeByLink = imageSizeByLinkSnapshot,
+            inlineImageAsBlock = false,
+            imageSizeChanged = { link, size -> imageSizeByLink += (link to size) },
+        )
+    }
+
     MarkdownBasicText(
-        text = content.buildMarkdownAnnotatedString(
-            textNode = cell,
-            style = style,
-            annotatorSettings = annotatorSettings,
-        ),
+        text = text,
+        modifier = Modifier.onPlaced { coords ->
+            coords.parentLayoutCoordinates?.also { containerSize.value = it.size.toSize() }
+        },
         style = style,
         maxLines = maxLines,
         overflow = overflow,
+        inlineContent = resolvedInlineContent,
     )
 }
