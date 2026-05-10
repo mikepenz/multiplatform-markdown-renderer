@@ -22,6 +22,7 @@ internal data class MarkdownSample(
 private val SAMPLES = listOf(
     MarkdownSample("Playground", "files/sample.md"),
     MarkdownSample("Tables", "files/sample-tables.md"),
+    MarkdownSample("Images", "files/sample-images.md"),
 )
 
 @Composable
