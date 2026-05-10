@@ -46,7 +46,6 @@ import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.model.MarkdownAnnotatorConfig
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
-import com.mikepenz.markdown.utils.resolveImageAlt
 import kotlinx.collections.immutable.toPersistentMap
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
@@ -215,7 +214,7 @@ fun MarkdownText(
                 if (sourceContent != null && range.imageNode != null) {
                     components.image(MarkdownComponentModel(sourceContent, range.imageNode, typography))
                 } else {
-                    BlockFallbackImage(range.url, range.alt)
+                    BlockFallbackImage(range.url)
                 }
                 cursor = range.end
             }
@@ -236,14 +235,14 @@ internal fun collectImageNodes(root: ASTNode): List<ASTNode> {
     return list
 }
 
-internal data class BlockImageRange(val url: String, val start: Int, val end: Int, val imageNode: ASTNode?, val alt: String? = null)
+internal data class BlockImageRange(val url: String, val start: Int, val end: Int, val imageNode: ASTNode?)
 
 @Composable
-private fun BlockFallbackImage(url: String, alt: String? = null) {
+private fun BlockFallbackImage(url: String) {
     LocalImageTransformer.current.transform(url)?.let { imageData ->
         Image(
             painter = imageData.painter,
-            contentDescription = alt ?: imageData.contentDescription,
+            contentDescription = imageData.contentDescription,
             modifier = imageData.modifier,
             alignment = imageData.alignment,
             contentScale = imageData.contentScale,
@@ -283,14 +282,12 @@ internal fun buildImageInlineContent(
     annotations.forEachIndexed { index, annotation ->
         val url = annotation.item.removePrefix("${MARKDOWN_TAG_IMAGE_URL}_")
         if (shouldPromote(url)) {
-            val imageNode = imageNodes.getOrNull(index)
             onBlockImage?.invoke(
                 BlockImageRange(
                     url = url,
                     start = annotation.start,
                     end = annotation.end,
-                    imageNode = imageNode,
-                    alt = imageNode?.resolveImageAlt(content.text),
+                    imageNode = imageNodes.getOrNull(index),
                 )
             )
         }

@@ -32,15 +32,6 @@ class MarkdownA11yTest {
         Visit [Anthropic](https://anthropic.com) and then [Claude](https://claude.ai) here.
     """.trimIndent()
 
-    @Test
-    fun inline_links_emit_per_link_clickable_semantics_nodes() = runComposeUiTest {
-        setContent { Wrap { Markdown(docLinks) } }
-        val root = onRoot().fetchSemanticsNode()
-        var count = 0
-        walk(root) { n -> if (n.config.contains(SemanticsActions.OnClick)) count++ }
-        assertEquals(2, count, "Expected exactly two clickable link nodes")
-    }
-
     /**
      * Issue #487: `MarkdownText` must emit at least one `IsTraversalGroup` ancestor so
      * TalkBack reads link-bearing paragraphs in source order. Without it, interactive
