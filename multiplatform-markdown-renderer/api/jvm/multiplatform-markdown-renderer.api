@@ -233,8 +233,8 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownTableKt {
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownTextKt {
-	public static final fun MarkdownText (Landroidx/compose/ui/text/AnnotatedString;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lcom/mikepenz/markdown/compose/extendedspans/ExtendedSpans;Landroidx/compose/runtime/Composer;II)V
-	public static final fun MarkdownText (Landroidx/compose/ui/text/AnnotatedString;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownText (Landroidx/compose/ui/text/AnnotatedString;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lcom/mikepenz/markdown/compose/extendedspans/ExtendedSpans;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun MarkdownText (Landroidx/compose/ui/text/AnnotatedString;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function2;Ljava/lang/String;Lcom/mikepenz/markdown/compose/extendedspans/ExtendedSpans;Landroidx/compose/runtime/Composer;II)V
 	public static final fun MarkdownText (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
 	public static final fun MarkdownText (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Modifier;Lorg/intellij/markdown/IElementType;Lcom/mikepenz/markdown/annotator/AnnotatorSettings;Landroidx/compose/runtime/Composer;II)V
 }
@@ -373,10 +373,11 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownAnnotator : com/mi
 public final class com/mikepenz/markdown/model/DefaultMarkdownAnnotatorConfig : com/mikepenz/markdown/model/MarkdownAnnotatorConfig {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Z)V
-	public synthetic fun <init> (ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (ZZ)V
+	public synthetic fun <init> (ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getEolAsNewLine ()Z
+	public fun getInlineImageAsBlock ()Z
 	public fun hashCode ()I
 }
 
@@ -547,12 +548,23 @@ public abstract interface class com/mikepenz/markdown/model/MarkdownAnnotator {
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownAnnotatorConfig {
+	public static final field BLOCK_FALLBACK_LINE_MULTIPLIER F
+	public static final field Companion Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig$Companion;
 	public abstract fun getEolAsNewLine ()Z
+	public fun getInlineImageAsBlock ()Z
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAnnotatorConfig$Companion {
+	public static final field BLOCK_FALLBACK_LINE_MULTIPLIER F
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAnnotatorConfig$DefaultImpls {
+	public static fun getInlineImageAsBlock (Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;)Z
 }
 
 public final class com/mikepenz/markdown/model/MarkdownAnnotatorConfigKt {
-	public static final fun markdownAnnotatorConfig (Z)Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;
-	public static synthetic fun markdownAnnotatorConfig$default (ZILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;
+	public static final fun markdownAnnotatorConfig (ZZ)Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;
+	public static synthetic fun markdownAnnotatorConfig$default (ZZILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAnnotatorConfig;
 }
 
 public final class com/mikepenz/markdown/model/MarkdownAnnotatorKt {

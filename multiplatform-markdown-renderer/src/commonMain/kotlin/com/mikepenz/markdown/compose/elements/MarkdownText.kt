@@ -94,28 +94,15 @@ fun MarkdownText(
     extendedSpans: ExtendedSpans? = LocalMarkdownExtendedSpans.current.extendedSpans?.invoke(),
     sourceContent: String? = null,
 ) {
-    // extend the annotated string with `extended-spans` styles if provided
-    val extendedStyledText = if (extendedSpans != null) {
-        remember(content) {
-            extendedSpans.extend(content)
-        }
-    } else {
-        content
-    }
-
-    // forward the `onTextLayout` to `extended-spans` if provided
-    val onTextLayout: ((TextLayoutResult, Color?) -> Unit)? = extendedSpans?.let {
-        { layoutResult, color ->
-            extendedSpans.onTextLayout(layoutResult, color)
-        }
-    }
-
-    // call drawBehind with the `extended-spans` if provided
-    val extendedModifier = if (extendedSpans != null) {
-        modifier.drawBehind(extendedSpans)
-    } else modifier
-
-    MarkdownText(extendedStyledText, node, extendedModifier, style, onTextLayout, sourceContent)
+    MarkdownText(
+        content = content,
+        node = node,
+        modifier = modifier,
+        style = style,
+        onTextLayout = null,
+        sourceContent = sourceContent,
+        extendedSpans = extendedSpans,
+    )
 }
 
 @Composable
@@ -126,6 +113,7 @@ fun MarkdownText(
     style: TextStyle = LocalMarkdownTypography.current.text,
     onTextLayout: ((TextLayoutResult, Color?) -> Unit)?,
     sourceContent: String? = null,
+    extendedSpans: ExtendedSpans? = null,
 ) {
     val baseColor = LocalMarkdownColors.current.text
     val animations = LocalMarkdownAnimations.current
@@ -148,6 +136,7 @@ fun MarkdownText(
 
     val imageSizeByLinkSnapshot = imageSizeByLink.toPersistentMap()
     val inlineImageAsBlock = annotatorConfig.inlineImageAsBlock
+    val imageNodes = remember(node) { collectImageNodes(node) }
     val (resolvedInlineContent, blockImageRanges) = remember(
         node,
         inlineContent.inlineContent,
@@ -157,7 +146,8 @@ fun MarkdownText(
         inlineImageWidth,
         imageSizeByLinkSnapshot,
         lineHeightPx,
-        inlineImageAsBlock
+        inlineImageAsBlock,
+        imageNodes,
     ) {
         val blocks = mutableListOf<BlockImageRange>()
         val map = inlineContent.inlineContent + buildImageInlineContent(
@@ -170,7 +160,8 @@ fun MarkdownText(
             imageSizeByLink = imageSizeByLinkSnapshot,
             lineHeightPx = lineHeightPx,
             inlineImageAsBlock = inlineImageAsBlock,
-            onBlockImage = { url, start, end -> blocks += BlockImageRange(url, start, end) },
+            imageNodes = imageNodes,
+            onBlockImage = { range -> blocks += range },
             imageSizeChanged = { link, size -> imageSizeByLink += (link to size) },
         )
         map to blocks.sortedBy { it.start }
@@ -185,14 +176,24 @@ fun MarkdownText(
     }
 
     val textSegment: @Composable (AnnotatedString, Modifier) -> Unit = { segment, segmentModifier ->
+        // Apply ExtendedSpans per-segment so the (0..0) marker the extender
+        // adds is preserved in each rendered slice and `drawBehind` aligns
+        // with the segment's own text layout.
+        val extended = if (extendedSpans != null) {
+            remember(segment) { extendedSpans.extend(segment) }
+        } else segment
+        val segmentDrawModifier = if (extendedSpans != null) {
+            segmentModifier.drawBehind(extendedSpans)
+        } else segmentModifier
         MarkdownBasicText(
-            text = segment,
-            modifier = segmentModifier.let { animations.animateTextSize(it) },
+            text = extended,
+            modifier = segmentDrawModifier.let { animations.animateTextSize(it) },
             style = style,
             inlineContent = resolvedInlineContent,
-            onTextLayout = {
-                layoutResult.value = it
-                onTextLayout?.invoke(it, baseColor)
+            onTextLayout = { result ->
+                layoutResult.value = result
+                extendedSpans?.onTextLayout(result, baseColor)
+                onTextLayout?.invoke(result, baseColor)
             }
         )
     }
@@ -202,18 +203,14 @@ fun MarkdownText(
     } else {
         val components = LocalMarkdownComponents.current
         val typography = LocalMarkdownTypography.current
-        val imageNodesByUrl = remember(node, sourceContent) {
-            if (sourceContent == null) emptyMap() else collectImageNodesByUrl(node, sourceContent)
-        }
         Column(modifier = containerModifier(modifier)) {
             var cursor = 0
             blockImageRanges.forEach { range ->
                 if (range.start > cursor) {
                     textSegment(content.subSequence(cursor, range.start), Modifier)
                 }
-                val imageNode = imageNodesByUrl[range.url]
-                if (sourceContent != null && imageNode != null) {
-                    components.image(MarkdownComponentModel(sourceContent, imageNode, typography))
+                if (sourceContent != null && range.imageNode != null) {
+                    components.image(MarkdownComponentModel(sourceContent, range.imageNode, typography))
                 } else {
                     BlockFallbackImage(range.url)
                 }
@@ -226,20 +223,17 @@ fun MarkdownText(
     }
 }
 
-private fun collectImageNodesByUrl(root: ASTNode, content: String): Map<String, ASTNode> {
-    val map = LinkedHashMap<String, ASTNode>()
+private fun collectImageNodes(root: ASTNode): List<ASTNode> {
+    val list = mutableListOf<ASTNode>()
     fun visit(n: ASTNode) {
-        if (n.type == MarkdownElementTypes.IMAGE) {
-            val link = n.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.getUnescapedTextInNode(content)
-            if (link != null && link !in map) map[link] = n
-        }
+        if (n.type == MarkdownElementTypes.IMAGE) list += n
         n.children.forEach { visit(it) }
     }
     visit(root)
-    return map
+    return list
 }
 
-private data class BlockImageRange(val url: String, val start: Int, val end: Int)
+private data class BlockImageRange(val url: String, val start: Int, val end: Int, val imageNode: ASTNode?)
 
 @Composable
 private fun BlockFallbackImage(url: String) {
@@ -267,30 +261,42 @@ private fun buildImageInlineContent(
     defaultImageSize: Size = Size.Unspecified,
     lineHeightPx: Float = 0f,
     inlineImageAsBlock: Boolean = true,
-    onBlockImage: ((url: String, start: Int, end: Int) -> Unit)? = null,
+    imageNodes: List<ASTNode> = emptyList(),
+    onBlockImage: ((BlockImageRange) -> Unit)? = null,
     imageSizeChanged: ((link: String, Size) -> Unit)? = null,
 ): Map<String, InlineTextContent> {
     val annotations = content.getStringAnnotations(0, content.length)
         .filter { it.item.startsWith("${MARKDOWN_TAG_IMAGE_URL}_") }
+        .sortedBy { it.start }
+
+    fun shouldPromote(url: String): Boolean {
+        val imageSize = imageSizeByLink[url] ?: defaultImageSize
+        return inlineImageAsBlock &&
+            lineHeightPx > 0f &&
+            !imageSize.isUnspecified &&
+            imageSize.height > lineHeightPx * MarkdownAnnotatorConfig.BLOCK_FALLBACK_LINE_MULTIPLIER
+    }
+
+    annotations.forEachIndexed { index, annotation ->
+        val url = annotation.item.removePrefix("${MARKDOWN_TAG_IMAGE_URL}_")
+        if (shouldPromote(url)) {
+            onBlockImage?.invoke(
+                BlockImageRange(
+                    url = url,
+                    start = annotation.start,
+                    end = annotation.end,
+                    imageNode = imageNodes.getOrNull(index),
+                )
+            )
+        }
+    }
 
     val byTag = annotations.groupBy { it.item }
-    return byTag.mapNotNull { (tag, occurrences) ->
+    return byTag.mapNotNull { (tag, _) ->
         val url = tag.removePrefix("${MARKDOWN_TAG_IMAGE_URL}_")
+        if (shouldPromote(url)) return@mapNotNull null
+
         val imageSize = imageSizeByLink[url] ?: defaultImageSize
-
-        // Promote tall images to block rendering: Compose's text engine does
-        // not grow line metrics to fit placeholders taller than the line
-        // height, which causes overlap with preceding lines.
-        val promoteToBlock = inlineImageAsBlock &&
-                lineHeightPx > 0f &&
-                !imageSize.isUnspecified &&
-                imageSize.height > lineHeightPx * MarkdownAnnotatorConfig.BLOCK_FALLBACK_LINE_MULTIPLIER
-
-        if (promoteToBlock) {
-            occurrences.forEach { onBlockImage?.invoke(url, it.start, it.end) }
-            return@mapNotNull null
-        }
-
         val config = transformer.placeholderConfig(
             url,
             density,

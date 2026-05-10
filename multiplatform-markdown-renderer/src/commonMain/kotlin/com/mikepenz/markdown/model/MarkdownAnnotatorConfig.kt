@@ -16,6 +16,7 @@ interface MarkdownAnnotatorConfig {
      * placeholders.
      */
     val inlineImageAsBlock: Boolean
+        get() = true
 
     companion object {
         /**
