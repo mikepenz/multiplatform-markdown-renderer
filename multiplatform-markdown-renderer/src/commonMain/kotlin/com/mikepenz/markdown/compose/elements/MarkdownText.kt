@@ -1,17 +1,24 @@
 package com.mikepenz.markdown.compose.elements
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.isUnspecified
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.isTraversalGroup
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.TextLayoutResult
@@ -19,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.unit.toSize
 import com.mikepenz.markdown.annotator.AnnotatorSettings
 import com.mikepenz.markdown.annotator.annotatorSettings
@@ -26,6 +34,7 @@ import com.mikepenz.markdown.annotator.buildMarkdownAnnotatedString
 import com.mikepenz.markdown.compose.LocalImageTransformer
 import com.mikepenz.markdown.compose.LocalImageWidth
 import com.mikepenz.markdown.compose.LocalMarkdownAnimations
+import com.mikepenz.markdown.compose.LocalMarkdownAnnotator
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownExtendedSpans
@@ -37,9 +46,10 @@ import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 import com.mikepenz.markdown.compose.extendedspans.drawBehind
 import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
+import com.mikepenz.markdown.model.MarkdownAnnotatorConfig
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
-import kotlinx.collections.immutable.toPersistentMap
 import org.intellij.markdown.IElementType
+import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.findChildOfType
 
@@ -50,7 +60,7 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text,
 ) {
-    MarkdownText(AnnotatedString(content), node, modifier, style)
+    MarkdownText(AnnotatedString(content), node, modifier, style, sourceContent = content)
 }
 
 @Composable
@@ -73,7 +83,7 @@ fun MarkdownText(
         pop()
     }
 
-    MarkdownText(styledText, node, modifier = modifier, style = style)
+    MarkdownText(content = styledText, node = node, modifier = modifier, style = style, sourceContent = content)
 }
 
 @Composable
@@ -83,29 +93,17 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text,
     extendedSpans: ExtendedSpans? = LocalMarkdownExtendedSpans.current.extendedSpans?.invoke(),
+    sourceContent: String? = null,
 ) {
-    // extend the annotated string with `extended-spans` styles if provided
-    val extendedStyledText = if (extendedSpans != null) {
-        remember(content) {
-            extendedSpans.extend(content)
-        }
-    } else {
-        content
-    }
-
-    // forward the `onTextLayout` to `extended-spans` if provided
-    val onTextLayout: ((TextLayoutResult, Color?) -> Unit)? = extendedSpans?.let {
-        { layoutResult, color ->
-            extendedSpans.onTextLayout(layoutResult, color)
-        }
-    }
-
-    // call drawBehind with the `extended-spans` if provided
-    val extendedModifier = if (extendedSpans != null) {
-        modifier.drawBehind(extendedSpans)
-    } else modifier
-
-    MarkdownText(extendedStyledText, node, extendedModifier, style, onTextLayout)
+    MarkdownText(
+        content = content,
+        node = node,
+        modifier = modifier,
+        style = style,
+        onTextLayout = null,
+        sourceContent = sourceContent,
+        extendedSpans = extendedSpans,
+    )
 }
 
 @Composable
@@ -115,6 +113,8 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     style: TextStyle = LocalMarkdownTypography.current.text,
     onTextLayout: ((TextLayoutResult, Color?) -> Unit)?,
+    sourceContent: String? = null,
+    extendedSpans: ExtendedSpans? = null,
 ) {
     val baseColor = LocalMarkdownColors.current.text
     val animations = LocalMarkdownAnimations.current
@@ -122,45 +122,146 @@ fun MarkdownText(
     val inlineContent = LocalMarkdownInlineContent.current
     val inlineImageWidth = LocalImageWidth.current
     val density = LocalDensity.current
+    val annotatorConfig = LocalMarkdownAnnotator.current.config
 
     val layoutResult: MutableState<TextLayoutResult?> = remember { mutableStateOf(null) }
     val containerSize = remember { mutableStateOf(Size.Unspecified) }
     val imageSizeByLink = remember { mutableStateMapOf<String, Size>() }
 
-    MarkdownBasicText(
-        text = content,
-        modifier = modifier
-            .onPlaced {
-                it.parentLayoutCoordinates?.also { coordinates ->
-                    containerSize.value = coordinates.size.toSize()
-                }
-            }
-            .let {
-                animations.animateTextSize(it)
-            },
-        style = style,
-        inlineContent = imageSizeByLink.toPersistentMap().let { imageSizeByLinkSnapshot ->
-            remember(node, inlineContent.inlineContent, content, containerSize.value, transformer, inlineImageWidth, imageSizeByLinkSnapshot) {
-                inlineContent.inlineContent + buildImageInlineContent(
-                    content,
-                    node,
-                    transformer,
-                    density,
-                    containerSize.value,
-                    inlineImageWidth,
-                    imageSizeByLinkSnapshot,
-                    imageSizeChanged = { link, size -> imageSizeByLink += (link to size) }
-                )
-            }
-        },
-        onTextLayout = {
-            layoutResult.value = it
-            onTextLayout?.invoke(it, baseColor)
+    // Resolved line height in pixels; used to decide whether an image
+    // should be inline or promoted to a block element.
+    val lineHeightPx = with(density) {
+        val lh = if (style.lineHeight.isSpecified) style.lineHeight else style.fontSize
+        if (lh.isSpecified) lh.toPx() else 0f
+    }
+
+    val inlineImageAsBlock = annotatorConfig.inlineImageAsBlock
+    val imageNodes = remember(node) { collectImageNodes(node) }
+    // Wrap the build in derivedStateOf so chatty image-size updates from
+    // imageSizeByLink only invalidate downstream when the resolved content
+    // or block-range list actually changes.
+    val resolved by remember(
+        node,
+        inlineContent.inlineContent,
+        content,
+        transformer,
+        inlineImageWidth,
+        lineHeightPx,
+        inlineImageAsBlock,
+        imageNodes,
+        density,
+    ) {
+        derivedStateOf {
+            // Pass the SnapshotStateMap directly so the snapshot system tracks
+            // per-key reads. Only image URLs actually queried by this node
+            // invalidate the derived state.
+            val blocks = mutableListOf<BlockImageRange>()
+            val map = inlineContent.inlineContent + buildImageInlineContent(
+                content = content,
+                node = node,
+                transformer = transformer,
+                density = density,
+                containerSize = containerSize.value,
+                inlineImageWidth = inlineImageWidth,
+                imageSizeByLink = imageSizeByLink,
+                lineHeightPx = lineHeightPx,
+                inlineImageAsBlock = inlineImageAsBlock,
+                imageNodes = imageNodes,
+                onBlockImage = { range -> blocks += range },
+                imageSizeChanged = { link, size -> imageSizeByLink += (link to size) },
+            )
+            map to blocks.sortedBy { it.start }
         }
-    )
+    }
+    val resolvedInlineContent = resolved.first
+    val blockImageRanges = resolved.second
+
+    val containerModifier: @Composable (Modifier) -> Modifier = { base ->
+        // Pin descendants (text + inline link nodes) to source order. Without this,
+        // TalkBack reorders interactive link nodes after non-interactive text — see #487.
+        base.semantics { isTraversalGroup = true }.onPlaced {
+            it.parentLayoutCoordinates?.also { coordinates ->
+                containerSize.value = coordinates.size.toSize()
+            }
+        }
+    }
+
+    val textSegment: @Composable (AnnotatedString, Modifier) -> Unit = { segment, segmentModifier ->
+        // Apply ExtendedSpans per-segment so the (0..0) marker the extender
+        // adds is preserved in each rendered slice and `drawBehind` aligns
+        // with the segment's own text layout.
+        val extended = if (extendedSpans != null) {
+            remember(segment) { extendedSpans.extend(segment) }
+        } else segment
+        val segmentDrawModifier = if (extendedSpans != null) {
+            segmentModifier.drawBehind(extendedSpans)
+        } else segmentModifier
+        MarkdownBasicText(
+            text = extended,
+            modifier = segmentDrawModifier.let { animations.animateTextSize(it) },
+            style = style,
+            inlineContent = resolvedInlineContent,
+            onTextLayout = { result ->
+                layoutResult.value = result
+                extendedSpans?.onTextLayout(result, baseColor)
+                onTextLayout?.invoke(result, baseColor)
+            }
+        )
+    }
+
+    if (blockImageRanges.isEmpty()) {
+        textSegment(content, containerModifier(modifier))
+    } else {
+        val components = LocalMarkdownComponents.current
+        val typography = LocalMarkdownTypography.current
+        Column(modifier = containerModifier(modifier)) {
+            var cursor = 0
+            blockImageRanges.forEach { range ->
+                if (range.start > cursor) {
+                    textSegment(content.subSequence(cursor, range.start), Modifier)
+                }
+                if (sourceContent != null && range.imageNode != null) {
+                    components.image(MarkdownComponentModel(sourceContent, range.imageNode, typography))
+                } else {
+                    BlockFallbackImage(range.url)
+                }
+                cursor = range.end
+            }
+            if (cursor < content.length) {
+                textSegment(content.subSequence(cursor, content.length), Modifier)
+            }
+        }
+    }
 }
 
-private fun buildImageInlineContent(
+internal fun collectImageNodes(root: ASTNode): List<ASTNode> {
+    val list = mutableListOf<ASTNode>()
+    fun visit(n: ASTNode) {
+        if (n.type == MarkdownElementTypes.IMAGE) list += n
+        n.children.forEach { visit(it) }
+    }
+    visit(root)
+    return list
+}
+
+internal data class BlockImageRange(val url: String, val start: Int, val end: Int, val imageNode: ASTNode?)
+
+@Composable
+private fun BlockFallbackImage(url: String) {
+    LocalImageTransformer.current.transform(url)?.let { imageData ->
+        Image(
+            painter = imageData.painter,
+            contentDescription = imageData.contentDescription,
+            modifier = imageData.modifier,
+            alignment = imageData.alignment,
+            contentScale = imageData.contentScale,
+            alpha = imageData.alpha,
+            colorFilter = imageData.colorFilter,
+        )
+    }
+}
+
+internal fun buildImageInlineContent(
     content: AnnotatedString,
     node: ASTNode,
     transformer: ImageTransformer,
@@ -169,39 +270,74 @@ private fun buildImageInlineContent(
     inlineImageWidth: ImageWidth,
     imageSizeByLink: Map<String, Size>,
     defaultImageSize: Size = Size.Unspecified,
+    lineHeightPx: Float = 0f,
+    inlineImageAsBlock: Boolean = true,
+    imageNodes: List<ASTNode> = emptyList(),
+    onBlockImage: ((BlockImageRange) -> Unit)? = null,
     imageSizeChanged: ((link: String, Size) -> Unit)? = null,
 ): Map<String, InlineTextContent> {
-    return content.getStringAnnotations(0, content.length)
+    val annotations = content.getStringAnnotations(0, content.length)
         .filter { it.item.startsWith("${MARKDOWN_TAG_IMAGE_URL}_") }
-        .distinctBy { it.item }
-        .associate { annotation ->
-            val url = annotation.item.removePrefix("${MARKDOWN_TAG_IMAGE_URL}_")
+        .sortedBy { it.start }
 
-            // Try to get stored size, or use default
-            val imageSize = imageSizeByLink[url] ?: defaultImageSize
+    fun shouldPromote(url: String): Boolean {
+        val imageSize = imageSizeByLink[url] ?: defaultImageSize
+        return inlineImageAsBlock &&
+                lineHeightPx > 0f &&
+                !imageSize.isUnspecified &&
+                imageSize.height > lineHeightPx * MarkdownAnnotatorConfig.BLOCK_FALLBACK_LINE_MULTIPLIER
+    }
 
-            val config = transformer.placeholderConfig(url, density, containerSize, inlineImageWidth, imageSize, imageSizeChanged)
-            // Config size is in DP, convert to SP for Placeholder TextUnit
-            annotation.item to InlineTextContent(
-                Placeholder(
-                    width = with(density) { config.size.width.dp.toSp() },
-                    height = with(density) { config.size.height.dp.toSp() },
-                    placeholderVerticalAlign = config.verticalAlign
+    annotations.forEachIndexed { index, annotation ->
+        val url = annotation.item.removePrefix("${MARKDOWN_TAG_IMAGE_URL}_")
+        if (shouldPromote(url)) {
+            onBlockImage?.invoke(
+                BlockImageRange(
+                    url = url,
+                    start = annotation.start,
+                    end = annotation.end,
+                    imageNode = imageNodes.getOrNull(index),
                 )
-            ) { link ->
-                // Render the image and observe its intrinsic size
-                MarkdownInlineImageWithSize(
-                    link = link,
-                    node = node,
-                    transformer = transformer,
-                    density = density,
-                    onSizeDetected = { detectedSize ->
-                        // Update size cache when image loads
-                        imageSizeChanged?.invoke(url, detectedSize)
-                    }
-                )
-            }
+            )
         }
+    }
+
+    val byTag = annotations.groupBy { it.item }
+    return byTag.mapNotNull { (tag, _) ->
+        val url = tag.removePrefix("${MARKDOWN_TAG_IMAGE_URL}_")
+        if (shouldPromote(url)) return@mapNotNull null
+
+        val imageSize = imageSizeByLink[url] ?: defaultImageSize
+        val config = transformer.placeholderConfig(
+            url,
+            density,
+            containerSize,
+            inlineImageWidth,
+            imageSize,
+            imageSizeChanged,
+        )
+
+        // Config size is in DP, convert to SP for Placeholder TextUnit
+        tag to InlineTextContent(
+            Placeholder(
+                width = with(density) { config.size.width.dp.toSp() },
+                height = with(density) { config.size.height.dp.toSp() },
+                placeholderVerticalAlign = config.verticalAlign
+            )
+        ) { link ->
+            // Render the image and observe its intrinsic size
+            MarkdownInlineImageWithSize(
+                link = link,
+                node = node,
+                transformer = transformer,
+                density = density,
+                onSizeDetected = { detectedSize ->
+                    // Update size cache when image loads
+                    imageSizeChanged?.invoke(url, detectedSize)
+                }
+            )
+        }
+    }.toMap()
 }
 
 @Composable

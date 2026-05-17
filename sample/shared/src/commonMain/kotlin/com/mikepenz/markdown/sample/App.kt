@@ -44,7 +44,7 @@ fun App(
             } else if (showDebug) {
                 RecompositionPage(modifier = Modifier.padding(contentPadding))
             } else {
-                MarkDownPage(modifier = Modifier.padding(contentPadding))
+                SamplesPage(modifier = Modifier.padding(contentPadding))
             }
         }
     }

@@ -2,13 +2,16 @@ package com.mikepenz.markdown.model
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import com.mikepenz.markdown.compose.extendedspans.ExtendedSpans
 
+@Stable
 @Immutable
 interface MarkdownExtendedSpans {
     val extendedSpans: (@Composable () -> ExtendedSpans)?
 }
 
+@Stable
 @Immutable
 class DefaultMarkdownExtendedSpans(
     override val extendedSpans: (@Composable () -> ExtendedSpans)?,

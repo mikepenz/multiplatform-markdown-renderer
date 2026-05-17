@@ -3,9 +3,11 @@ package com.mikepenz.markdown.model
 import androidx.compose.animation.animateContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.elements.MarkdownText
 
+@Stable
 @Immutable
 interface MarkdownAnimations {
     /**
@@ -15,6 +17,7 @@ interface MarkdownAnimations {
     val animateTextSize: Modifier.() -> Modifier
 }
 
+@Stable
 @Immutable
 class DefaultMarkdownAnimation(
     override val animateTextSize: Modifier.() -> Modifier,

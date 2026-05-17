@@ -13,10 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mikepenz.markdown.compose.LocalMarkdownA11yLabels
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
 
@@ -28,6 +33,7 @@ internal fun MarkdownCodeTopBar(
 ) {
     @Suppress("DEPRECATION") val clipboardManager = LocalClipboardManager.current
     val textColor = LocalMarkdownColors.current.text
+    val a11yLabels = LocalMarkdownA11yLabels.current
 
     Row(
         modifier = modifier
@@ -36,8 +42,13 @@ internal fun MarkdownCodeTopBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val languageLabel = language?.uppercase() ?: a11yLabels.codeFallbackLanguage
+        // Screen readers tend to spell out all-caps letter-by-letter; announce
+        // the original-cased language (or fallback) for a better experience.
+        val languageAnnouncement = language?.takeIf { it.isNotBlank() } ?: a11yLabels.codeFallbackLanguage
         MarkdownBasicText(
-            text = language?.uppercase() ?: "CODE",
+            text = languageLabel,
+            modifier = Modifier.semantics { contentDescription = a11yLabels.codeLanguage(languageAnnouncement) },
             style = androidx.compose.ui.text.TextStyle(
                 fontSize = 10.sp,
                 fontFamily = FontFamily.Monospace,
@@ -49,12 +60,15 @@ internal fun MarkdownCodeTopBar(
             modifier = Modifier
                 .size(24.dp)
                 .clip(CircleShape)
-                .clickable {
+                .semantics {
+                    contentDescription = a11yLabels.copyCode
+                    role = Role.Button
+                }
+                .clickable(onClickLabel = a11yLabels.copyCode) {
                     clipboardManager.setText(AnnotatedString(code))
                 },
             contentAlignment = Alignment.Center
         ) {
-            // Simple copy icon representation using text for now
             MarkdownBasicText(
                 text = "⧉",
                 style = androidx.compose.ui.text.TextStyle(

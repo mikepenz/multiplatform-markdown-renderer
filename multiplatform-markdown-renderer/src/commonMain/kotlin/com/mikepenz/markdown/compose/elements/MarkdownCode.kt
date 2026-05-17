@@ -18,11 +18,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.mikepenz.markdown.compose.LocalMarkdownA11yLabels
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownDimens
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
@@ -111,6 +113,7 @@ fun MarkdownCodeBackground(
     code: String = "",
     content: @Composable () -> Unit,
 ) {
+    val a11yLabels = LocalMarkdownA11yLabels.current
     Box(
         modifier = modifier
             .shadow(elevation, shape, clip = false)
@@ -119,6 +122,8 @@ fun MarkdownCodeBackground(
             .clip(shape)
             .semantics(mergeDescendants = false) {
                 isTraversalGroup = true
+                contentDescription = if (language.isNullOrBlank()) a11yLabels.codeBlock
+                else a11yLabels.codeBlockWithLanguage(language)
             }
             .pointerInput(Unit) {},
         propagateMinConstraints = true

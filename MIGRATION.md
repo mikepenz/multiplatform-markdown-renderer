@@ -1,5 +1,25 @@
 ### Upgrade Notes
 
+#### Version 0.41.0
+
+- **Breaking Change**: Dropped support for iosX64 and macosX64 targets (equal to compose
+  multiplatform 1.11.0)
+- **Dependency Upgrade**: Compose 1.11.x / Compose Multiplatform 1.11.0-rc01
+- **Signature Changes**:
+    - MarkdownInlineImage(String, ASTNode) → now takes an extra String alt-text arg (commit 4a2c560
+      a11y semantics overhaul, #487).
+    - MarkdownText(AnnotatedString, ASTNode, Modifier, TextStyle, ExtendedSpans) → adds trailing
+      String (content-description) parameter.
+    - MarkdownText(AnnotatedString, ASTNode, Modifier, TextStyle, Function2) → adds String and
+      ExtendedSpans parameters.
+    - MarkdownTableRow-OniuKJc(...) replaced by MarkdownTableRow-BvHgwxg(...) with an additional
+      Int (row index) parameter (commit e0d55b7 GFM inline content in tables, #559).
+    - MarkdownAnnotatorConfig interface gained three new members: inlineImageAsBlock,
+      showImageAltTooltip, imageAltTooltipHoverDelayMs (default impls provided on JVM, but
+      Kotlin/Native callers that implemented the interface must add overrides).
+    - DefaultMarkdownAnnotatorConfig(Boolean) constructor → now (Boolean, Boolean, Boolean, Long);
+      markdownAnnotatorConfig(Boolean) factory signature changed accordingly.
+
 #### Version 0.40.0
 
 - **Breaking Change**: Due to Paparazzi requiring Java 21 - This project is now also compiled with

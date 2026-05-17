@@ -18,6 +18,7 @@ import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
 import com.mikepenz.markdown.utils.findChildOfTypeRecursive
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
+import com.mikepenz.markdown.utils.resolveImageLink
 import com.mikepenz.markdown.utils.innerList
 import com.mikepenz.markdown.utils.mapAutoLinkToType
 import org.intellij.markdown.MarkdownElementTypes
@@ -260,8 +261,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     // Element types
                     MarkdownElementTypes.PARAGRAPH -> buildMarkdownAnnotatedString(content = content, node = child, annotatorSettings = annotatorSettings)
 
-                    MarkdownElementTypes.IMAGE -> child.findChildOfTypeRecursive(MarkdownElementTypes.LINK_DESTINATION)?.let {
-                        val imageUrl = it.getUnescapedTextInNode(content)
+                    MarkdownElementTypes.IMAGE -> child.resolveImageLink(content, annotatorSettings.referenceLinkHandler)?.let { imageUrl ->
                         appendInlineContent("${MARKDOWN_TAG_IMAGE_URL}_$imageUrl", imageUrl)
                     }
 

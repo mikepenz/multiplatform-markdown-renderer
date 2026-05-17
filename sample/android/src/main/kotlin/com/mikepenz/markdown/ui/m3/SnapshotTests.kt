@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mikepenz.markdown.ui.m3.util.TestMarkdown
 import com.mikepenz.markdown.ui.m3.util.TestMarkdownCodeBlock
+import com.mikepenz.markdown.ui.m3.util.TestMarkdownTableInline
 
 @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1750)
 @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1750, uiMode = Configuration.UI_MODE_NIGHT_YES)
@@ -36,6 +37,16 @@ fun TableTest() = TestMarkdown(MARKDOWN_TABLE)
 @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun InlineCodeTest() = TestMarkdown(MARKDOWN_INLINE_CODE)
+
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 800)
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 800, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun TableInlineContentTest() = TestMarkdown(MARKDOWN_TABLE_INLINE)
+
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 400)
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 400, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun TableInlinePlaceholderTest() = TestMarkdownTableInline(MARKDOWN_TABLE_PLACEHOLDER)
 
 @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong(), heightDp = 1500)
 @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong(), heightDp = 1500, uiMode = Configuration.UI_MODE_NIGHT_YES)
@@ -198,6 +209,38 @@ private val MARKDOWN_TABLE = """
 | Longer text | Ab  |
 | Lorem   | CD 45   |
 | Ipsum dd   | EF 67   |
+
+""".trimIndent()
+
+private val MARKDOWN_TABLE_INLINE = """
+// inline content support inside table cells (GFM spec)
+
+| Feature | Example |
+| --- | --- |
+| bold | **bold** text |
+| italic (asterisk) | *italic* text |
+| italic (underscore) | _italic_ text |
+| strikethrough | ~~strike~~ here |
+| inline code | `val x = 1` |
+| inline link | [JetBrains](https://www.jetbrains.com/) |
+| autolink | <https://mikepenz.dev> |
+| GFM autolink | https://github.com |
+| escaped pipe | a \| b |
+| mixed | **bold** and `code` and [link](https://x) |
+
+""".trimIndent()
+
+private val MARKDOWN_TABLE_PLACEHOLDER = """
+// inline-content placeholder inside table cells (issue #511)
+
+Outside table: ⦃check⦄ Complete
+
+| Feature | Status |
+| --- | --- |
+| **Headers** | ⦃check⦄ Complete |
+| **Links** | ⦃check⦄ Complete |
+| **Bold/Italic** | ⦃check⦄ Complete |
+| **Tables** | ⦃check⦄ Complete |
 
 """.trimIndent()
 

@@ -18,6 +18,9 @@ kotlin {
             compileOnly(baseLibs.jetbrains.compose.ui)
             compileOnly(baseLibs.jetbrains.compose.foundation)
         }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
     }
 }
 

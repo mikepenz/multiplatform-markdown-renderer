@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import com.mikepenz.markdown.compose.LocalBulletListHandler
@@ -113,7 +114,8 @@ private fun MarkdownListItem(
 
     Row(
         modifier = Modifier
-            .semantics(mergeDescendants = true) {}
+            // Group marker + content as one traversal unit but preserve per-link a11y nodes inside.
+            .semantics { isTraversalGroup = true }
             .fillMaxWidth()
             .padding(top = padding.listItemTop, bottom = padding.listItemBottom)
     ) {

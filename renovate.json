@@ -1,0 +1,6 @@
+{
+    "$schema": "https://docs.renovateapp.com/renovate-schema.json",
+    "extends": [
+        "local>mikepenz/convention"
+    ]
+}

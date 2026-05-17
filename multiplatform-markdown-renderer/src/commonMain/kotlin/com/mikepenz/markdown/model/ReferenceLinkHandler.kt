@@ -1,8 +1,11 @@
 package com.mikepenz.markdown.model
 
+import androidx.compose.runtime.Stable
+
 /**
  * Interface to describe the [ReferenceLinkHandler]
  */
+@Stable
 interface ReferenceLinkHandler {
     /** Keep the provided link */
     fun store(label: String, destination: String?)
@@ -16,6 +19,7 @@ interface ReferenceLinkHandler {
  *
  * The label is stored lowercase to allow case insensitive lookups. (https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet#links)
  */
+@Stable
 class ReferenceLinkHandlerImpl : ReferenceLinkHandler {
     private val stored = mutableMapOf<String, String?>()
 
