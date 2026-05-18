@@ -20,6 +20,7 @@ fun App(
     val isSystemInDarkMode = isSystemInDarkTheme()
     var darkMode by remember { mutableStateOf(isSystemInDarkMode) }
     var showDebug by remember { mutableStateOf(false) }
+    var showFlow by remember { mutableStateOf(false) }
     var showLicenses by remember { mutableStateOf(false) }
     SampleTheme(darkMode) {
         Scaffold(
@@ -29,11 +30,18 @@ fun App(
                     onThemeToggle = { darkMode = !darkMode },
                     debugClick = {
                         showDebug = !showDebug
+                        showFlow = false
+                        showLicenses = false
+                    },
+                    flowClick = {
+                        showFlow = !showFlow
+                        showDebug = false
                         showLicenses = false
                     },
                     onClick = {
                         showLicenses = !showLicenses
                         showDebug = false
+                        showFlow = false
                     }
                 )
             },
@@ -43,6 +51,8 @@ fun App(
                 LicensesPage(libraries = libraries, contentPadding = contentPadding)
             } else if (showDebug) {
                 RecompositionPage(modifier = Modifier.padding(contentPadding))
+            } else if (showFlow) {
+                FlowMarkdownPage(modifier = Modifier.padding(contentPadding))
             } else {
                 SamplesPage(modifier = Modifier.padding(contentPadding))
             }

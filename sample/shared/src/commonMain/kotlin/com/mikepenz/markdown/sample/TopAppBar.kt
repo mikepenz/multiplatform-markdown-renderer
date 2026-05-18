@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.sample.icon.Debug
+import com.mikepenz.markdown.sample.icon.Flow
 import com.mikepenz.markdown.sample.icon.Github
 import com.mikepenz.markdown.sample.icon.OpenSourceInitiative
 
@@ -21,6 +22,7 @@ internal fun TopAppBar(
     isDarkMode: Boolean,
     onThemeToggle: (Boolean) -> Unit,
     debugClick: () -> Unit,
+    flowClick: () -> Unit,
     onClick: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -31,6 +33,12 @@ internal fun TopAppBar(
                 Icon(
                     imageVector = Debug,
                     contentDescription = "Debug Recompositions"
+                )
+            }
+            IconButton(onClick = flowClick) {
+                Icon(
+                    imageVector = Flow,
+                    contentDescription = "Flow Demo"
                 )
             }
             IconButton(onClick = onClick) {
