@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
@@ -196,9 +197,15 @@ fun MarkdownText(
         val segmentDrawModifier = if (extendedSpans != null) {
             segmentModifier.drawBehind(extendedSpans)
         } else segmentModifier
+        val hasSegmentLinks = segment.getLinkAnnotations(0, segment.length).isNotEmpty()
+        val finalModifier = if (hasSegmentLinks) {
+            segmentDrawModifier.semantics(mergeDescendants = true) { }
+        } else {
+            segmentDrawModifier
+        }
         MarkdownBasicText(
             text = extended,
-            modifier = segmentDrawModifier.let { animations.animateTextSize(it) },
+            modifier = finalModifier.let { animations.animateTextSize(it) },
             style = style,
             inlineContent = resolvedInlineContent,
             onTextLayout = { result ->
@@ -210,7 +217,22 @@ fun MarkdownText(
     }
 
     if (blockImageRanges.isEmpty()) {
-        textSegment(content, containerModifier(modifier))
+        val hasLinks = content.getLinkAnnotations(0, content.length).isNotEmpty()
+        if (hasLinks) {
+            Box(modifier = Modifier.semantics { isTraversalGroup = true }.onPlaced {
+                it.parentLayoutCoordinates?.also { coordinates ->
+                    containerSize.value = coordinates.size.toSize()
+                }
+            }) {
+                textSegment(content, modifier)
+            }
+        } else {
+            textSegment(content, modifier.onPlaced {
+                it.parentLayoutCoordinates?.also { coordinates ->
+                    containerSize.value = coordinates.size.toSize()
+                }
+            })
+        }
     } else {
         val components = LocalMarkdownComponents.current
         val typography = LocalMarkdownTypography.current
