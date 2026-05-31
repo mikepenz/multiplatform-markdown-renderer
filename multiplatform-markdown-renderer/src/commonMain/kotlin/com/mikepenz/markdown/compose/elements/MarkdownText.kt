@@ -219,12 +219,8 @@ fun MarkdownText(
     if (blockImageRanges.isEmpty()) {
         val hasLinks = content.getLinkAnnotations(0, content.length).isNotEmpty()
         if (hasLinks) {
-            Box(modifier = Modifier.semantics { isTraversalGroup = true }.onPlaced {
-                it.parentLayoutCoordinates?.also { coordinates ->
-                    containerSize.value = coordinates.size.toSize()
-                }
-            }) {
-                textSegment(content, modifier)
+            Box(modifier = containerModifier(modifier)) {
+                textSegment(content, Modifier)
             }
         } else {
             textSegment(content, modifier.onPlaced {

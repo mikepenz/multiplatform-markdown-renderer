@@ -49,6 +49,28 @@ class MarkdownA11yTest {
     }
 
     @Test
+    fun inline_links_are_individually_discoverable_and_readable() = runComposeUiTest {
+        setContent { Wrap { Markdown(docLinks) } }
+        val root = onRoot().fetchSemanticsNode()
+        val textNode = findNodeWhoseTextContains(root, "Anthropic")
+            ?: error("Could not locate paragraph text node containing the link copy")
+        
+        // Verify that the paragraph text is exposed/readable
+        val textList = textNode.config[SemanticsProperties.Text]
+        val fullText = textList.joinToString(" ") { it.text }
+        assertTrue(fullText.contains("Visit Anthropic and then Claude here."))
+        
+        // Verify that the link annotations are still present on the AnnotatedString
+        val annotatedString = textList.first()
+        val linkAnnotations = annotatedString.getLinkAnnotations(0, annotatedString.length)
+        assertTrue(linkAnnotations.size >= 2, "There should be at least two inline links in the AnnotatedString")
+        
+        val urls = linkAnnotations.mapNotNull { (it.item as? androidx.compose.ui.text.LinkAnnotation.Url)?.url }
+        assertTrue(urls.contains("https://anthropic.com"), "Should contain Anthropic link")
+        assertTrue(urls.contains("https://claude.ai"), "Should contain Claude link")
+    }
+
+    @Test
     fun headings_expose_heading_property() = runComposeUiTest {
         setContent { Wrap { Markdown("# Title\n\nBody") } }
         onNodeWithText("Title").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading))
