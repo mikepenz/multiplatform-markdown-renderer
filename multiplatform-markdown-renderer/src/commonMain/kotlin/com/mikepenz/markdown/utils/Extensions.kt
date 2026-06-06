@@ -133,7 +133,7 @@ fun List<ASTNode>.mapAutoLinkToType(targetType: IElementType = MarkdownTokenType
 internal fun lookupLinkDefinition(
     store: MutableMap<String, String?>,
     node: ASTNode,
-    content: String,
+    content: CharSequence,
     recursive: Boolean = true,
     onlyDefinitions: Boolean = false,
 ) {
