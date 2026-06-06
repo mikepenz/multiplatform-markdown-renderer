@@ -81,6 +81,7 @@ class StreamingMarkdownStateTest {
 
         val stableSnapshot = state.append("stable paragraph\n\n")
         val tailSnapshot = state.append("tail paragraph")
+        advanceUntilIdle()
 
         assertEquals(3, snapshots.size)
         assertTrue(snapshots[0].stableAst.isEmpty())
