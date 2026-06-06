@@ -122,7 +122,7 @@ internal class StreamingMarkdownStateImpl(
         val unstableTail = streamingFile.unstableTail
         if (lookupLinks) {
             val links = lookupLinks(stableChildren, unstableTail)
-            links.onEach { (key, value) -> referenceLinkHandler.store(key, value) }
+            links.forEach { (key, value) -> referenceLinkHandler.store(key, value) }
             linkStateFlow.value = links
         }
         val nextSnapshot = StreamingMarkdownState.Snapshot(
