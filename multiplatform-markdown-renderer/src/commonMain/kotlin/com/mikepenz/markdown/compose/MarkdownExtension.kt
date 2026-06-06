@@ -45,11 +45,19 @@ fun MarkdownElement(
     components: MarkdownComponents,
     content: String,
     includeSpacer: Boolean = true,
+) = MarkdownElementInternal(node, components, content, includeSpacer)
+
+@Composable
+internal fun MarkdownElementInternal(
+    node: ASTNode,
+    components: MarkdownComponents,
+    content: CharSequence,
+    includeSpacer: Boolean = true,
 ) {
     val typography = LocalMarkdownTypography.current
     val model = remember(node, content, typography) {
         MarkdownComponentModel(
-            content = content,
+            content = content.toString(),
             node = node,
             typography = typography,
         )
@@ -83,7 +91,7 @@ fun MarkdownElement(
 
     if (!handled) {
         node.children.forEach { child ->
-            MarkdownElement(child, components, content, includeSpacer)
+            MarkdownElementInternal(child, components, content, includeSpacer)
         }
     }
 }
