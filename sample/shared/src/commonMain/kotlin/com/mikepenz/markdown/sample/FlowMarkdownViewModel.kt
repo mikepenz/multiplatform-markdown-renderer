@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-@Suppress("DEPRECATION") // demo intentionally exercises the deprecated Flow<String>.asMarkdownState()
 @OptIn(ExperimentalCoroutinesApi::class)
 class FlowMarkdownViewModel {
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
