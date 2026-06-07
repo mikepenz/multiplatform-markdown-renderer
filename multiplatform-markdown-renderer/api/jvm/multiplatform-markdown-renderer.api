@@ -37,9 +37,9 @@ public final class com/mikepenz/markdown/annotator/DefaultAnnotatorSettings : co
 public final class com/mikepenz/markdown/compose/ComposableSingletons$MarkdownKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/ComposableSingletons$MarkdownKt;
 	public fun <init> ()V
-	public final fun getLambda$-2063790006$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
-	public final fun getLambda$-322200773$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
-	public final fun getLambda$-830612685$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-2063790006$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-322200773$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-830612685$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
 }
 
 public final class com/mikepenz/markdown/compose/ComposeLocalKt {
@@ -81,27 +81,27 @@ public final class com/mikepenz/markdown/compose/MarkdownKt {
 public final class com/mikepenz/markdown/compose/components/ComposableSingletons$MarkdownComponentsKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/components/ComposableSingletons$MarkdownComponentsKt;
 	public fun <init> ()V
-	public final fun getLambda$-1079294572$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1347673484$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1643949077$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1690655072$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1755130397$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1794801381$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1981090537$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-624343772$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-700682889$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-852522976$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-899602067$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1027552049$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1409050274$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1604122825$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1659920708$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1702810816$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1752436318$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$242326187$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$278263649$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$506442853$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$572024191$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1079294572$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1347673484$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1643949077$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1690655072$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1755130397$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1794801381$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1981090537$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-624343772$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-700682889$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-852522976$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-899602067$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1027552049$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1409050274$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1604122825$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1659920708$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1702810816$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1752436318$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$242326187$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$278263649$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$506442853$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$572024191$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/mikepenz/markdown/compose/components/CurrentComponentsBridge {
@@ -183,8 +183,8 @@ public final class com/mikepenz/markdown/compose/components/MarkdownComponentsKt
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt;
 	public fun <init> ()V
-	public final fun getLambda$-449689539$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
-	public final fun getLambda$591785369$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-449689539$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$591785369$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownBlockQuoteKt {
