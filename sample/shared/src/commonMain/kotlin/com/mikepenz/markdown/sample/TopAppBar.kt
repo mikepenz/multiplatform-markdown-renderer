@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
-import com.mikepenz.markdown.sample.icon.Debug
 import com.mikepenz.markdown.sample.icon.Github
 import com.mikepenz.markdown.sample.icon.OpenSourceInitiative
 
@@ -20,19 +19,12 @@ import com.mikepenz.markdown.sample.icon.OpenSourceInitiative
 internal fun TopAppBar(
     isDarkMode: Boolean,
     onThemeToggle: (Boolean) -> Unit,
-    debugClick: () -> Unit,
     onClick: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
     TopAppBar(
         title = { Text("Markdown") },
         actions = {
-            IconButton(onClick = debugClick) {
-                Icon(
-                    imageVector = Debug,
-                    contentDescription = "Debug Recompositions"
-                )
-            }
             IconButton(onClick = onClick) {
                 Icon(
                     imageVector = OpenSourceInitiative,

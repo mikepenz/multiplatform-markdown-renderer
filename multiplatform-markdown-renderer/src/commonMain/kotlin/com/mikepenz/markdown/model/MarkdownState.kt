@@ -11,6 +11,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalInspectionMode
 import com.mikepenz.markdown.utils.lookupLinkDefinition
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.withContext
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
@@ -278,9 +279,7 @@ fun parseMarkdownFlow(
  *
  * @return A [Flow] of [State] that represents the parsed markdown state.
  */
-@Deprecated(
-    message = "Flow<String>.asMarkdownState() reparses every emitted String and is not suitable for streaming content. Use StreamingMarkdownState for append-only streams.",
-)
+@OptIn(ExperimentalCoroutinesApi::class)
 fun Flow<String>.asMarkdownState(
     lookupLinks: Boolean = true,
     retainState: Boolean = false,
@@ -288,15 +287,20 @@ fun Flow<String>.asMarkdownState(
     parser: MarkdownParser = MarkdownParser(flavour),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
 ): Flow<State> {
-    var isFirst = true
-    return transform {
-        if (isFirst || !retainState) {
-            emit(State.Loading(referenceLinkHandler))
-            isFirst = false
-        }
-        val markdownState = MarkdownStateImpl(
+    val markdownState = MarkdownStateImpl(
+        Input(
+            content = "",
+            lookupLinks = lookupLinks,
+            flavour = flavour,
+            parser = parser,
+            referenceLinkHandler = referenceLinkHandler,
+            retainState = retainState,
+        )
+    )
+    return transformLatest { content ->
+        markdownState.updateInput(
             Input(
-                content = it,
+                content = content,
                 lookupLinks = lookupLinks,
                 flavour = flavour,
                 parser = parser,
@@ -304,11 +308,15 @@ fun Flow<String>.asMarkdownState(
                 retainState = retainState,
             )
         )
-        markdownState.parse()
-        emitAll(markdownState.state)
+
+        // Emit the Loading state only when updateInput transitioned to it (i.e. not retaining).
+        // A late subscriber whose content already parsed sees Success directly, avoiding a flash.
+        (markdownState.state.value as? State.Loading)?.let { emit(it) }
+
+        // parse() returns the resulting State (Success/Error) deterministically.
+        emit(markdownState.parse())
     }
 }
-
 
 /**
  * The input for the [MarkdownState].
