@@ -1,5 +1,23 @@
 ### Upgrade Notes
 
+#### Version 0.42.0
+
+- **Dependency Upgrade**: Kotlin 2.3.21 → 2.4.0
+- **Dependency Upgrade**: Android `compileSdk` / `targetSdk` 36 → 37
+- **Dependency Upgrade**: JetBrains `markdown` 0.7.3 → 0.7.5
+- **Dependency Upgrade**: Ktor 3.4.2 → 3.5.0 (affects the coil2 / coil3 network image integrations)
+- **New Feature**: `StreamingMarkdownState` — append-only streaming markdown, purpose-built for LLM
+  token streams (incremental output without re-parsing the whole document on every emission).
+    - `rememberStreamingMarkdownState(immediate, flavour, referenceLinkHandler)` to create state.
+    - `Flow<String>.collectAsStreamingMarkdownState(...)` to drive it from a `Flow`.
+    - New `Markdown(streamingMarkdownState, ...)` composable overload (core, M2 and M3 modules); its
+      `success` slot receives a `StreamingMarkdownState.Snapshot` instead of `State.Success`.
+    - New `StreamingMarkdownSuccess(...)` and `LazyMarkdownSuccess(streamingMarkdownState, snapshot,
+      ...)` render entry points.
+    - This is **additive** — existing `Markdown(String)` / `Markdown(MarkdownState)` usage is
+      unchanged. Prefer `StreamingMarkdownState` over `Flow<String>.asMarkdownState()` for
+      append-only streams (the latter re-parses every emitted String).
+
 #### Version 0.41.0
 
 - **Breaking Change**: Dropped support for iosX64 and macosX64 targets (equal to compose
