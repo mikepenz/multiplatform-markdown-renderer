@@ -13,8 +13,10 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.v2.runComposeUiTest
+import androidx.compose.ui.text.LinkAnnotation
 import com.mikepenz.markdown.m3.Markdown
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
@@ -45,6 +47,42 @@ class MarkdownA11yTest {
         assertTrue(
             anyAncestorHasTraversalGroup(root, anchor),
             "Paragraph with inline links must be inside an IsTraversalGroup ancestor — regression of #487"
+        )
+    }
+
+    /**
+     * Issue #569 fix (#570): the paragraph carrying inline links must be a screen-reader
+     * merge boundary so TalkBack reads it as one unit instead of skipping it. In Compose
+     * `mergeDescendants` maps to the ANI `isScreenReaderFocusable` flag, so we assert the
+     * flag directly on the unmerged tree — it is `false` without the fix and `true` with it.
+     *
+     * Simultaneously guards #487: the two inline links must survive as addressable
+     * `LinkAnnotation`s on that same text node (merging must not prune them).
+     *
+     * Unlike a pixel snapshot, this distinguishes the patched from the unpatched renderer:
+     * the merge flag flips while the rendered output stays byte-identical.
+     */
+    @Test
+    fun link_paragraph_merges_yet_keeps_both_links() = runComposeUiTest {
+        setContent { Wrap { Markdown(docLinks) } }
+        val root = onRoot(useUnmergedTree = true).fetchSemanticsNode()
+        val paragraph = findNodeWhoseTextContains(root, "Anthropic")
+            ?: error("Could not locate paragraph text node containing the link copy")
+
+        // #569: paragraph is a screen-reader merge boundary (false on develop, true on #570).
+        assertTrue(
+            paragraph.config.isMergingSemanticsOfDescendants,
+            "Paragraph with inline links must merge descendants so TalkBack reads it — regression of #569"
+        )
+
+        // #487: both inline links remain individually addressable after the merge.
+        val annotatedString = paragraph.config[SemanticsProperties.Text].first()
+        val urls = annotatedString.getLinkAnnotations(0, annotatedString.length)
+            .mapNotNull { (it.item as? LinkAnnotation.Url)?.url }
+            .toSet()
+        assertEquals(
+            setOf("https://anthropic.com", "https://claude.ai"), urls,
+            "Both inline links must survive merging — regression of #487"
         )
     }
 
