@@ -16,6 +16,7 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.java)
+            implementation(baseLibs.kotlinx.coroutines.swing)
         }
     }
 }
