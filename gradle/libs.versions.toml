@@ -2,9 +2,10 @@
 androidx-activityCompose = "1.13.0"
 coil = "3.4.0"
 coil2 = "2.7.0"
-markdown = "0.7.3"
+markdown = "0.7.5"
 ktor = "3.5.0"
 highlights = "1.1.0"
+kotlinx-coroutines = "1.11.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -19,6 +20,7 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 highlights = { module = "dev.snipme:highlights", version.ref = "highlights" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 
 [bundles]
 coil = [

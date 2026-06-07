@@ -17,17 +17,19 @@ import androidx.compose.ui.unit.dp
 internal data class MarkdownSample(
     val title: String,
     val file: String,
+    val streaming: Boolean = false,
 )
 
 private val SAMPLES = listOf(
     MarkdownSample("Playground", "files/sample.md"),
+    MarkdownSample("Streaming", "files/sample.md", streaming = true),
     MarkdownSample("Tables", "files/sample-tables.md"),
     MarkdownSample("Images", "files/sample-images.md"),
 )
 
 @Composable
 internal fun SamplesPage(modifier: Modifier = Modifier) {
-    var selected by rememberSaveable { mutableIntStateOf(0) }
+    var selected by rememberSaveable { mutableIntStateOf(1) }
     val samples = remember { SAMPLES }
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -40,9 +42,17 @@ internal fun SamplesPage(modifier: Modifier = Modifier) {
                 )
             }
         }
-        MarkDownPage(
-            modifier = Modifier.fillMaxSize(),
-            file = samples[selected].file,
-        )
+        val sample = samples[selected]
+        if (sample.streaming) {
+            StreamingMarkDownPage(
+                modifier = Modifier.fillMaxSize(),
+                file = sample.file,
+            )
+        } else {
+            MarkDownPage(
+                modifier = Modifier.fillMaxSize(),
+                file = sample.file,
+            )
+        }
     }
 }

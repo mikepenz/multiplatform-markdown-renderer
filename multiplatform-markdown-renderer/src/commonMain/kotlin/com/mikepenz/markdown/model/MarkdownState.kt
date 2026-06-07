@@ -278,6 +278,9 @@ fun parseMarkdownFlow(
  *
  * @return A [Flow] of [State] that represents the parsed markdown state.
  */
+@Deprecated(
+    message = "Flow<String>.asMarkdownState() reparses every emitted String and is not suitable for streaming content. Use StreamingMarkdownState for append-only streams.",
+)
 fun Flow<String>.asMarkdownState(
     lookupLinks: Boolean = true,
     retainState: Boolean = false,

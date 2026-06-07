@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mikepenz.markdown.compose.MarkdownSuccess
+import com.mikepenz.markdown.compose.StreamingMarkdownSuccess
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.compose.components.markdownComponents
 import com.mikepenz.markdown.m2.elements.MarkdownCheckBox
@@ -23,6 +24,7 @@ import com.mikepenz.markdown.model.NoOpImageTransformerImpl
 import com.mikepenz.markdown.model.ReferenceLinkHandler
 import com.mikepenz.markdown.model.ReferenceLinkHandlerImpl
 import com.mikepenz.markdown.model.State
+import com.mikepenz.markdown.model.StreamingMarkdownState
 import com.mikepenz.markdown.model.markdownAnimations
 import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.model.markdownDimens
@@ -153,6 +155,42 @@ fun Markdown(
     loading = loading,
     success = success,
     error = error,
+)
+
+/**
+ * Renders streaming markdown content using Material 2 styles.
+ */
+@Composable
+fun Markdown(
+    streamingMarkdownState: StreamingMarkdownState,
+    colors: MarkdownColors = markdownColor(),
+    typography: MarkdownTypography = markdownTypography(),
+    modifier: Modifier = Modifier.fillMaxSize(),
+    padding: MarkdownPadding = markdownPadding(),
+    dimens: MarkdownDimens = markdownDimens(),
+    imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
+    annotator: MarkdownAnnotator = markdownAnnotator(),
+    extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    inlineContent: MarkdownInlineContent = markdownInlineContent(),
+    components: MarkdownComponents = markdownComponents(checkbox = { MarkdownCheckBox(it.content, it.node, it.typography.text) }),
+    animations: MarkdownAnimations = markdownAnimations(),
+    success: @Composable (snapshot: StreamingMarkdownState.Snapshot, components: MarkdownComponents, modifier: Modifier) -> Unit = { snapshot, components, modifier ->
+        StreamingMarkdownSuccess(streamingMarkdownState = streamingMarkdownState, snapshot = snapshot, components = components, modifier = modifier)
+    },
+) = com.mikepenz.markdown.compose.Markdown(
+    streamingMarkdownState = streamingMarkdownState,
+    colors = colors,
+    typography = typography,
+    modifier = modifier,
+    padding = padding,
+    dimens = dimens,
+    imageTransformer = imageTransformer,
+    annotator = annotator,
+    extendedSpans = extendedSpans,
+    inlineContent = inlineContent,
+    components = components,
+    animations = animations,
+    success = success,
 )
 
 /**

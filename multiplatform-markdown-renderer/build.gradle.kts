@@ -12,6 +12,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.markdown)
+            api(baseLibs.kotlinx.coroutines.core)
             api(baseLibs.kotlinx.collections.immutable)
 
             compileOnly(baseLibs.jetbrains.compose.runtime)
@@ -20,6 +21,7 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }

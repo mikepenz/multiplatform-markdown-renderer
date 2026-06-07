@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.compose.components.MarkdownComponents
 import com.mikepenz.markdown.model.State
+import com.mikepenz.markdown.model.StreamingMarkdownState
 
 /**
  * Renders the parsed markdown content in a [LazyColumn].
@@ -45,6 +46,34 @@ fun LazyMarkdownSuccess(
             contentType = { node -> node.type }
         ) { node ->
             MarkdownElement(node, components, state.content)
+        }
+    }
+}
+
+/**
+ * Renders the parsed streaming markdown content in a [LazyColumn].
+ */
+@Composable
+fun LazyMarkdownSuccess(
+    streamingMarkdownState: StreamingMarkdownState,
+    snapshot: StreamingMarkdownState.Snapshot,
+    components: MarkdownComponents,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+) {
+    val content = streamingMarkdownState.content
+    val nodes = remember(snapshot) { snapshot.stableAst + snapshot.unstableAstTail }
+
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = contentPadding,
+    ) {
+        items(
+            items = nodes,
+            key = { node -> node.startOffset },
+            contentType = { node -> node.type }
+        ) { node ->
+            MarkdownElementInternal(node, components, content)
         }
     }
 }
