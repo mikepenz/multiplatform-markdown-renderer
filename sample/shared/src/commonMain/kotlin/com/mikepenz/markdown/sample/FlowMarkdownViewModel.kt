@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION") // demo intentionally exercises the deprecated Flow<String>.asMarkdownState()
 @OptIn(ExperimentalCoroutinesApi::class)
 class FlowMarkdownViewModel {
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
@@ -63,6 +64,7 @@ class FlowMarkdownViewModel {
     fun setAutoUpdate(enabled: Boolean) {
         _autoUpdate.value = enabled
 
+        autoUpdateJob?.cancel() // cancel any existing job to avoid leaking a second loop
         if (enabled) {
             autoUpdateJob = viewModelScope.launch {
                 while (true) {
@@ -71,7 +73,6 @@ class FlowMarkdownViewModel {
                 }
             }
         } else {
-            autoUpdateJob?.cancel()
             autoUpdateJob = null
         }
     }

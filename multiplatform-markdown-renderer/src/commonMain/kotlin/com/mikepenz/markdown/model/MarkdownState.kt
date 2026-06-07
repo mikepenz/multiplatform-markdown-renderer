@@ -18,9 +18,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.withContext
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
@@ -301,10 +300,7 @@ fun Flow<String>.asMarkdownState(
             retainState = retainState,
         )
     )
-    var isFirst = true
-
-    return onEach { content ->
-        // Update the state with new content
+    return transformLatest { content ->
         markdownState.updateInput(
             Input(
                 content = content,
@@ -316,16 +312,12 @@ fun Flow<String>.asMarkdownState(
             )
         )
 
-        markdownState.parse()
-    }.flatMapLatest {
-        // Emit all state changes from the state flow
-        flow {
-            if (isFirst) {
-                emit(State.Loading(referenceLinkHandler))
-                isFirst = false
-            }
-            emitAll(markdownState.state)
-        }
+        // Emit the Loading state only when updateInput transitioned to it (i.e. not retaining).
+        // A late subscriber whose content already parsed sees Success directly, avoiding a flash.
+        (markdownState.state.value as? State.Loading)?.let { emit(it) }
+
+        // parse() returns the resulting State (Success/Error) deterministically.
+        emit(markdownState.parse())
     }
 }
 
