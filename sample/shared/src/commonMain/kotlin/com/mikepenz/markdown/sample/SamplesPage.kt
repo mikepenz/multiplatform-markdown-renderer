@@ -29,7 +29,7 @@ private val SAMPLES = listOf(
 
 @Composable
 internal fun SamplesPage(modifier: Modifier = Modifier) {
-    var selected by rememberSaveable { mutableIntStateOf(1) }
+    var selected by rememberSaveable { mutableIntStateOf(0) }
     val samples = remember { SAMPLES }
 
     Column(modifier = modifier.fillMaxSize()) {
