@@ -21,6 +21,7 @@ import androidx.compose.ui.util.fastForEachIndexed
 import com.mikepenz.markdown.compose.extendedspans.internal.deserializeToColor
 import com.mikepenz.markdown.compose.extendedspans.internal.serialize
 import com.mikepenz.markdown.compose.extendedspans.internal.update
+import com.mikepenz.markdown.utils.toPxOrZero
 
 /**
  * Draws round rectangles behind text annotated using `SpanStyle(background = …)`.
@@ -81,7 +82,7 @@ class RoundedCornerSpanPainter(
         val annotations = text.getStringAnnotations(TAG, start = 0, end = text.length)
 
         return SpanDrawInstructions {
-            val cornerRadius = CornerRadius(cornerRadius.toPx())
+            val cornerRadius = CornerRadius(toPxOrZero(cornerRadius))
 
             annotations.fastForEach { annotation ->
                 val backgroundColor = annotation.item.deserializeToColor()!!
@@ -95,10 +96,10 @@ class RoundedCornerSpanPainter(
                     path.addRoundRect(
                         RoundRect(
                             rect = box.copy(
-                                left = box.left - padding.horizontal.toPx(),
-                                right = box.right + padding.horizontal.toPx(),
-                                top = box.top - padding.vertical.toPx() + topMargin.toPx(),
-                                bottom = box.bottom + padding.vertical.toPx() - bottomMargin.toPx(),
+                                left = box.left - toPxOrZero(padding.horizontal),
+                                right = box.right + toPxOrZero(padding.horizontal),
+                                top = box.top - toPxOrZero(padding.vertical) + toPxOrZero(topMargin),
+                                bottom = box.bottom + toPxOrZero(padding.vertical) - toPxOrZero(bottomMargin),
                             ),
                             topLeft = if (index == 0) cornerRadius else CornerRadius.Zero,
                             bottomLeft = if (index == 0) cornerRadius else CornerRadius.Zero,
@@ -116,7 +117,7 @@ class RoundedCornerSpanPainter(
                             path = path,
                             color = stroke.color(backgroundColor),
                             style = Stroke(
-                                width = stroke.width.toPx(),
+                                width = toPxOrZero(stroke.width),
                             )
                         )
                     }

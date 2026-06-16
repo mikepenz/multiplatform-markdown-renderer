@@ -39,6 +39,7 @@ import com.mikepenz.markdown.compose.extendedspans.internal.deserializeToColor
 import com.mikepenz.markdown.compose.extendedspans.internal.fastMapRange
 import com.mikepenz.markdown.compose.extendedspans.internal.serialize
 import com.mikepenz.markdown.compose.extendedspans.internal.update
+import com.mikepenz.markdown.utils.toPxOrZero
 import kotlin.math.PI
 import kotlin.math.ceil
 import kotlin.math.sin
@@ -136,10 +137,10 @@ class SquigglyUnderlineSpanPainter(
 
         return SpanDrawInstructions {
             val pathStyle = Stroke(
-                width = width.toPx(),
+                width = toPxOrZero(width),
                 join = StrokeJoin.Round,
                 cap = StrokeCap.Round,
-                pathEffect = PathEffect.cornerPathEffect(radius = wavelength.toPx()), // For slightly smoother waves.
+                pathEffect = PathEffect.cornerPathEffect(radius = toPxOrZero(wavelength)), // For slightly smoother waves.
             )
 
             annotations.fastForEach { annotation ->
@@ -166,19 +167,24 @@ class SquigglyUnderlineSpanPainter(
     /**
      * Maths copied from [squigglyspans](https://github.com/samruston/squigglyspans).
      */
-    private fun Path.buildSquigglesFor(box: Rect, density: Density) = density.run {
-        val lineStart = box.left + (width.toPx() / 2)
-        val lineEnd = box.right - (width.toPx() / 2)
-        val lineBottom = box.bottom + bottomOffset.toPx()
+    private fun Path.buildSquigglesFor(box: Rect, density: Density): Unit = density.run {
+        val wavelengthPx = toPxOrZero(wavelength)
+        // Nothing sensible to draw without a wavelength; guard against the
+        // division below blowing up to an unbounded point count (e.g. `em` units).
+        if (wavelengthPx <= 0f) return
 
-        val segmentWidth = wavelength.toPx() / SEGMENTS_PER_WAVELENGTH
+        val lineStart = box.left + (toPxOrZero(width) / 2)
+        val lineEnd = box.right - (toPxOrZero(width) / 2)
+        val lineBottom = box.bottom + toPxOrZero(bottomOffset)
+
+        val segmentWidth = wavelengthPx / SEGMENTS_PER_WAVELENGTH
         val numOfPoints = ceil((lineEnd - lineStart) / segmentWidth).toInt() + 1
 
         var pointX = lineStart
         fastMapRange(0, numOfPoints) { point ->
-            val proportionOfWavelength = (pointX - lineStart) / wavelength.toPx()
+            val proportionOfWavelength = (pointX - lineStart) / wavelengthPx
             val radiansX = proportionOfWavelength * TWO_PI + (TWO_PI * animator.animationProgress.value)
-            val offsetY = lineBottom + (sin(radiansX) * amplitude.toPx())
+            val offsetY = lineBottom + (sin(radiansX) * toPxOrZero(amplitude))
 
             when (point) {
                 0 -> moveTo(pointX, offsetY)

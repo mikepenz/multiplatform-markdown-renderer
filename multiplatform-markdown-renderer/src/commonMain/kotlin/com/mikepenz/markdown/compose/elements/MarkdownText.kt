@@ -49,6 +49,7 @@ import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.model.MarkdownAnnotatorConfig
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
+import com.mikepenz.markdown.utils.toPxOrZero
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
@@ -130,10 +131,15 @@ fun MarkdownText(
     val imageSizeByLink = remember { mutableStateMapOf<String, Size>() }
 
     // Resolved line height in pixels; used to decide whether an image
-    // should be inline or promoted to a block element.
+    // should be inline or promoted to a block element. Resolves `sp`, `em`,
+    // and unspecified units without crashing (`toPx()` only supports `sp`).
     val lineHeightPx = with(density) {
-        val lh = if (style.lineHeight.isSpecified) style.lineHeight else style.fontSize
-        if (lh.isSpecified) lh.toPx() else 0f
+        // `em` is relative to the font size, so resolve that to px first.
+        val fontSizePx = toPxOrZero(style.fontSize, relativeToPx = 0f)
+        when {
+            style.lineHeight.isSpecified -> toPxOrZero(style.lineHeight, relativeToPx = fontSizePx)
+            else -> fontSizePx
+        }
     }
 
     val inlineImageAsBlock = annotatorConfig.inlineImageAsBlock
