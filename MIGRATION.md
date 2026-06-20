@@ -6,6 +6,9 @@
 - **Dependency Upgrade**: Android `compileSdk` / `targetSdk` 36 → 37
 - **Dependency Upgrade**: JetBrains `markdown` 0.7.3 → 0.7.5
 - **Dependency Upgrade**: Ktor 3.4.2 → 3.5.0 (affects the coil2 / coil3 network image integrations)
+- **Dependency Upgrade**: Compose Multiplatform 1.11.0 → 1.11.1 (androidx Compose 1.11.1 → 1.11.3)
+- **Behavior Change**: Default M2/M3 `inlineCode` typography no longer pins a font size
+  (`fontSize = TextUnit.Unspecified`); inline code now inherits the surrounding text size.
 - **New Feature**: `StreamingMarkdownState` — append-only streaming markdown, purpose-built for LLM
   token streams (incremental output without re-parsing the whole document on every emission).
     - `rememberStreamingMarkdownState(immediate, flavour, referenceLinkHandler)` to create state.
