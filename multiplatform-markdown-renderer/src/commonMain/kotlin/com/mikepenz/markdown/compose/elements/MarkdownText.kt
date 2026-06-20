@@ -1,6 +1,7 @@
 package com.mikepenz.markdown.compose.elements
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
@@ -48,6 +49,7 @@ import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.model.MarkdownAnnotatorConfig
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
+import com.mikepenz.markdown.utils.toPxOrZero
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
@@ -129,10 +131,15 @@ fun MarkdownText(
     val imageSizeByLink = remember { mutableStateMapOf<String, Size>() }
 
     // Resolved line height in pixels; used to decide whether an image
-    // should be inline or promoted to a block element.
+    // should be inline or promoted to a block element. Resolves `sp`, `em`,
+    // and unspecified units without crashing (`toPx()` only supports `sp`).
     val lineHeightPx = with(density) {
-        val lh = if (style.lineHeight.isSpecified) style.lineHeight else style.fontSize
-        if (lh.isSpecified) lh.toPx() else 0f
+        // `em` is relative to the font size, so resolve that to px first.
+        val fontSizePx = toPxOrZero(style.fontSize, relativeToPx = 0f)
+        when {
+            style.lineHeight.isSpecified -> toPxOrZero(style.lineHeight, relativeToPx = fontSizePx)
+            else -> fontSizePx
+        }
     }
 
     val inlineImageAsBlock = annotatorConfig.inlineImageAsBlock
@@ -196,9 +203,15 @@ fun MarkdownText(
         val segmentDrawModifier = if (extendedSpans != null) {
             segmentModifier.drawBehind(extendedSpans)
         } else segmentModifier
+        val hasSegmentLinks = segment.getLinkAnnotations(0, segment.length).isNotEmpty()
+        val finalModifier = if (hasSegmentLinks) {
+            segmentDrawModifier.semantics(mergeDescendants = true) { }
+        } else {
+            segmentDrawModifier
+        }
         MarkdownBasicText(
             text = extended,
-            modifier = segmentDrawModifier.let { animations.animateTextSize(it) },
+            modifier = finalModifier.let { animations.animateTextSize(it) },
             style = style,
             inlineContent = resolvedInlineContent,
             onTextLayout = { result ->
@@ -210,7 +223,18 @@ fun MarkdownText(
     }
 
     if (blockImageRanges.isEmpty()) {
-        textSegment(content, containerModifier(modifier))
+        val hasLinks = content.getLinkAnnotations(0, content.length).isNotEmpty()
+        if (hasLinks) {
+            Box(modifier = containerModifier(modifier)) {
+                textSegment(content, Modifier)
+            }
+        } else {
+            textSegment(content, modifier.onPlaced {
+                it.parentLayoutCoordinates?.also { coordinates ->
+                    containerSize.value = coordinates.size.toSize()
+                }
+            })
+        }
     } else {
         val components = LocalMarkdownComponents.current
         val typography = LocalMarkdownTypography.current

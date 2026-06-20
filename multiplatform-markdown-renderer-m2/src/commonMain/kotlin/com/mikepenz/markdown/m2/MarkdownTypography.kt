@@ -9,6 +9,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.TextUnit
 import com.mikepenz.markdown.model.DefaultMarkdownTypography
 import com.mikepenz.markdown.model.MarkdownTypography
 
@@ -22,7 +23,9 @@ fun markdownTypography(
     h6: TextStyle = MaterialTheme.typography.h6,
     text: TextStyle = MaterialTheme.typography.body1,
     code: TextStyle = MaterialTheme.typography.body2.copy(fontFamily = FontFamily.Monospace),
-    inlineCode: TextStyle = text.copy(fontFamily = FontFamily.Monospace),
+    inlineCode: TextStyle = text.copy(
+        fontFamily = FontFamily.Monospace, fontSize = TextUnit.Unspecified
+    ),
     quote: TextStyle = MaterialTheme.typography.body2.plus(SpanStyle(fontStyle = FontStyle.Italic)),
     paragraph: TextStyle = MaterialTheme.typography.body1,
     ordered: TextStyle = MaterialTheme.typography.body1,

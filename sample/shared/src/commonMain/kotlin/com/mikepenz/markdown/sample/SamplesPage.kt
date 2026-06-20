@@ -16,13 +16,16 @@ import androidx.compose.ui.unit.dp
 
 internal data class MarkdownSample(
     val title: String,
-    val file: String,
+    val content: @Composable (Modifier) -> Unit,
 )
 
 private val SAMPLES = listOf(
-    MarkdownSample("Playground", "files/sample.md"),
-    MarkdownSample("Tables", "files/sample-tables.md"),
-    MarkdownSample("Images", "files/sample-images.md"),
+    MarkdownSample("Playground") { MarkDownPage(modifier = it, file = "files/sample.md") },
+    MarkdownSample("Streaming") { StreamingMarkDownPage(modifier = it, file = "files/sample.md") },
+    MarkdownSample("Tables") { MarkDownPage(modifier = it, file = "files/sample-tables.md") },
+    MarkdownSample("Images") { MarkDownPage(modifier = it, file = "files/sample-images.md") },
+    MarkdownSample("Flow") { FlowMarkdownPage(modifier = it) },
+    MarkdownSample("Recompositions") { RecompositionPage(modifier = it) },
 )
 
 @Composable
@@ -40,9 +43,6 @@ internal fun SamplesPage(modifier: Modifier = Modifier) {
                 )
             }
         }
-        MarkDownPage(
-            modifier = Modifier.fillMaxSize(),
-            file = samples[selected].file,
-        )
+        samples[selected].content(Modifier.fillMaxSize())
     }
 }

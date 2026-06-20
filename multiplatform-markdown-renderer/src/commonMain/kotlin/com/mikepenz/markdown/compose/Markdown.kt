@@ -25,6 +25,7 @@ import com.mikepenz.markdown.model.NoOpImageTransformerImpl
 import com.mikepenz.markdown.model.ReferenceLinkHandler
 import com.mikepenz.markdown.model.ReferenceLinkHandlerImpl
 import com.mikepenz.markdown.model.State
+import com.mikepenz.markdown.model.StreamingMarkdownState
 import com.mikepenz.markdown.model.markdownAnimations
 import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.model.markdownDimens
@@ -228,6 +229,43 @@ fun Markdown(
     )
 }
 
+@Composable
+fun Markdown(
+    streamingMarkdownState: StreamingMarkdownState,
+    colors: MarkdownColors,
+    typography: MarkdownTypography,
+    modifier: Modifier = Modifier.fillMaxSize(),
+    padding: MarkdownPadding = markdownPadding(),
+    dimens: MarkdownDimens = markdownDimens(),
+    imageTransformer: ImageTransformer = NoOpImageTransformerImpl(),
+    annotator: MarkdownAnnotator = markdownAnnotator(),
+    extendedSpans: MarkdownExtendedSpans = markdownExtendedSpans(),
+    inlineContent: MarkdownInlineContent = markdownInlineContent(),
+    components: MarkdownComponents = markdownComponents(),
+    animations: MarkdownAnimations = markdownAnimations(),
+    success: @Composable (snapshot: StreamingMarkdownState.Snapshot, components: MarkdownComponents, modifier: Modifier) -> Unit = { snapshot, components, modifier ->
+        StreamingMarkdownSuccess(streamingMarkdownState = streamingMarkdownState, snapshot = snapshot, components = components, modifier = modifier)
+    },
+) {
+    val state by streamingMarkdownState.snapshot.collectAsState()
+
+    CompositionLocalProvider(
+        LocalReferenceLinkHandler provides streamingMarkdownState.referenceLinkHandler,
+        LocalMarkdownPadding provides padding,
+        LocalMarkdownDimens provides dimens,
+        LocalMarkdownColors provides colors,
+        LocalMarkdownTypography provides typography,
+        LocalImageTransformer provides imageTransformer,
+        LocalMarkdownAnnotator provides annotator,
+        LocalMarkdownExtendedSpans provides extendedSpans,
+        LocalMarkdownInlineContent provides inlineContent,
+        LocalMarkdownComponents provides components,
+        LocalMarkdownAnimations provides animations,
+    ) {
+        success(state, components, modifier)
+    }
+}
+
 
 /**
  * Renders markdown content using a [State] object directly.
@@ -361,6 +399,25 @@ fun MarkdownSuccess(
     Column(modifier) {
         state.node.children.forEach { node ->
             MarkdownElement(node, components, state.content)
+        }
+    }
+}
+
+@Composable
+fun StreamingMarkdownSuccess(
+    streamingMarkdownState: StreamingMarkdownState,
+    snapshot: StreamingMarkdownState.Snapshot,
+    components: MarkdownComponents,
+    modifier: Modifier = Modifier,
+) {
+    val content = streamingMarkdownState.content
+
+    Column(modifier) {
+        snapshot.stableAst.forEach { node ->
+            MarkdownElementInternal(node, components, content)
+        }
+        snapshot.unstableAstTail.forEach { node ->
+            MarkdownElementInternal(node, components, content)
         }
     }
 }

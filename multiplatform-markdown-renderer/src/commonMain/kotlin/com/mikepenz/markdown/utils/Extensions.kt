@@ -2,6 +2,9 @@ package com.mikepenz.markdown.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.model.ReferenceLinkHandler
@@ -133,7 +136,7 @@ fun List<ASTNode>.mapAutoLinkToType(targetType: IElementType = MarkdownTokenType
 internal fun lookupLinkDefinition(
     store: MutableMap<String, String?>,
     node: ASTNode,
-    content: String,
+    content: CharSequence,
     recursive: Boolean = true,
     onlyDefinitions: Boolean = false,
 ) {
@@ -165,6 +168,21 @@ internal fun lookupLinkDefinition(
     }
 }
 
+
+/**
+ * Resolves a [TextUnit] to pixels without crashing on non-`sp` units.
+ *
+ * [TextUnit.toPx] only supports `sp`; calling it on an `em` (or unspecified)
+ * value throws. This resolves:
+ * - `sp` -> via density
+ * - `em` -> [relativeToPx] (the value it is relative to, e.g. the font size) scaled by the em factor
+ * - unspecified / unknown -> `0f`
+ */
+internal fun Density.toPxOrZero(unit: TextUnit, relativeToPx: Float = 0f): Float = when (unit.type) {
+    TextUnitType.Sp -> unit.toPx()
+    TextUnitType.Em -> unit.value * relativeToPx
+    else -> 0f
+}
 
 /**
  * Extension property to get the `SpanStyle` for inline code text.

@@ -37,9 +37,9 @@ public final class com/mikepenz/markdown/annotator/DefaultAnnotatorSettings : co
 public final class com/mikepenz/markdown/compose/ComposableSingletons$MarkdownKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/ComposableSingletons$MarkdownKt;
 	public fun <init> ()V
-	public final fun getLambda$-2063790006$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
-	public final fun getLambda$-322200773$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
-	public final fun getLambda$-830612685$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-2063790006$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-322200773$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-830612685$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
 }
 
 public final class com/mikepenz/markdown/compose/ComposeLocalKt {
@@ -62,6 +62,7 @@ public final class com/mikepenz/markdown/compose/ComposeLocalKt {
 
 public final class com/mikepenz/markdown/compose/LazyMarkdownKt {
 	public static final fun LazyMarkdownSuccess (Lcom/mikepenz/markdown/model/State$Success;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LazyMarkdownSuccess (Lcom/mikepenz/markdown/model/StreamingMarkdownState;Lcom/mikepenz/markdown/model/StreamingMarkdownState$Snapshot;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/mikepenz/markdown/compose/MarkdownExtensionKt {
@@ -71,34 +72,36 @@ public final class com/mikepenz/markdown/compose/MarkdownExtensionKt {
 public final class com/mikepenz/markdown/compose/MarkdownKt {
 	public static final fun Markdown (Lcom/mikepenz/markdown/model/MarkdownState;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/model/MarkdownInlineContent;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
 	public static final fun Markdown (Lcom/mikepenz/markdown/model/State;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/model/MarkdownInlineContent;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+	public static final fun Markdown (Lcom/mikepenz/markdown/model/StreamingMarkdownState;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/model/MarkdownInlineContent;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;III)V
 	public static final fun Markdown (Ljava/lang/String;Lcom/mikepenz/markdown/model/MarkdownColors;Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/ui/Modifier;Lcom/mikepenz/markdown/model/MarkdownPadding;Lcom/mikepenz/markdown/model/MarkdownDimens;Lorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lorg/intellij/markdown/parser/MarkdownParser;Lcom/mikepenz/markdown/model/ImageTransformer;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/MarkdownExtendedSpans;Lcom/mikepenz/markdown/model/MarkdownInlineContent;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Lcom/mikepenz/markdown/model/MarkdownAnimations;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;ZZZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function5;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;IIII)V
 	public static final fun MarkdownSuccess (Lcom/mikepenz/markdown/model/State$Success;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun StreamingMarkdownSuccess (Lcom/mikepenz/markdown/model/StreamingMarkdownState;Lcom/mikepenz/markdown/model/StreamingMarkdownState$Snapshot;Lcom/mikepenz/markdown/compose/components/MarkdownComponents;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/mikepenz/markdown/compose/components/ComposableSingletons$MarkdownComponentsKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/components/ComposableSingletons$MarkdownComponentsKt;
 	public fun <init> ()V
-	public final fun getLambda$-1079294572$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1347673484$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1643949077$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1690655072$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1755130397$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1794801381$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-1981090537$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-624343772$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-700682889$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-852522976$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$-899602067$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1027552049$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1409050274$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1604122825$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1659920708$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1702810816$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1752436318$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$242326187$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$278263649$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$506442853$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$572024191$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1079294572$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1347673484$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1643949077$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1690655072$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1755130397$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1794801381$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1981090537$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-624343772$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-700682889$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-852522976$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-899602067$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1027552049$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1409050274$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1604122825$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1659920708$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1702810816$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1752436318$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$242326187$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$278263649$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$506442853$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$572024191$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/mikepenz/markdown/compose/components/CurrentComponentsBridge {
@@ -180,8 +183,8 @@ public final class com/mikepenz/markdown/compose/components/MarkdownComponentsKt
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt {
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt;
 	public fun <init> ()V
-	public final fun getLambda$-449689539$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
-	public final fun getLambda$591785369$multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$-449689539$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+	public final fun getLambda$591785369$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownBlockQuoteKt {
@@ -785,6 +788,33 @@ public final class com/mikepenz/markdown/model/State$Success : com/mikepenz/mark
 	public fun getReferenceLinkHandler ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/mikepenz/markdown/model/StreamingMarkdownState {
+	public abstract fun append (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getContent ()Ljava/lang/CharSequence;
+	public abstract fun getLinks ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun getReferenceLinkHandler ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
+	public abstract fun getSnapshot ()Lkotlinx/coroutines/flow/StateFlow;
+}
+
+public final class com/mikepenz/markdown/model/StreamingMarkdownState$Snapshot {
+	public static final field $stable I
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Lcom/mikepenz/markdown/model/StreamingMarkdownState$Snapshot;
+	public static synthetic fun copy$default (Lcom/mikepenz/markdown/model/StreamingMarkdownState$Snapshot;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/StreamingMarkdownState$Snapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getStableAst ()Ljava/util/List;
+	public final fun getUnstableAstTail ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/mikepenz/markdown/model/StreamingMarkdownStateKt {
+	public static final fun collectAsStreamingMarkdownState (Lkotlinx/coroutines/flow/Flow;ZLorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/StreamingMarkdownState;
+	public static final fun rememberStreamingMarkdownState (ZLorg/intellij/markdown/flavours/MarkdownFlavourDescriptor;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/StreamingMarkdownState;
 }
 
 public final class com/mikepenz/markdown/utils/EntityConverter {
