@@ -268,6 +268,42 @@ fun parseMarkdownFlow(
 }
 
 /**
+ * Parses the given markdown [content] synchronously and returns the resulting [State] directly.
+ *
+ * Unlike [parseMarkdownFlow], this does not expose any mutable Flow/StateFlow machinery. It performs the
+ * parse on the calling thread and returns the final, immutable [State] (a [State.Success] on success, or a
+ * [State.Error] if the underlying parse fails). This is useful to pre-parse content before the UI is shown
+ * and hand the already-parsed [State.Success] to the `Markdown` composable.
+ *
+ * Note: parsing happens on the calling thread. For large documents consider invoking this off the main thread.
+ *
+ * @param content The markdown content to parse.
+ * @param lookupLinks Whether to lookup links in the parsed tree or not.
+ * @param flavour The [MarkdownFlavourDescriptor] to use for parsing.
+ * @param parser The [MarkdownParser] to use for parsing.
+ * @param referenceLinkHandler The [ReferenceLinkHandler] to use for storing links.
+ *
+ * @return The resulting [State]; [State.Success] on success or [State.Error] on failure.
+ */
+fun parseMarkdown(
+    content: String,
+    lookupLinks: Boolean = true,
+    flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
+    parser: MarkdownParser = MarkdownParser(flavour),
+    referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
+): State {
+    return MarkdownStateImpl(
+        Input(
+            content = content,
+            lookupLinks = lookupLinks,
+            flavour = flavour,
+            parser = parser,
+            referenceLinkHandler = referenceLinkHandler,
+        )
+    ).parseBlocking()
+}
+
+/**
  * Transforms a [Flow] of markdown content strings into a [Flow] of parsed [State] for use in non-composable contexts like view models.
  * As soon as the flow is collected, it will start parsing the content, and emit the state once ready.
  *
