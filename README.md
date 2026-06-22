@@ -224,6 +224,22 @@ val state by markdownFlow.collectAsStateWithLifecycle()
 Markdown(state)
 ```
 
+### Parse Markdown synchronously
+
+If you want to pre-parse content before showing the UI and hand the result to `Markdown` without any
+Flow/StateFlow machinery, use `parseMarkdown`. It parses on the calling thread and returns the final,
+immutable `State` directly (`State.Success` on success, or `State.Error` on failure).
+
+```kotlin
+// Parse ahead of time and pass the already-parsed state to the Composable
+val state = parseMarkdown("# Markdown")
+Markdown(state)
+```
+
+> [!NOTE]  
+> Parsing happens on the calling thread. For large documents consider invoking this off the main
+> thread.
+
 The library offers the ability to modify different behaviour when rendering the markdown.
 
 ### Provided custom style
