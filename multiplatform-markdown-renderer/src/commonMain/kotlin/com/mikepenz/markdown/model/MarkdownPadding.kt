@@ -25,6 +25,9 @@ interface MarkdownPadding {
     val blockQuote: PaddingValues
     val blockQuoteText: PaddingValues
     val blockQuoteBar: PaddingValues.Absolute
+
+    /** The paddings of the GitHub alerts */
+    val alert: MarkdownAlertPadding
 }
 
 @Immutable
@@ -38,6 +41,7 @@ private data class DefaultMarkdownPadding(
     override val blockQuote: PaddingValues,
     override val blockQuoteText: PaddingValues,
     override val blockQuoteBar: PaddingValues.Absolute,
+    override val alert: MarkdownAlertPadding,
 ) : MarkdownPadding
 
 @Composable
@@ -53,6 +57,7 @@ fun markdownPadding(
     blockQuote: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
     blockQuoteText: PaddingValues = PaddingValues(vertical = 4.dp),
     blockQuoteBar: PaddingValues.Absolute = PaddingValues.Absolute(left = 4.dp, top = 2.dp, right = 4.dp, bottom = 2.dp),
+    alert: MarkdownAlertPadding = markdownAlertPadding(),
 ): MarkdownPadding = DefaultMarkdownPadding(
     block = block,
     list = list,
@@ -63,4 +68,5 @@ fun markdownPadding(
     blockQuote = blockQuote,
     blockQuoteText = blockQuoteText,
     blockQuoteBar = blockQuoteBar,
+    alert = alert,
 )

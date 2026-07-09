@@ -12,6 +12,7 @@ import com.mikepenz.markdown.model.DefaultMarkdownInlineContent
 import com.mikepenz.markdown.model.ImageTransformer
 import com.mikepenz.markdown.model.ImageWidth
 import com.mikepenz.markdown.model.MarkdownA11yLabels
+import com.mikepenz.markdown.model.MarkdownAlertIcons
 import com.mikepenz.markdown.model.MarkdownAnimations
 import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.MarkdownColors
@@ -21,6 +22,7 @@ import com.mikepenz.markdown.model.MarkdownInlineContent
 import com.mikepenz.markdown.model.MarkdownPadding
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.model.ReferenceLinkHandler
+import com.mikepenz.markdown.model.markdownAlertIcons
 
 /**
  * The CompositionLocal to provide functionality related to transforming the bullet of an ordered list
@@ -124,3 +126,8 @@ val LocalMarkdownAnimations = compositionLocalOf<MarkdownAnimations> {
  * Local [MarkdownA11yLabels] provider — override to localize accessibility labels.
  */
 val LocalMarkdownA11yLabels = staticCompositionLocalOf { MarkdownA11yLabels() }
+
+/**
+ * Local [MarkdownAlertIcons] provider — override to swap the icons rendered next to alert titles.
+ */
+val LocalMarkdownAlertIcons = staticCompositionLocalOf<MarkdownAlertIcons> { markdownAlertIcons() }

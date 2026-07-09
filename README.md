@@ -414,6 +414,44 @@ val markdown = """
 Markdown(markdown)
 ```
 
+### Alert Support
+
+The library renders [GitHub alerts](https://github.com/orgs/community/discussions/16925) — `NOTE`,
+`TIP`, `IMPORTANT`, `WARNING` and `CAUTION` — as an accent bar with an icon and a title.
+
+```kotlin
+val markdown = """
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+""".trimIndent()
+
+Markdown(markdown)
+```
+
+The accent colors, dimensions and paddings are grouped into dedicated models, the title style is
+exposed via `markdownTypography(alertTitle = ...)`:
+
+```kotlin
+Markdown(
+    markdown,
+    colors = markdownColor(alert = markdownAlertColors(note = Color.Blue)),
+    dimens = markdownDimens(alert = markdownAlertDimens(barThickness = 2.dp)),
+    padding = markdownPadding(alert = markdownAlertPadding(iconSpacing = 12.dp)),
+)
+```
+
+The icons are swappable via `LocalMarkdownAlertIcons`:
+
+```kotlin
+CompositionLocalProvider(
+    LocalMarkdownAlertIcons provides markdownAlertIcons(note = Icons.Outlined.Info)
+) {
+    Markdown(markdown)
+}
+```
+
+To fully replace the rendering, override the `alert` component through `markdownComponents()`.
+
 </p>
 </details>
 

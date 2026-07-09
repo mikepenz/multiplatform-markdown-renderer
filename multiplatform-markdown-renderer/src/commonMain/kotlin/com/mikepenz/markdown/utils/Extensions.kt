@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.model.MarkdownAlertType
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.model.ReferenceLinkHandler
 import org.intellij.markdown.IElementType
@@ -61,6 +62,13 @@ internal fun ASTNode.resolveImageLink(
         ?: return null
     return referenceLinkHandler?.find(label)?.takeIf { it.isNotEmpty() }
 }
+
+/**
+ * Resolve the [MarkdownAlertType] of a `GFMElementTypes.ALERT` node from its `ALERT_TITLE` token,
+ * e.g. `[!NOTE]`. Returns `null` when the node carries no recognisable marker.
+ */
+fun ASTNode.findAlertType(content: String): MarkdownAlertType? =
+    findChildOfType(GFMTokenTypes.ALERT_TITLE)?.let { MarkdownAlertType.from(it.getTextInNode(content).toString()) }
 
 /**
  * Find a child node recursive
