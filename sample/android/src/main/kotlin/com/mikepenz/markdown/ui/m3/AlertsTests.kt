@@ -1,7 +1,17 @@
 package com.mikepenz.markdown.ui.m3
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.unit.dp
+import com.mikepenz.markdown.model.markdownAlertPadding
+import com.mikepenz.markdown.model.markdownPadding
+import com.mikepenz.markdown.model.rememberMarkdownState
 import com.mikepenz.markdown.ui.annotation.DarkLightPreview
+import com.mikepenz.markdown.ui.m3.theme.SampleTheme
 import com.mikepenz.markdown.ui.m3.util.TestMarkdown
 
 /**
@@ -117,3 +127,28 @@ fun AlertsAndBlockquoteTogetherTest() = TestMarkdown(
         > Dorothy followed her through many of the beautiful rooms in her castle.
         """.trimIndent()
 )
+
+/**
+ * Pins two fixes: an explicit [markdownTypography] `alertTitle` color must win over the
+ * per-type accent, and [markdownAlertPadding] `content` horizontal insets must be honored.
+ */
+@DarkLightPreview
+@Composable
+fun AlertWithExplicitTitleColorAndPaddingTest() = SampleTheme(isSystemInDarkTheme()) {
+    CompositionLocalProvider(LocalInspectionMode provides true) {
+        com.mikepenz.markdown.m3.Markdown(
+            rememberMarkdownState(
+                """
+                > [!NOTE]
+                > The title above should render in magenta, indented well past the accent bar.
+                """.trimIndent()
+            ),
+            typography = com.mikepenz.markdown.m3.markdownTypography(
+                alertTitle = com.mikepenz.markdown.m3.markdownTypography().alertTitle.copy(color = Color.Magenta),
+            ),
+            padding = markdownPadding(
+                alert = markdownAlertPadding(content = PaddingValues(horizontal = 32.dp, vertical = 4.dp)),
+            ),
+        )
+    }
+}
