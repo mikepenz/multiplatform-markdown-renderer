@@ -314,10 +314,11 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
 
                     // Token Types
                     MarkdownTokenTypes.TEXT -> append(child.getUnescapedTextInNode(content))
-                    MarkdownTokenTypes.EMAIL_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
+                    MarkdownTokenTypes.EMAIL_AUTOLINK -> if (parentType == MarkdownElementTypes.LINK_TEXT) {
                         append(child.getUnescapedTextInNode(content))
                     } else appendEmailAutoLink(content, child, annotatorSettings)
-                    GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
+
+                    GFMTokenTypes.GFM_AUTOLINK -> if (parentType == MarkdownElementTypes.LINK_TEXT) {
                         append(child.getUnescapedTextInNode(content))
                     } else appendAutoLink(content, child, annotatorSettings)
 
