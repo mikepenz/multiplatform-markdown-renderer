@@ -24,4 +24,6 @@ data class MarkdownA11yLabels(
     val codeFallbackLanguage: String = "CODE",
     /** Copy-to-clipboard button label / click action. */
     val copyCode: String = "Copy code",
+    /** Container hint for GitHub alerts, e.g. "Warning alert". */
+    val alert: (title: String) -> String = { "$it alert" },
 )

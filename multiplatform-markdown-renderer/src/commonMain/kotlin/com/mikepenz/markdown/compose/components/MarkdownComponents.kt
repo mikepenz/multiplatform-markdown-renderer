@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
+import com.mikepenz.markdown.compose.elements.MarkdownAlert
 import com.mikepenz.markdown.compose.elements.MarkdownBlockQuote
 import com.mikepenz.markdown.compose.elements.MarkdownBulletList
 import com.mikepenz.markdown.compose.elements.MarkdownCheckBox
@@ -19,7 +20,9 @@ import com.mikepenz.markdown.compose.elements.MarkdownParagraph
 import com.mikepenz.markdown.compose.elements.MarkdownTable
 import com.mikepenz.markdown.compose.elements.MarkdownText
 import com.mikepenz.markdown.compose.elements.listDepth
+import com.mikepenz.markdown.model.MarkdownAlertType
 import com.mikepenz.markdown.model.MarkdownTypography
+import com.mikepenz.markdown.utils.findAlertType
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
@@ -66,6 +69,7 @@ fun markdownComponents(
     horizontalRule: MarkdownComponent = CurrentComponentsBridge.horizontalRule,
     table: MarkdownComponent = CurrentComponentsBridge.table,
     checkbox: MarkdownComponent = CurrentComponentsBridge.checkbox,
+    alert: MarkdownComponent = CurrentComponentsBridge.alert,
     custom: CustomMarkdownComponent? = CurrentComponentsBridge.custom,
 ): MarkdownComponents = DefaultMarkdownComponents(
     text = text,
@@ -89,6 +93,7 @@ fun markdownComponents(
     horizontalRule = horizontalRule,
     table = table,
     checkbox = checkbox,
+    alert = alert,
     custom = custom,
 )
 
@@ -118,6 +123,7 @@ interface MarkdownComponents {
     val horizontalRule: MarkdownComponent
     val table: MarkdownComponent
     val checkbox: MarkdownComponent
+    val alert: MarkdownComponent
     val custom: CustomMarkdownComponent?
 }
 
@@ -144,6 +150,7 @@ private data class DefaultMarkdownComponents(
     override val horizontalRule: MarkdownComponent,
     override val table: MarkdownComponent,
     override val checkbox: MarkdownComponent,
+    override val alert: MarkdownComponent,
     override val custom: CustomMarkdownComponent?,
 ) : MarkdownComponents
 
@@ -211,6 +218,11 @@ object CurrentComponentsBridge {
     }
     val checkbox: MarkdownComponent = {
         MarkdownCheckBox(it.content, it.node, style = it.typography.text)
+    }
+    val alert: MarkdownComponent = { model ->
+        // The parser only emits ALERT for one of the five known markers, so the fallback is unreachable.
+        val type = model.node.findAlertType(model.content) ?: MarkdownAlertType.NOTE
+        MarkdownAlert(model.content, model.node, type, style = model.typography.alertTitle)
     }
     val custom: CustomMarkdownComponent? = null
 }

@@ -3,6 +3,7 @@ package com.mikepenz.markdown.model
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 
 @Immutable
 interface MarkdownTypography {
@@ -22,6 +23,9 @@ interface MarkdownTypography {
     val list: TextStyle
     val textLink: TextLinkStyles
     val table: TextStyle
+
+    /** Style of an alert's title, e.g. the "Note" next to a `[!NOTE]` icon. Colored by the alert accent. */
+    val alertTitle: TextStyle
 }
 
 @Immutable
@@ -42,4 +46,5 @@ data class DefaultMarkdownTypography(
     override val list: TextStyle,
     override val textLink: TextLinkStyles,
     override val table: TextStyle,
+    override val alertTitle: TextStyle = paragraph.copy(fontWeight = FontWeight.Bold),
 ) : MarkdownTypography

@@ -37,6 +37,7 @@ fun markdownTypography(
         ).toSpanStyle()
     ),
     table: TextStyle = text,
+    alertTitle: TextStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.Bold),
 ): MarkdownTypography = DefaultMarkdownTypography(
     h1 = h1,
     h2 = h2,
@@ -54,4 +55,5 @@ fun markdownTypography(
     list = list,
     textLink = textLink,
     table = table,
+    alertTitle = alertTitle,
 )
