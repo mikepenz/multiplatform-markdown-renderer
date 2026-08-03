@@ -1,6 +1,6 @@
 {
   "name": "Java",
-  "image": "mcr.microsoft.com/devcontainers/java:3-21@sha256:d397e49fdf61966210b37eb12e97ffe0a6423fec5ea115ce222eaa8dcad963e3",
+  "image": "mcr.microsoft.com/devcontainers/java:3-21@sha256:0f067868ea7598354cb714cf8c00e990443e7f8ca9f8afe07045109c85c1f2e5",
   "features": {
     "ghcr.io/devcontainers/features/java:1": {
       "version": "none",
