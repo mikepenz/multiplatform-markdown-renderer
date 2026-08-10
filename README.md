@@ -13,6 +13,9 @@
     <a href="https://central.sonatype.com/artifact/com.mikepenz/multiplatform-markdown-renderer">
         <img src="https://img.shields.io/maven-central/v/com.mikepenz/multiplatform-markdown-renderer?style=flat-square&color=%231B4897"/>
     </a>
+    <a href="https://scorecard.dev/viewer/?uri=github.com/mikepenz/multiplatform-markdown-renderer">
+        <img src="https://img.shields.io/ossf-scorecard/github.com/mikepenz/multiplatform-markdown-renderer?style=flat-square&label=scorecard"/>
+    </a>
 </div>
 <br />
 
