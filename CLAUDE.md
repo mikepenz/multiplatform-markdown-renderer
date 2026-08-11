@@ -15,8 +15,11 @@ repository.
 ./gradlew :sample:web:wasmJsBrowserDevelopmentRun
 
 # Tests (Paparazzi screenshot tests)
-./gradlew :sample:android:verifyPaparazzi        # validate against snapshots
-./gradlew :sample:android:updateDebugScreenshotTest  # update snapshots
+./gradlew :sample:android:verifyPaparazzi   # validate against snapshots
+./gradlew :sample:android:recordPaparazzi   # update snapshots
+
+# README showcase art (after recordPaparazzi)
+./gradlew :sample:android:copyReadmeArt
 
 # API compatibility check
 ./gradlew apiCheck

@@ -12,19 +12,25 @@
 ### Generate reference images for tests
 
 ```bash
-./gradlew :sample:android:updateDebugScreenshotTest
+./gradlew :sample:android:recordPaparazzi
 ```
 
-### Generate ScreenshotTest report
+### Verify snapshots against the reference images
 
 ```bash
-./gradlew :sample:android:validateDebugScreenshotTest
+./gradlew :sample:android:verifyPaparazzi
+```
+
+### Refresh the README showcase art
+
+```bash
+./gradlew :sample:android:recordPaparazzi :sample:android:copyReadmeArt
 ```
 
 ### Run Android app
 
 ```bash
-./gradlew :sample:installDebug
+./gradlew :sample:android:installDebug
 ```
 
 ### Run Desktop app
