@@ -8,13 +8,13 @@
     <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/actions"><img src="https://github.com/mikepenz/multiplatform-markdown-renderer/workflows/CI/badge.svg" alt="CI status"></a>
     <a href="https://central.sonatype.com/artifact/com.mikepenz/multiplatform-markdown-renderer"><img src="https://img.shields.io/maven-central/v/com.mikepenz/multiplatform-markdown-renderer?style=flat-square&color=%231B4897" alt="Maven Central version"></a>
     <a href="https://scorecard.dev/viewer/?uri=github.com/mikepenz/multiplatform-markdown-renderer"><img src="https://img.shields.io/ossf-scorecard/github.com/mikepenz/multiplatform-markdown-renderer?style=flat-square&label=scorecard" alt="OpenSSF Scorecard"></a>
-    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square" alt="Apache 2.0 license"></a>
+    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/blob/docs/readme-redesign/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square" alt="Apache 2.0 license"></a>
 </p>
 
 <p align="center">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/hero-dark.svg">
-        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/hero-light.svg" width="100%" alt="A markdown String is parsed by JetBrains Markdown into an AST, mapped through overridable MarkdownComponents, and rendered as Compose Multiplatform UI on Android, iOS, Desktop, Web and macOS.">
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/docs/readme-redesign/art/hero-dark.svg">
+        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/docs/readme-redesign/art/hero-light.svg" width="100%" alt="A markdown String is parsed by JetBrains Markdown into an AST, mapped through overridable MarkdownComponents, and rendered as Compose Multiplatform UI on Android, iOS, Desktop, Web and macOS.">
     </picture>
 </p>
 
@@ -22,8 +22,8 @@
     <a href="#quickstart">Quickstart</a> &bull;
     <a href="#showcase">Showcase</a> &bull;
     <a href="#reference">Reference</a> &bull;
-    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/MIGRATION.md">Migration</a> &bull;
-    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/CHANGELOG.md">Changelog</a>
+    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/blob/docs/readme-redesign/MIGRATION.md">Migration</a> &bull;
+    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/blob/docs/readme-redesign/CHANGELOG.md">Changelog</a>
 </p>
 
 | | |
@@ -77,17 +77,17 @@ the [Reference](#reference) below.
 ## Showcase
 
 Every panel below is a Paparazzi snapshot of the sample app, recorded from
-[`ReadmeShowcasePreviews.kt`](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/sample/android/src/main/kotlin/com/mikepenz/markdown/ui/readme/ReadmeShowcasePreviews.kt)
+[`ReadmeShowcasePreviews.kt`](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/docs/readme-redesign/sample/android/src/main/kotlin/com/mikepenz/markdown/ui/readme/ReadmeShowcasePreviews.kt)
 and refreshed by `./gradlew :sample:android:recordPaparazzi :sample:android:copyReadmeArt`.
 
 <p align="center">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-rich-text-dark.png">
-        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-rich-text-light.png" width="395" alt="Headings, italic, bold, inline code, a link, a blockquote, and ordered plus unordered lists.">
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/docs/readme-redesign/art/showcase-rich-text-dark.png">
+        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/docs/readme-redesign/art/showcase-rich-text-light.png" width="395" alt="Headings, italic, bold, inline code, a link, a blockquote, and ordered plus unordered lists.">
     </picture>
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-syntax-dark.png">
-        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-syntax-light.png" width="395" alt="A Kotlin and a JSON code fence, syntax highlighted, each with a language header and copy button.">
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/docs/readme-redesign/art/showcase-syntax-dark.png">
+        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/docs/readme-redesign/art/showcase-syntax-light.png" width="395" alt="A Kotlin and a JSON code fence, syntax highlighted, each with a language header and copy button.">
     </picture>
 </p>
 
@@ -102,12 +102,12 @@ and refreshed by `./gradlew :sample:android:recordPaparazzi :sample:android:copy
 
 <p align="center">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-tables-alerts-dark.png">
-        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-tables-alerts-light.png" width="395" alt="A GFM table with three rows, plus NOTE and WARNING GitHub alert banners with accent bars and icons.">
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/docs/readme-redesign/art/showcase-tables-alerts-dark.png">
+        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/docs/readme-redesign/art/showcase-tables-alerts-light.png" width="395" alt="A GFM table with three rows, plus NOTE and WARNING GitHub alert banners with accent bars and icons.">
     </picture>
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-custom-dark.png">
-        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-custom-light.png" width="395" alt="Task list checkboxes rendered by a custom component, and inline code spans with rounded backgrounds.">
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/docs/readme-redesign/art/showcase-custom-dark.png">
+        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/docs/readme-redesign/art/showcase-custom-light.png" width="395" alt="Task list checkboxes rendered by a custom component, and inline code spans with rounded backgrounds.">
     </picture>
 </p>
 
@@ -132,7 +132,7 @@ and refreshed by `./gradlew :sample:android:recordPaparazzi :sample:android:copy
 | [Image Loading](#image-loading) | Coil 2 and Coil 3 transformers |
 | [Syntax Highlighting](#syntax-highlighting) | The optional `-code` module |
 | [Dependencies](#dependencies) | What this library builds on |
-| [Migration](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/MIGRATION.md) | Breaking changes between versions |
+| [Migration](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/docs/readme-redesign/MIGRATION.md) | Breaking changes between versions |
 | [License](#license) | Apache 2.0 |
 
 ### What's included 🚀
@@ -704,7 +704,7 @@ This library uses the following key dependencies:
 ## Contributors
 
 This free, open source software was made possible by a group of volunteers who put many hours of
-hard work into it. See the [CONTRIBUTORS.md](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/CONTRIBUTORS.md) file for details.
+hard work into it. See the [CONTRIBUTORS.md](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/docs/readme-redesign/CONTRIBUTORS.md) file for details.
 
 ## Credits
 
