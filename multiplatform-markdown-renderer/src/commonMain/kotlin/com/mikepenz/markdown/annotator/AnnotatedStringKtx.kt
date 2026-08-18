@@ -16,11 +16,10 @@ import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.ReferenceLinkHandler
 import com.mikepenz.markdown.model.markdownAnnotator
 import com.mikepenz.markdown.utils.MARKDOWN_TAG_IMAGE_URL
-import com.mikepenz.markdown.utils.findChildOfTypeRecursive
 import com.mikepenz.markdown.utils.getUnescapedTextInNode
-import com.mikepenz.markdown.utils.resolveImageLink
 import com.mikepenz.markdown.utils.innerList
 import com.mikepenz.markdown.utils.mapAutoLinkToType
+import com.mikepenz.markdown.utils.resolveImageLink
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
@@ -217,6 +216,23 @@ fun AnnotatedString.Builder.appendAutoLink(
 }
 
 /**
+ * Appends an email auto-link without its surrounding angle brackets.
+ */
+private fun AnnotatedString.Builder.appendEmailAutoLink(
+    content: String,
+    node: ASTNode,
+    annotatorSettings: AnnotatorSettings,
+) {
+    val email = node.getUnescapedTextInNode(content)
+    val destination = "mailto:$email"
+
+    annotatorSettings.referenceLinkHandler?.store(email, destination)
+    withLink(LinkAnnotation.Url(destination, annotatorSettings.linkTextSpanStyle, linkInteractionListener = annotatorSettings.linkInteractionListener)) {
+        append(email)
+    }
+}
+
+/**
  * Builds an [AnnotatedString] with the contents of the given Markdown [ASTNode] node.
  *
  * This method automatically constructs the string with child components like:
@@ -252,7 +268,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
     val annotate = annotatorSettings.annotator.annotate
     val eolAsNewLine = annotatorSettings.annotator.config.eolAsNewLine
     var skipIfNext: Any? = null
-    children.forEach { child ->
+    children.forEachIndexed { index, child ->
         if (skipIfNext == null || skipIfNext != child.type) {
             if (annotate == null || !annotate(content, child)) {
                 val parentType = child.parent?.type
@@ -298,7 +314,11 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
 
                     // Token Types
                     MarkdownTokenTypes.TEXT -> append(child.getUnescapedTextInNode(content))
-                    GFMTokenTypes.GFM_AUTOLINK -> if (child.parent == MarkdownElementTypes.LINK_TEXT) {
+                    MarkdownTokenTypes.EMAIL_AUTOLINK -> if (parentType == MarkdownElementTypes.LINK_TEXT) {
+                        append(child.getUnescapedTextInNode(content))
+                    } else appendEmailAutoLink(content, child, annotatorSettings)
+
+                    GFMTokenTypes.GFM_AUTOLINK -> if (parentType == MarkdownElementTypes.LINK_TEXT) {
                         append(child.getUnescapedTextInNode(content))
                     } else appendAutoLink(content, child, annotatorSettings)
 
@@ -310,8 +330,9 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     MarkdownTokenTypes.RPAREN -> append(')')
                     MarkdownTokenTypes.LBRACKET -> append('[')
                     MarkdownTokenTypes.RBRACKET -> append(']')
-                    MarkdownTokenTypes.LT -> append('<')
-                    MarkdownTokenTypes.GT -> append('>')
+                    // Email auto-links are parsed as sibling LT, EMAIL_AUTOLINK, and GT tokens.
+                    MarkdownTokenTypes.LT -> if (children.getOrNull(index + 1)?.type != MarkdownTokenTypes.EMAIL_AUTOLINK) append('<')
+                    MarkdownTokenTypes.GT -> if (children.getOrNull(index - 1)?.type != MarkdownTokenTypes.EMAIL_AUTOLINK) append('>')
                     MarkdownTokenTypes.COLON -> append(':')
                     MarkdownTokenTypes.EXCLAMATION_MARK -> append('!')
                     MarkdownTokenTypes.BACKTICK -> append('`')

@@ -1,31 +1,139 @@
-<h1 align="center">
-  Kotlin Multiplatform Markdown Renderer
-</h1>
+<h1 align="center">multiplatform-markdown-renderer</h1>
 
 <p align="center">
-    ... a powerful Kotlin Multiplatform Markdown Renderer for Kotlin Multiplatform projects using Compose Multiplatform
+    Render Markdown as native Compose UI — one API, every platform.
 </p>
 
-<div align="center">
-    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/actions">
-		<img src="https://github.com/mikepenz/multiplatform-markdown-renderer/workflows/CI/badge.svg"/>
-	</a>
-    <a href="https://central.sonatype.com/artifact/com.mikepenz/multiplatform-markdown-renderer">
-        <img src="https://img.shields.io/maven-central/v/com.mikepenz/multiplatform-markdown-renderer?style=flat-square&color=%231B4897"/>
-    </a>
-</div>
-<br />
+<p align="center">
+    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/actions"><img src="https://github.com/mikepenz/multiplatform-markdown-renderer/workflows/CI/badge.svg" alt="CI status"></a>
+    <a href="https://central.sonatype.com/artifact/com.mikepenz/multiplatform-markdown-renderer"><img src="https://img.shields.io/maven-central/v/com.mikepenz/multiplatform-markdown-renderer?style=flat-square&color=%231B4897" alt="Maven Central version"></a>
+    <a href="https://scorecard.dev/viewer/?uri=github.com/mikepenz/multiplatform-markdown-renderer"><img src="https://img.shields.io/ossf-scorecard/github.com/mikepenz/multiplatform-markdown-renderer?style=flat-square&label=scorecard" alt="OpenSSF Scorecard"></a>
+    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square" alt="Apache 2.0 license"></a>
+</p>
+
+<p align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/hero-dark.svg">
+        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/hero-light.svg" width="100%" alt="A markdown String is parsed by JetBrains Markdown into an AST, mapped through overridable MarkdownComponents, and rendered as Compose Multiplatform UI on Android, iOS, Desktop, Web and macOS.">
+    </picture>
+</p>
+
+<p align="center">
+    <a href="#quickstart">Quickstart</a> &bull;
+    <a href="#showcase">Showcase</a> &bull;
+    <a href="#reference">Reference</a> &bull;
+    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/MIGRATION.md">Migration</a> &bull;
+    <a href="https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/CHANGELOG.md">Changelog</a>
+</p>
+
+| | |
+| --- | --- |
+| 🧩 **Every platform** | Android, iOS, Desktop (JVM), Web (Wasm / JS) and macOS from one `commonMain` call. |
+| ⚡ **Async by default** | `rememberMarkdownState` parses off the composition; `retainState = true` keeps content visible while re-parsing. |
+| 🎨 **Material 2 and 3** | Themed defaults from `-m2` / `-m3`; override with `markdownColor()` and `markdownTypography()`. |
+| 🧱 **Every element overridable** | `MarkdownComponents` maps each AST node to a `@Composable` you control. |
+| 📊 **Full GFM** | Tables, task lists, strikethrough, autolinks and GitHub alerts, out of the box. |
+| 📡 **Built for streaming** | `rememberStreamingMarkdownState()` appends chunks and re-parses only the unstable tail. |
+
+## Quickstart
+
+**1 — Add the dependency.** Pick the module matching your Material theme:
+
+```kotlin
+dependencies {
+    implementation("com.mikepenz:multiplatform-markdown-renderer:0.43.0")
+    implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.43.0") // or -m2
+}
+```
+
+**2 — Render.** Import `Markdown` from `com.mikepenz.markdown.m3` (or `.m2`):
+
+```kotlin
+import com.mikepenz.markdown.m3.Markdown
+
+Markdown(
+    """
+    # Hello Markdown
+
+    - Bullet points
+    - **Bold** and *italic* text
+
+    [Check out this link](https://github.com/mikepenz/multiplatform-markdown-renderer)
+    """.trimIndent()
+)
+```
+
+**3 — Hoist the parse for anything non-trivial.** `rememberMarkdownState` parses asynchronously and
+survives recomposition:
+
+```kotlin
+val markdownState = rememberMarkdownState(markdown)
+Markdown(markdownState)
+```
+
+Full configuration — custom components, image loading, syntax highlighting, extended spans — is in
+the [Reference](#reference) below.
+
+## Showcase
+
+Every panel below is a Paparazzi snapshot of the sample app, recorded from
+[`ReadmeShowcasePreviews.kt`](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/sample/android/src/main/kotlin/com/mikepenz/markdown/ui/readme/ReadmeShowcasePreviews.kt)
+and refreshed by `./gradlew :sample:android:recordPaparazzi :sample:android:copyReadmeArt`.
+
+<p align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-rich-text-dark.png">
+        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-rich-text-light.png" width="395" alt="Headings, italic, bold, inline code, a link, a blockquote, and ordered plus unordered lists.">
+    </picture>
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-syntax-dark.png">
+        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-syntax-light.png" width="395" alt="A Kotlin and a JSON code fence, syntax highlighted, each with a language header and copy button.">
+    </picture>
+</p>
+
+<p align="center">
+    <sub>
+        <b>Left:</b> the default <code>Markdown</code> composable — no configuration.
+        &nbsp;&nbsp;
+        <b>Right:</b> <code>markdownComponents(codeFence = ...)</code> wired to
+        <code>MarkdownHighlightedCodeFence</code> from the <code>-code</code> module.
+    </sub>
+</p>
+
+<p align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-tables-alerts-dark.png">
+        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-tables-alerts-light.png" width="395" alt="A GFM table with three rows, plus NOTE and WARNING GitHub alert banners with accent bars and icons.">
+    </picture>
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-custom-dark.png">
+        <img src="https://raw.githubusercontent.com/mikepenz/multiplatform-markdown-renderer/develop/art/showcase-custom-light.png" width="395" alt="Task list checkboxes rendered by a custom component, and inline code spans with rounded backgrounds.">
+    </picture>
+</p>
+
+<p align="center">
+    <sub>
+        <b>Left:</b> GFM tables and GitHub alerts, rendered without opt-in.
+        &nbsp;&nbsp;
+        <b>Right:</b> <code>markdownComponents(checkbox = ...)</code>, <code>markdownColor()</code>
+        and <code>markdownExtendedSpans</code> with <code>RoundedCornerSpanPainter</code>.
+    </sub>
+</p>
 
 -------
 
-<p align="center">
-    <a href="#whats-included-">What's included 🚀</a> &bull;
-    <a href="#setup">Setup 🛠️</a> &bull;
-    <a href="#usage">Usage 🛠️</a> &bull;
-    <a href="#license">License 📓</a>
-</p>
+# Reference
 
--------
+| Topic | |
+| --- | --- |
+| [Setup](#setup) | Gradle coordinates for multiplatform, JVM and Android |
+| [Usage](#usage) | The `Markdown` composable, state hoisting, and every customisation hook |
+| [Streaming](#streaming) | Appending chunks from an LLM or network stream |
+| [Image Loading](#image-loading) | Coil 2 and Coil 3 transformers |
+| [Syntax Highlighting](#syntax-highlighting) | The optional `-code` module |
+| [Dependencies](#dependencies) | What this library builds on |
+| [Migration](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/MIGRATION.md) | Breaking changes between versions |
+| [License](#license) | Apache 2.0 |
 
 ### What's included 🚀
 
@@ -107,7 +215,7 @@ dependencies {
 
 ## Usage
 
-### What's included 🚀
+### Basic Usage
 
 The most basic usage is to simply pass your markdown string to the `Markdown` composable:
 
@@ -414,8 +522,74 @@ val markdown = """
 Markdown(markdown)
 ```
 
+### Alert Support
+
+The library renders [GitHub alerts](https://github.com/orgs/community/discussions/16925) — `NOTE`,
+`TIP`, `IMPORTANT`, `WARNING` and `CAUTION` — as an accent bar with an icon and a title.
+
+```kotlin
+val markdown = """
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+""".trimIndent()
+
+Markdown(markdown)
+```
+
+The accent colors, dimensions and paddings are grouped into dedicated models, the title style is
+exposed via `markdownTypography(alertTitle = ...)`:
+
+```kotlin
+Markdown(
+    markdown,
+    colors = markdownColor(alert = markdownAlertColors(note = Color.Blue)),
+    dimens = markdownDimens(alert = markdownAlertDimens(barThickness = 2.dp)),
+    padding = markdownPadding(alert = markdownAlertPadding(iconSpacing = 12.dp)),
+)
+```
+
+The icons are swappable via `LocalMarkdownAlertIcons`:
+
+```kotlin
+CompositionLocalProvider(
+    LocalMarkdownAlertIcons provides markdownAlertIcons(note = Icons.Outlined.Info)
+) {
+    Markdown(markdown)
+}
+```
+
+To fully replace the rendering, override the `alert` component through `markdownComponents()`.
+
 </p>
 </details>
+
+## Streaming
+
+For content that arrives in chunks — an LLM response, a network stream — use
+`rememberStreamingMarkdownState()`. It is append-only: each `append` re-parses only the unstable
+tail of the document rather than the whole string.
+
+```kotlin
+val streamingMarkdownState = rememberStreamingMarkdownState()
+
+LaunchedEffect(chunkFlow) {
+    chunkFlow.collect { chunk -> streamingMarkdownState.append(chunk) }
+}
+
+Markdown(streamingMarkdownState = streamingMarkdownState)
+```
+
+If the chunks already arrive as a `Flow<String>`, `collectAsStreamingMarkdownState()` does the
+collecting for you:
+
+```kotlin
+val streamingMarkdownState = chunkFlow.collectAsStreamingMarkdownState()
+Markdown(streamingMarkdownState = streamingMarkdownState)
+```
+
+`StreamingMarkdownState.snapshot` exposes the split as a `StateFlow<Snapshot>` with `stableAst` and
+`unstableAstTail`, if you need to observe it. See `StreamingMarkDownPage` in the sample for a
+working example including render statistics.
 
 ### Image Loading
 
@@ -530,7 +704,7 @@ This library uses the following key dependencies:
 ## Contributors
 
 This free, open source software was made possible by a group of volunteers who put many hours of
-hard work into it. See the [CONTRIBUTORS.md](CONTRIBUTORS.md) file for details.
+hard work into it. See the [CONTRIBUTORS.md](https://github.com/mikepenz/multiplatform-markdown-renderer/blob/develop/CONTRIBUTORS.md) file for details.
 
 ## Credits
 
@@ -551,7 +725,7 @@ the Apache License, Version 2.0.
 
 ## License
 
-    Copyright 2025 Mike Penz
+    Copyright 2026 Mike Penz
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

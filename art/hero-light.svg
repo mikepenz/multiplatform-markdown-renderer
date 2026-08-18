@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="heroTitle heroDesc">
+<title id="heroTitle">multiplatform-markdown-renderer</title>
+<desc id="heroDesc">A markdown String is parsed by JetBrains Markdown into an AST, mapped through overridable MarkdownComponents, and rendered as Compose Multiplatform UI on Android, iOS, Desktop, Web and macOS.</desc>
+<rect width="1200" height="420" rx="24" fill="#ffffff"/>
+<g id="title-block" transform="translate(64 0)">
+<text x="0" y="72" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="19" letter-spacing="2.6" fill="#5f5f5f">KOTLIN MULTIPLATFORM · COMPOSE MULTIPLATFORM</text>
+<text x="0" y="126" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="52" font-weight="700" fill="#1a1a1a">multiplatform-markdown-renderer</text>
+<text x="0" y="164" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="24" fill="#5f5f5f">Render Markdown as native Compose UI — one API, every platform.</text>
+</g>
+<g id="pipeline" transform="translate(64 196)">
+<g transform="translate(0 0)">
+<rect width="248" height="108" rx="14" fill="#f4f4f4" stroke="#e0e0e0"/>
+<rect width="248" height="4" rx="2" fill="#c7ff1e"/>
+<text x="20" y="46" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="24" font-weight="600" fill="#1a1a1a">Markdown</text>
+<text x="20" y="78" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="18" fill="#5f5f5f">String</text>
+</g>
+<path d="M252 54.0 H266" stroke="#e0e0e0" stroke-width="2"/>
+<path d="M261 49.0 l6 5 -6 5" fill="none" stroke="#5f5f5f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(274 0)">
+<rect width="248" height="108" rx="14" fill="#f4f4f4" stroke="#e0e0e0"/>
+<rect width="248" height="4" rx="2" fill="#00ff6a"/>
+<text x="20" y="46" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="24" font-weight="600" fill="#1a1a1a">AST</text>
+<text x="20" y="78" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="18" fill="#5f5f5f">JetBrains Markdown</text>
+</g>
+<path d="M526 54.0 H540" stroke="#e0e0e0" stroke-width="2"/>
+<path d="M535 49.0 l6 5 -6 5" fill="none" stroke="#5f5f5f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(548 0)">
+<rect width="248" height="108" rx="14" fill="#f4f4f4" stroke="#e0e0e0"/>
+<rect width="248" height="4" rx="2" fill="#00b9ff"/>
+<text x="20" y="46" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="24" font-weight="600" fill="#1a1a1a">Components</text>
+<text x="20" y="78" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="18" fill="#5f5f5f">MarkdownComponents</text>
+</g>
+<path d="M800 54.0 H814" stroke="#e0e0e0" stroke-width="2"/>
+<path d="M809 49.0 l6 5 -6 5" fill="none" stroke="#5f5f5f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(822 0)">
+<rect width="248" height="108" rx="14" fill="#f4f4f4" stroke="#e0e0e0"/>
+<rect width="248" height="4" rx="2" fill="#00b9ff"/>
+<text x="20" y="46" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="24" font-weight="600" fill="#1a1a1a">Compose UI</text>
+<text x="20" y="78" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="18" fill="#5f5f5f">@Composable</text>
+</g>
+</g>
+<g id="platforms" transform="translate(64 366)">
+<circle cx="6" cy="-6" r="5" fill="#00a44a"/>
+<text x="22" y="0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="20" fill="#5f5f5f">Android</text>
+<circle cx="136" cy="-6" r="5" fill="#00a44a"/>
+<text x="152" y="0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="20" fill="#5f5f5f">iOS</text>
+<circle cx="223" cy="-6" r="5" fill="#00a44a"/>
+<text x="239" y="0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="20" fill="#5f5f5f">Desktop (JVM)</text>
+<circle cx="416" cy="-6" r="5" fill="#00a44a"/>
+<text x="432" y="0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="20" fill="#5f5f5f">Web (Wasm / JS)</text>
+<circle cx="631" cy="-6" r="5" fill="#00a44a"/>
+<text x="647" y="0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="20" fill="#5f5f5f">macOS</text>
+</g>
+</svg>

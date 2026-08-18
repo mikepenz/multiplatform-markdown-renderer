@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import com.mikepenz.markdown.compose.LocalMarkdownColors
+import com.mikepenz.markdown.model.MarkdownAlertType
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.model.ReferenceLinkHandler
 import org.intellij.markdown.IElementType
@@ -63,6 +64,13 @@ internal fun ASTNode.resolveImageLink(
 }
 
 /**
+ * Resolve the [MarkdownAlertType] of a `GFMElementTypes.ALERT` node from its `ALERT_TITLE` token,
+ * e.g. `[!NOTE]`. Returns `null` when the node carries no recognisable marker.
+ */
+fun ASTNode.findAlertType(content: String): MarkdownAlertType? =
+    findChildOfType(GFMTokenTypes.ALERT_TITLE)?.let { MarkdownAlertType.from(it.getTextInNode(content).toString()) }
+
+/**
  * Find a child node recursive
  */
 internal fun ASTNode.findChildOfTypeRecursive(type: IElementType): ASTNode? {
@@ -107,8 +115,8 @@ fun ASTNode.getUnescapedTextInNode(allFileText: CharSequence): String {
 /**
  * Extension function to map auto-link nodes to a specified target type.
  *
- * This function iterates over a list of `ASTNode` objects and replaces any
- * auto-link nodes (either `GFM_AUTOLINK` or `AUTOLINK`) with a new `LeafASTNode`
+ * This function iterates over a list of `ASTNode` objects and replaces
+ * `GFM_AUTOLINK`, `AUTOLINK`, and `EMAIL_AUTOLINK` nodes with a new `LeafASTNode`
  * of the specified target type. Other nodes remain unchanged.
  *
  * @param targetType The target type to map auto-link nodes to. Defaults to `MarkdownTokenTypes.TEXT`.
@@ -117,7 +125,11 @@ fun ASTNode.getUnescapedTextInNode(allFileText: CharSequence): String {
 fun List<ASTNode>.mapAutoLinkToType(targetType: IElementType = MarkdownTokenTypes.TEXT): List<ASTNode> {
     return map {
         if (it is LeafASTNode) {
-            if (it.type == GFMTokenTypes.GFM_AUTOLINK || it.type == MarkdownElementTypes.AUTOLINK) {
+            if (
+                it.type == GFMTokenTypes.GFM_AUTOLINK ||
+                it.type == MarkdownElementTypes.AUTOLINK ||
+                it.type == MarkdownTokenTypes.EMAIL_AUTOLINK
+            ) {
                 LeafASTNode(targetType, it.startOffset, it.endOffset)
             } else {
                 it

@@ -47,6 +47,7 @@ public final class com/mikepenz/markdown/compose/ComposeLocalKt {
 	public static final fun getLocalImageTransformer ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalImageWidth ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownA11yLabels ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalMarkdownAlertIcons ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownAnimations ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownAnnotator ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun getLocalMarkdownColors ()Landroidx/compose/runtime/ProvidableCompositionLocal;
@@ -82,6 +83,7 @@ public final class com/mikepenz/markdown/compose/components/ComposableSingletons
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/components/ComposableSingletons$MarkdownComponentsKt;
 	public fun <init> ()V
 	public final fun getLambda$-1079294572$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1128419195$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-1347673484$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-1643949077$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-1690655072$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function3;
@@ -107,6 +109,7 @@ public final class com/mikepenz/markdown/compose/components/ComposableSingletons
 public final class com/mikepenz/markdown/compose/components/CurrentComponentsBridge {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/mikepenz/markdown/compose/components/CurrentComponentsBridge;
+	public final fun getAlert ()Lkotlin/jvm/functions/Function3;
 	public final fun getBlockQuote ()Lkotlin/jvm/functions/Function3;
 	public final fun getCheckbox ()Lkotlin/jvm/functions/Function3;
 	public final fun getCodeBlock ()Lkotlin/jvm/functions/Function3;
@@ -151,6 +154,7 @@ public final class com/mikepenz/markdown/compose/components/MarkdownComponentMod
 }
 
 public abstract interface class com/mikepenz/markdown/compose/components/MarkdownComponents {
+	public abstract fun getAlert ()Lkotlin/jvm/functions/Function3;
 	public abstract fun getBlockQuote ()Lkotlin/jvm/functions/Function3;
 	public abstract fun getCheckbox ()Lkotlin/jvm/functions/Function3;
 	public abstract fun getCodeBlock ()Lkotlin/jvm/functions/Function3;
@@ -176,8 +180,8 @@ public abstract interface class com/mikepenz/markdown/compose/components/Markdow
 }
 
 public final class com/mikepenz/markdown/compose/components/MarkdownComponentsKt {
-	public static final fun markdownComponents (Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function4;)Lcom/mikepenz/markdown/compose/components/MarkdownComponents;
-	public static synthetic fun markdownComponents$default (Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function4;ILjava/lang/Object;)Lcom/mikepenz/markdown/compose/components/MarkdownComponents;
+	public static final fun markdownComponents (Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function4;)Lcom/mikepenz/markdown/compose/components/MarkdownComponents;
+	public static synthetic fun markdownComponents$default (Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function4;ILjava/lang/Object;)Lcom/mikepenz/markdown/compose/components/MarkdownComponents;
 }
 
 public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$MarkdownCodeKt {
@@ -185,6 +189,10 @@ public final class com/mikepenz/markdown/compose/elements/ComposableSingletons$M
 	public fun <init> ()V
 	public final fun getLambda$-449689539$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
 	public final fun getLambda$591785369$com_mikepenz_multiplatform_markdown_renderer ()Lkotlin/jvm/functions/Function5;
+}
+
+public final class com/mikepenz/markdown/compose/elements/MarkdownAlertKt {
+	public static final fun MarkdownAlert-cd68TDI (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Lcom/mikepenz/markdown/model/MarkdownAlertType;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;JLandroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/mikepenz/markdown/compose/elements/MarkdownBlockQuoteKt {
@@ -358,6 +366,29 @@ public abstract interface class com/mikepenz/markdown/model/BulletHandler {
 	public abstract fun transform (Lorg/intellij/markdown/IElementType;Ljava/lang/CharSequence;III)Ljava/lang/String;
 }
 
+public final class com/mikepenz/markdown/model/DefaultMarkdownAlertIcons : com/mikepenz/markdown/model/MarkdownAlertIcons {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;)V
+	public synthetic fun <init> (Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun component2 ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun component3 ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun component4 ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun component5 ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun copy (Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;)Lcom/mikepenz/markdown/model/DefaultMarkdownAlertIcons;
+	public static synthetic fun copy$default (Lcom/mikepenz/markdown/model/DefaultMarkdownAlertIcons;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/DefaultMarkdownAlertIcons;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getCaution ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public fun getImportant ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public fun getNote ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public fun getTip ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public fun getWarning ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public fun hashCode ()I
+	public fun iconFor (Lcom/mikepenz/markdown/model/MarkdownAlertType;)Landroidx/compose/ui/graphics/vector/ImageVector;
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/mikepenz/markdown/model/DefaultMarkdownAnimation : com/mikepenz/markdown/model/MarkdownAnimations {
 	public static final field $stable I
 	public fun <init> (Lkotlin/jvm/functions/Function1;)V
@@ -390,15 +421,18 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownAnnotatorConfig : 
 
 public final class com/mikepenz/markdown/model/DefaultMarkdownColors : com/mikepenz/markdown/model/MarkdownColors {
 	public static final field $stable I
-	public synthetic fun <init> (JJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-0d7_KjU ()J
 	public final fun component2-0d7_KjU ()J
 	public final fun component3-0d7_KjU ()J
 	public final fun component4-0d7_KjU ()J
 	public final fun component5-0d7_KjU ()J
-	public final fun copy-t635Npw (JJJJJ)Lcom/mikepenz/markdown/model/DefaultMarkdownColors;
-	public static synthetic fun copy-t635Npw$default (Lcom/mikepenz/markdown/model/DefaultMarkdownColors;JJJJJILjava/lang/Object;)Lcom/mikepenz/markdown/model/DefaultMarkdownColors;
+	public final fun component6 ()Lcom/mikepenz/markdown/model/MarkdownAlertColors;
+	public final fun copy-EXAOFh0 (JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;)Lcom/mikepenz/markdown/model/DefaultMarkdownColors;
+	public static synthetic fun copy-EXAOFh0$default (Lcom/mikepenz/markdown/model/DefaultMarkdownColors;JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/DefaultMarkdownColors;
 	public fun equals (Ljava/lang/Object;)Z
+	public fun getAlert ()Lcom/mikepenz/markdown/model/MarkdownAlertColors;
 	public fun getCodeBackground-0d7_KjU ()J
 	public fun getDividerColor-0d7_KjU ()J
 	public fun getInlineCodeBackground-0d7_KjU ()J
@@ -426,7 +460,8 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownInlineContent : co
 
 public final class com/mikepenz/markdown/model/DefaultMarkdownTypography : com/mikepenz/markdown/model/MarkdownTypography {
 	public static final field $stable I
-	public fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;)V
+	public fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;)V
+	public synthetic fun <init> (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Landroidx/compose/ui/text/TextStyle;
 	public final fun component10 ()Landroidx/compose/ui/text/TextStyle;
 	public final fun component11 ()Landroidx/compose/ui/text/TextStyle;
@@ -435,6 +470,7 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownTypography : com/m
 	public final fun component14 ()Landroidx/compose/ui/text/TextStyle;
 	public final fun component15 ()Landroidx/compose/ui/text/TextLinkStyles;
 	public final fun component16 ()Landroidx/compose/ui/text/TextStyle;
+	public final fun component17 ()Landroidx/compose/ui/text/TextStyle;
 	public final fun component2 ()Landroidx/compose/ui/text/TextStyle;
 	public final fun component3 ()Landroidx/compose/ui/text/TextStyle;
 	public final fun component4 ()Landroidx/compose/ui/text/TextStyle;
@@ -443,9 +479,10 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownTypography : com/m
 	public final fun component7 ()Landroidx/compose/ui/text/TextStyle;
 	public final fun component8 ()Landroidx/compose/ui/text/TextStyle;
 	public final fun component9 ()Landroidx/compose/ui/text/TextStyle;
-	public final fun copy (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;)Lcom/mikepenz/markdown/model/DefaultMarkdownTypography;
-	public static synthetic fun copy$default (Lcom/mikepenz/markdown/model/DefaultMarkdownTypography;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/DefaultMarkdownTypography;
+	public final fun copy (Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;)Lcom/mikepenz/markdown/model/DefaultMarkdownTypography;
+	public static synthetic fun copy$default (Lcom/mikepenz/markdown/model/DefaultMarkdownTypography;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/DefaultMarkdownTypography;
 	public fun equals (Ljava/lang/Object;)Z
+	public fun getAlertTitle ()Landroidx/compose/ui/text/TextStyle;
 	public fun getBullet ()Landroidx/compose/ui/text/TextStyle;
 	public fun getCode ()Landroidx/compose/ui/text/TextStyle;
 	public fun getH1 ()Landroidx/compose/ui/text/TextStyle;
@@ -544,17 +581,19 @@ public final class com/mikepenz/markdown/model/Input {
 public final class com/mikepenz/markdown/model/MarkdownA11yLabels {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Lkotlin/jvm/functions/Function1;
 	public final fun component4 ()Lkotlin/jvm/functions/Function1;
 	public final fun component5 ()Ljava/lang/String;
 	public final fun component6 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;)Lcom/mikepenz/markdown/model/MarkdownA11yLabels;
-	public static synthetic fun copy$default (Lcom/mikepenz/markdown/model/MarkdownA11yLabels;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownA11yLabels;
+	public final fun component7 ()Lkotlin/jvm/functions/Function1;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/mikepenz/markdown/model/MarkdownA11yLabels;
+	public static synthetic fun copy$default (Lcom/mikepenz/markdown/model/MarkdownA11yLabels;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownA11yLabels;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlert ()Lkotlin/jvm/functions/Function1;
 	public final fun getBlockquote ()Ljava/lang/String;
 	public final fun getCodeBlock ()Ljava/lang/String;
 	public final fun getCodeBlockWithLanguage ()Lkotlin/jvm/functions/Function1;
@@ -563,6 +602,103 @@ public final class com/mikepenz/markdown/model/MarkdownA11yLabels {
 	public final fun getCopyCode ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAlertColorDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/mikepenz/markdown/model/MarkdownAlertColorDefaults;
+	public final fun caution-vNxB06k (Z)J
+	public final fun important-vNxB06k (Z)J
+	public final fun note-vNxB06k (Z)J
+	public final fun tip-vNxB06k (Z)J
+	public final fun warning-vNxB06k (Z)J
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownAlertColors {
+	public fun colorFor-vNxB06k (Lcom/mikepenz/markdown/model/MarkdownAlertType;)J
+	public abstract fun getCaution-0d7_KjU ()J
+	public abstract fun getImportant-0d7_KjU ()J
+	public abstract fun getNote-0d7_KjU ()J
+	public abstract fun getTip-0d7_KjU ()J
+	public abstract fun getWarning-0d7_KjU ()J
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAlertColors$DefaultImpls {
+	public static fun colorFor-vNxB06k (Lcom/mikepenz/markdown/model/MarkdownAlertColors;Lcom/mikepenz/markdown/model/MarkdownAlertType;)J
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAlertColorsKt {
+	public static final fun markdownAlertColors-jdqzblg (ZJJJJJ)Lcom/mikepenz/markdown/model/MarkdownAlertColors;
+	public static synthetic fun markdownAlertColors-jdqzblg$default (ZJJJJJILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAlertColors;
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownAlertDimens {
+	public abstract fun getBarThickness-D9Ej5fM ()F
+	public abstract fun getIconSize-D9Ej5fM ()F
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAlertDimensKt {
+	public static final fun markdownAlertDimens-YgX7TsA (FF)Lcom/mikepenz/markdown/model/MarkdownAlertDimens;
+	public static synthetic fun markdownAlertDimens-YgX7TsA$default (FFILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAlertDimens;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAlertIconDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/mikepenz/markdown/model/MarkdownAlertIconDefaults;
+	public final fun getCaution ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun getImportant ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun getNote ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun getTip ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun getWarning ()Landroidx/compose/ui/graphics/vector/ImageVector;
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownAlertIcons {
+	public abstract fun getCaution ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public abstract fun getImportant ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public abstract fun getNote ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public abstract fun getTip ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public abstract fun getWarning ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public fun iconFor (Lcom/mikepenz/markdown/model/MarkdownAlertType;)Landroidx/compose/ui/graphics/vector/ImageVector;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAlertIcons$DefaultImpls {
+	public static fun iconFor (Lcom/mikepenz/markdown/model/MarkdownAlertIcons;Lcom/mikepenz/markdown/model/MarkdownAlertType;)Landroidx/compose/ui/graphics/vector/ImageVector;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAlertIconsKt {
+	public static final fun markdownAlertIcons (Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;)Lcom/mikepenz/markdown/model/MarkdownAlertIcons;
+	public static synthetic fun markdownAlertIcons$default (Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/vector/ImageVector;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAlertIcons;
+}
+
+public abstract interface class com/mikepenz/markdown/model/MarkdownAlertPadding {
+	public abstract fun getBar ()Landroidx/compose/foundation/layout/PaddingValues$Absolute;
+	public abstract fun getContainer ()Landroidx/compose/foundation/layout/PaddingValues;
+	public abstract fun getContent ()Landroidx/compose/foundation/layout/PaddingValues;
+	public abstract fun getIconSpacing-D9Ej5fM ()F
+	public abstract fun getTitleSpacing-D9Ej5fM ()F
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAlertPaddingKt {
+	public static final fun markdownAlertPadding-oZzcvok (Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues$Absolute;FF)Lcom/mikepenz/markdown/model/MarkdownAlertPadding;
+	public static synthetic fun markdownAlertPadding-oZzcvok$default (Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues$Absolute;FFILjava/lang/Object;)Lcom/mikepenz/markdown/model/MarkdownAlertPadding;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAlertType : java/lang/Enum {
+	public static final field CAUTION Lcom/mikepenz/markdown/model/MarkdownAlertType;
+	public static final field Companion Lcom/mikepenz/markdown/model/MarkdownAlertType$Companion;
+	public static final field IMPORTANT Lcom/mikepenz/markdown/model/MarkdownAlertType;
+	public static final field NOTE Lcom/mikepenz/markdown/model/MarkdownAlertType;
+	public static final field TIP Lcom/mikepenz/markdown/model/MarkdownAlertType;
+	public static final field WARNING Lcom/mikepenz/markdown/model/MarkdownAlertType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getMarker ()Ljava/lang/String;
+	public final fun getTitle ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lcom/mikepenz/markdown/model/MarkdownAlertType;
+	public static fun values ()[Lcom/mikepenz/markdown/model/MarkdownAlertType;
+}
+
+public final class com/mikepenz/markdown/model/MarkdownAlertType$Companion {
+	public final fun from (Ljava/lang/String;)Lcom/mikepenz/markdown/model/MarkdownAlertType;
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownAnimations {
@@ -608,6 +744,7 @@ public final class com/mikepenz/markdown/model/MarkdownAnnotatorKt {
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownColors {
+	public abstract fun getAlert ()Lcom/mikepenz/markdown/model/MarkdownAlertColors;
 	public abstract fun getCodeBackground-0d7_KjU ()J
 	public abstract fun getDividerColor-0d7_KjU ()J
 	public abstract fun getInlineCodeBackground-0d7_KjU ()J
@@ -616,6 +753,7 @@ public abstract interface class com/mikepenz/markdown/model/MarkdownColors {
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownDimens {
+	public abstract fun getAlert ()Lcom/mikepenz/markdown/model/MarkdownAlertDimens;
 	public abstract fun getBlockQuoteThickness-D9Ej5fM ()F
 	public abstract fun getCodeBackgroundCornerSize-D9Ej5fM ()F
 	public abstract fun getDividerThickness-D9Ej5fM ()F
@@ -626,7 +764,7 @@ public abstract interface class com/mikepenz/markdown/model/MarkdownDimens {
 }
 
 public final class com/mikepenz/markdown/model/MarkdownDimensKt {
-	public static final fun markdownDimens-nIG9oN8 (FFFFFFFLandroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownDimens;
+	public static final fun markdownDimens-7r3KiRQ (FFFFFFFLcom/mikepenz/markdown/model/MarkdownAlertDimens;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownDimens;
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownExtendedSpans {
@@ -654,6 +792,7 @@ public final class com/mikepenz/markdown/model/MarkdownInlineContentKt {
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownPadding {
+	public abstract fun getAlert ()Lcom/mikepenz/markdown/model/MarkdownAlertPadding;
 	public abstract fun getBlock-D9Ej5fM ()F
 	public abstract fun getBlockQuote ()Landroidx/compose/foundation/layout/PaddingValues;
 	public abstract fun getBlockQuoteBar ()Landroidx/compose/foundation/layout/PaddingValues$Absolute;
@@ -666,7 +805,7 @@ public abstract interface class com/mikepenz/markdown/model/MarkdownPadding {
 }
 
 public final class com/mikepenz/markdown/model/MarkdownPaddingKt {
-	public static final fun markdownPadding-hBH8OFI (FFFFLandroidx/compose/ui/unit/Dp;FLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues$Absolute;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/model/MarkdownPadding;
+	public static final fun markdownPadding-TlVq_XM (FFFFLandroidx/compose/ui/unit/Dp;FLandroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/PaddingValues$Absolute;Lcom/mikepenz/markdown/model/MarkdownAlertPadding;Landroidx/compose/runtime/Composer;III)Lcom/mikepenz/markdown/model/MarkdownPadding;
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownState {
@@ -687,6 +826,7 @@ public final class com/mikepenz/markdown/model/MarkdownStateKt {
 }
 
 public abstract interface class com/mikepenz/markdown/model/MarkdownTypography {
+	public abstract fun getAlertTitle ()Landroidx/compose/ui/text/TextStyle;
 	public abstract fun getBullet ()Landroidx/compose/ui/text/TextStyle;
 	public abstract fun getCode ()Landroidx/compose/ui/text/TextStyle;
 	public abstract fun getH1 ()Landroidx/compose/ui/text/TextStyle;
@@ -827,6 +967,7 @@ public final class com/mikepenz/markdown/utils/EntityConverter {
 
 public final class com/mikepenz/markdown/utils/ExtensionsKt {
 	public static final field MARKDOWN_TAG_IMAGE_URL Ljava/lang/String;
+	public static final fun findAlertType (Lorg/intellij/markdown/ast/ASTNode;Ljava/lang/String;)Lcom/mikepenz/markdown/model/MarkdownAlertType;
 	public static final fun getCodeSpanStyle (Lcom/mikepenz/markdown/model/MarkdownTypography;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/SpanStyle;
 	public static final fun getUnescapedTextInNode (Lorg/intellij/markdown/ast/ASTNode;Ljava/lang/CharSequence;)Ljava/lang/String;
 	public static final fun mapAutoLinkToType (Ljava/util/List;Lorg/intellij/markdown/IElementType;)Ljava/util/List;

@@ -70,6 +70,30 @@ This is an unordered list with task list items:
 
 -------- 
 
+# Alerts
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
+
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
+>
+> *Everything* is going according to **plan**.
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
+>
+> - Revenue was off the chart.
+> - Profits were higher than ever.
+
+-------- 
+
 # Random
 
 ### Getting Started
@@ -99,3 +123,4 @@ Title 2
 [https://github.com/mikepenz](https://github.com/mikepenz)  
 [Mike Penz's Blog](https://blog.mikepenz.dev/)  
 <https://blog.mikepenz.dev/>  
+<opensource@mikepenz.dev>  

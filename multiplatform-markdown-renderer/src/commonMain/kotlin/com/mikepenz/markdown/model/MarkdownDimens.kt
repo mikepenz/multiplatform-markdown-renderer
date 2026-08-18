@@ -14,6 +14,9 @@ interface MarkdownDimens {
     val tableCellWidth: Dp
     val tableCellPadding: Dp
     val tableCornerSize: Dp
+
+    /** The dimensions of the GitHub alerts. */
+    val alert: MarkdownAlertDimens
 }
 
 @Immutable
@@ -25,6 +28,7 @@ private data class DefaultMarkdownDimens(
     override val tableCellWidth: Dp,
     override val tableCellPadding: Dp,
     override val tableCornerSize: Dp,
+    override val alert: MarkdownAlertDimens,
 ) : MarkdownDimens
 
 @Composable
@@ -36,6 +40,7 @@ fun markdownDimens(
     tableCellWidth: Dp = 160.dp,
     tableCellPadding: Dp = 16.dp,
     tableCornerSize: Dp = 8.dp,
+    alert: MarkdownAlertDimens = markdownAlertDimens(),
 ): MarkdownDimens = DefaultMarkdownDimens(
     dividerThickness = dividerThickness,
     codeBackgroundCornerSize = codeBackgroundCornerSize,
@@ -44,4 +49,5 @@ fun markdownDimens(
     tableCellWidth = tableCellWidth,
     tableCellPadding = tableCellPadding,
     tableCornerSize = tableCornerSize,
+    alert = alert,
 )

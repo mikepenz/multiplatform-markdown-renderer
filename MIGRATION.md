@@ -1,5 +1,48 @@
 ### Upgrade Notes
 
+#### Version 0.44.0
+
+- **Dependency Upgrade**: Kotlin 2.4.0 → 2.4.10
+- **Dependency Upgrade**: Android Gradle Plugin 9.2.1 → 9.3.1
+- **Dependency Upgrade**: androidx Compose 1.11.3 → 1.11.4 (Compose Multiplatform stays 1.11.1)
+- **Dependency Upgrade**: JetBrains `markdown` 0.7.5 → 0.7.9 (required for GFM alert parsing)
+- **Dependency Upgrade**: Ktor 3.5.0 → 3.5.2 (affects the coil2 / coil3 network image integrations)
+- **New Feature**: GitHub alerts (`> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`)
+  render as styled banners with icon and title.
+    - New `alert` component in `MarkdownComponents`, new `MarkdownAlert(...)` render entry point.
+    - New models: `MarkdownAlertType`, `MarkdownAlertColors` / `markdownAlertColors(darkTheme)`,
+      `MarkdownAlertIcons` / `markdownAlertIcons()` / `DefaultMarkdownAlertIcons`,
+      `MarkdownAlertDimens` / `markdownAlertDimens()`, `MarkdownAlertPadding` /
+      `markdownAlertPadding()`, plus `MarkdownAlertColorDefaults` and `MarkdownAlertIconDefaults`.
+    - New `LocalMarkdownAlertIcons` composition local.
+    - Requires the GFM flavour (the default). With a non-GFM flavour alerts stay plain block quotes.
+- **Behavior Change**: Block quotes starting with an alert marker now render as an alert banner
+  instead of a plain block quote. Override `MarkdownComponents.alert` to restore the old look.
+- **Behavior Change**: Email auto-links (`<name@example.com>`) now render as a clickable `mailto:`
+  link with the angle brackets stripped; previously they were emitted as literal text.
+- **Breaking Change**: Custom implementations of the configuration interfaces must add the new
+  alert members:
+    - `MarkdownComponents.alert: MarkdownComponent`
+    - `MarkdownColors.alert: MarkdownAlertColors`
+    - `MarkdownTypography.alertTitle: TextStyle`
+    - `MarkdownDimens.alert: MarkdownAlertDimens`
+    - `MarkdownPadding.alert: MarkdownAlertPadding`
+- **Signature Changes** (source-compatible via defaults, but binary-incompatible — recompile):
+    - `markdownColor(...)` (M2 + M3) → adds trailing `darkTheme: Boolean` and
+      `alert: MarkdownAlertColors` parameters.
+    - `markdownTypography(...)` (M2 + M3) → adds a trailing `alertTitle: TextStyle` parameter.
+    - `markdownComponents(...)` → adds an `alert` parameter.
+    - `markdownDimens(...)` / `markdownPadding(...)` → add an `alert` parameter.
+    - `DefaultMarkdownColors` / `DefaultMarkdownTypography` constructors and `copy(...)` gained the
+      alert members.
+    - `MarkdownA11yLabels` gained `alert: (title: String) -> String`.
+
+#### Version 0.43.0
+
+- **New Feature**: `parseMarkdown(content, lookupLinks, flavour, parser, referenceLinkHandler)` —
+  synchronous parsing on the calling thread, returning the final `State` (`State.Success` or
+  `State.Error`) directly. Additive; complements the existing `parseMarkdownFlow`.
+
 #### Version 0.42.0
 
 - **Dependency Upgrade**: Kotlin 2.3.21 → 2.4.0

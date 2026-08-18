@@ -26,6 +26,7 @@ import org.intellij.markdown.MarkdownTokenTypes.Companion.EOL
 import org.intellij.markdown.MarkdownTokenTypes.Companion.HORIZONTAL_RULE
 import org.intellij.markdown.MarkdownTokenTypes.Companion.TEXT
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.flavours.gfm.GFMElementTypes.ALERT
 import org.intellij.markdown.flavours.gfm.GFMElementTypes.TABLE
 
 /**
@@ -87,6 +88,7 @@ internal fun MarkdownElementInternal(
         IMAGE -> components.image(model)
         HORIZONTAL_RULE -> components.horizontalRule(model)
         TABLE -> components.table(model)
+        ALERT -> components.alert(model)
         else -> {
             handled = components.custom?.invoke(node.type, model) != null
         }
