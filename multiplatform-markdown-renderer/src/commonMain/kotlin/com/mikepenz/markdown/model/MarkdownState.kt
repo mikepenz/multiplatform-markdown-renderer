@@ -24,6 +24,7 @@ import kotlinx.coroutines.withContext
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
+import org.intellij.markdown.parser.CancellationToken
 import org.intellij.markdown.parser.MarkdownParser
 
 /**
@@ -43,7 +44,9 @@ fun rememberMarkdownState(
     lookupLinks: Boolean = true,
     retainState: Boolean = false,
     flavour: MarkdownFlavourDescriptor = remember { GFMFlavourDescriptor() },
-    parser: MarkdownParser = remember(flavour) { MarkdownParser(flavour) },
+    parser: MarkdownParser = remember(flavour) {
+        MarkdownParser(flavour = flavour, cancellationToken = CancellationToken.NonCancellable)
+    },
     referenceLinkHandler: ReferenceLinkHandler = remember { ReferenceLinkHandlerImpl() },
     immediate: Boolean = LocalInspectionMode.current,
 ): MarkdownState {
@@ -105,7 +108,9 @@ fun rememberMarkdownState(
     lookupLinks: Boolean = true,
     retainState: Boolean = false,
     flavour: MarkdownFlavourDescriptor = remember { GFMFlavourDescriptor() },
-    parser: MarkdownParser = remember(flavour) { MarkdownParser(flavour) },
+    parser: MarkdownParser = remember(flavour) {
+        MarkdownParser(flavour, cancellationToken = CancellationToken.NonCancellable)
+    },
     referenceLinkHandler: ReferenceLinkHandler = remember { ReferenceLinkHandlerImpl() },
     block: suspend () -> String,
 ): MarkdownState {
@@ -218,7 +223,7 @@ internal class MarkdownStateImpl(
      */
     internal fun parseBlocking(): State {
         return try {
-            val parsedResult = input.parser.buildMarkdownTreeFromString(input.content)
+            val parsedResult = input.parser.buildMarkdownTreeFromString(input.content as CharSequence)
             if (input.lookupLinks) {
                 val links = mutableMapOf<String, String?>()
                 lookupLinkDefinition(links, parsedResult, input.content, recursive = true)
@@ -250,7 +255,7 @@ fun parseMarkdownFlow(
     content: String,
     lookupLinks: Boolean = true,
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    parser: MarkdownParser = MarkdownParser(flavour),
+    parser: MarkdownParser = MarkdownParser(flavour, cancellationToken = CancellationToken.NonCancellable),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
 ) = flow {
     emit(State.Loading(referenceLinkHandler))
@@ -289,7 +294,7 @@ fun parseMarkdown(
     content: String,
     lookupLinks: Boolean = true,
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    parser: MarkdownParser = MarkdownParser(flavour),
+    parser: MarkdownParser = MarkdownParser(flavour, cancellationToken = CancellationToken.NonCancellable),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
 ): State {
     return MarkdownStateImpl(
@@ -320,7 +325,7 @@ fun Flow<String>.asMarkdownState(
     lookupLinks: Boolean = true,
     retainState: Boolean = false,
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
-    parser: MarkdownParser = MarkdownParser(flavour),
+    parser: MarkdownParser = MarkdownParser(flavour, cancellationToken = CancellationToken.NonCancellable),
     referenceLinkHandler: ReferenceLinkHandler = ReferenceLinkHandlerImpl(),
 ): Flow<State> {
     val markdownState = MarkdownStateImpl(

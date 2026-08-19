@@ -29,6 +29,7 @@ import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
+import org.intellij.markdown.parser.CancellationToken
 import org.intellij.markdown.parser.MarkdownParser
 
 /**
@@ -85,7 +86,10 @@ fun String.buildMarkdownAnnotatedString(
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
 ): AnnotatedString {
     val content = this
-    val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
+    val parsedTree = MarkdownParser(
+        flavour = flavour,
+        cancellationToken = CancellationToken.NonCancellable,
+    ).buildMarkdownTreeFromString(content as CharSequence)
     val textNode = parsedTree.children.firstOrNull { node ->
         node.type == MarkdownTokenTypes.TEXT || node.type == MarkdownElementTypes.PARAGRAPH
     }
