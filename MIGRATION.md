@@ -1,5 +1,13 @@
 ### Upgrade Notes
 
+#### Version 0.45.0
+
+- **Dependency Upgrade**: Coil 3.5.0 → 3.6.0
+- **Dependency Upgrade**: Gradle wrapper 9.7.0 → 9.7.1
+- **Dependency Upgrade**: `com.mikepenz:version-catalog` 0.19.0 → 0.20.0, bringing in AGP 9.3.1 →
+  9.3.2, Compose 1.11.4 → 1.12.0, Compose Multiplatform 1.11.1 → 1.12.0, aboutLibraries 15.0.4 →
+  15.1.1, and other transitive tooling bumps.
+
 #### Version 0.44.0
 
 - **Dependency Upgrade**: Kotlin 2.4.0 → 2.4.10

@@ -312,6 +312,13 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     MarkdownElementTypes.SHORT_REFERENCE_LINK -> appendMarkdownReference(content, child, annotatorSettings)
                     MarkdownElementTypes.FULL_REFERENCE_LINK -> appendMarkdownReference(content, child, annotatorSettings)
 
+                    // GFM math ($...$ and $$...$$). We don't typeset LaTeX, but the raw source
+                    // must survive: without these branches the whole span (delimiters and the
+                    // content between them) falls through to `else` and is silently dropped, so
+                    // e.g. "Pay bills $100 and $50" renders as "Pay bills 50".
+                    GFMElementTypes.INLINE_MATH, GFMElementTypes.BLOCK_MATH ->
+                        append(child.getTextInNode(content))
+
                     // Token Types
                     MarkdownTokenTypes.TEXT -> append(child.getUnescapedTextInNode(content))
                     MarkdownTokenTypes.EMAIL_AUTOLINK -> if (parentType == MarkdownElementTypes.LINK_TEXT) {
