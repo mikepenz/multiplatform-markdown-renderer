@@ -226,7 +226,6 @@ fun MarkdownBulletList(
     listModifier: RowScope.() -> Modifier = { Modifier },
 ) {
     val bulletHandler = LocalBulletListHandler.current
-    val listItemBottom = LocalMarkdownPadding.current.listItemBottom
     MarkdownListItems(content, node, depth, markerModifier, listModifier) { index, listNumber, child ->
         MarkdownBasicText(
             text = bulletHandler.transform(
@@ -237,7 +236,6 @@ fun MarkdownBulletList(
                 depth = depth
             ),
             style = style,
-            modifier = Modifier.padding(bottom = listItemBottom)
         )
     }
 }
