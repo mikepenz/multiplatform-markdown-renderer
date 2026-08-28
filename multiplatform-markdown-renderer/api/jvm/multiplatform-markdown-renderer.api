@@ -218,6 +218,10 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownHeaderKt {
 	public static final fun MarkdownHeader (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/ui/text/TextStyle;Lorg/intellij/markdown/IElementType;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/mikepenz/markdown/compose/elements/MarkdownImageAltTooltipKt {
+	public static final fun ImageAltTooltip (Ljava/lang/String;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+}
+
 public final class com/mikepenz/markdown/compose/elements/MarkdownImageKt {
 	public static final fun MarkdownImage (Ljava/lang/String;Lorg/intellij/markdown/ast/ASTNode;Landroidx/compose/runtime/Composer;I)V
 }
@@ -972,6 +976,8 @@ public final class com/mikepenz/markdown/utils/ExtensionsKt {
 	public static final fun getUnescapedTextInNode (Lorg/intellij/markdown/ast/ASTNode;Ljava/lang/CharSequence;)Ljava/lang/String;
 	public static final fun mapAutoLinkToType (Ljava/util/List;Lorg/intellij/markdown/IElementType;)Ljava/util/List;
 	public static synthetic fun mapAutoLinkToType$default (Ljava/util/List;Lorg/intellij/markdown/IElementType;ILjava/lang/Object;)Ljava/util/List;
+	public static final fun resolveImageAlt (Lorg/intellij/markdown/ast/ASTNode;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun resolveImageLink (Lorg/intellij/markdown/ast/ASTNode;Ljava/lang/String;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;)Ljava/lang/String;
 }
 
 public final class com/mikepenz/markdown/utils/LogCompositionsKt {
