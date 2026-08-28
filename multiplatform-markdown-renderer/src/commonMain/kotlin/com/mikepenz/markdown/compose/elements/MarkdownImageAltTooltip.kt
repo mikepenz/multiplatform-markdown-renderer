@@ -37,7 +37,7 @@ import kotlinx.coroutines.delay
  * [com.mikepenz.markdown.model.MarkdownAnnotatorConfig.imageAltTooltipHoverDelayMs].
  */
 @Composable
-internal fun ImageAltTooltip(alt: String?, content: @Composable () -> Unit) {
+fun ImageAltTooltip(alt: String?, content: @Composable () -> Unit) {
     val config = LocalMarkdownAnnotator.current.config
     if (!config.showImageAltTooltip || alt.isNullOrBlank()) {
         content()

@@ -29,7 +29,7 @@ const val MARKDOWN_TAG_IMAGE_URL = "MARKDOWN_IMAGE_URL"
  * web-style hover tooltip. Falls back through `LINK_TEXT` (inline + full
  * reference forms) and `LINK_LABEL` (short reference form).
  */
-internal fun ASTNode.resolveImageAlt(content: String): String? {
+fun ASTNode.resolveImageAlt(content: String): String? {
     findChildOfTypeRecursive(MarkdownElementTypes.LINK_TEXT)?.let {
         val text = it.getUnescapedTextInNode(content).trim('[', ']').trim()
         if (text.isNotEmpty()) return text
@@ -47,7 +47,7 @@ internal fun ASTNode.resolveImageAlt(content: String): String? {
  * via the supplied [referenceLinkHandler] when no inline `LINK_DESTINATION`
  * is present (i.e. for reference-style images like `![alt][id]`).
  */
-internal fun ASTNode.resolveImageLink(
+fun ASTNode.resolveImageLink(
     content: String,
     referenceLinkHandler: ReferenceLinkHandler?,
 ): String? {
