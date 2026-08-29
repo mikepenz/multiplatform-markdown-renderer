@@ -257,6 +257,7 @@ public final class com/mikepenz/markdown/compose/elements/MarkdownTextKt {
 }
 
 public final class com/mikepenz/markdown/compose/elements/material/TextWrapperKt {
+	public static final fun MarkdownBasicText-JAgEBs0 (Ljava/lang/String;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Modifier;JJLandroidx/compose/ui/text/font/FontStyle;Landroidx/compose/ui/text/font/FontWeight;Landroidx/compose/ui/text/font/FontFamily;JLandroidx/compose/ui/text/style/TextDecoration;IJIZIILkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
 	public static final fun MarkdownBasicText-eIOHA4g (Landroidx/compose/ui/text/AnnotatedString;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Modifier;JJLandroidx/compose/ui/text/font/FontStyle;Landroidx/compose/ui/text/font/FontWeight;Landroidx/compose/ui/text/font/FontFamily;JLandroidx/compose/ui/text/style/TextDecoration;IJIZIILjava/util/Map;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;III)V
 }
 

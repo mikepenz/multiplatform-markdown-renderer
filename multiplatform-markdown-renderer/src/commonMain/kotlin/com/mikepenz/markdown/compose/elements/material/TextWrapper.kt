@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.TextUnit
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 
 @Composable
-internal fun MarkdownBasicText(
+fun MarkdownBasicText(
     text: String,
     style: TextStyle,
     modifier: Modifier = Modifier,
