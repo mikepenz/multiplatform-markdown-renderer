@@ -9,6 +9,7 @@ import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
+import org.intellij.markdown.parser.CancellationToken
 import org.intellij.markdown.parser.MarkdownParser
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -23,7 +24,10 @@ import kotlin.test.assertTrue
 class AlertAstShapeTest {
 
     private fun parse(input: String): ASTNode =
-        MarkdownParser(GFMFlavourDescriptor()).buildMarkdownTreeFromString(input)
+        MarkdownParser(
+            flavour = GFMFlavourDescriptor(),
+            cancellationToken = CancellationToken.NonCancellable,
+        ).buildMarkdownTreeFromString(input as CharSequence)
 
     private fun alerts(tree: ASTNode): List<ASTNode> = tree.children.filter { it.type == GFMElementTypes.ALERT }
 

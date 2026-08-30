@@ -1,8 +1,6 @@
 // Copyright 2023, Saket Narayan
 // SPDX-License-Identifier: Apache-2.0
 // https://github.com/saket/extended-spans
-@file:OptIn(ExperimentalTextApi::class)
-
 package com.mikepenz.markdown.compose.extendedspans
 
 import androidx.compose.runtime.Stable
@@ -13,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.buildAnnotatedString
@@ -65,10 +62,6 @@ class ExtendedSpans(
             }
             text.getTtsAnnotations(start = 0, end = text.length).fastForEach {
                 addTtsAnnotation(it.item, it.start, it.end)
-            }
-            @Suppress("DEPRECATION")
-            text.getUrlAnnotations(start = 0, end = text.length).fastForEach {
-                addUrlAnnotation(it.item, it.start, it.end)
             }
             text.getLinkAnnotations(start = 0, end = text.length).fastForEach { range ->
                 val decorated = painters.fastFold(initial = range.item) { updated, painter ->
