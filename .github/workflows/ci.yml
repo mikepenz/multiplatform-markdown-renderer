@@ -134,7 +134,7 @@ jobs:
           done
 
       - name: Upload Lint SARIF
-        if: always() && github.event_name == 'pull_request'
+        if: always() && github.event_name == 'pull_request' && hashFiles('sarif-reports/*.sarif') != ''
         uses: github/codeql-action/upload-sarif@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4.37.7
         with:
           sarif_file: 'sarif-reports'
