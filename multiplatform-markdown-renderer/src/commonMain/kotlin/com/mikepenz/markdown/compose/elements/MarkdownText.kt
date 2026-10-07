@@ -187,6 +187,7 @@ fun MarkdownText(
         // Pin descendants (text + inline link nodes) to source order. Without this,
         // TalkBack reorders interactive link nodes after non-interactive text — see #487.
         base.semantics { isTraversalGroup = true }.onPlaced {
+            if (!it.isAttached) return@onPlaced
             it.parentLayoutCoordinates?.also { coordinates ->
                 containerSize.value = coordinates.size.toSize()
             }
@@ -230,6 +231,7 @@ fun MarkdownText(
             }
         } else {
             textSegment(content, modifier.onPlaced {
+                if (!it.isAttached) return@onPlaced
                 it.parentLayoutCoordinates?.also { coordinates ->
                     containerSize.value = coordinates.size.toSize()
                 }
