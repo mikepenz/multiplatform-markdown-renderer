@@ -258,6 +258,7 @@ fun MarkdownTableBasicText(
     MarkdownBasicText(
         text = text,
         modifier = Modifier.onPlaced { coords ->
+            if (!coords.isAttached) return@onPlaced
             coords.parentLayoutCoordinates?.also { containerSize.value = it.size.toSize() }
         },
         style = style,
