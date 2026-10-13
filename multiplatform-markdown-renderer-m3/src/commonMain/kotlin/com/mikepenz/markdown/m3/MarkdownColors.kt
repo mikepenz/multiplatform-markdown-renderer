@@ -19,6 +19,8 @@ fun markdownColor(
     /** Material 3 has no `isLight` flag; derive it from the background so alerts follow the theme. */
     darkTheme: Boolean = MaterialTheme.colorScheme.background.luminance() < 0.5f,
     alert: MarkdownAlertColors = markdownAlertColors(darkTheme),
+    highlightText: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+    highlightBackground: Color = MaterialTheme.colorScheme.secondaryContainer,
 ): MarkdownColors = DefaultMarkdownColors(
     text = text,
     codeBackground = codeBackground,
@@ -26,4 +28,6 @@ fun markdownColor(
     dividerColor = dividerColor,
     tableBackground = tableBackground,
     alert = alert,
+    highlightText = highlightText,
+    highlightBackground = highlightBackground,
 )

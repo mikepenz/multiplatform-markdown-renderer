@@ -17,6 +17,8 @@ fun markdownColor(
     tableBackground: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.02f),
     darkTheme: Boolean = !MaterialTheme.colors.isLight,
     alert: MarkdownAlertColors = markdownAlertColors(darkTheme),
+    highlightText: Color = MaterialTheme.colors.onSecondary,
+    highlightBackground: Color = MaterialTheme.colors.secondary,
 ): MarkdownColors = DefaultMarkdownColors(
     text = text,
     codeBackground = codeBackground,
@@ -24,4 +26,6 @@ fun markdownColor(
     dividerColor = dividerColor,
     tableBackground = tableBackground,
     alert = alert,
+    highlightText = highlightText,
+    highlightBackground = highlightBackground,
 )
