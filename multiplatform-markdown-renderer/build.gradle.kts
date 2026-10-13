@@ -28,6 +28,13 @@ kotlin {
             implementation(kotlin("test"))
             implementation(baseLibs.kotlinx.coroutines.test)
         }
+        jvmTest.dependencies {
+            implementation(baseLibs.jetbrains.compose.runtime)
+            implementation(baseLibs.jetbrains.compose.ui)
+            implementation(baseLibs.jetbrains.compose.foundation)
+            implementation(baseLibs.jetbrains.compose.ui.test)
+            implementation(compose.desktop.currentOs)
+        }
     }
 }
 
