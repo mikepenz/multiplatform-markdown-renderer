@@ -2,7 +2,7 @@
 androidx-activityCompose = "1.13.0"
 coil = "3.6.3"
 coil2 = "2.7.0"
-markdown = "0.7.16"
+markdown = "0.7.17"
 ktor = "3.6.0"
 highlights = "1.1.0"
 
