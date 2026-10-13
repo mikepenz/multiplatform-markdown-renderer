@@ -10,6 +10,11 @@ kotlin {
     }
 
     sourceSets {
+        androidMain.dependencies {
+            // D8 needs the Compose interfaces on the runtime classpath to desugar
+            // their calls consistently with the app when its minSdk is below 24.
+            runtimeOnly(baseLibs.jetbrains.compose.foundation)
+        }
         commonMain.dependencies {
             api(libs.markdown)
             api(baseLibs.kotlinx.coroutines.core)
@@ -22,6 +27,13 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation(baseLibs.kotlinx.coroutines.test)
+        }
+        jvmTest.dependencies {
+            implementation(baseLibs.jetbrains.compose.runtime)
+            implementation(baseLibs.jetbrains.compose.ui)
+            implementation(baseLibs.jetbrains.compose.foundation)
+            implementation(baseLibs.jetbrains.compose.ui.test)
+            implementation(compose.desktop.currentOs)
         }
     }
 }

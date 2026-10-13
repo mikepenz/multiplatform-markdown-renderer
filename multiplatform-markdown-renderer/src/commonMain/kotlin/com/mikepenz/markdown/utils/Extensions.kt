@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.model.MarkdownAlertType
+import com.mikepenz.markdown.model.MarkdownColors
 import com.mikepenz.markdown.model.MarkdownTypography
 import com.mikepenz.markdown.model.ReferenceLinkHandler
 import org.intellij.markdown.IElementType
@@ -205,3 +206,7 @@ val MarkdownTypography.codeSpanStyle: SpanStyle
     get() = inlineCode.copy(
         background = LocalMarkdownColors.current.inlineCodeBackground
     ).toSpanStyle()
+
+/** The highlight style defined by the markdown colors, preserving the surrounding typography. */
+internal val MarkdownColors.highlightSpanStyle: SpanStyle
+    get() = SpanStyle(color = highlightText, background = highlightBackground)

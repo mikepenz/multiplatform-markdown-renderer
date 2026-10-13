@@ -11,10 +11,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.multiplatformMarkdownRenderer)
-            api(libs.coil.core.get().toString()) {
-                exclude(group = "org.jetbrains.compose.runtime")
-            }
-            compileOnly(baseLibs.jetbrains.compose.runtime)
+            api(libs.coil.core)
         }
     }
 }

@@ -29,6 +29,7 @@ import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMElementTypes
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
 import org.intellij.markdown.flavours.gfm.GFMTokenTypes
+import org.intellij.markdown.parser.CancellationToken
 import org.intellij.markdown.parser.MarkdownParser
 
 /**
@@ -62,6 +63,7 @@ fun String.buildMarkdownAnnotatedString(
         linkTextSpanStyle = TextLinkStyles(style = linkTextSpanStyle),
         codeSpanStyle = codeSpanStyle,
         annotator = annotator,
+        highlightSpanStyle = style.toSpanStyle(),
         referenceLinkHandler = referenceLinkHandler,
         linkInteractionListener = linkInteractionListener
     ),
@@ -85,7 +87,10 @@ fun String.buildMarkdownAnnotatedString(
     flavour: MarkdownFlavourDescriptor = GFMFlavourDescriptor(),
 ): AnnotatedString {
     val content = this
-    val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
+    val parsedTree = MarkdownParser(
+        flavour = flavour,
+        cancellationToken = CancellationToken.NonCancellable,
+    ).buildMarkdownTreeFromString(content as CharSequence)
     val textNode = parsedTree.children.firstOrNull { node ->
         node.type == MarkdownTokenTypes.TEXT || node.type == MarkdownElementTypes.PARAGRAPH
     }
@@ -319,6 +324,14 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     GFMElementTypes.INLINE_MATH, GFMElementTypes.BLOCK_MATH ->
                         append(child.getTextInNode(content))
 
+                    GFMElementTypes.HIGHLIGHT -> {
+                        pushStyle(annotatorSettings.highlightSpanStyle)
+                        // Each delimiter consists of two EQUALS tokens. Keep any equals signs
+                        // inside the span, and recursively render its inline formatting.
+                        buildMarkdownAnnotatedString(content, child.children.drop(2).dropLast(2), annotatorSettings)
+                        pop()
+                    }
+
                     // Token Types
                     MarkdownTokenTypes.TEXT -> append(child.getUnescapedTextInNode(content))
                     MarkdownTokenTypes.EMAIL_AUTOLINK -> if (parentType == MarkdownElementTypes.LINK_TEXT) {
@@ -330,6 +343,7 @@ fun AnnotatedString.Builder.buildMarkdownAnnotatedString(
                     } else appendAutoLink(content, child, annotatorSettings)
 
                     GFMTokenTypes.DOLLAR -> append('$')
+                    GFMTokenTypes.EQUALS -> append('=')
 
                     MarkdownTokenTypes.SINGLE_QUOTE -> append('\'')
                     MarkdownTokenTypes.DOUBLE_QUOTE -> append('\"')

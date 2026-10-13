@@ -20,9 +20,8 @@ kotlin {
             implementation(kotlin("test"))
             implementation(kotlin("test-junit"))
             implementation(compose.desktop.currentOs)
-            implementation(compose.material3)
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
+            implementation(baseLibs.jetbrains.compose.material3)
+            implementation(baseLibs.jetbrains.compose.ui.test)
         }
     }
 }

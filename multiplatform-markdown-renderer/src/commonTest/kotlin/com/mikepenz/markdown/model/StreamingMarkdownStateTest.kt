@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.runTest
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.flavours.gfm.GFMFlavourDescriptor
+import org.intellij.markdown.parser.CancellationToken
 import org.intellij.markdown.parser.MarkdownParser
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -198,7 +199,7 @@ class StreamingMarkdownStateTest {
                 content = "",
                 lookupLinks = lookupLinks,
                 flavour = flavour,
-                parser = MarkdownParser(flavour),
+                parser = MarkdownParser(flavour, cancellationToken = CancellationToken.NonCancellable),
                 referenceLinkHandler = referenceLinkHandler,
                 retainState = true,
             )

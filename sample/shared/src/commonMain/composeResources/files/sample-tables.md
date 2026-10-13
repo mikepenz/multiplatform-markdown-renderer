@@ -12,6 +12,7 @@ demonstrates a different inline construct.
 | *italic* (asterisk) | *italic* text                          |
 | _italic_ (under)    | _italic_ text                          |
 | ~~strikethrough~~   | ~~strike~~ here                        |
+| highlight           | ==highlight== and ==**bold** text==     |
 | inline `code`       | `val x = 1`                            |
 | inline link         | [JetBrains](https://www.jetbrains.com) |
 | autolink            | <https://mikepenz.dev>                 |
