@@ -1,5 +1,20 @@
 ### Upgrade Notes
 
+#### Unreleased
+
+- **New Feature**: GFM `==highlight==` spans render with theme-aware foreground and background
+  colors, including nested inline formatting. Configure `highlightText` and `highlightBackground`
+  through `markdownColor(...)` (M2 + M3), or override `highlightSpanStyle` in `annotatorSettings(...)`.
+- **Bug Fix**: Preserve literal equals signs parsed as `GFMTokenTypes.EQUALS` by JetBrains Markdown
+  0.7.15 and later.
+- **Breaking Change**: Custom `MarkdownColors` implementations must provide `highlightText` and
+  `highlightBackground`. Custom `AnnotatorSettings` implementations must provide `highlightSpanStyle`.
+  Direct callers of `DefaultMarkdownColors` and `DefaultAnnotatorSettings` must supply these values.
+- **Signature Changes**: The M2/M3 `markdownColor(...)` and `annotatorSettings(...)` functions gain
+  trailing highlight parameters. Recompile consumers against the updated API.
+- The deprecated `buildMarkdownAnnotatedString` overload keeps the base text style for highlights;
+  use the overload accepting `AnnotatorSettings` to configure a highlight background.
+
 #### Version 0.45.0
 
 - **Dependency Upgrade**: Coil 3.5.0 → 3.6.0

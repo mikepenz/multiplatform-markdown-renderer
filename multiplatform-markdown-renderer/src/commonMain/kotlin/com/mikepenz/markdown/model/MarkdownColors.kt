@@ -15,6 +15,12 @@ interface MarkdownColors {
     /** Represents the color used for the inline background of code. */
     val inlineCodeBackground: Color
 
+    /** Represents the text color of highlighted spans. */
+    val highlightText: Color
+
+    /** Represents the background color of highlighted spans. */
+    val highlightBackground: Color
+
     /** Represents the color used for the color of dividers. */
     val dividerColor: Color
 
@@ -33,4 +39,6 @@ data class DefaultMarkdownColors(
     override val dividerColor: Color,
     override val tableBackground: Color,
     override val alert: MarkdownAlertColors = markdownAlertColors(),
+    override val highlightText: Color,
+    override val highlightBackground: Color,
 ) : MarkdownColors

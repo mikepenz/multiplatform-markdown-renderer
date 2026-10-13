@@ -14,21 +14,23 @@ public final class com/mikepenz/markdown/annotator/AnnotatedStringKtxKt {
 public abstract interface class com/mikepenz/markdown/annotator/AnnotatorSettings {
 	public abstract fun getAnnotator ()Lcom/mikepenz/markdown/model/MarkdownAnnotator;
 	public abstract fun getCodeSpanStyle ()Landroidx/compose/ui/text/SpanStyle;
+	public abstract fun getHighlightSpanStyle ()Landroidx/compose/ui/text/SpanStyle;
 	public abstract fun getLinkInteractionListener ()Landroidx/compose/ui/text/LinkInteractionListener;
 	public abstract fun getLinkTextSpanStyle ()Landroidx/compose/ui/text/TextLinkStyles;
 	public abstract fun getReferenceLinkHandler ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
 }
 
 public final class com/mikepenz/markdown/annotator/AnnotatorSettingsKt {
-	public static final fun annotatorSettings (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/platform/UriHandler;Landroidx/compose/ui/text/LinkInteractionListener;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/annotator/AnnotatorSettings;
+	public static final fun annotatorSettings (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/platform/UriHandler;Landroidx/compose/ui/text/LinkInteractionListener;Landroidx/compose/ui/text/SpanStyle;Landroidx/compose/runtime/Composer;II)Lcom/mikepenz/markdown/annotator/AnnotatorSettings;
 }
 
 public final class com/mikepenz/markdown/annotator/DefaultAnnotatorSettings : com/mikepenz/markdown/annotator/AnnotatorSettings {
 	public static final field $stable I
-	public fun <init> (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;)V
-	public synthetic fun <init> (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;Landroidx/compose/ui/text/SpanStyle;)V
+	public synthetic fun <init> (Landroidx/compose/ui/text/TextLinkStyles;Landroidx/compose/ui/text/SpanStyle;Lcom/mikepenz/markdown/model/MarkdownAnnotator;Lcom/mikepenz/markdown/model/ReferenceLinkHandler;Landroidx/compose/ui/text/LinkInteractionListener;Landroidx/compose/ui/text/SpanStyle;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getAnnotator ()Lcom/mikepenz/markdown/model/MarkdownAnnotator;
 	public fun getCodeSpanStyle ()Landroidx/compose/ui/text/SpanStyle;
+	public fun getHighlightSpanStyle ()Landroidx/compose/ui/text/SpanStyle;
 	public fun getLinkInteractionListener ()Landroidx/compose/ui/text/LinkInteractionListener;
 	public fun getLinkTextSpanStyle ()Landroidx/compose/ui/text/TextLinkStyles;
 	public fun getReferenceLinkHandler ()Lcom/mikepenz/markdown/model/ReferenceLinkHandler;
@@ -428,20 +430,24 @@ public final class com/mikepenz/markdown/model/DefaultMarkdownAnnotatorConfig : 
 
 public final class com/mikepenz/markdown/model/DefaultMarkdownColors : com/mikepenz/markdown/model/MarkdownColors {
 	public static final field $stable I
-	public synthetic fun <init> (JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;JJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-0d7_KjU ()J
 	public final fun component2-0d7_KjU ()J
 	public final fun component3-0d7_KjU ()J
 	public final fun component4-0d7_KjU ()J
 	public final fun component5-0d7_KjU ()J
 	public final fun component6 ()Lcom/mikepenz/markdown/model/MarkdownAlertColors;
-	public final fun copy-EXAOFh0 (JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;)Lcom/mikepenz/markdown/model/DefaultMarkdownColors;
-	public static synthetic fun copy-EXAOFh0$default (Lcom/mikepenz/markdown/model/DefaultMarkdownColors;JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;ILjava/lang/Object;)Lcom/mikepenz/markdown/model/DefaultMarkdownColors;
+	public final fun component7-0d7_KjU ()J
+	public final fun component8-0d7_KjU ()J
+	public final fun copy-OA_Z_tI (JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;JJ)Lcom/mikepenz/markdown/model/DefaultMarkdownColors;
+	public static synthetic fun copy-OA_Z_tI$default (Lcom/mikepenz/markdown/model/DefaultMarkdownColors;JJJJJLcom/mikepenz/markdown/model/MarkdownAlertColors;JJILjava/lang/Object;)Lcom/mikepenz/markdown/model/DefaultMarkdownColors;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAlert ()Lcom/mikepenz/markdown/model/MarkdownAlertColors;
 	public fun getCodeBackground-0d7_KjU ()J
 	public fun getDividerColor-0d7_KjU ()J
+	public fun getHighlightBackground-0d7_KjU ()J
+	public fun getHighlightText-0d7_KjU ()J
 	public fun getInlineCodeBackground-0d7_KjU ()J
 	public fun getTableBackground-0d7_KjU ()J
 	public fun getText-0d7_KjU ()J
@@ -754,6 +760,8 @@ public abstract interface class com/mikepenz/markdown/model/MarkdownColors {
 	public abstract fun getAlert ()Lcom/mikepenz/markdown/model/MarkdownAlertColors;
 	public abstract fun getCodeBackground-0d7_KjU ()J
 	public abstract fun getDividerColor-0d7_KjU ()J
+	public abstract fun getHighlightBackground-0d7_KjU ()J
+	public abstract fun getHighlightText-0d7_KjU ()J
 	public abstract fun getInlineCodeBackground-0d7_KjU ()J
 	public abstract fun getTableBackground-0d7_KjU ()J
 	public abstract fun getText-0d7_KjU ()J

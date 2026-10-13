@@ -10,11 +10,13 @@ import androidx.compose.ui.text.LinkInteractionListener
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import com.mikepenz.markdown.compose.LocalMarkdownAnnotator
+import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalReferenceLinkHandler
 import com.mikepenz.markdown.model.MarkdownAnnotator
 import com.mikepenz.markdown.model.ReferenceLinkHandler
 import com.mikepenz.markdown.utils.codeSpanStyle
+import com.mikepenz.markdown.utils.highlightSpanStyle
 
 @Stable
 interface AnnotatorSettings {
@@ -23,6 +25,9 @@ interface AnnotatorSettings {
 
     /** Represents the [SpanStyle] applied onto code inline blocks within this annotated string */
     val codeSpanStyle: SpanStyle
+
+    /** Represents the [SpanStyle] applied to GFM `==highlight==` spans. */
+    val highlightSpanStyle: SpanStyle
 
     /** Provides custom interception logic for building this annotated string */
     val annotator: MarkdownAnnotator
@@ -41,6 +46,7 @@ class DefaultAnnotatorSettings(
     override val annotator: MarkdownAnnotator,
     override val referenceLinkHandler: ReferenceLinkHandler? = null,
     override val linkInteractionListener: LinkInteractionListener? = null,
+    override val highlightSpanStyle: SpanStyle,
 ) : AnnotatorSettings
 
 @Composable
@@ -62,10 +68,12 @@ fun annotatorSettings(
             }
         }
     },
+    highlightSpanStyle: SpanStyle = LocalMarkdownColors.current.highlightSpanStyle,
 ): AnnotatorSettings = DefaultAnnotatorSettings(
     linkTextSpanStyle = linkTextSpanStyle,
     codeSpanStyle = codeSpanStyle,
     annotator = annotator,
     referenceLinkHandler = referenceLinkHandler,
     linkInteractionListener = linkInteractionListener,
+    highlightSpanStyle = highlightSpanStyle,
 )

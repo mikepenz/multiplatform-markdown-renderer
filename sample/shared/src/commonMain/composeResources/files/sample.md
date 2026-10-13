@@ -16,6 +16,12 @@
 
 This is a paragraph with some *italic* and **bold** text.
 
+## Highlight
+
+This is a paragraph with ==highlighted text==.
+
+Equals signs are preserved: a = b, =text=, ===text===, and ==a=b==.
+
 This is a paragraph with some `inline code`.
 
 This is a paragraph with a [link](https://www.jetbrains.com/).
