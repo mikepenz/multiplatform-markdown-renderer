@@ -1,18 +1,17 @@
 package com.mikepenz.markdown.model
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
-import kotlin.time.Duration.Companion.seconds
 
 /**
  * Tests for the Flow<String>.asMarkdownState() extension function.
@@ -109,7 +108,7 @@ class AsMarkdownStateTest {
     }
 
     @Test
-    fun asMarkdownState_incrementalContentBuildup() = runBlocking {
+    fun asMarkdownState_incrementalContentBuildup() = runTest {
         // Given a flow that gradually builds up markdown content
         val contentFlow = MutableStateFlow("# Title")
         val states = mutableListOf<State>()
@@ -125,7 +124,9 @@ class AsMarkdownStateTest {
         }
 
         // Wait for initial emissions (Loading + Success) - use real delay since parse uses Dispatchers.Default
-        delay(500)
+        withContext(Dispatchers.Default) {
+            delay(500)
+        }
         assertTrue(states.size >= 2, "Should have at least Loading + Success for first emission, got ${states.size}: $states")
         assertIs<State.Loading>(states[0], "First state should be Loading")
         assertIs<State.Success>(states[1], "Second state should be Success")
@@ -135,7 +136,9 @@ class AsMarkdownStateTest {
 
         // Update with more content - this tests that the flow continues to work
         contentFlow.value = "# Title\n\nSome paragraph text."
-        delay(500)
+        withContext(Dispatchers.Default) {
+            delay(500)
+        }
 
         // Verify we got NEW states (Loading + Success for the second emission)
         assertTrue(states.size > stateCountAfterFirst, "Should have new states after second emission, got ${states.size} total states")
@@ -148,7 +151,9 @@ class AsMarkdownStateTest {
 
         // Third update
         contentFlow.value = "# Title\n\nSome paragraph text.\n\n- Item 1\n- Item 2"
-        delay(500)
+        withContext(Dispatchers.Default) {
+            delay(500)
+        }
 
         // Verify we got ANOTHER set of new states
         assertTrue(states.size > stateCountAfterSecond, "Should have new states after third emission, got ${states.size} total states")
