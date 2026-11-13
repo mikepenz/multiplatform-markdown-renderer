@@ -24,6 +24,7 @@ import kotlin.test.assertTrue
  *  - Issue #487 — TalkBack reorders paragraphs containing inline links.
  *  - Headings expose Heading semantics.
  *  - Inline links emit per-link clickable a11y nodes.
+ *  - Issue #668 — a list item is one stop, read with its marker.
  */
 @OptIn(ExperimentalTestApi::class)
 class MarkdownA11yTest {
@@ -86,6 +87,76 @@ class MarkdownA11yTest {
         )
     }
 
+    /**
+     * Issue #668: a list item is one screen-reader stop, its marker read with its text. Before the fix the marker was
+     * a stop of its own, and TalkBack said "Bullet", then the item on the next swipe.
+     */
+    @Test
+    fun bullet_list_item_is_one_stop_read_with_its_marker() = runComposeUiTest {
+        setContent { Wrap { Markdown("- Dogs on leash\n- Pack out what you pack in") } }
+        val root = onRoot().fetchSemanticsNode()
+
+        val item = findNodeWhoseTextContains(root, "Dogs on leash")
+            ?: error("Could not locate the list item")
+        assertTrue(item.readText().contains("•"), "The bullet must be read with its item — regression of #668")
+        assertEquals(
+            0, nodesWhoseTextIs(root, "•").size,
+            "No stop may hold the bullet alone — regression of #668"
+        )
+    }
+
+    /** Issue #668: an ordered item is read with its number, including a list that starts past 1. */
+    @Test
+    fun ordered_list_item_is_read_with_its_number() = runComposeUiTest {
+        setContent { Wrap { Markdown("3. Third\n4. Fourth") } }
+        val root = onRoot().fetchSemanticsNode()
+
+        val item = findNodeWhoseTextContains(root, "Third")
+            ?: error("Could not locate the list item")
+        assertTrue(item.readText().contains("3."), "The number must be read with its item — regression of #668")
+    }
+
+    /**
+     * Issue #668 with #569: an item whose text holds a link is still one stop with its marker, and keeps the link.
+     * The paragraph's own merge (#570) must give way to the item's, or the marker is left alone again.
+     */
+    @Test
+    fun list_item_with_a_link_is_one_stop_and_keeps_its_link() = runComposeUiTest {
+        setContent { Wrap { Markdown("- See [the trail map](https://example.com/map) first") } }
+        val root = onRoot().fetchSemanticsNode()
+
+        val item = findNodeWhoseTextContains(root, "the trail map")
+            ?: error("Could not locate the list item")
+        assertTrue(item.readText().contains("•"), "The bullet must be read with a linked item — regression of #668")
+        val urls = item.config[SemanticsProperties.Text]
+            .flatMap { text -> text.getLinkAnnotations(0, text.length).mapNotNull { (it.item as? LinkAnnotation.Url)?.url } }
+        assertEquals(listOf("https://example.com/map"), urls, "The item's link must survive — regression of #487")
+    }
+
+    /** Issue #668: a nested list's items stay stops of their own, not swallowed by the item that holds them. */
+    @Test
+    fun nested_list_items_stay_their_own_stops() = runComposeUiTest {
+        setContent { Wrap { Markdown("- Parent\n    - Child") } }
+        val root = onRoot().fetchSemanticsNode()
+
+        val parent = findNodeWhoseTextContains(root, "Parent") ?: error("Could not locate the parent item")
+        val child = findNodeWhoseTextContains(root, "Child") ?: error("Could not locate the child item")
+        assertTrue(parent.id != child.id, "The nested item must be its own stop")
+        assertTrue(!parent.readText().contains("Child"), "The parent item must not read its nested list")
+        assertTrue(child.readText().contains("•"), "The nested item must be read with its own marker")
+    }
+
+    /** Issue #668: a list says how many items it has, so TalkBack announces it on the way in. */
+    @Test
+    fun list_exposes_its_item_count() = runComposeUiTest {
+        setContent { Wrap { Markdown("- One\n- Two\n- Three") } }
+        val root = onRoot(useUnmergedTree = true).fetchSemanticsNode()
+
+        val lists = collect(root, SemanticsProperties.CollectionInfo)
+        assertEquals(listOf(3), lists.map { it.rowCount })
+        assertEquals(listOf(0, 1, 2), collect(root, SemanticsProperties.CollectionItemInfo).map { it.rowIndex })
+    }
+
     @Test
     fun headings_expose_heading_property() = runComposeUiTest {
         setContent { Wrap { Markdown("# Title\n\nBody") } }
@@ -145,6 +216,16 @@ private fun anyAncestorHasTraversalGroup(root: SemanticsNode, target: SemanticsN
     return path.dropLast(1).any { ancestor ->
         ancestor.config.getOrElseNullable(SemanticsProperties.IsTraversalGroup) { false } == true
     }
+}
+
+/** Everything a screen reader reads on [this] stop: its text, in order. */
+private fun SemanticsNode.readText(): String =
+    config.getOrElseNullable(SemanticsProperties.Text) { null }.orEmpty().joinToString(" ") { it.text }
+
+private fun nodesWhoseTextIs(root: SemanticsNode, text: String): List<SemanticsNode> {
+    val out = mutableListOf<SemanticsNode>()
+    walk(root) { n -> if (n.readText().trim() == text) out += n }
+    return out
 }
 
 @Suppress("unused")
