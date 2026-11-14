@@ -7,12 +7,18 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.CollectionInfo
+import androidx.compose.ui.semantics.CollectionItemInfo
+import androidx.compose.ui.semantics.collectionInfo
+import androidx.compose.ui.semantics.collectionItemInfo
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import com.mikepenz.markdown.compose.LocalBulletListHandler
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
+import com.mikepenz.markdown.compose.LocalMarkdownMergingAncestor
 import com.mikepenz.markdown.compose.LocalMarkdownPadding
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.LocalOrderedListHandler
@@ -49,12 +55,17 @@ fun MarkdownListItems(
     val markdownComponents = LocalMarkdownComponents.current
     val markdownTypography = LocalMarkdownTypography.current
 
+    val itemCount = node.children.count { it.type == MarkdownElementTypes.LIST_ITEM }
+
     Column(
-        modifier = Modifier.padding(
-            start = padding.listIndent * depth,
-            top = padding.list,
-            bottom = padding.list
-        )
+        modifier = Modifier
+            // #668: a list says how many items it holds, so a screen reader announces it on the way in.
+            .semantics { collectionInfo = CollectionInfo(rowCount = itemCount, columnCount = 1) }
+            .padding(
+                start = padding.listIndent * depth,
+                top = padding.list,
+                bottom = padding.list
+            )
     ) {
         // Retrieve initial list number to determine the starting number for ordered lists
         // https://spec.commonmark.org/0.31.2/#start-number
@@ -114,36 +125,43 @@ private fun MarkdownListItem(
 
     Row(
         modifier = Modifier
-            // Group marker + content as one traversal unit but preserve per-link a11y nodes inside.
-            .semantics { isTraversalGroup = true }
+            // #668: the marker and the item's content are one screen-reader stop, so the marker is read with its item
+            // ("•" or "1.") rather than alone. A nested list's items merge themselves and stay stops of their own.
+            .semantics(mergeDescendants = true) {
+                isTraversalGroup = true
+                collectionItemInfo = CollectionItemInfo(rowIndex = index, rowSpan = 1, columnIndex = 0, columnSpan = 1)
+            }
             .fillMaxWidth()
             .padding(top = padding.listItemTop, bottom = padding.listItemBottom)
     ) {
-        // Render marker symbol (checkbox or bullet)
-        Box(modifier = markerModifier()) {
-            if (checkboxNode != null) {
-                val model = MarkdownComponentModel(
-                    content = content,
-                    node = checkboxNode,
-                    typography = markdownTypography,
-                    extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
-                )
-                markdownComponents.checkbox.invoke(model)
-            } else {
-                bullet(index, listNumber, listIndicator)
+        // Text with links leaves the merging to the item, so it joins the item's stop (#569, #668).
+        CompositionLocalProvider(LocalMarkdownMergingAncestor provides true) {
+            // Render marker symbol (checkbox or bullet)
+            Box(modifier = markerModifier()) {
+                if (checkboxNode != null) {
+                    val model = MarkdownComponentModel(
+                        content = content,
+                        node = checkboxNode,
+                        typography = markdownTypography,
+                        extra = persistentMapOf(MARKDOWN_LIST_DEPTH_KEY to depth + 1)
+                    )
+                    markdownComponents.checkbox.invoke(model)
+                } else {
+                    bullet(index, listNumber, listIndicator)
+                }
             }
-        }
 
-        // Render list item content
-        Column(modifier = listModifier()) {
-            child.children.forEach { nestedChild ->
-                MarkdownNestedListItem(
-                    nestedChild = nestedChild,
-                    content = content,
-                    depth = depth,
-                    markdownComponents = markdownComponents,
-                    markdownTypography = markdownTypography
-                )
+            // Render list item content
+            Column(modifier = listModifier()) {
+                child.children.forEach { nestedChild ->
+                    MarkdownNestedListItem(
+                        nestedChild = nestedChild,
+                        content = content,
+                        depth = depth,
+                        markdownComponents = markdownComponents,
+                        markdownTypography = markdownTypography
+                    )
+                }
             }
         }
     }
