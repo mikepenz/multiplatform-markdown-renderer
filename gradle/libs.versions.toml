@@ -4,7 +4,7 @@ coil = "3.6.3"
 coil2 = "2.7.0"
 markdown = "0.7.18"
 ktor = "3.6.1"
-highlights = "1.1.0"
+highlights = "1.2.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
