@@ -40,6 +40,7 @@ import com.mikepenz.markdown.compose.LocalMarkdownColors
 import com.mikepenz.markdown.compose.LocalMarkdownComponents
 import com.mikepenz.markdown.compose.LocalMarkdownExtendedSpans
 import com.mikepenz.markdown.compose.LocalMarkdownInlineContent
+import com.mikepenz.markdown.compose.LocalMarkdownMergingAncestor
 import com.mikepenz.markdown.compose.LocalMarkdownTypography
 import com.mikepenz.markdown.compose.components.MarkdownComponentModel
 import com.mikepenz.markdown.compose.elements.material.MarkdownBasicText
@@ -205,7 +206,9 @@ fun MarkdownText(
             segmentModifier.drawBehind(extendedSpans)
         } else segmentModifier
         val hasSegmentLinks = segment.getLinkAnnotations(0, segment.length).isNotEmpty()
-        val finalModifier = if (hasSegmentLinks) {
+        // #569: a paragraph with links merges so TalkBack reads it. Inside a list item the item merges instead (#668),
+        // so the paragraph is read in the same stop as the item's marker.
+        val finalModifier = if (hasSegmentLinks && !LocalMarkdownMergingAncestor.current) {
             segmentDrawModifier.semantics(mergeDescendants = true) { }
         } else {
             segmentDrawModifier

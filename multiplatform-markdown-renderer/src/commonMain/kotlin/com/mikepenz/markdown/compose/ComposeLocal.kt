@@ -39,6 +39,12 @@ val LocalOrderedListHandler = staticCompositionLocalOf {
 }
 
 /**
+ * Whether an ancestor merges what it holds into one screen-reader stop, as a list item does (#668). Text inside it
+ * then leaves the merging to that ancestor rather than merging itself, so it is read in the same stop.
+ */
+internal val LocalMarkdownMergingAncestor = staticCompositionLocalOf { false }
+
+/**
  * Local [ReferenceLinkHandler] provider
  */
 val LocalReferenceLinkHandler = staticCompositionLocalOf<ReferenceLinkHandler> {
